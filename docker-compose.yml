@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  test_london:
+    build:
+      context: .
+      dockerfile: test-runner.dockerfile
+    environment:
+      TZ: 'Europe/London'
+    networks:
+      - test
+  test_mountain_view:
+    build:
+      context: .
+      dockerfile: test-runner.dockerfile
+    environment:
+      TZ: 'US/Pacific'
+    networks:
+      - test
+  test_tokyo:
+    build:
+      context: .
+      dockerfile: test-runner.dockerfile
+    environment:
+      TZ: 'Asia/Tokyo'
+    networks:
+      - test
+
+networks:
+  test:
