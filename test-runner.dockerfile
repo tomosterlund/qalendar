@@ -6,4 +6,4 @@ COPY . .
 
 RUN npm install --quiet
 
-CMD ["npm", "run", "test:docker"]
+CMD ["npx", "vitest", "run", "--silent"]

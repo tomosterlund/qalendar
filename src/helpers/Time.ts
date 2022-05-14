@@ -1,34 +1,24 @@
-export default class Time {
-	DAYS_IN_MONTH: number[]
-	DAYS_IN_MONTH_LEAP: number[]
-	DAYS_IN_MONTH_MIN: number
-	DAYS_IN_MONTH_MAX: number
-	MONTH_MAX: number
-	MONTH_MIN: number
-	DAY_MIN: number
-	DAYS_IN_WEEK: number
-	MINUTES_IN_HOUR: number
-	MINUTE_MAX: number
-	MINUTES_IN_DAY: number
-	HOURS_IN_DAY: number
-	HOUR_MAX: number
-	FIRST_HOUR: number
+import Helpers from "./Helpers";
+import {dayStartOrEnd} from "../typings/config.interface";
 
-	constructor() {
-		this.DAYS_IN_MONTH = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-		this.DAYS_IN_MONTH_LEAP = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-		this.DAYS_IN_MONTH_MIN = 28
-		this.DAYS_IN_MONTH_MAX = 31
-		this.MONTH_MAX = 12
-		this.MONTH_MIN = 1
-		this.DAY_MIN = 1
-		this.DAYS_IN_WEEK = 7
-		this.MINUTES_IN_HOUR = 60
-		this.MINUTE_MAX = 59
-		this.MINUTES_IN_DAY = 24 * 60
-		this.HOURS_IN_DAY = 24
-		this.HOUR_MAX = 23
-		this.FIRST_HOUR = 0
+export type calendarWeekType = Date[]
+export type calendarMonthType = calendarWeekType[]
+export type calendarYearMonths = Date[]
+
+export default class Time {
+	FIRST_DAY_OF_WEEK: 'sunday' | 'monday'
+	CALENDAR_LOCALE: string
+	ALL_HOURS: dayStartOrEnd[]
+
+	constructor(
+		firstDayOfWeekIs: 'sunday' | 'monday' = 'monday',
+		locale: string|null = null
+	) {
+		this.FIRST_DAY_OF_WEEK = firstDayOfWeekIs
+		this.CALENDAR_LOCALE = locale
+			? locale
+			: Helpers.getBrowserNavigatorLocale()
+		this.ALL_HOURS = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400]
 	}
 
 	protected getDatesBetweenTwoDates(start: Date, end: Date) {
@@ -54,26 +44,113 @@ export default class Time {
 		return new Date().getFullYear()
 	}
 
-	isLeapYear(year: number): boolean {
-		return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)
-	}
-
-	getAllDaysOfMonth(year: number, month: number) {
-		return this.isLeapYear(year) ? this.DAYS_IN_MONTH_LEAP[month] : this.DAYS_IN_MONTH[month]
-	}
-
-	getCalendarWeekDateObjects(date: Date, firstDayShouldBe: 'sunday' | 'monday' = 'monday'): Date[] {
-		const currentDate = date ? date : new Date()
+	getCalendarWeekDateObjects(date: Date | null = null): calendarWeekType {
+		const selectedDate = date ? date : new Date()
 
 		// We need to cound currentDate.getDate() - the current Nday of the week, to get the first date
 		let subtractedDaysToGetFirstDate
-		if (firstDayShouldBe === 'sunday') subtractedDaysToGetFirstDate = currentDate.getDay()
-		else subtractedDaysToGetFirstDate = currentDate.getDay() === 0 ? 6 : (currentDate.getDay() - 1)
+		if (this.FIRST_DAY_OF_WEEK === 'sunday') subtractedDaysToGetFirstDate = selectedDate.getDay()
+		else subtractedDaysToGetFirstDate = selectedDate.getDay() === 0 ? 6 : (selectedDate.getDay() - 1)
 
-		const first = currentDate.getDate() - subtractedDaysToGetFirstDate; // First date is the date of the month - the day of the week
-		const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), first);
+		const first = selectedDate.getDate() - subtractedDaysToGetFirstDate; // First date is the date of the month - the day of the week
+		const firstDay = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), first);
 		const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate() + 6)
 
 		return this.getDatesBetweenTwoDates(firstDay, lastDay)
+	}
+
+	/**
+	 * Returns an array of the weeks that comprise a month
+	 * */
+	getCalendarMonthSplitInWeeks(date: Date | null = null): calendarMonthType  {
+		const month: calendarMonthType = []
+		const selectedDate = date ? date : new Date()
+
+		// 1. Get the first date of the month, and push the full week of this date into the month list
+		let firstDateOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1)
+		const firstWeekOfMonth = this.getCalendarWeekDateObjects(firstDateOfMonth)
+		month.push(firstWeekOfMonth)
+
+		// 2. Then enter a while-loop, which pushes weeks onto the month,
+		// until the first Monday is reached, that is not in the specified month
+		let isInMonth = true
+		let mondayOfWeekToPush = firstWeekOfMonth[0]
+		const specifiedMonth = selectedDate.getMonth()
+
+		while (isInMonth) {
+			const newMonday = new Date(
+				mondayOfWeekToPush.getFullYear(),
+				mondayOfWeekToPush.getMonth(),
+				(mondayOfWeekToPush.getDate() + 7)
+			)
+
+			if (newMonday.getMonth() === specifiedMonth) {
+				month.push(this.getCalendarWeekDateObjects(newMonday))
+			 	mondayOfWeekToPush = newMonday
+			} else {
+				isInMonth = false
+			}
+		}
+
+		return month
+	}
+
+	/**
+	 * Returns an array with the length of 12 dates,
+	 * one date for the first day of each month of the year
+	 * */
+	getCalendarYearMonths(year: number|null = null): calendarYearMonths {
+		const selectedYear = year ? year : new Date().getFullYear()
+		const yearList: calendarYearMonths = []
+
+		let month = 0
+
+		while (month <= 11) {
+			yearList.push(new Date(
+				selectedYear,
+				month,
+				1
+			))
+			month++
+		}
+
+		return yearList
+	}
+
+	/**
+	 * Given timePoints (0, 100, 200 etc.), this function returns
+	 * a localized string with the respective hour
+	 * (in en-US for example: 0 => 12 AM, 1600 => 4 PM )
+	 * */
+	getHourLocaleStringFromHourDigits(timePoints: number) {
+		const time = timePoints.toString()
+
+		let hour;
+		let minutes;
+
+		if (time.length === 4) {
+			hour = time[0] + time[1]
+			minutes = time[2] + time[3]
+		} else if (time.length === 3) {
+			hour = time[0]
+			minutes = time[1] + time[2]
+		} else {
+			hour = 0
+			minutes = 0
+		}
+
+		const hourLocaleString = new Date(
+			2100,
+			0,
+			1,
+			+hour,
+			+minutes,
+			0).toLocaleTimeString(this.CALENDAR_LOCALE, {
+			hour: '2-digit',
+		})
+
+		if (hourLocaleString[0] === '0') return hourLocaleString.substring(1)
+
+		return hourLocaleString
 	}
 }

@@ -1,41 +1,31 @@
 import {describe, expect, it} from "vitest";
 import Time from '../../../src/helpers/Time'
-const time = new Time()
+// Functionality which is sensitive to the class property FIRST_DAY_OF_WEEK
+// needs to be tested with both "timeM" and "timeS"
+const timeM = new Time('monday')
+const timeS = new Time('sunday')
 
 describe('Time.ts', () => {
 
 	it('Gets the current date', () => {
 		const d = new Date()
 		const currentDate = d.getDate()
-		expect(time.getCurrentDate() === currentDate).toBe(true)
+		expect(timeM.getCurrentDate() === currentDate).toBe(true)
 	})
 
 	it('Gets the current month', () => {
 		const currentMonth = new Date().getMonth()
-		expect(time.getCurrentMonth()).toEqual(currentMonth + 1)
+		expect(timeM.getCurrentMonth()).toEqual(currentMonth + 1)
 	});
 
 	it('Gets the current year', () => {
 		const currentYear = new Date().getFullYear()
-		expect(time.getCurrentYear()).toEqual(currentYear)
-	});
-
-	it('Checks if leap year', () => {
-		const leapYears = [2000, 2004, 2020, 2024, 2048]
-		const regularYears = [2001, 1999, 2021, 2050, 2051]
-
-		for (const leapYear of leapYears) {
-			expect(time.isLeapYear(leapYear)).toBe(true)
-		}
-
-		for (const regularYear of regularYears) {
-			expect(time.isLeapYear(regularYear)).toBe(false)
-		}
+		expect(timeM.getCurrentYear()).toEqual(currentYear)
 	});
 
 	it('Gets a calendar week, based on date 2022-05-14', () => {
 		const d = new Date(2022, (5 - 1), 14)
-		const week = time.getCalendarWeekDateObjects(d)
+		const week = timeM.getCalendarWeekDateObjects(d)
 
 		expect(week).toHaveLength(7)
 
@@ -51,7 +41,7 @@ describe('Time.ts', () => {
 
 	it('Gets a calendar week, based on date 2022-03-13 (week of daylight savings)', () => {
 		const d = new Date(2022, (3 - 1), 13)
-		const week = time.getCalendarWeekDateObjects(d)
+		const week = timeM.getCalendarWeekDateObjects(d)
 
 		expect(week).toHaveLength(7)
 
@@ -67,7 +57,7 @@ describe('Time.ts', () => {
 
 	it('Gets a calendar week, situated in two months 2025-10-29', () => {
 		const d = new Date(2025, (10 - 1), 29)
-		const week = time.getCalendarWeekDateObjects(d)
+		const week = timeM.getCalendarWeekDateObjects(d)
 
 		expect(week).toHaveLength(7)
 
@@ -87,7 +77,7 @@ describe('Time.ts', () => {
 
 	it('Gets a calendar week, situated in two years 2025-12-29', () => {
 		const d = new Date(2025, (12 - 1), 29)
-		const week = time.getCalendarWeekDateObjects(d)
+		const week = timeM.getCalendarWeekDateObjects(d)
 
 		expect(week).toHaveLength(7)
 
@@ -110,7 +100,7 @@ describe('Time.ts', () => {
 
 	it('should get a calendar week based on Sunday being the first day', () => {
 		const d = new Date(2025, (12 - 1), 29)
-		const week = time.getCalendarWeekDateObjects(d, 'sunday')
+		const week = timeS.getCalendarWeekDateObjects(d)
 
 		expect(week).toHaveLength(7)
 
@@ -129,5 +119,126 @@ describe('Time.ts', () => {
 		expect(week[6].getDate()).toEqual(3)
 		expect(week[6].getMonth()).toEqual(0) // January
 		expect(week[6].getFullYear()).toEqual(2026)
+	});
+
+	it('should get a calendar month for 2022-05-14', () => {
+		const d = new Date(2022, (5 - 1), 14)
+		const month = timeM.getCalendarMonthSplitInWeeks(d)
+
+		// Six weeks during the month
+		expect(month).toHaveLength(6)
+
+		const firstWeek = month[0]
+		// Also get the days of the first week, that were in the previous month
+		expect(firstWeek[0].getDate()).toEqual(25)
+		expect(firstWeek[0].getMonth()).toEqual(4 - 1)
+		expect(firstWeek[6].getDate()).toEqual(1)
+		expect(firstWeek[6].getMonth()).toEqual(5 - 1)
+
+		const secondWeek = month[1]
+		expect(secondWeek[0].getDate()).toEqual(2)
+		expect(secondWeek[0].getMonth()).toEqual(5 - 1)
+
+		const lastWeek = month[5]
+		expect(lastWeek[1].getDate()).toEqual(31)
+		expect(lastWeek[1].getMonth()).toEqual(5 - 1)
+		expect(lastWeek[6].getDate()).toEqual(5)
+		expect(lastWeek[6].getMonth()).toEqual(6 - 1)
+	});
+
+	it('should get a calendar month for 2022-03-27, based on Sunday as first day', () => {
+		const d = new Date(2022, (3 - 1), 27)
+		const month = timeS.getCalendarMonthSplitInWeeks(d)
+
+		// Six weeks during the month
+		expect(month).toHaveLength(5)
+
+		const firstWeek = month[0]
+		// Also get the days of the first week, that were in the previous month
+		expect(firstWeek[0].getDate()).toEqual(27)
+		expect(firstWeek[0].getMonth()).toEqual(2 - 1)
+		expect(firstWeek[2].getDate()).toEqual(1)
+		expect(firstWeek[2].getMonth()).toEqual(3 - 1)
+		expect(firstWeek[6].getDate()).toEqual(5)
+		expect(firstWeek[6].getMonth()).toEqual(3 - 1)
+
+		const thirdWeek = month[2]
+		expect(thirdWeek[3].getDate()).toEqual(16)
+		expect(thirdWeek[3].getMonth()).toEqual(3 - 1)
+
+		const lastWeek = month[4]
+		expect(lastWeek[4].getDate()).toEqual(31)
+		expect(lastWeek[4].getMonth()).toEqual(3 - 1)
+		expect(lastWeek[6].getDate()).toEqual(2)
+		expect(lastWeek[6].getMonth()).toEqual(4 - 1)
+	});
+
+	it('should get a calendar month that is in two years, based on 2024-12-30', () => {
+		const d = new Date(2024, (12 - 1), 30)
+		const month = timeS.getCalendarMonthSplitInWeeks(d)
+
+		expect(month).toHaveLength(5)
+
+		const firstWeek = month[0]
+		expect(firstWeek[0].getDate()).toEqual(1)
+		expect(firstWeek[0].getMonth()).toEqual(12 - 1)
+		expect(firstWeek[0].getFullYear()).toEqual(2024)
+
+		const fourthWeek = month[3]
+		expect(fourthWeek[5].getDate()).toEqual(27)
+		expect(fourthWeek[5].getMonth()).toEqual(12 - 1)
+		expect(fourthWeek[5].getFullYear()).toEqual(2024)
+
+		const lastWeek = month[4]
+		expect(lastWeek[2].getDate()).toEqual(31)
+		expect(lastWeek[2].getMonth()).toEqual(12 - 1)
+		expect(lastWeek[2].getFullYear()).toEqual(2024)
+
+		expect(lastWeek[6].getDate()).toEqual(4)
+		expect(lastWeek[6].getMonth()).toEqual(1 - 1)
+		expect(lastWeek[6].getFullYear()).toEqual(2025)
+	});
+
+	it('should get the months of a year', () => {
+		const year = timeM.getCalendarYearMonths(2027)
+
+		expect(year).toHaveLength(12)
+		expect(year[0].toLocaleDateString('de-DE', { month: 'long' }))
+			.toEqual('Januar')
+
+		expect(year[11].toLocaleDateString('de-DE', { month: 'long' }))
+			.toEqual('Dezember')
+
+		let monthIterator = 0
+		for (const month of year) {
+			expect(month.getMonth()).toEqual(monthIterator)
+			monthIterator++
+		}
+	});
+
+	it('should get a localized string, for each hour of the day', () => {
+		const timeEnglish = new Time('sunday', 'en-US')
+		const hours = timeM.ALL_HOURS
+
+		let iterator = 0
+		while (iterator < 12) {
+			expect(timeEnglish.getHourLocaleStringFromHourDigits(hours[iterator]))
+				.toEqual(`${iterator === 0 ? '12' : iterator} AM`)
+
+			iterator++
+		}
+
+		while (iterator <= 24) {
+			let expectedValue
+
+			if (iterator === 12) expectedValue = '12 PM'
+			else if (iterator === 24) expectedValue = '12 AM'
+			else expectedValue = `${iterator - 12} PM`
+
+			expect(timeEnglish.getHourLocaleStringFromHourDigits(hours[iterator]))
+				.toEqual(expectedValue)
+
+			iterator++
+		}
 	});
 })
