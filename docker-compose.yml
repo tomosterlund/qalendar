@@ -1,5 +1,6 @@
 version: '3.9'
 
+# The service dependencies only serve the purpose of making the test logs appear more orderly
 services:
   test_london:
     build:
@@ -17,6 +18,8 @@ services:
       TZ: 'US/Pacific'
     networks:
       - test
+    depends_on:
+      - test_london
   test_tokyo:
     build:
       context: .
@@ -25,6 +28,7 @@ services:
       TZ: 'Asia/Tokyo'
     networks:
       - test
-
+    depends_on:
+      - test_mountain_view
 networks:
   test:
