@@ -12,7 +12,7 @@
 								   @click="toggleDatePickerPeriod('previous')"></font-awesome-icon>
 				<span class="date-picker__toggle-mode" @click="toggleDatePickerMode">
 					<template v-if="datePickerMode === 'month'">
-						{{ new Date(datePickerCurrentDate).toLocaleString(getLocale(), { month: 'long', year: 'numeric' }) }}
+						{{ datePickerCurrentDate.toLocaleString(getLocale(), { month: 'long', year: 'numeric' }) }}
 					</template>
 
 					<template v-else-if="datePickerMode === 'year'">
@@ -58,10 +58,10 @@
 import {defineComponent, PropType} from "vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {faCalendarDay, faChevronCircleLeft, faChevronCircleRight} from "@fortawesome/free-solid-svg-icons";
-import Time, {calendarWeekType} from "../../helpers/Time";
+import Time, {calendarMonthType, calendarWeekType, calendarYearMonths} from "../../helpers/Time";
 
 export default defineComponent({
-	name: 'PeriodSelect',
+	name: 'DatePicker',
 
 	components: { FontAwesomeIcon },
 
@@ -85,31 +85,21 @@ export default defineComponent({
 	data() {
 		return {
 			period: '',
-			weekPickerDates: [] as any[][],
-			monthPickerDates: [] as string[],
+			weekPickerDates: [] as calendarMonthType,
+			monthPickerDates: [] as calendarYearMonths,
 			icons: {
 				calendarIcon: faCalendarDay,
 				chevronLeft: faChevronCircleLeft,
 				chevronRight: faChevronCircleRight,
 			},
 			showDatePicker: false,
-			datePickerCurrentDate: this.selectedDateDefault ? this.selectedDateDefault : new Date().toISOString(),
+			datePickerCurrentDate: this.selectedDateDefault ? this.selectedDateDefault : new Date(),
 			datePickerMode: 'month' as 'month' | 'year',
 			weekDays: [] as calendarWeekType, // Used only for printing week day names
 		}
 	},
 
 	methods: {
-		setCurrentWeek() {
-			const currentWeek = this.time.getCalendarWeekDateObjects()
-			this.weekDays = currentWeek
-			const start = currentWeek[0]
-			const end = currentWeek[6]
-
-			this.period = `${this.time.getLocalizedDateString(start)} - ${this.time.getLocalizedDateString(end)}`
-			this.emitChange(start, end)
-		},
-
 		setMonthDaysInWeekPicker(
 			month: number = new Date().getMonth(),
 			year: number = new Date().getFullYear(),
@@ -146,16 +136,18 @@ export default defineComponent({
 			setTimeout(() => this.setClickOutsideListener(), 100)
 		},
 
-		setWeek(day: string) {
-			this.datePickerCurrentDate = new Date(day).toISOString()
-			const { print, start, end } = periodSelectHelper.getWeekForDate(day)
-			this.period = print
+		setWeek(date: Date) {
+			const currentWeek = this.time.getCalendarWeekDateObjects(date)
+			this.weekDays = currentWeek
+			const start = currentWeek[0]
+			const end = currentWeek[6]
+
+			this.period = `${this.time.getLocalizedDateString(start)} - ${this.time.getLocalizedDateString(end)}`
 			this.emitChange(start, end)
-			this.showDatePicker = false
 		},
 
 		setMonth(date: string) {
-			this.datePickerCurrentDate = new Date(date).toISOString()
+			this.datePickerCurrentDate = new Date(date)
 			this.setMonthDaysInWeekPicker(
 				new Date(date).getMonth(),
 				new Date(date).getFullYear()
@@ -182,26 +174,26 @@ export default defineComponent({
 					1
 				)
 				this.setMonthDaysInWeekPicker(dateToSet.getMonth(), dateToSet.getFullYear())
-				this.datePickerCurrentDate = dateToSet.toISOString()
+				this.datePickerCurrentDate = dateToSet
 			} else {
-				this.monthPickerDates = periodSelectHelper.getYear(
+				this.monthPickerDates = this.time.getCalendarYearMonths(
 					direction === 'previous' ? currentDate.getFullYear() - 1 : currentDate.getFullYear() + 1
 				)
-				this.datePickerCurrentDate = new Date(this.monthPickerDates[0]).toISOString()
+				this.datePickerCurrentDate = new Date(this.monthPickerDates[0])
 			}
 		},
 
 		toggleDatePickerMode() {
 			if (this.datePickerMode === 'month') {
-				this.monthPickerDates = periodSelectHelper.getYear(new Date(this.datePickerCurrentDate).getFullYear())
+				this.monthPickerDates = this.time.getCalendarYearMonths()
 
 				return this.datePickerMode = 'year'
 			}
 
 			if (this.datePickerMode === 'year') {
-				this.weekPickerDates = periodSelectHelper.getAllDaysInMonth(
-					new Date(this.datePickerCurrentDate).getMonth(),
-					new Date(this.datePickerCurrentDate).getFullYear()
+				this.weekPickerDates = this.time.getCalendarMonthSplitInWeeks(
+					this.datePickerCurrentDate.getMonth(),
+					this.datePickerCurrentDate.getFullYear()
 				)
 
 				return this.datePickerMode = 'month'
@@ -209,7 +201,7 @@ export default defineComponent({
 		},
 
 		getLocale() {
-			return AppHelper.getQalendarLocale()
+			return this.time.CALENDAR_LOCALE
 		},
 
 		goToPeriod(direction: 'next' | 'previous') {
@@ -217,8 +209,8 @@ export default defineComponent({
 			let newDatePayload
 
 			if (this.mode === 'week') {
-				const { start } = periodSelectHelper.getWeekForDate(this.datePickerCurrentDate)
-				newDate = new Date(start)
+				const week = this.time.getCalendarWeekDateObjects(this.datePickerCurrentDate)
+				newDate = new Date(week[0])
 				newDatePayload = direction === 'next'
 					? newDate.getDate() + 7
 					: newDate.getDate() - 7
@@ -230,13 +222,13 @@ export default defineComponent({
 			}
 
 			newDate.setDate(newDatePayload)
-			this.setWeek(newDate.toISOString())
+			this.setWeek(newDate)
 		}
 	},
 
 	mounted() {
 		if ( ! this.selectedDateDefault) {
-			this.setCurrentWeek()
+			this.setWeek(new Date())
 			this.setMonthDaysInWeekPicker()
 		} else if (this.selectedDateDefault) {
 			const defaultDate = new Date(this.selectedDateDefault)

@@ -1,4 +1,7 @@
 <template>
+	<header>
+		Timezone offset: {{ new Date().getTimezoneOffset() }}
+	</header>
 	<main>
 		<Qalendar />
 	</main>

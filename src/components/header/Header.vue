@@ -1,6 +1,7 @@
 <template>
 	<div class="calendar-header">
-		<div class="calendar-header__period-name is-flex-grow-1">{{ getPeriodName }}</div>
+		<div class="calendar-header__period-name is-flex-grow-1" v-if="periodName">{{ periodName }}</div>
+
 		<div class="calendar-header__multiselects">
 			<div class="calendar-header__period is-flex-grow-1">
 				<div class="calendar-header__chevron-arrows">
@@ -91,7 +92,7 @@ export default defineComponent ({
 	},
 
 	computed: {
-		getPeriodName() {
+		periodName() {
 			if (this.mode === 'week') {
 				const startMonth = this.time.getLocalizedNameOfMonth(this.currentPeriod?.start, 'short')
 				const endMonth = this.time.getLocalizedNameOfMonth(this.currentPeriod?.end, 'short')
