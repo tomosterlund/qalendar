@@ -1,0 +1,1 @@
+export { default as Qalendar } from './Qalendar.vue'

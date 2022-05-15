@@ -124,9 +124,8 @@ export default class Time {
 	 * */
 	getHourLocaleStringFromHourDigits(timePoints: number) {
 		const time = timePoints.toString()
-
-		let hour;
-		let minutes;
+		let hour = '0';
+		let minutes = '0';
 
 		if (time.length === 4) {
 			hour = time[0] + time[1]
@@ -134,9 +133,6 @@ export default class Time {
 		} else if (time.length === 3) {
 			hour = time[0]
 			minutes = time[1] + time[2]
-		} else {
-			hour = 0
-			minutes = 0
 		}
 
 		const hourLocaleString = new Date(
@@ -152,5 +148,38 @@ export default class Time {
 		if (hourLocaleString[0] === '0') return hourLocaleString.substring(1)
 
 		return hourLocaleString
+	}
+
+	getLocalizedNameOfWeekday(
+		date: Date,
+		weekdayNameLength: 'long'|'short' = 'short'
+	): string {
+		return date.toLocaleDateString(
+			this.CALENDAR_LOCALE,
+			{ weekday: weekdayNameLength }
+		)
+	}
+
+	getLocalizedNameOfMonth(
+		date: Date,
+		monthNameLength: 'long'|'short' = 'short'
+	): string {
+		return date.toLocaleDateString(
+			this.CALENDAR_LOCALE,
+			{ month: monthNameLength }
+		)
+	}
+
+	/**
+	 * Returns an array-shaped representation of [YYYY, MM|M, DD|D]
+	 * */
+	getCurrentYearMonthDay(): number[] {
+		const d = new Date()
+
+		return [
+			d.getFullYear(),
+			d.getMonth(),
+			d.getDate()
+		]
 	}
 }

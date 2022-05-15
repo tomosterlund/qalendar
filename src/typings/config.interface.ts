@@ -11,5 +11,6 @@ export interface configInterface {
 			end: dayStartOrEnd;
 		},
 		nDays: 5 | 7;
+		startsOn: 'sunday' | 'monday'
 	},
 }

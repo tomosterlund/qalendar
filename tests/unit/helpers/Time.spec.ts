@@ -241,4 +241,59 @@ describe('Time.ts', () => {
 			iterator++
 		}
 	});
+
+	it('returns a localized name of the day, given a specified date', () => {
+		// Long day names
+		const timeEnglish = new Time('sunday', 'en-US')
+
+		const saturday = timeEnglish.getLocalizedNameOfWeekday(new Date(2022, (5 - 1), 14), 'long')
+		expect(saturday).toEqual('Saturday')
+
+		const thursday = timeEnglish.getLocalizedNameOfWeekday(new Date(2026, (1 - 1), 1), 'long')
+		expect(thursday).toEqual('Thursday')
+
+		// Short day names
+		const timeSwedish = new Time('monday', 'sv-SE')
+
+		const loerdag = timeSwedish.getLocalizedNameOfWeekday(new Date(2022, (5 - 1), 14), 'short')
+		expect(loerdag).toEqual('lör')
+
+		const torsdag = timeSwedish.getLocalizedNameOfWeekday(new Date(2026, (1 - 1), 1), 'short')
+		expect(torsdag).toEqual('tors')
+	});
+
+	it('returns a localized name of the month, given a specified date', () => {
+		const timeEnglish = new Time('monday', 'en-UK')
+
+		// Try short month names
+		const january = timeEnglish.getLocalizedNameOfMonth(new Date(2025, (1 - 1), 1), 'short')
+		expect(january).toEqual('Jan')
+
+		const december = timeEnglish.getLocalizedNameOfMonth(new Date(2025, (12 - 1), 1), 'short')
+		expect(december).toEqual('Dec')
+
+		// And long ones
+		const timeGerman = new Time('monday', 'de-DE')
+
+		const maerz = timeGerman.getLocalizedNameOfMonth(new Date(2025, (3 - 1), 31), 'long')
+		expect(maerz).toEqual('März')
+
+		const august = timeGerman.getLocalizedNameOfMonth(new Date(2025, (8 - 1), 20), 'long')
+		expect(august).toEqual('August')
+	});
+
+	it('returns an array-representation of [YYYY, MM|M, DD|D]', () => {
+		const _d = new Date()
+		const y = _d.getFullYear()
+		const m = _d.getMonth()
+		const d = _d.getDate()
+		const ymd = [y, m, d]
+
+		const yearMonthDateIntegers = timeM.getCurrentYearMonthDay()
+
+		// @ts-ignore
+		for (const [index, value] of ymd.entries()) {
+			expect(value).toEqual(yearMonthDateIntegers[index])
+		}
+	});
 })
