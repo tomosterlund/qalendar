@@ -1,6 +1,15 @@
 <template>
 	<div class="calendar-root-wrapper">
 		<div class="calendar-root">
+			<Header :config="config"
+					:key="wasInitialized"
+					:mode="mode"
+					:time="time"
+					:selected-date-default="selectedDateDefault"
+					:day-boundaries="week.dayBoundaries"
+					@updated-period="handleUpdatedPeriod"
+					@set-day-start="week.dayBoundaries.start = $event"
+					@set-day-end="week.dayBoundaries.end = $event" />
 		</div>
 	</div>
 </template>
@@ -10,11 +19,12 @@ import {defineComponent, PropType} from "vue";
 import { eventInterface } from './typings/interfaces/event.interface'
 import {configInterface, dayStartOrEnd} from "./typings/config.interface";
 import Time from "./helpers/Time";
+import Header from "./components/header/Header.vue";
 
 export default defineComponent({
 	name: 'Qalendar',
 
-	components: {},
+	components: {Header},
 
 	props: {
 		config: {
@@ -97,28 +107,28 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-/*@import './styles/variables.css';*/
+<style scoped lang="scss">
+@import './styles/variables.scss';
 
-/*.calendar-root-wrapper {*/
-/*	width: 100%;*/
-/*	min-height: 700px;*/
-/*	max-height: 1400px;*/
-/*}*/
+.calendar-root-wrapper {
+	width: 100%;
+	min-height: 700px;
+	max-height: 1400px;
 
-/*.calendar-root {*/
-/*	border: var(--qalendar-border-gray-thin);*/
-/*	border-radius: var(--qalendar-border-radius);*/
-/*	font-family: 'Verdana', 'Open Sans';*/
+	.calendar-root {
+		border: var(--qalendar-border-gray-thin);
+		border-radius: var(--qalendar-border-radius);
+		font-family: 'Verdana', 'Open Sans';
 
-/*	position: relative;*/
-/*	width: calc(100% - 48px);*/
-/*	margin-left: 48px;*/
-/*	margin-right: 0;*/
-/*	max-width: 1400px;*/
-/*	height: calc(100vh - var(--qalendar-spacing-double));*/
-/*	display: flex;*/
-/*	flex-flow: column;*/
-/*}*/
+		position: relative;
+		width: calc(100% - 48px);
+		margin-left: 48px;
+		margin-right: 0;
+		max-width: 1400px;
+		height: calc(100vh - var(--qalendar-spacing-double));
+		display: flex;
+		flex-flow: column;
+	}
+}
 
 </style>
