@@ -122,8 +122,7 @@ describe('Time.ts', () => {
 	});
 
 	it('should get a calendar month for 2022-05-14', () => {
-		const d = new Date(2022, (5 - 1), 14)
-		const month = timeM.getCalendarMonthSplitInWeeks(d)
+		const month = timeM.getCalendarMonthSplitInWeeks(2022, (5 - 1))
 
 		// Six weeks during the month
 		expect(month).toHaveLength(6)
@@ -147,8 +146,7 @@ describe('Time.ts', () => {
 	});
 
 	it('should get a calendar month for 2022-03-27, based on Sunday as first day', () => {
-		const d = new Date(2022, (3 - 1), 27)
-		const month = timeS.getCalendarMonthSplitInWeeks(d)
+		const month = timeS.getCalendarMonthSplitInWeeks(2022, (3 - 1))
 
 		// Six weeks during the month
 		expect(month).toHaveLength(5)
@@ -174,8 +172,7 @@ describe('Time.ts', () => {
 	});
 
 	it('should get a calendar month that is in two years, based on 2024-12-30', () => {
-		const d = new Date(2024, (12 - 1), 30)
-		const month = timeS.getCalendarMonthSplitInWeeks(d)
+		const month = timeS.getCalendarMonthSplitInWeeks(2024, (12 - 1))
 
 		expect(month).toHaveLength(5)
 
@@ -295,5 +292,19 @@ describe('Time.ts', () => {
 		for (const [index, value] of ymd.entries()) {
 			expect(value).toEqual(yearMonthDateIntegers[index])
 		}
+	});
+
+	it('returns a localized date string for US English', () => {
+		const timeEnglish = new Time('sunday', 'en-US')
+		const d = new Date(2022, (5 - 1), 15)
+		const dateString = timeEnglish.getLocalizedDateString(d)
+		expect(dateString).toEqual('5/15/2022')
+	});
+
+	it('returns a localized date string for German', () => {
+		const timeGerman = new Time('monday', 'de-DE')
+		const d = new Date(2022, (1 - 1), 1)
+		const dateString = timeGerman.getLocalizedDateString(d)
+		expect(dateString).toEqual('1.1.2022')
 	});
 })

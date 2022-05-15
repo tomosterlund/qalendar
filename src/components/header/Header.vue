@@ -13,11 +13,12 @@
 									   @click="goToPeriod('next')" />
 				</div>
 
-<!--				<PeriodSelect ref="periodSelect"-->
-<!--							  class="is-flex-grow-1"-->
-<!--							  :selected-date-default="selectedDateDefault"-->
-<!--							  :mode="mode"-->
-<!--							  @updated="handlePeriodChange" />-->
+				<DatePicker ref="periodSelect"
+							  class="is-flex-grow-1"
+							  :selected-date-default="selectedDateDefault"
+							  :mode="mode"
+							  :time="time"
+							  @updated="handlePeriodChange" />
 			</div>
 
 <!--			<DayBoundaries :boundaries="dayBoundaries"-->
@@ -30,7 +31,7 @@
 
 <script lang="ts">
 import {defineComponent, PropType} from 'vue';
-// import PeriodSelect from "./PeriodSelect.vue";
+import DatePicker from "./DatePicker.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 // import DayBoundaries from "./DayBoundaries.vue";
@@ -43,7 +44,7 @@ export default defineComponent ({
 
 	components: {
 		// DayBoundaries,
-		// PeriodSelect,
+		DatePicker,
 		// Input: PeriodSelect,
 		FontAwesomeIcon,
 	},
