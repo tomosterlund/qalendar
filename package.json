@@ -8,18 +8,19 @@
     "test:unit": "vitest --environment jsdom",
     "test:e2e": "start-server-and-test preview http://127.0.0.1:5050/ 'cypress open'",
     "test:e2e:ci": "start-server-and-test preview http://127.0.0.1:5050/ 'cypress run'",
-	"test:docker": "npx vitest run --silent",
+    "test:docker": "docker-compose up --build",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint qalendar --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-	"@fortawesome/fontawesome-svg-core": "^1.2.0",
-	"@fortawesome/free-regular-svg-icons": "^6.0.0",
-	"@fortawesome/free-solid-svg-icons": "^5.1.0",
-	"@fortawesome/vue-fontawesome": "^3.0.0-5",
+    "@fortawesome/fontawesome-svg-core": "^1.2.0",
+    "@fortawesome/free-regular-svg-icons": "^6.0.0",
+    "@fortawesome/free-solid-svg-icons": "^5.1.0",
+    "@fortawesome/vue-fontawesome": "^3.0.0-5",
     "vue": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/types": "^7.17.10",
     "@rushstack/eslint-patch": "^1.1.0",
     "@types/jsdom": "^16.2.14",
     "@types/node": "^16.11.27",
