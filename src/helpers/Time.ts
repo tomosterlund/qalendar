@@ -64,7 +64,9 @@ export default class Time {
 	 * */
 	getCalendarMonthSplitInWeeks(yyyy: number, mm: number): calendarMonthType  {
 		const month: calendarMonthType = []
-		const selectedDate = yyyy && mm ? new Date(yyyy, mm, 1) : new Date()
+		const selectedDate = ![typeof yyyy, typeof mm].includes('undefined')
+			? new Date(yyyy, mm, 1)
+			: new Date()
 
 		// 1. Get the first date of the month, and push the full week of this date into the month list
 		let firstDateOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1)

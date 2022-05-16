@@ -196,6 +196,8 @@ describe('Time.ts', () => {
 		expect(lastWeek[6].getFullYear()).toEqual(2025)
 	});
 
+	it.todo('should get calendar month January')
+
 	it('should get the months of a year', () => {
 		const year = timeM.getCalendarYearMonths(2027)
 
