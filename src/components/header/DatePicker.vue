@@ -26,7 +26,7 @@
 
 			<div v-if="datePickerMode === 'month'"
 				 class="date-picker__day-names week">
-				<span v-for="day in weekDays" :key="day">
+				<span v-for="day in weekDays" :key="day.getDate()">
 					{{ time.getLocalizedNameOfWeekday(day, 'short') }}
 				</span>
 			</div>
@@ -36,7 +36,11 @@
 				 v-show="datePickerMode === 'month'">
 				<span v-for="(day, dayIndex) in week"
 					  :key="dayIndex"
-					  :class="{ 'is-weekend': [5, 6].includes(dayIndex), 'has-day': day }"
+					  :class="{
+						  'is-weekend': [5, 6].includes(dayIndex),
+						  'is-not-in-month': day.getMonth() !== datePickerCurrentDate.getMonth(),
+						  'has-day': day,
+					  }"
 					  @click="setWeek(day)">
 					{{ day ? new Date(day).getDate() : '' }}
 				</span>
@@ -146,11 +150,11 @@ export default defineComponent({
 			this.emitChange(start, end)
 		},
 
-		setMonth(date: string) {
-			this.datePickerCurrentDate = new Date(date)
+		setMonth(date: Date) {
+			this.datePickerCurrentDate = date
 			this.setMonthDaysInWeekPicker(
-				new Date(date).getMonth(),
-				new Date(date).getFullYear()
+				date.getMonth(),
+				date.getFullYear()
 			)
 			this.datePickerMode = 'month'
 			this.showDatePicker = true
@@ -185,7 +189,7 @@ export default defineComponent({
 
 		toggleDatePickerMode() {
 			if (this.datePickerMode === 'month') {
-				this.monthPickerDates = this.time.getCalendarYearMonths()
+				this.monthPickerDates = this.time.getCalendarYearMonths(this.datePickerCurrentDate.getFullYear())
 
 				return this.datePickerMode = 'year'
 			}
@@ -271,86 +275,112 @@ export default defineComponent({
 		width: 250px;
 		box-shadow: 0 2px 4px rgba(240, 236, 236, 0.76);
 	}
-}
 
-.date-picker__week-picker-navigation {
-	font-weight: 900;
-	display: flex;
-	align-items: center;
-	justify-content: space-evenly;
-	gap: var(--qalendar-spacing-half);
-	margin-bottom: var(--qalendar-spacing-half);
-	user-select: none;
-}
+	&__week-picker-navigation {
+		font-weight: 900;
+		display: flex;
+		align-items: center;
+		justify-content: space-evenly;
+		gap: var(--qalendar-spacing-half);
+		margin-bottom: var(--qalendar-spacing-half);
+		user-select: none;
 
-.date-picker__week-picker-navigation .is-icon {
-	color: #131313;
-}
+		.is-icon {
+			transition: var(--qalendar-text-transition);
+			color: #131313;
 
-.date-picker__week-picker-navigation .is-icon:hover {
-	color: var(--qalendar-blue);
-	cursor: pointer;
-}
+			@media (hover: hover) {
 
-.date-picker__toggle-mode:hover {
-	color: var(--qalendar-blue);
-	cursor: pointer;
-}
+				&:hover {
+					color: var(--qalendar-blue);
+					cursor: pointer;
+				}
+			}
+		}
+	}
 
-.week {
-	width: 100%;
-	display: flex;
-	justify-content: space-evenly;
-	align-items: center;
-	margin: 4px 0;
-}
+	&__toggle-mode {
+		transition: var(--qalendar-text-transition);
 
-.week > span {
-	display: flex;
-	height: 32px;
-	width: 32px;
-	justify-content: center;
-	align-items: center;
-	flex: 1 1 100%;
-	cursor: pointer;
-	border-radius: 50%;
-	font-size: 12px;
-}
+		@media (hover: hover) {
 
-.week > span.is-weekend {
-	color: gray;
-}
+			&:hover {
+				color: var(--qalendar-blue);
+				cursor: pointer;
+			}
+		}
+	}
 
-.week > span.has-day:hover {
-	background-color: var(--qalendar-light-gray);
-}
+	.week {
+		width: 100%;
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+		margin: 4px 0;
 
-.date-picker__day-names {
-	text-transform: uppercase;
-	font-weight: 700;
-	font-size: 14px;
-}
+		span {
+			display: flex;
+			height: 32px;
+			width: 32px;
+			justify-content: center;
+			align-items: center;
+			flex: 1 1 100%;
+			cursor: pointer;
+			border-radius: 50%;
+			font-size: 12px;
 
-.months {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--qalendar-spacing-half);
-}
+			&.is-weekend {
+				color: gray;
+			}
 
-.months > span {
-	padding: 4px;
-	border: var(--qalendar-border-gray-thin);
-	border-radius: 4px;
-	flex: 1 0 33%;
-	text-align: center;
-	cursor: pointer;
-	font-size: 12px;
-}
+			&.has-day {
 
-.months > span:hover {
-	background-color: var(--qalendar-theme-color);
-	color: #fff;
-	border: var(--qalendar-border-blue-thin);
+				@media (hover: hover) {
+
+					&:hover {
+						background-color: var(--qalendar-light-gray);
+					}
+				}
+			}
+
+			&.is-not-in-month {
+				color: darkgray;
+			}
+		}
+	}
+
+	&__day-names {
+		text-transform: uppercase;
+		font-weight: 700;
+		font-size: 14px;
+	}
+
+
+	.months {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--qalendar-spacing-half);
+
+		span {
+			padding: 4px;
+			border: var(--qalendar-border-gray-thin);
+			border-radius: 4px;
+			flex: 1 0 33%;
+			text-align: center;
+			cursor: pointer;
+			font-size: 12px;
+			transition: all 0.2s ease;
+
+			@media (hover: hover) {
+
+				&:hover {
+					background-color: var(--qalendar-theme-color);
+					color: #fff;
+					border: var(--qalendar-border-blue-thin);
+				}
+			}
+		}
+	}
 }
 
 </style>

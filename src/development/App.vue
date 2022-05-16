@@ -3,7 +3,7 @@
 		Timezone offset: {{ new Date().getTimezoneOffset() }}
 	</header>
 	<main>
-		<Qalendar />
+		<Qalendar :selected-date-default="new Date()" />
 	</main>
 </template>
 

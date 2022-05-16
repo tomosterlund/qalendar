@@ -60,16 +60,16 @@ export default defineComponent ({
 			default: 'week',
 		},
 		selectedDateDefault: {
-			type: String,
-			default: ''
+			type: Date,
+			default: new Date()
 		},
 		dayBoundaries: {
 			type: Object as PropType<dayBoundaries>,
 			required: true,
 		},
 		time: {
-			type: Object as PropType<Time>,
-			required: true,
+			type: Object as PropType<Time>|any,
+			default: () => ({}),
 		}
 	},
 
