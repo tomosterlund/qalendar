@@ -35,7 +35,7 @@
 				 :key="weekIndex"
 				 v-show="datePickerMode === 'month'">
 				<span v-for="(day, dayIndex) in week"
-					  :key="dayIndex"
+					  :key="weekIndex + dayIndex"
 					  :class="{
 						  'is-weekend': [5, 6].includes(dayIndex),
 						  'is-not-in-month': day.getMonth() !== datePickerCurrentDate.getMonth(),
@@ -196,8 +196,8 @@ export default defineComponent({
 
 			if (this.datePickerMode === 'year') {
 				this.weekPickerDates = this.time.getCalendarMonthSplitInWeeks(
-					this.datePickerCurrentDate.getMonth(),
-					this.datePickerCurrentDate.getFullYear()
+					this.datePickerCurrentDate.getFullYear(),
+					this.datePickerCurrentDate.getMonth()
 				)
 
 				return this.datePickerMode = 'month'
