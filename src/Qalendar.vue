@@ -59,8 +59,8 @@ export default defineComponent({
 			},
 			week: {
 				dayBoundaries: {
-					start: this.config?.week?.dayBoundaries.start || 0 as dayStartOrEnd,
-					end: this.config?.week?.dayBoundaries.end || 2400 as dayStartOrEnd,
+					start: this.config?.week?.dayBoundaries.start || 800 as dayStartOrEnd,
+					end: this.config?.week?.dayBoundaries.end || 1800 as dayStartOrEnd,
 				},
 				nDays: this.config?.week?.nDays || 7,
 			},

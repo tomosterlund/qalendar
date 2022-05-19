@@ -20,12 +20,13 @@
 							  :mode="mode"
 							  :time="time"
 							  @updated="handlePeriodChange" />
-			</div>
 
-<!--			<DayBoundaries :boundaries="dayBoundaries"-->
-<!--						   class="is-flex-grow-1"-->
-<!--						   @set-day-start="$emit('set-day-start', $event)"-->
-<!--						   @set-day-end="$emit('set-day-end', $event)" />-->
+				<DayBoundaries class="is-flex-grow-1"
+							   :boundaries="dayBoundaries"
+							   :time="time"
+							   @set-day-start="$emit('set-day-start', $event)"
+							   @set-day-end="$emit('set-day-end', $event)" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -39,14 +40,14 @@ import {faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {configInterface} from "../../typings/config.interface";
 import {dayBoundaries} from "../../typings/types";
 import Time from "../../helpers/Time";
+import DayBoundaries from "./DayBoundaries.vue";
 
 export default defineComponent ({
 	name: 'Header',
 
 	components: {
-		// DayBoundaries,
+		DayBoundaries,
 		DatePicker,
-		// Input: PeriodSelect,
 		FontAwesomeIcon,
 	},
 
