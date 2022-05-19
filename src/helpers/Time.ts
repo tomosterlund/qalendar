@@ -62,9 +62,11 @@ export default class Time {
 	/**
 	 * Returns an array of the weeks that comprise a month
 	 * */
-	getCalendarMonthSplitInWeeks(date: Date | null = null): calendarMonthType  {
+	getCalendarMonthSplitInWeeks(yyyy: number, mm: number): calendarMonthType  {
 		const month: calendarMonthType = []
-		const selectedDate = date ? date : new Date()
+		const selectedDate = ![typeof yyyy, typeof mm].includes('undefined')
+			? new Date(yyyy, mm, 1)
+			: new Date()
 
 		// 1. Get the first date of the month, and push the full week of this date into the month list
 		let firstDateOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1)
@@ -181,5 +183,9 @@ export default class Time {
 			d.getMonth(),
 			d.getDate()
 		]
+	}
+
+	getLocalizedDateString(date: Date): string {
+		return date.toLocaleDateString(this.CALENDAR_LOCALE)
 	}
 }

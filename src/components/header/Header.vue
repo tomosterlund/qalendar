@@ -1,6 +1,7 @@
 <template>
 	<div class="calendar-header">
-		<div class="calendar-header__period-name is-flex-grow-1">{{ getPeriodName }}</div>
+		<div class="calendar-header__period-name is-flex-grow-1" v-if="periodName">{{ periodName }}</div>
+
 		<div class="calendar-header__multiselects">
 			<div class="calendar-header__period is-flex-grow-1">
 				<div class="calendar-header__chevron-arrows">
@@ -13,11 +14,12 @@
 									   @click="goToPeriod('next')" />
 				</div>
 
-<!--				<PeriodSelect ref="periodSelect"-->
-<!--							  class="is-flex-grow-1"-->
-<!--							  :selected-date-default="selectedDateDefault"-->
-<!--							  :mode="mode"-->
-<!--							  @updated="handlePeriodChange" />-->
+				<DatePicker ref="periodSelect"
+							  class="is-flex-grow-1"
+							  :selected-date-default="selectedDateDefault"
+							  :mode="mode"
+							  :time="time"
+							  @updated="handlePeriodChange" />
 			</div>
 
 <!--			<DayBoundaries :boundaries="dayBoundaries"-->
@@ -30,7 +32,7 @@
 
 <script lang="ts">
 import {defineComponent, PropType} from 'vue';
-// import PeriodSelect from "./PeriodSelect.vue";
+import DatePicker from "./DatePicker.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 // import DayBoundaries from "./DayBoundaries.vue";
@@ -43,7 +45,7 @@ export default defineComponent ({
 
 	components: {
 		// DayBoundaries,
-		// PeriodSelect,
+		DatePicker,
 		// Input: PeriodSelect,
 		FontAwesomeIcon,
 	},
@@ -58,16 +60,16 @@ export default defineComponent ({
 			default: 'week',
 		},
 		selectedDateDefault: {
-			type: String,
-			default: ''
+			type: Date,
+			default: new Date()
 		},
 		dayBoundaries: {
 			type: Object as PropType<dayBoundaries>,
 			required: true,
 		},
 		time: {
-			type: Object as PropType<Time>,
-			required: true,
+			type: Object as PropType<Time>|any,
+			default: () => ({}),
 		}
 	},
 
@@ -90,7 +92,7 @@ export default defineComponent ({
 	},
 
 	computed: {
-		getPeriodName() {
+		periodName() {
 			if (this.mode === 'week') {
 				const startMonth = this.time.getLocalizedNameOfMonth(this.currentPeriod?.start, 'short')
 				const endMonth = this.time.getLocalizedNameOfMonth(this.currentPeriod?.end, 'short')

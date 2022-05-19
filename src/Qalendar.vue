@@ -36,9 +36,9 @@ export default defineComponent({
 			default: () => ([]),
 		},
 		selectedDateDefault: {
-			type: String,
-			default: ''
-		}
+			type: Date,
+			default: new Date(),
+		},
 	},
 
 	emits: [
@@ -67,7 +67,7 @@ export default defineComponent({
 			mode: 'week' as 'day' | 'week' | 'month',
 			time: new Time(
 				this.config?.week?.startsOn,
-				this.config?.locale
+				this.config?.locale || null
 			)
 		}
 	},
