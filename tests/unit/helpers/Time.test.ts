@@ -196,7 +196,25 @@ describe('Time.ts', () => {
 		expect(lastWeek[6].getFullYear()).toEqual(2025)
 	});
 
-	it.todo('should get calendar month January')
+	it('should get calendar month January, with week.startsOn === "monday"', () => {
+		const month = timeM.getCalendarMonthSplitInWeeks(2040, (1 - 1))
+		expect(month).toHaveLength(6)
+
+		const firstWeek = month[0]
+		expect(firstWeek[0].getDate()).toBe(26)
+		expect(firstWeek[6].getDate()).toBe(1)
+		const thirdWeek = month[2]
+		expect(thirdWeek[5].getDate()).toBe(14)
+
+	})
+
+	it('should get calendar month January, with week.startsOn === "sunday"', () => {
+		const month = timeS.getCalendarMonthSplitInWeeks(2040, (1 - 1))
+		expect(month).toHaveLength(5)
+
+		const firstWeek = month[0]
+		expect(firstWeek[0].getDate()).toBe(1)
+	})
 
 	it('should get the months of a year', () => {
 		const year = timeM.getCalendarYearMonths(2027)
@@ -321,12 +339,28 @@ describe('Time.ts', () => {
 		expect(timeM.getDateTimeStringFromDate(twentiethOfDecember)).toBe('2031-12-20 20:45')
 	});
 
-	it.todo('tests getHourAndMinutesFromTimePoints', () => {
+	it('tests getHourAndMinutesFromTimePoints', () => {
+		let { hour: h1, minutes: m1 } = timeM.getHourAndMinutesFromTimePoints(0)
+		expect(h1).toBe(0)
+		expect(m1).toBe(0)
 
+		const { hour: h2, minutes: m2 } = timeM.getHourAndMinutesFromTimePoints(1300)
+		expect(h2).toBe(13)
+		expect(m2).toBe(0)
+
+		const { hour: h3, minutes: m3 } = timeM.getHourAndMinutesFromTimePoints(2300)
+		expect(h3).toBe(23)
+		expect(m3).toBe(0)
 	});
 
-	it.todo('tests getLocalizedHours', () => {
+	it('tests getLocalizedHours', () => {
+		const englishTime = new Time('sunday', 'en-US')
+		const fourAM = new Date(2022, 0, 1, 4)
+		expect(englishTime.getLocalizedHour(fourAM)).toBe('04 AM')
 
+		const swedishTime = new Time('monday', 'sv-SE')
+		const elevenPM = new Date(0, 0, 1, 23)
+		expect(swedishTime.getLocalizedHour(elevenPM)).toBe('23')
 	});
 
 	it('returns numeric values for year, month, date, hour and minutes, given a dateTimeString', () => {
