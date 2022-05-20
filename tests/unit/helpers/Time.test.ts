@@ -309,4 +309,43 @@ describe('Time.ts', () => {
 		const dateString = timeGerman.getLocalizedDateString(d)
 		expect(dateString).toEqual('1.1.2022')
 	});
+
+	it('returns a time string YYYY-MM-DD hh:mm based on a date-object', () => {
+		const firstOfFebruary = new Date(2020, (2 - 1), 1, 10, 30)
+		expect(timeM.getDateTimeStringFromDate(firstOfFebruary, 'start')).toBe('2020-02-01 00:00')
+
+		const eleventhOfAugust = new Date(2031, (8 - 1), 11)
+		expect(timeM.getDateTimeStringFromDate(eleventhOfAugust, 'end')).toBe('2031-08-11 23:59')
+
+		const twentiethOfDecember = new Date(2031, (12 - 1), 20, 20, 45)
+		expect(timeM.getDateTimeStringFromDate(twentiethOfDecember)).toBe('2031-12-20 20:45')
+	});
+
+	it.todo('tests getHourAndMinutesFromTimePoints', () => {
+
+	});
+
+	it.todo('tests getLocalizedHours', () => {
+
+	});
+
+	it('returns numeric values for year, month, date, hour and minutes, given a dateTimeString', () => {
+		const dateTimeString = '2049-12-31 23:59'
+		expect(timeM.getAllVariablesFromDateTimeString(dateTimeString)).toEqual({
+			year: 2049,
+			month: 11,
+			date: 31,
+			hour: 23,
+			minutes: 59,
+		})
+
+		const futureDateTimeString = '2209-06-01 00:00'
+		expect(timeM.getAllVariablesFromDateTimeString(futureDateTimeString)).toEqual({
+			year: 2209,
+			month: 5,
+			date: 1,
+			hour: 0,
+			minutes: 0,
+		})
+	});
 })

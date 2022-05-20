@@ -119,12 +119,7 @@ export default class Time {
 		return yearList
 	}
 
-	/**
-	 * Given timePoints (0, 100, 200 etc.), this function returns
-	 * a localized string with the respective hour
-	 * (in en-US for example: 0 => 12 AM, 1600 => 4 PM )
-	 * */
-	getHourLocaleStringFromHourDigits(timePoints: number) {
+	getHourAndMinutesFromTimePoints(timePoints: number) {
 		const time = timePoints.toString()
 		let hour = '0';
 		let minutes = '0';
@@ -136,6 +131,20 @@ export default class Time {
 			hour = time[0]
 			minutes = time[1] + time[2]
 		}
+
+		return {
+			hour: +hour,
+			minutes: +minutes,
+		}
+	}
+
+	/**
+	 * Given timePoints (0, 100, 200 etc.), this function returns
+	 * a localized string with the respective hour
+	 * (in en-US for example: 0 => 12 AM, 1600 => 4 PM )
+	 * */
+	getHourLocaleStringFromHourDigits(timePoints: number) {
+		const { hour, minutes } = this.getHourAndMinutesFromTimePoints(timePoints)
 
 		const hourLocaleString = new Date(
 			2100,
@@ -187,5 +196,60 @@ export default class Time {
 
 	getLocalizedDateString(date: Date): string {
 		return date.toLocaleDateString(this.CALENDAR_LOCALE)
+	}
+
+	/**
+	 * Takes a date object, and creates a time string from it, in the format of
+	 * YYYY-MM-DD hh:mm
+	 * */
+	getDateTimeStringFromDate(date: Date, timeIsStartOrEndOfDay?: 'start' | 'end'): string {
+		const y = date.getFullYear()
+		const m = (date.getMonth() + 1)
+		const d = date.getDate()
+		const fullDate = `${y}-${m >= 10 ? m : '0' + m}-${d >= 10 ? d : '0' + d}`
+
+		if ( ! timeIsStartOrEndOfDay) {
+			const hour = date.getHours()
+			const minutes = date.getMinutes()
+
+			return `${fullDate} ${hour >= 10 ? hour : '0' + hour}:${minutes >= 10 ? minutes : '0' + minutes}`
+		}
+
+		const fullTime = timeIsStartOrEndOfDay === 'start'
+			? '00:00'
+			: '23:59'
+
+		return `${fullDate} ${fullTime}`
+	}
+
+	getLocalizedTime(dateTimeString: string) {
+		const h = dateTimeString.substring(11 , 13)
+		const m = dateTimeString.substring(14 , 16)
+		const d = new Date()
+		d.setHours(+h)
+		d.setMinutes(+m)
+
+		return d.toLocaleTimeString(this.CALENDAR_LOCALE, {
+			hour: 'numeric',
+			minute: 'numeric'
+		})
+	}
+
+	getLocalizedHour(date: Date) {
+		return date.toLocaleTimeString(this.CALENDAR_LOCALE, { hour: '2-digit' })
+	}
+
+	/**
+	 * Returns numeric values for year, month, date, hour and minutes, given a dateTimeString
+	 * All variables are Date-Object compatible, meaning "month" is zero-indexed
+	 * */
+	getAllVariablesFromDateTimeString(dateTimeString: string) {
+		const year = +dateTimeString.substring(0, 4)
+		const month = (+dateTimeString.substring(5, 7) - 1)
+		const date = +dateTimeString.substring(8, 10)
+		const hour = +dateTimeString.substring(11, 13)
+		const minutes = +dateTimeString.substring(14, 16)
+
+		return { year, month, date, hour, minutes }
 	}
 }

@@ -2,6 +2,6 @@ import {eventInterface} from "./event.interface";
 
 export interface dayInterface {
 	dayName: string;
-	date: Date;
+	dateTimeString: string;
 	events: eventInterface[];
 }

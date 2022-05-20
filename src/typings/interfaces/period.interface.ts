@@ -1,5 +1,5 @@
 export interface periodInterface {
-	start: string;
-	end: string;
-	selectedDate: string;
+	start: Date;
+	end: Date;
+	selectedDate: Date;
 }
