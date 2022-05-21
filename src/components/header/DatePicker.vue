@@ -141,6 +141,7 @@ export default defineComponent({
 		},
 
 		setWeek(date: Date) {
+			this.datePickerCurrentDate = date
 			const currentWeek = this.time.getCalendarWeekDateObjects(date)
 			this.weekDays = currentWeek
 			const start = currentWeek[0]

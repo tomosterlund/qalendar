@@ -55,12 +55,19 @@ export default defineComponent({
 <style scoped lang="scss">
 
 .week-timeline {
-	width: 100%;
+	width: calc(100% - var(--qalendar-week-padding-left));
 	height: fit-content;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
 	padding: var(--qalendar-spacing-half) 0;
+	border-bottom: var(--qalendar-border-gray-thin);
+	padding-left: var(--qalendar-week-padding-left);
+
+	.mode-is-day & {
+		width: 100%;
+		padding-left: 0;
+	}
 
 	&__day {
 		width: 100%;

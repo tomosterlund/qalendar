@@ -1,8 +1,9 @@
 <template>
 	<WeekTimeline :days="days" :time="time" />
-	<section class="calendar-week">
 
-		<div class="calendar-week__events">
+	<div class="calendar-week__wrapper">
+
+		<section class="calendar-week">
 			<DayTimeline :day-boundaries="dayBoundaries"
 						 :time="time"
 						 :key="period.start + period.end + mode" />
@@ -14,15 +15,17 @@
 						 @edit-event="$emit('edit-event', $event)"
 						 @delete-event="$emit('edit-event', $event)" />
 
-			<Day v-for="day in days"
-				 :key="day.dateTimeString + mode"
-				 :day="day"
-				 :day-boundaries="dayBoundaries"
-				 :time="time"
-				 @event-was-clicked="handleClickOnEvent"
-				 @event-was-resized="$emit('event-was-resized', $event)" />
-		</div>
-	</section>
+			<div class="calendar-week__events">
+				<Day v-for="day in days"
+					 :key="day.dateTimeString + mode"
+					 :day="day"
+					 :day-boundaries="dayBoundaries"
+					 :time="time"
+					 @event-was-clicked="handleClickOnEvent"
+					 @event-was-resized="$emit('event-was-resized', $event)" />
+			</div>
+		</section>
+	</div>
 </template>
 
 <script lang="ts">
@@ -41,7 +44,12 @@ import Time from "../../helpers/Time";
 export default defineComponent({
 	name: 'Week',
 
-	components: {Day, WeekTimeline, DayTimeline, EventFlyout},
+	components: {
+		Day,
+		WeekTimeline,
+		DayTimeline,
+		EventFlyout
+	},
 
 	props: {
 		config: {
@@ -123,7 +131,6 @@ export default defineComponent({
 		},
 
 		setDay() {
-			console.log('setDay')
 			// Since we will still iterate over this.days for showing a single day, we'll initialize an array here too
 			const days = [{
 				dayName: new Date(this.period.selectedDate).toLocaleDateString((<any>window)?.qalendar?.locale || navigator.language, { weekday: 'long' }),
@@ -162,6 +169,10 @@ export default defineComponent({
 
 	mounted() {
 		this.setInitialEvents(this.modeProp)
+
+		const weekWrapper = document.querySelector('.calendar-week__wrapper')
+
+		if (weekWrapper) weekWrapper.scroll(0, 390)
 	},
 
 	watch: {
@@ -184,15 +195,20 @@ export default defineComponent({
 
 <style scoped lang="scss">
 
+.calendar-week__wrapper {
+	padding-left: var(--qalendar-week-padding-left);
+	overflow-y: auto;
+}
+
 .calendar-week {
+	position: relative;
 	width: 100%;
 	flex: 1 1 auto;
 
 	&__events {
-		position: relative;
 		display: flex;
 		width: 100%;
-		height: 100%;
+		height: 1200px;
 	}
 }
 </style>

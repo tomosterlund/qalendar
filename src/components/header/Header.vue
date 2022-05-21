@@ -22,11 +22,11 @@
 						  :time="time"
 						  @updated="handlePeriodChange" />
 
-			<DayBoundaries class="is-flex-grow-1"
-						   :boundaries="dayBoundaries"
-						   :time="time"
-						   @set-day-start="$emit('set-day-start', $event)"
-						   @set-day-end="$emit('set-day-end', $event)" />
+<!--			<DayBoundaries class="is-flex-grow-1"-->
+<!--						   :boundaries="dayBoundaries"-->
+<!--						   :time="time"-->
+<!--						   @set-day-start="$emit('set-day-start', $event)"-->
+<!--						   @set-day-end="$emit('set-day-end', $event)" />-->
 		</div>
 	</div>
 </template>
@@ -36,7 +36,6 @@ import {defineComponent, PropType} from 'vue';
 import DatePicker from "./DatePicker.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
-// import DayBoundaries from "./DayBoundaries.vue";
 import {configInterface} from "../../typings/config.interface";
 import {dayBoundaries} from "../../typings/types";
 import Time from "../../helpers/Time";

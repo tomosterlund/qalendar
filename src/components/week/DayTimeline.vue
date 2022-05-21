@@ -71,7 +71,7 @@ export default defineComponent({
 	left: 0;
 	width: calc(100% + 10px);
 	transform: translateX(-10px);
-	height: 100%;
+	height: 1200px;
 	display: flex;
 	flex-flow: column;
 	justify-content: space-evenly;
@@ -86,7 +86,10 @@ export default defineComponent({
 		color: var(--qalendar-gray-quite-dark);
 
 		&:first-child {
-			border-top: var(--qalendar-border-gray-thin);
+
+			.day-timeline__hour-text {
+				display: none;
+			}
 		}
 
 		&:not(:last-child) {

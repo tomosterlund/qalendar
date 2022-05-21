@@ -75,6 +75,10 @@ export default defineComponent({
 	height: 100%;
 	overflow: hidden;
 
+	&:first-child {
+		border-left: 1px dashed rgb(224, 224, 224);
+	}
+
 	&:not(:last-child) {
 		border-right: 1px dashed rgb(224, 224, 224);
 	}

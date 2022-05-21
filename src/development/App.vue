@@ -30,8 +30,8 @@ export default defineComponent({
 				week: {
 					startsOn: 'monday',
 					dayBoundaries: {
-						start: 800,
-						end: 1800,
+						start: 0,
+						end: 2400,
 					},
 					nDays: 7,
 				},

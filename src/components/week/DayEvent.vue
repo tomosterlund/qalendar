@@ -6,7 +6,6 @@
 		 	 height: getLengthOfEvent(event.time.start, event.time.end),
 		 	 left: getLeftRule + '%',
 		 	 width: getWidthRule + '%',
-		 	 zIndex: getZIndexRule,
 		 	 border: getBorderRule,
 		 }"
 		 @click="handleClickOnEvent"
@@ -130,12 +129,6 @@ export default defineComponent({
 
 		getWidthRule() {
 			return 100 - this.getLeftRule
-		},
-
-		getZIndexRule() {
-			if ( ! this.event.zIndex) return 10
-
-			return this.event.zIndex
 		},
 
 		getBorderRule() {

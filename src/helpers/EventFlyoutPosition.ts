@@ -10,10 +10,10 @@ export default class EventFlyoutPosition {
 		flyoutDimensions: elementDimensions,
 	) : { top: number, left: number } {
 		const spaceOnRight = windowDimensions.width - eventElementDOMRect.right
-		const spaceToBottom = windowDimensions.height - eventElementDOMRect.top
+		const spaceToBottom = windowDimensions.height - eventElementDOMRect.bottom
 
 		/** Small screens */
-		if (windowDimensions.width < 900) {
+		if (windowDimensions.width < 972) {
 			if (spaceToBottom > flyoutDimensions.height) return {
 				top: Math.round(eventElementDOMRect.top),
 				left: Math.round(eventElementDOMRect.left)

@@ -1,6 +1,6 @@
 <template>
 	<div class="calendar-root-wrapper">
-		<div class="calendar-root">
+		<div class="calendar-root" :class="mode === 'week' ? 'mode-is-week' : 'mode-is-day'">
 			<Header :config="config"
 					:key="wasInitialized"
 					:mode="mode"
@@ -33,6 +33,7 @@ import {configInterface, dayStartOrEnd} from "./typings/config.interface";
 import Time from "./helpers/Time";
 import Header from "./components/header/Header.vue";
 import Week from "./components/week/Week.vue";
+import {type} from "os";
 
 export default defineComponent({
 	name: 'Qalendar',
@@ -75,7 +76,9 @@ export default defineComponent({
 			},
 			week: {
 				dayBoundaries: {
-					start: this.config?.week?.dayBoundaries?.start || 800 as dayStartOrEnd,
+					start: typeof this.config?.week?.dayBoundaries?.start !== 'undefined'
+						? this.config?.week?.dayBoundaries?.start
+						: 800 as dayStartOrEnd,
 					end: this.config?.week?.dayBoundaries?.end || 1800 as dayStartOrEnd,
 				},
 				nDays: this.config?.week?.nDays || 7,
