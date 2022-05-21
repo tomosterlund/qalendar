@@ -4,7 +4,8 @@ const { NUMBER_OF_EVENTS, CLI_MONTH_ARG_PATTERN } = require('../faker-config')
 const createDateTimeString = dateObject => {
 	const d = new Date(dateObject)
 	const year = d.getFullYear()
-	const month = d.getMonth() < 10 ? `0${d.getMonth()}` : d.getMonth()
+	const oneIndexedMonth = d.getMonth() + 1
+	const month = oneIndexedMonth < 10 ? `0${oneIndexedMonth}` : oneIndexedMonth
 	const date = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate()
 	const hour = d.getHours() < 10 ? `0${d.getHours()}` : d.getHours()
 	const minutes = d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes()
@@ -21,6 +22,7 @@ const getEventsForMonth = (monthArg = null) => {
 	const d = typeof monthArg === 'string' && CLI_MONTH_ARG_PATTERN.test(monthArg)
 		? new Date(monthArg.substring(0, 4), (+monthArg.substring(5, 7)) - 1)
 		: new Date()
+	
 	const month = d.getMonth()
 	const year = d.getFullYear()
 	const minutes = [0, 5, 10, 14, 15, 20, 25, 30, 35, 40, 45, 47, 50, 52, 55, 60, 90, 120, 180]
@@ -38,7 +40,7 @@ const getEventsForMonth = (monthArg = null) => {
 	while (timesArray.length < (NUMBER_OF_EVENTS + 1000)) { // Create NUMER_OF_EVENTS + 100 time-objects, to prevent cluttering in the time space
 		const startDate = new Date(
 			year,
-			(month + 1),
+			month,
 			getRandomElementInArray(datesOfMonth),
 			getRandomElementInArray(hours),
 			getRandomElementInArray(minutes),

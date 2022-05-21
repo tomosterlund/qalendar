@@ -6,8 +6,11 @@ const getCommandArguments = () => {
 		// Add a months' argument, as a list, such as: 2022.01&2022.02&2022.03
 		// For January, February and March 2022
 		if (arg.includes('--months=')) {
-			console.log(arg)
 			argumentsToReturn.months = arg.split('=')[1].split(' ')
+		}
+
+		if (arg.includes('--year')) {
+			argumentsToReturn.year = arg.split('=')[1]
 		}
 	}
 

@@ -10,7 +10,8 @@
     "test:e2e:ci": "start-server-and-test preview http://127.0.0.1:5050/ 'cypress run'",
     "test:docker": "docker-compose up --build",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint qalendar --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint qalendar --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "seed": "node src/development/faker/seed.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.0",
