@@ -22,6 +22,11 @@
 				<span>{{ getEventTime }}</span>
 			</div>
 
+			<div class="calendar-week__event-row is-location" v-if="event.location">
+				<font-awesome-icon :icon="icons.location" class="calendar-week__event-icon" />
+				<span>{{ event.location }}</span>
+			</div>
+
 			<div class="calendar-week__event-row is-with" v-if="event.with">
 				<font-awesome-icon :icon="icons.user" class="calendar-week__event-icon" />
 				<span>{{ event.with }}</span>
@@ -46,7 +51,7 @@
 import {defineComponent, PropType} from "vue";
 import {eventInterface} from "../../typings/interfaces/event.interface";
 import EventPosition from "../../helpers/EventPosition";
-import {faClock, faComment, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faClock, faComment, faUser, faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {dayBoundaries} from "../../typings/types";
 import Time from "../../helpers/Time";
@@ -84,6 +89,7 @@ export default defineComponent({
 				clock: faClock,
 				user: faUser,
 				description: faComment,
+				location: faMapMarkerAlt
 			},
 			showResizeElements: false,
 

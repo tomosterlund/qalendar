@@ -28,6 +28,11 @@
 				{{ getEventDate + ' ⋅ ' + getEventTime }}
 			</div>
 
+			<div class="event-flyout__row is-location" v-if="calendarEvent.location">
+				<font-awesome-icon :icon="icons.location" />
+				{{ calendarEvent.location }}
+			</div>
+
 			<div v-if="calendarEvent.with" class="event-flyout__row">
 				<font-awesome-icon :icon="icons.user" />
 				{{ calendarEvent.with }}
@@ -51,7 +56,7 @@ import {defineComponent, PropType} from "vue";
 import {eventInterface} from "../../typings/interfaces/event.interface";
 import {DOMRect} from "../../typings/types";
 import EventFlyoutPosition, {EVENT_FLYOUT_WIDTH} from "../../helpers/EventFlyoutPosition";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faMapMarkerAlt, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {faClock, faComment, faUser, faEdit, faTrashAlt, faQuestionCircle} from "@fortawesome/free-regular-svg-icons";
 const eventFlyoutPositionHelper = new EventFlyoutPosition()
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
@@ -94,6 +99,7 @@ export default defineComponent({
 				edit: faEdit,
 				times: faTimes,
 				topic: faQuestionCircle,
+				location: faMapMarkerAlt,
 			},
 			calendarEvent: this.calendarEventProp,
 			flyoutWidth: EVENT_FLYOUT_WIDTH + 'px',
@@ -252,6 +258,7 @@ export default defineComponent({
 
 		svg {
 			color: #5f6368;
+			width: 14px;
 		}
 	}
 
