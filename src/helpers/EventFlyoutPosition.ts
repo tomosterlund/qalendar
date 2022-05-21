@@ -1,6 +1,7 @@
 type elementDimensions = { height: number; width: number }
+import { DOMRect } from "../typings/types";
 
-import {DOMRect} from "../typings/types";
+export const EVENT_FLYOUT_WIDTH = 400
 
 export default class EventFlyoutPosition {
 
@@ -8,24 +9,25 @@ export default class EventFlyoutPosition {
 		eventElementDOMRect: DOMRect,
 		windowDimensions: elementDimensions,
 		flyoutDimensions: elementDimensions,
-	) : { top: number, left: number } {
-		const spaceOnRight = windowDimensions.width - eventElementDOMRect.right
-		const spaceToBottom = windowDimensions.height - eventElementDOMRect.bottom
+	) : { top: number|null, left: number|null } | undefined {
+		const calendarRoot = document.querySelector('.calendar-root')
+		if ( ! calendarRoot) return
 
-		/** Small screens */
-		if (windowDimensions.width < 972) {
-			if (spaceToBottom > flyoutDimensions.height) return {
-				top: Math.round(eventElementDOMRect.top),
-				left: Math.round(eventElementDOMRect.left)
-			}
+		const calendarWidth = calendarRoot.clientWidth
+		const calendarDomRect = calendarRoot.getBoundingClientRect()
+		const spaceOnRight = calendarDomRect.width - eventElementDOMRect.right
+		const spaceToBottom = calendarDomRect.height - eventElementDOMRect.bottom
 
-			return {
-				top: Math.round(eventElementDOMRect.bottom - flyoutDimensions.height),
-				left: Math.round(eventElementDOMRect.left)
-			}
+		/** Calendar is thin */
+		if (calendarWidth < 850) {
+			return { top: null, left: null }
 		}
 
-		/** Larger screens */
+		/** Calendar is wide */
+		// Set 'top' for events whose bottom is outside of the viewport
+		const topWhenSpaceToBottomIsNegative = spaceToBottom < 0
+				? (windowDimensions.height - flyoutDimensions.height) - 10
+				: null
 
 		// Position flyout to the right of event, facing downwards, when possible
 		if (
@@ -44,7 +46,9 @@ export default class EventFlyoutPosition {
 			&& spaceOnRight > (flyoutDimensions.width + 10)
 		) {
 			return {
-				top: Math.round(eventElementDOMRect.bottom) - flyoutDimensions.height,
+				top: topWhenSpaceToBottomIsNegative
+					? topWhenSpaceToBottomIsNegative
+					: Math.round(eventElementDOMRect.bottom) - flyoutDimensions.height,
 				left: Math.round(eventElementDOMRect.right) + 10
 			}
 		}
@@ -57,7 +61,9 @@ export default class EventFlyoutPosition {
 				}
 			} else {
 				return {
-					top: Math.round(eventElementDOMRect.bottom - flyoutDimensions.height),
+					top: topWhenSpaceToBottomIsNegative
+						? topWhenSpaceToBottomIsNegative
+						: Math.round(eventElementDOMRect.bottom - flyoutDimensions.height),
 					left: Math.round(eventElementDOMRect.left - (flyoutDimensions.width + 10))
 				}
 			}

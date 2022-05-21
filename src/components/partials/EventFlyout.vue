@@ -1,7 +1,7 @@
 <template>
 	<div class="event-flyout"
 		 :class="{ 'is-visible': isVisible }"
-		 :style="{ top: top + 'px', left: left + 'px' }">
+		 :style="eventFlyoutInlineStyles">
 		<div class="event-flyout__menu">
 			<span>
 				<font-awesome-icon class="event-flyout__menu-item is-edit-icon"
@@ -50,7 +50,7 @@
 import {defineComponent, PropType} from "vue";
 import {eventInterface} from "../../typings/interfaces/event.interface";
 import {DOMRect} from "../../typings/types";
-import EventFlyoutPosition from "../../helpers/EventFlyoutPosition";
+import EventFlyoutPosition, {EVENT_FLYOUT_WIDTH} from "../../helpers/EventFlyoutPosition";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {faClock, faComment, faUser, faEdit, faTrashAlt, faQuestionCircle} from "@fortawesome/free-regular-svg-icons";
 const eventFlyoutPositionHelper = new EventFlyoutPosition()
@@ -84,8 +84,8 @@ export default defineComponent({
 	data() {
 		return {
 			isVisible: false,
-			top: 0,
-			left: 0,
+			top: 0 as number | null,
+			left: 0 as number | null,
 			icons: {
 				clock: faClock,
 				user: faUser,
@@ -96,6 +96,7 @@ export default defineComponent({
 				topic: faQuestionCircle,
 			},
 			calendarEvent: this.calendarEventProp,
+			flyoutWidth: EVENT_FLYOUT_WIDTH + 'px',
 		}
 	},
 
@@ -118,6 +119,21 @@ export default defineComponent({
 					day: 'numeric',
 				}
 			)
+		},
+
+		eventFlyoutInlineStyles() {
+			if ([typeof this.top, typeof this.left].some(x => x !== 'number')) {
+				return {
+					top: '50%',
+					left: '50%',
+					transform: 'translate(-50%, -50%)',
+				}
+			}
+
+			return {
+				top: this.top + 'px',
+				left: this.left + 'px',
+			}
 		}
 	},
 
@@ -177,8 +193,8 @@ export default defineComponent({
 	z-index: 50;
 	background-color: #fff;
 	max-height: 100%;
-	width: 400px;
-	max-width: 100%;
+	width: v-bind(flyoutWidth);
+	max-width: 98%;
 	border: var(--qalendar-border-gray-thin);
 	border-radius: 8px;
 	box-shadow: var(--qalendar-box-shadow);

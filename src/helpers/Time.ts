@@ -252,4 +252,19 @@ export default class Time {
 
 		return { year, month, date, hour, minutes }
 	}
+
+	dateIsToday(date: Date) {
+		const today = new Date()
+		const yearToday = today.getFullYear()
+		const monthToday = today.getMonth()
+		const dateToday = today.getDate()
+
+		const dateYear = date.getFullYear()
+		const dateMonth = date.getMonth()
+		const dateDate = date.getDate()
+
+		return yearToday === dateYear
+			&& monthToday === dateMonth
+			&& dateToday === dateDate
+	}
 }

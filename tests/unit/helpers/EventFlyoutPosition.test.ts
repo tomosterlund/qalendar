@@ -23,6 +23,8 @@ describe('EventFlyoutPositionHelper.ts', () => {
 			{ height: 300, width: 350 }
 		)
 
+		if ( ! flyoutPosition) return
+
 		expect(flyoutPosition.top).toEqual(260)
 		// expect space to the DOMRect.right + 10 (for having space between event and flyout)
 		expect(flyoutPosition.left).toEqual(459)
@@ -43,6 +45,8 @@ describe('EventFlyoutPositionHelper.ts', () => {
 			{ height: 800, width: 350 },
 			{ height: 300, width: 350 }
 		)
+
+		if ( ! flyoutPosition) return
 
 		expect(flyoutPosition.top).toEqual(260)
 		expect(flyoutPosition.left).toEqual(50)
@@ -67,6 +71,8 @@ describe('EventFlyoutPositionHelper.ts', () => {
 			{ height: flyoutHeight, width: 350 }
 		)
 
+		if ( ! flyoutPosition) return
+
 		expect(flyoutPosition.top).toEqual(flyoutRectBottom - flyoutHeight)
 		expect(flyoutPosition.left).toEqual(50)
 	})
@@ -87,6 +93,8 @@ describe('EventFlyoutPositionHelper.ts', () => {
 			{ height: 350, width: 350 }
 		)
 
+		if ( ! flyoutPosition) return
+
 		expect(flyoutPosition.top).toEqual(877)
 		expect(flyoutPosition.left).toEqual(457)
 	})
@@ -106,6 +114,7 @@ describe('EventFlyoutPositionHelper.ts', () => {
 			{width: 1720, height: 1247},
 			{height: 116, width: 350}
 		)
+		if ( ! flyoutPosition) return
 
 		expect(flyoutPosition.top).toEqual(152)
 		expect(flyoutPosition.left).toEqual(914)
@@ -126,6 +135,8 @@ describe('EventFlyoutPositionHelper.ts', () => {
 			{width: 1720, height: 1247},
 			{height: 116, width: 350}
 		)
+
+		if ( ! flyoutPosition) return
 
 		expect(flyoutPosition.top).toEqual(1227 - 116)
 		expect(flyoutPosition.left).toEqual(Math.round(1273.8125 - (350 + 10)))

@@ -140,8 +140,7 @@ export default defineComponent({
 		font-family: 'Verdana', 'Open Sans';
 
 		position: relative;
-		width: calc(100% - 48px);
-		margin-left: 48px;
+		width: 100%;
 		margin-right: 0;
 		max-width: 1400px;
 		height: calc(100vh - var(--qalendar-spacing-double));

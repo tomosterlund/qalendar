@@ -60,9 +60,9 @@ export default defineComponent({
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
-	padding: var(--qalendar-spacing-half) 0;
-	border-bottom: var(--qalendar-border-gray-thin);
+	padding-bottom: var(--qalendar-spacing-half);
 	padding-left: var(--qalendar-week-padding-left);
+	border-bottom: var(--qalendar-border-gray-thin);
 
 	.mode-is-day & {
 		width: 100%;
@@ -78,14 +78,14 @@ export default defineComponent({
 	}
 
 	&__day-name {
-		font-size: 12px;
+		font-size: 10px;
 		font-weight: 400;
 		margin-bottom: 4px;
 		color: var(--qalendar-gray-quite-dark);
 	}
 
 	&__date {
-		font-size: 24px;
+		font-size: 20px;
 		margin-bottom: 4px;
 		padding: 6px;
 		border-radius: 50%;

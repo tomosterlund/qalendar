@@ -40,6 +40,7 @@
 						  'is-weekend': [5, 6].includes(dayIndex),
 						  'is-not-in-month': day.getMonth() !== datePickerCurrentDate.getMonth(),
 						  'has-day': day,
+						  'is-today': time.dateIsToday(day)
 					  }"
 					  @click="setWeek(day)">
 					{{ day ? new Date(day).getDate() : '' }}
@@ -227,6 +228,7 @@ export default defineComponent({
 			}
 
 			newDate.setDate(newDatePayload)
+			console.log(newDate)
 			this.setWeek(newDate)
 		}
 	},
@@ -249,6 +251,7 @@ export default defineComponent({
 .date-picker {
 	position: relative;
 	width: fit-content;
+	min-width: 300px;
 
 	&__value-display {
 		height: 36px;
@@ -342,6 +345,11 @@ export default defineComponent({
 						background-color: var(--qalendar-light-gray);
 					}
 				}
+			}
+
+			&.is-today {
+				background-color: var(--qalendar-blue);
+				color: #fff;
 			}
 
 			&.is-not-in-month {

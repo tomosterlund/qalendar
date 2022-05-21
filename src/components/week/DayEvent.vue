@@ -32,7 +32,8 @@
 				<span>{{ event.description }}</span>
 			</div>
 
-			<div class="calendar-week__event-blend-out"
+			<div v-if="eventIsLongerThan30Minutes"
+				 class="calendar-week__event-blend-out"
 				 :style="{ backgroundImage: 'linear-gradient(to bottom, transparent, ' + getEventColorCSSValue + ')' }" />
 
 			<div v-if="showResizeElements" class="calendar-week__event-resize calendar-week__event-resize-down"
@@ -136,6 +137,15 @@ export default defineComponent({
 
 			return '1px solid #fff'
 		},
+
+		eventIsLongerThan30Minutes() {
+			const { hour: startHour, minutes: startMinutes } = this.time.getAllVariablesFromDateTimeString(this.event.time.start)
+			const { hour: endHour, minutes: endMinutes } = this.time.getAllVariablesFromDateTimeString(this.event.time.end)
+			const startDateMS = new Date(0, 0, 0, startHour, startMinutes).getTime()
+			const endDateMS = new Date(0, 0, 0, endHour, endMinutes).getTime()
+
+			return (endDateMS - startDateMS) >= 1800000
+		}
 	},
 
 	methods: {

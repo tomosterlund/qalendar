@@ -30,7 +30,7 @@ const getTimesArray = () => {
 		date++
 	}
 
-	while (timesArray.length < (NUMBER_OF_EVENTS + 100)) { // Create NUMER_OF_EVENTS + 100 time-objects, to prevent cluttering in the time space
+	while (timesArray.length < (NUMBER_OF_EVENTS + 1000)) { // Create NUMER_OF_EVENTS + 100 time-objects, to prevent cluttering in the time space
 		const startDate = new Date(
 			year,
 			(month + 1),
