@@ -294,7 +294,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .calendar-week__event {
 	position: absolute;
@@ -302,65 +302,65 @@ export default defineComponent({
 	border-radius: 4px;
 	cursor: pointer;
 	box-sizing: content-box;
-}
 
-.calendar-week__event-info-wrapper {
-	position: relative;
-	padding: var(--qalendar-spacing-half);
-	font-size: 12px;
-	height: 100%;
-	box-sizing: border-box;
-	overflow: hidden;
-	user-select: none;
-}
+	&.is-blue {
+		color: #fff;
+		background-color: var(--qalendar-blue-transparent);
+	}
 
-.calendar-week__event-blend-out {
-	position: absolute;
-	bottom: 0;
-	height: 20px;
-	width: 100%;
-	transform: translateX(calc(var(--qalendar-spacing-half) * -1));
-}
+	&.is-yellow {
+		color: #fff;
+		background-color: #F4B400;
+	}
 
-.calendar-week__event.is-blue {
-	color: #fff;
-	background-color: var(--qalendar-blue-transparent);
-}
+	&.is-green {
+		color: #fff;
+		background-color: var(--qalendar-green);
+	}
 
-.calendar-week__event.is-yellow {
-	color: #fff;
-	background-color: #F4B400;
-}
+	.calendar-week__event-row {
+		display: flex;
+		align-items: flex-start;
+		margin-bottom: 4px;
+	}
 
-.calendar-week__event.is-green {
-	color: #fff;
-	background-color: var(--qalendar-green);
-}
+	.calendar-week__event-info-wrapper {
+		position: relative;
+		padding: var(--qalendar-spacing-half);
+		font-size: 12px;
+		height: 100%;
+		box-sizing: border-box;
+		overflow: hidden;
+		user-select: none;
+	}
 
-.calendar-week__event-row {
-	display: flex;
-	align-items: flex-start;
-	margin-bottom: 4px;
-}
+	.calendar-week__event-blend-out {
+		position: absolute;
+		bottom: 0;
+		height: 20px;
+		width: 100%;
+		transform: translateX(calc(var(--qalendar-spacing-half) * -1));
+	}
 
-.calendar-week__event-icon {
-	margin: 2px 4px 0 0;
-	font-size: 12px;
-}
+	.calendar-week__event-icon {
+		margin: 2px 4px 0 0;
+		font-size: 12px;
+	}
 
-.calendar-week__event-resize {
-	position: absolute;
-	width: 100%;
-	cursor: ns-resize;
-	height: 5px;
-}
+	.calendar-week__event-resize {
+		position: absolute;
+		width: 100%;
+		cursor: ns-resize;
+		height: 5px;
+	}
 
-.calendar-week__event-resize-up {
-	top: 0;
-}
+	.calendar-week__event-resize-up {
+		top: 0;
+	}
 
-.calendar-week__event-resize-down {
-	bottom: 0;
+	.calendar-week__event-resize-down {
+		bottom: 0;
+	}
 }
 
 </style>

@@ -33,7 +33,7 @@ export default defineComponent({
 						start: 800,
 						end: 1800,
 					},
-					nDays: 5,
+					nDays: 7,
 				},
 				locale: 'de-DE'
 			} as configInterface,
