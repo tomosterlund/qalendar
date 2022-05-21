@@ -87,7 +87,7 @@ export default defineComponent({
 			time: new Time(
 				this.config?.week?.startsOn,
 				this.config?.locale || null
-			)
+			) as Time|any
 		}
 	},
 

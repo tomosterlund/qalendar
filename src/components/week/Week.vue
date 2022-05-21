@@ -77,7 +77,7 @@ export default defineComponent({
 			default: 'week',
 		},
 		time: {
-			type: Object as PropType<Time>,
+			type: Object as PropType<Time|any>,
 			required: true,
 		},
 	},

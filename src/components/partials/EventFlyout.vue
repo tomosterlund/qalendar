@@ -70,7 +70,7 @@ export default defineComponent({
 			default: () => ({}),
 		},
 		eventElementDomRect: {
-			type: Object as PropType<DOMRect>,
+			type: Object as PropType<DOMRect|any>,
 			required: true,
 		},
 		time: {
@@ -147,8 +147,8 @@ export default defineComponent({
 				{ height: flyout?.clientHeight || 300, width: flyout?.clientWidth || 0 }
 			)
 
-			this.top = flyoutPosition.top
-			this.left = flyoutPosition.left
+			this.top = flyoutPosition?.top || null
+			this.left = flyoutPosition?.left || null
 		},
 
 		editEvent() {
