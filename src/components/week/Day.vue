@@ -67,17 +67,16 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .calendar-week__day {
 	position: relative;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-}
 
-.calendar-week__day:not(:last-child) {
-	border-right: 1px dashed rgb(224, 224, 224);
+	&:not(:last-child) {
+		border-right: 1px dashed rgb(224, 224, 224);
+	}
 }
-
 </style>

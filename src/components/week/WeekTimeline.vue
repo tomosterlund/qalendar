@@ -52,7 +52,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .week-timeline {
 	width: 100%;
@@ -61,38 +61,38 @@ export default defineComponent({
 	justify-content: space-evenly;
 	align-items: center;
 	padding: var(--qalendar-spacing-half) 0;
-}
 
-.week-timeline__day {
-	width: 100%;
-	display: flex;
-	flex-flow: column;
-	align-items: center;
-	justify-content: space-evenly;
-}
+	&__day {
+		width: 100%;
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+		justify-content: space-evenly;
+	}
 
-.week-timeline__day-name {
-	font-size: 12px;
-	font-weight: 400;
-	margin-bottom: 4px;
-	color: var(--qalendar-gray-quite-dark);
-}
+	&__day-name {
+		font-size: 12px;
+		font-weight: 400;
+		margin-bottom: 4px;
+		color: var(--qalendar-gray-quite-dark);
+	}
 
-.week-timeline__date {
-	font-size: 24px;
-	margin-bottom: 4px;
-	padding: 6px;
-	border-radius: 50%;
-	height: 30px;
-	width: 30px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
+	&__date {
+		font-size: 24px;
+		margin-bottom: 4px;
+		padding: 6px;
+		border-radius: 50%;
+		height: 30px;
+		width: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
-.is-today .week-timeline__date {
-	background-color: var(--qalendar-blue);
-	color: #fff;
+		.is-today & {
+			background-color: var(--qalendar-blue);
+			color: #fff;
+		}
+	}
 }
 
 </style>

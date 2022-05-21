@@ -170,7 +170,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .event-flyout {
 	position: fixed;
@@ -185,62 +185,68 @@ export default defineComponent({
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity 0.18s ease;
-}
 
-.event-flyout.is-visible {
-	opacity: 1;
-	pointer-events: initial;
-}
+	&.is-visible {
+		opacity: 1;
+		pointer-events: initial
+	}
 
-.event-flyout__menu {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: var(--qalendar-spacing) var(--qalendar-spacing) 0 var(--qalendar-spacing);
-}
+	&__menu {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: var(--qalendar-spacing) var(--qalendar-spacing) 0 var(--qalendar-spacing);
 
-.event-flyout__menu > span {
-	display: flex;
-	grid-gap: 20px;
-}
+		span {
+			display: flex;
+			grid-gap: 20px;
+		}
+	}
 
-.event-flyout__menu-item {
-	font-size: 20px;
-	border-radius: 50%;
-	color: gray;
-}
+	&__menu-item {
+		font-size: 20px;
+		border-radius: 50%;
+		color: gray;
 
-.event-flyout__menu-item:hover {
-	color: var(--qalendar-theme-color);
-	cursor: pointer;
-}
+		&:hover {
+			color: var(--qalendar-theme-color);
+			cursor: pointer;
+		}
+	}
 
-.is-trash-icon:hover {
-	color: red;
-}
+	.is-trash-icon {
 
-.event-flyout__info-wrapper {
-	padding: var(--qalendar-spacing);
-}
+		&:hover {
+			color: red;
+		}
+	}
 
-.event-flyout__row {
-	display: flex;
-	grid-gap: var(--qalendar-spacing);
-	margin-bottom: 4px;
-	font-weight: 400;
-}
+	&__info-wrapper {
+		padding: var(--qalendar-spacing);
+	}
 
-.event-flyout__row > svg {
-	color: #5f6368;
-}
+	&__row {
+		display: flex;
+		grid-gap: var(--qalendar-spacing);
+		margin-bottom: 4px;
+		font-weight: 400;
+	}
 
-.is-title {
-	font-size: 20px;
-}
+	&__row {
 
-.is-time {
-	font-size: 14px;
-	margin-bottom: var(--qalendar-spacing-half);
+		svg {
+			color: #5f6368;
+		}
+	}
+
+	.is-title {
+		font-size: 20px;
+	}
+
+	.is-time {
+		font-size: 14px;
+		margin-bottom: var(--qalendar-spacing-half);
+	}
 }
 
 </style>

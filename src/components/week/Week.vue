@@ -7,6 +7,13 @@
 						 :time="time"
 						 :key="period.start + period.end + mode" />
 
+			<EventFlyout :calendar-event-prop="selectedEvent"
+						 :event-element-dom-rect="selectedEventDOMRect"
+						 :time="time"
+						 @hide="selectedEvent = null"
+						 @edit-event="$emit('edit-event', $event)"
+						 @delete-event="$emit('edit-event', $event)" />
+
 			<Day v-for="day in days"
 				 :key="day.dateTimeString + mode"
 				 :day="day"
@@ -14,13 +21,6 @@
 				 :time="time"
 				 @event-was-clicked="handleClickOnEvent"
 				 @event-was-resized="$emit('event-was-resized', $event)" />
-
-			<EventFlyout :calendar-event-prop="selectedEvent"
-						 :event-element-dom-rect="selectedEventDOMRect"
-						 :time="time"
-						 @hide="selectedEvent = null"
-						 @edit-event="$emit('edit-event', $event)"
-						 @delete-event="$emit('edit-event', $event)" />
 		</div>
 	</section>
 </template>

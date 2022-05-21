@@ -63,7 +63,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .day-timeline {
 	position: absolute;
@@ -76,29 +76,28 @@ export default defineComponent({
 	flex-flow: column;
 	justify-content: space-evenly;
 
-}
+	&__hour {
+		padding-left: 4px;
+		display: flex;
+		flex-flow: column;
+		justify-content: flex-start;
+		height: 100%;
+		font-size: 10px;
+		color: var(--qalendar-gray-quite-dark);
 
-.day-timeline__hour {
-	padding-left: 4px;
-	display: flex;
-	flex-flow: column;
-	justify-content: flex-start;
-	/*flex: 1 1 0;*/
-	height: 100%;
-	font-size: 10px;
-	color: var(--qalendar-gray-quite-dark);
-}
+		&:first-child {
+			border-top: var(--qalendar-border-gray-thin);
+		}
 
-.day-timeline__hour:first-child {
-	border-top: var(--qalendar-border-gray-thin);
-}
+		&:not(:last-child) {
+			border-bottom: var(--qalendar-border-gray-thin);
+		}
+	}
 
-.day-timeline__hour:not(:last-child) {
-	border-bottom: var(--qalendar-border-gray-thin);
-}
+	&__hour-text {
+		transform: translate(-40px, -6px); /** Sets the hour to be above the line for full hour */
+	}
 
-.day-timeline__hour-text {
-	transform: translate(-40px, -6px); /** Sets the hour to be above the line for full hour */
 }
 
 </style>

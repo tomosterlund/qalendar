@@ -1,32 +1,32 @@
 <template>
 	<div class="calendar-header">
-		<div class="calendar-header__period-name is-flex-grow-1" v-if="periodName">{{ periodName }}</div>
+		<div class="calendar-header__period-name is-flex-grow-1" v-if="periodName">
+			{{ periodName }}
+		</div>
 
-		<div class="calendar-header__multiselects">
-			<div class="calendar-header__period is-flex-grow-1">
-				<div class="calendar-header__chevron-arrows">
-					<font-awesome-icon class="calendar-header__chevron-arrow calendar-header__chevron-arrow-left"
-									   :icon="icons.chevronLeft"
-									   @click="goToPeriod('previous')" />
+		<div class="calendar-header__period is-flex-grow-1">
+			<div class="calendar-header__chevron-arrows">
+				<font-awesome-icon class="calendar-header__chevron-arrow calendar-header__chevron-arrow-left"
+								   :icon="icons.chevronLeft"
+								   @click="goToPeriod('previous')" />
 
-					<font-awesome-icon class="calendar-header__chevron-arrow calendar-header__chevron-arrow-right"
-									   :icon="icons.chevronRight"
-									   @click="goToPeriod('next')" />
-				</div>
-
-				<DatePicker ref="periodSelect"
-							  class="is-flex-grow-1"
-							  :selected-date-default="selectedDateDefault"
-							  :mode="mode"
-							  :time="time"
-							  @updated="handlePeriodChange" />
-
-				<DayBoundaries class="is-flex-grow-1"
-							   :boundaries="dayBoundaries"
-							   :time="time"
-							   @set-day-start="$emit('set-day-start', $event)"
-							   @set-day-end="$emit('set-day-end', $event)" />
+				<font-awesome-icon class="calendar-header__chevron-arrow calendar-header__chevron-arrow-right"
+								   :icon="icons.chevronRight"
+								   @click="goToPeriod('next')" />
 			</div>
+
+			<DatePicker ref="periodSelect"
+						  class="is-flex-grow-1"
+						  :selected-date-default="selectedDateDefault"
+						  :mode="mode"
+						  :time="time"
+						  @updated="handlePeriodChange" />
+
+			<DayBoundaries class="is-flex-grow-1"
+						   :boundaries="dayBoundaries"
+						   :time="time"
+						   @set-day-start="$emit('set-day-start', $event)"
+						   @set-day-end="$emit('set-day-end', $event)" />
 		</div>
 	</div>
 </template>
@@ -129,60 +129,56 @@ export default defineComponent ({
 	justify-content: space-between;
 	padding: var(--qalendar-spacing-half);
 	border-radius: var(--qalendar-border-radius);
-}
 
-.calendar-header__period {
-	display: flex;
-	align-items: center;
-	gap: var(--qalendar-spacing);
-}
-
-.calendar-header__period-name {
-	font-size: 24px;
-	margin-bottom: 4px;
-	text-align: center;
-}
-
-@media (min-width: 600px) {
-
-	.calendar-header__period-name {
-		margin-bottom: 0;
-		text-align: left;
-	}
-}
-
-.calendar-header__multiselects {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--qalendar-spacing);
-}
-
-.calendar-header__chevron-arrows {
-	display: none;
-	align-items: center;
-	gap: var(--qalendar-spacing);
-}
-
-@media (min-width: 600px) {
-
-	.calendar-header__chevron-arrows {
+	&__period {
 		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--qalendar-spacing);
+	}
+
+	&__period-name {
+		font-size: 24px;
+		margin-bottom: 4px;
+		text-align: center;
+
+		@media (min-width: 600px) {
+			margin-bottom: 0;
+			text-align: left;
+		}
+	}
+
+	&__multiselects {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--qalendar-spacing);
+	}
+
+	&__chevron-arrows {
+		display: none;
+		align-items: center;
+		gap: var(--qalendar-spacing);
+
+		@media (min-width: 600px) {
+			display: flex;
+		}
+
+		.calendar-header__chevron-arrow {
+			cursor: pointer;
+			transition: color 0.2s ease;
+
+			&:hover {
+				color: var(--qalendar-gray-quite-dark);
+			}
+		}
+	}
+
+	.is-flex-grow-1 {
+
+		@media (max-width: 600px) {
+			flex-basis: 100%;
+		}
 	}
 }
-
-.calendar-header__chevron-arrow {
-	cursor: pointer;
-	transition: color 0.2s ease;
-}
-
-.calendar-header__chevron-arrow:hover {
-	color: var(--qalendar-gray-quite-dark);
-}
-
-.is-flex-grow-1 {
-	flex-grow: 1;
-}
-
-
 </style>
