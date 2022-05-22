@@ -31,7 +31,9 @@
 				</span>
 			</div>
 
-			<div class="week" v-for="(week, weekIndex) in weekPickerDates"
+			<div v-for="(week, weekIndex) in weekPickerDates"
+				 class="week"
+				 :class="time.dateIsInWeek(selectedDate, week) ? 'is-active' : ''"
 				 :key="weekIndex"
 				 v-show="datePickerMode === 'month'">
 				<span v-for="(day, dayIndex) in week"
@@ -98,7 +100,18 @@ export default defineComponent({
 				chevronRight: faChevronCircleRight,
 			},
 			showDatePicker: false,
+			/**
+			 * Though selectedDate might look identical to datePickerCurrentDate, it is not
+			 * There is a need for separate state for:
+			 * 1. (datePickerCurrentDate) the current date governing what to show in the week picker.
+			 * This changes as the user browses between weeks, months and years
+			 *
+			 * 2. (selectedDate) the selected date of the entire calendar.
+			 * This should not change as the user browses in the date picker, only when the user
+			 * PICKS a date in the date picker
+			 * */
 			datePickerCurrentDate: this.selectedDateDefault ? this.selectedDateDefault : new Date(),
+			selectedDate: this.selectedDateDefault ? this.selectedDateDefault : new Date(),
 			datePickerMode: 'month' as 'month' | 'year',
 			weekDays: [] as calendarWeekType, // Used only for printing week day names
 		}
@@ -166,6 +179,8 @@ export default defineComponent({
 		},
 
 		emitChange(start: Date, end: Date) {
+			this.selectedDate = this.datePickerCurrentDate
+
 			this.$emit('updated', {
 				start,
 				end,
@@ -344,6 +359,11 @@ export default defineComponent({
 		justify-content: space-evenly;
 		align-items: center;
 		margin: 4px 0;
+
+		&.is-active {
+			border: 1px dashed var(--qalendar-theme-color);
+			border-radius: 4px;
+		}
 
 		span {
 			display: flex;

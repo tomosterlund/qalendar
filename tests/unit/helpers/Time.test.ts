@@ -7,22 +7,6 @@ const timeS = new Time('sunday')
 
 describe('Time.ts', () => {
 
-	it('Gets the current date', () => {
-		const d = new Date()
-		const currentDate = d.getDate()
-		expect(timeM.getCurrentDate() === currentDate).toBe(true)
-	})
-
-	it('Gets the current month', () => {
-		const currentMonth = new Date().getMonth()
-		expect(timeM.getCurrentMonth()).toEqual(currentMonth + 1)
-	});
-
-	it('Gets the current year', () => {
-		const currentYear = new Date().getFullYear()
-		expect(timeM.getCurrentYear()).toEqual(currentYear)
-	});
-
 	it('Gets a calendar week, based on date 2022-05-14', () => {
 		const d = new Date(2022, (5 - 1), 14)
 		const week = timeM.getCalendarWeekDateObjects(d)
@@ -299,21 +283,6 @@ describe('Time.ts', () => {
 		expect(august).toEqual('August')
 	});
 
-	it('returns an array-representation of [YYYY, MM|M, DD|D]', () => {
-		const _d = new Date()
-		const y = _d.getFullYear()
-		const m = _d.getMonth()
-		const d = _d.getDate()
-		const ymd = [y, m, d]
-
-		const yearMonthDateIntegers = timeM.getCurrentYearMonthDay()
-
-		// @ts-ignore
-		for (const [index, value] of ymd.entries()) {
-			expect(value).toEqual(yearMonthDateIntegers[index])
-		}
-	});
-
 	it('returns a localized date string for US English', () => {
 		const timeEnglish = new Time('sunday', 'en-US')
 		const d = new Date(2022, (5 - 1), 15)
@@ -382,4 +351,6 @@ describe('Time.ts', () => {
 			minutes: 0,
 		})
 	});
+
+	it.todo('checks if a given date is in a given week')
 })

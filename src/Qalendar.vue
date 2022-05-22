@@ -18,7 +18,7 @@
 				  @event-was-clicked="$emit('event-was-clicked', $event)"
 				  @event-was-resized="$emit('event-was-resized', $event)"
 				  @edit-event="$emit('edit-event', $event)"
-				  @delete-event="$emit('edit-event', $event)" />
+				  @delete-event="$emit('delete-event', $event)" />
 		</div>
 	</div>
 </template>
@@ -30,7 +30,6 @@ import {configInterface, dayStartOrEnd} from "./typings/config.interface";
 import Time from "./helpers/Time";
 import Header from "./components/header/Header.vue";
 import Week from "./components/week/Week.vue";
-import {type} from "os";
 
 export default defineComponent({
 	name: 'Qalendar',

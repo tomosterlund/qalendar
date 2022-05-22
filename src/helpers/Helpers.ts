@@ -1,4 +1,8 @@
 export default class Helpers {
+	/**
+	 * If navigator.languages is present (correlating to the browser's Accept-Language header), then use it
+	 * otherwise just use navigator.language
+	 * */
 	static getBrowserNavigatorLocale(): string {
 		if (typeof navigator !== 'object') return 'en-US'
 

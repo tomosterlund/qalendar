@@ -1,5 +1,6 @@
 import Helpers from "./Helpers";
 import {dayStartOrEnd} from "../typings/config.interface";
+import EDate from "./EDate";
 
 export type calendarWeekType = Date[]
 export type calendarMonthType = calendarWeekType[]
@@ -31,21 +32,6 @@ export default class Time {
 		}
 
 		return arr;
-	}
-
-	getCurrentDate() {
-		return new Date().getDate()
-	}
-
-	/**
-	 * Get current month + 1, since January === 0
-	 * */
-	getCurrentMonth() {
-		return new Date().getMonth() + 1
-	}
-
-	getCurrentYear() {
-		return new Date().getFullYear()
 	}
 
 	getCalendarWeekDateObjects(date: Date | null = null): calendarWeekType {
@@ -185,19 +171,6 @@ export default class Time {
 		)
 	}
 
-	/**
-	 * Returns an array-shaped representation of [YYYY, MM|M, DD|D]
-	 * */
-	getCurrentYearMonthDay(): number[] {
-		const d = new Date()
-
-		return [
-			d.getFullYear(),
-			d.getMonth(),
-			d.getDate()
-		]
-	}
-
 	getLocalizedDateString(date: Date): string {
 		return date.toLocaleDateString(this.CALENDAR_LOCALE)
 	}
@@ -258,17 +231,25 @@ export default class Time {
 	}
 
 	dateIsToday(date: Date) {
-		const today = new Date()
-		const yearToday = today.getFullYear()
-		const monthToday = today.getMonth()
-		const dateToday = today.getDate()
-
-		const dateYear = date.getFullYear()
-		const dateMonth = date.getMonth()
-		const dateDate = date.getDate()
+		const { fullYear: yearToday, month: monthToday, date: dateToday } = new EDate()
+		const { fullYear: dateYear, month: dateMonth, date: dateDate } = new EDate(date)
 
 		return yearToday === dateYear
 			&& monthToday === dateMonth
 			&& dateToday === dateDate
+	}
+
+	dateIsInWeek(dateToCheck: Date, week: Date[]) {
+		const { date, month, fullYear } = new EDate(dateToCheck)
+
+		for (const weekDay of week) {
+			const dateIsSame = (date === weekDay.getDate())
+			const monthIsSame = (month === weekDay.getMonth())
+			const yearIsSame = (fullYear === weekDay.getFullYear())
+
+			if (dateIsSame && monthIsSame && yearIsSame) return true
+		}
+
+		return false
 	}
 }
