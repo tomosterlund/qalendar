@@ -1,7 +1,7 @@
 import {describe, expect, test} from "vitest";
 import {mount} from "@vue/test-utils";
-import Time from "../../../src/helpers/Time";
-import DatePicker from '../../../src/components/header/DatePicker.vue'
+import Time from "../../../../src/helpers/Time";
+import DatePicker from '../../../../src/components/header/DatePicker.vue'
 
 describe('DatePicker.vue', () => {
 	let wrapper: any

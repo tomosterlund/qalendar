@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
-import Header from '../../../src/components/header/Header.vue'
+import Header from '../../../../src/components/header/Header.vue'
 import {describe, expect, test} from "vitest";
-import Time from "../../../src/helpers/Time";
+import Time from "../../../../src/helpers/Time";
 
 describe('Header.vue', () => {
 	let wrapper

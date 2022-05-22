@@ -31,7 +31,7 @@ export default defineComponent({
 					startsOn: 'monday',
 					nDays: 7,
 				},
-				locale: 'en-US'
+				locale: 'de-DE'
 			} as configInterface,
 			events: seededEvents as eventInterface[],
 		}

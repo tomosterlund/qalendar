@@ -1,7 +1,7 @@
 <template>
 	<div class="calendar-week__day">
 		<DayEvent v-for="(event, eventIndex) in events"
-				  :key="eventIndex + stateDummy"
+				  :key="eventIndex"
 				  :event-prop="event"
 				  :day="day"
 				  :time="time"
@@ -22,7 +22,7 @@ const eventConcurrencyHelper = new EventConcurrency()
 export default defineComponent({
 	name: 'Day',
 
-	components: {DayEvent},
+	components: { DayEvent },
 
 	props: {
 		day: {
@@ -40,7 +40,6 @@ export default defineComponent({
 	data() {
 		return {
 			events: [] as eventInterface[],
-			stateDummy: 0,
 		}
 	},
 
