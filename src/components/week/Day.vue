@@ -4,7 +4,6 @@
 				  :key="eventIndex + stateDummy"
 				  :event-prop="event"
 				  :day="day"
-				  :day-boundaries="dayBoundaries"
 				  :time="time"
 				  @event-was-clicked="$emit('event-was-clicked', $event)"
 				  @event-was-resized="handleEventWasResized" />
@@ -15,7 +14,6 @@
 import {defineComponent, PropType} from "vue";
 import {dayInterface} from "../../typings/interfaces/day.interface";
 import DayEvent from "./DayEvent.vue";
-import {dayBoundaries} from "../../typings/types";
 import EventConcurrency from "../../helpers/EventConcurrency";
 import { eventInterface } from "../../typings/interfaces/event.interface";
 import Time from "../../helpers/Time";
@@ -29,10 +27,6 @@ export default defineComponent({
 	props: {
 		day: {
 			type: Object as PropType<dayInterface>,
-			required: true,
-		},
-		dayBoundaries: {
-			type: Object as PropType<dayBoundaries>,
 			required: true,
 		},
 		time: {

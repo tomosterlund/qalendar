@@ -9,6 +9,8 @@ export default class Time {
 	FIRST_DAY_OF_WEEK: 'sunday' | 'monday'
 	CALENDAR_LOCALE: string
 	ALL_HOURS: dayStartOrEnd[]
+	DAY_START: number
+	DAY_END: number
 
 	constructor(
 		firstDayOfWeekIs: 'sunday' | 'monday' = 'monday',
@@ -19,6 +21,8 @@ export default class Time {
 			? locale
 			: Helpers.getBrowserNavigatorLocale()
 		this.ALL_HOURS = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400]
+		this.DAY_START = 0
+		this.DAY_END = 2400
 	}
 
 	protected getDatesBetweenTwoDates(start: Date, end: Date) {

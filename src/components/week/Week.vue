@@ -4,8 +4,7 @@
 	<div class="calendar-week__wrapper">
 
 		<section class="calendar-week">
-			<DayTimeline :day-boundaries="dayBoundaries"
-						 :time="time"
+			<DayTimeline :time="time"
 						 :key="period.start + period.end + mode" />
 
 			<EventFlyout :calendar-event-prop="selectedEvent"
@@ -19,7 +18,6 @@
 				<Day v-for="day in days"
 					 :key="day.dateTimeString + mode"
 					 :day="day"
-					 :day-boundaries="dayBoundaries"
 					 :time="time"
 					 @event-was-clicked="handleClickOnEvent"
 					 @event-was-resized="$emit('event-was-resized', $event)" />
@@ -36,7 +34,6 @@ import {periodInterface} from "../../typings/interfaces/period.interface";
 import { dayInterface } from "../../typings/interfaces/day.interface";
 import WeekTimeline from "./WeekTimeline.vue";
 import Day from "./Day.vue";
-import {dayBoundaries} from "../../typings/types";
 import EventFlyout from "../partials/EventFlyout.vue";
 import {eventInterface} from "../../typings/interfaces/event.interface";
 import Time from "../../helpers/Time";
@@ -63,10 +60,6 @@ export default defineComponent({
 		period: {
 			type: Object as PropType<periodInterface>,
 			required: true
-		},
-		dayBoundaries: {
-			type: Object as PropType<dayBoundaries>,
-			required: true,
 		},
 		nDays: {
 			type: Number as PropType<5 | 7>,

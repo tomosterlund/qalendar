@@ -53,7 +53,6 @@ import {eventInterface} from "../../typings/interfaces/event.interface";
 import EventPosition from "../../helpers/EventPosition";
 import {faClock, faComment, faUser, faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {dayBoundaries} from "../../typings/types";
 import Time from "../../helpers/Time";
 const eventPositionHelper = new EventPosition()
 
@@ -68,10 +67,6 @@ export default defineComponent({
 	props: {
 		eventProp: {
 			type: Object as PropType<eventInterface>,
-			required: true,
-		},
-		dayBoundaries: {
-			type: Object as PropType<dayBoundaries>,
 			required: true,
 		},
 		time: {
@@ -121,7 +116,7 @@ export default defineComponent({
 		},
 
 		timePointsInDay() {
-			return this.dayBoundaries.end - this.dayBoundaries.start
+			return this.time.DAY_END
 		},
 
 		timePointsInOneMinute() {
@@ -158,14 +153,14 @@ export default defineComponent({
 		getPositionInDay(dateTimeString: string) {
 			return eventPositionHelper.getPercentageOfDayFromDateTimeString(
 				dateTimeString,
-				this.dayBoundaries.start,
-				this.dayBoundaries.end
+				this.time.DAY_START,
+				this.time.DAY_END,
 			).toString() + '%'
 		},
 
 		getLengthOfEvent(start: string, end: string) {
-			const startOfEvent = eventPositionHelper.getPercentageOfDayFromDateTimeString(start, this.dayBoundaries.start, this.dayBoundaries.end)
-			const endOfEvent = eventPositionHelper.getPercentageOfDayFromDateTimeString(end, this.dayBoundaries.start, this.dayBoundaries.end)
+			const startOfEvent = eventPositionHelper.getPercentageOfDayFromDateTimeString(start, this.time.DAY_START, this.time.DAY_END)
+			const endOfEvent = eventPositionHelper.getPercentageOfDayFromDateTimeString(end, this.time.DAY_START, this.time.DAY_END)
 			const length = endOfEvent - startOfEvent
 
 			return length + '%'
@@ -259,7 +254,7 @@ export default defineComponent({
 	
 	watch: {
 		changeInQuarterHoursEventStart(newValue) {
-			const { hour: dayStartHour, minutes: dayStartMinutes } = this.time.getHourAndMinutesFromTimePoints(this.dayBoundaries.start)
+			const { hour: dayStartHour, minutes: dayStartMinutes } = this.time.getHourAndMinutesFromTimePoints(this.time.DAY_START)
 			const { year, month, date } = this.time.getAllVariablesFromDateTimeString(this.event.time.start)
 			const startOfDayDateTimeString = this.time.getDateTimeStringFromDate(new Date(year, month, date, dayStartHour, dayStartMinutes))
 			const { hour: oldHour, minutes: oldMinutes } = this.time.getAllVariablesFromDateTimeString(this.resizingStartingPointStartOfTime)
@@ -280,7 +275,7 @@ export default defineComponent({
 		},
 
 		changeInQuarterHoursEventEnd(newValue) {
-			const { hour: dayEndHour, minutes: dayEndMinutes } = this.time.getHourAndMinutesFromTimePoints(this.dayBoundaries.end)
+			const { hour: dayEndHour, minutes: dayEndMinutes } = this.time.getHourAndMinutesFromTimePoints(this.time.DAY_END)
 			const { year, month, date } = this.time.getAllVariablesFromDateTimeString(this.event.time.start)
 			const endOfDayDateTimeString = this.time.getDateTimeStringFromDate(new Date(year, month, date, dayEndHour, dayEndMinutes))
 			const { hour: oldHour, minutes: oldMinutes } = this.time.getAllVariablesFromDateTimeString(this.resizingStartingPointEndOfTime)

@@ -6,16 +6,12 @@
 					:mode="mode"
 					:time="time"
 					:selected-date-default="selectedDateDefault"
-					:day-boundaries="week.dayBoundaries"
-					@updated-period="handleUpdatedPeriod"
-					@set-day-start="week.dayBoundaries.start = $event"
-					@set-day-end="week.dayBoundaries.end = $event" />
+					@updated-period="handleUpdatedPeriod" />
 
 			<Week :events="events"
 				  :period="period"
-				  :key="period.start.getDate() + period.end.getDate() + week.dayBoundaries.start + week.dayBoundaries.end"
+				  :key="period.start.getTime() + period.end.getTime()"
 				  :mode-prop="mode"
-				  :day-boundaries="week.dayBoundaries"
 				  :n-days="week.nDays"
 				  :time="time"
 				  @event-was-clicked="$emit('event-was-clicked', $event)"
@@ -75,12 +71,6 @@ export default defineComponent({
 				selectedDate: new Date(),
 			},
 			week: {
-				dayBoundaries: {
-					start: typeof this.config?.week?.dayBoundaries?.start !== 'undefined'
-						? this.config?.week?.dayBoundaries?.start
-						: 800 as dayStartOrEnd,
-					end: this.config?.week?.dayBoundaries?.end || 1800 as dayStartOrEnd,
-				},
 				nDays: this.config?.week?.nDays || 7,
 			},
 			mode: 'week' as 'day' | 'week' | 'month',

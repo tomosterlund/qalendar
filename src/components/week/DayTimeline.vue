@@ -13,20 +13,12 @@
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
 import {dayStartOrEnd} from "../../typings/config.interface";
-import {dayBoundaries} from "../../typings/types";
 import Time from "../../helpers/Time";
 
 export default defineComponent({
 	name: 'DayTimeline',
 
 	props: {
-		dayBoundaries: {
-			type: Object as PropType<dayBoundaries>,
-			default: () => ({
-				start: 800,
-				end: 1800,
-			})
-		},
 		time: {
 			type: Object as PropType<Time>,
 			required: true,
@@ -35,31 +27,17 @@ export default defineComponent({
 
 	data() {
 		return {
-			possibleTimelineHours: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300] as dayStartOrEnd[],
-			timelineHours: [] as dayStartOrEnd[],
+			timelineHours: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300] as dayStartOrEnd[],
 		}
 	},
 
 	methods: {
-		setDayTimelineSpan() {
-			const possibleHours = this.possibleTimelineHours
-			const self = this
-
-			this.timelineHours = possibleHours.filter(hour => {
-				return hour >= self.dayBoundaries.start && hour < self.dayBoundaries.end
-			})
-		},
-
 		getLocaleTimeString(time: dayStartOrEnd): string {
 			const { hour } = this.time.getHourAndMinutesFromTimePoints(time)
 
 			return this.time.getLocalizedHour(new Date(2100, 1, 1, hour))
 		}
 	},
-
-	mounted() {
-		this.setDayTimelineSpan()
-	}
 })
 </script>
 

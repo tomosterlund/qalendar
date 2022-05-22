@@ -1,7 +1,5 @@
 import {dayStartOrEnd} from "./config.interface";
 
-export type dayBoundaries = { start: dayStartOrEnd; end: dayStartOrEnd }
-
 export interface DOMRect {
 	bottom: number;
 	height: number;
