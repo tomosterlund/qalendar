@@ -1,10 +1,10 @@
 <template>
 	<div class="calendar-header">
-		<div class="calendar-header__period-name is-flex-grow-1" v-if="periodName">
+		<div class="calendar-header__period-name" v-if="periodName">
 			{{ periodName }}
 		</div>
 
-		<div class="calendar-header__period is-flex-grow-1">
+		<div class="calendar-header__period">
 			<div class="calendar-header__chevron-arrows">
 				<font-awesome-icon class="calendar-header__chevron-arrow calendar-header__chevron-arrow-left"
 								   :icon="icons.chevronLeft"
@@ -16,7 +16,6 @@
 			</div>
 
 			<DatePicker ref="periodSelect"
-						  class="is-flex-grow-1"
 						  :selected-date-default="selectedDateDefault"
 						  :mode="mode"
 						  :time="time"
@@ -55,7 +54,7 @@ export default defineComponent ({
 			default: new Date()
 		},
 		time: {
-			type: Object as PropType<Time>|any,
+			type: Object as PropType<Time>,
 			default: () => ({}),
 		}
 	},
@@ -89,6 +88,7 @@ export default defineComponent ({
 
 			// day
 			return this.time.getLocalizedNameOfMonth(this.currentPeriod?.selectedDate, 'short')
+				+ ' '  + this.currentPeriod.selectedDate.getFullYear()
 		}
 	},
 
@@ -107,6 +107,7 @@ export default defineComponent ({
 </script>
 
 <style scoped lang="scss">
+@use '../../styles/mixins.scss' as mixins;
 
 .calendar-header {
 	display: flex;
@@ -115,6 +116,11 @@ export default defineComponent ({
 	justify-content: space-between;
 	padding: var(--qalendar-spacing-half);
 	border-radius: var(--qalendar-border-radius);
+
+	@include mixins.screen-size-m {
+		justify-content: space-between;
+		grid-gap: var(--qalendar-spacing);
+	}
 
 	&__period {
 		display: flex;
@@ -128,7 +134,7 @@ export default defineComponent ({
 		margin-bottom: 4px;
 		text-align: center;
 
-		@media (min-width: 600px) {
+		@include mixins.screen-size-m {
 			margin-bottom: 0;
 			text-align: left;
 		}
@@ -142,28 +148,17 @@ export default defineComponent ({
 	}
 
 	&__chevron-arrows {
-		display: none;
+		display: flex;
 		align-items: center;
 		gap: var(--qalendar-spacing);
-
-		@media (min-width: 600px) {
-			display: flex;
-		}
 
 		.calendar-header__chevron-arrow {
 			cursor: pointer;
 			transition: color 0.2s ease;
 
-			&:hover {
+			@include mixins.hover {
 				color: var(--qalendar-gray-quite-dark);
 			}
-		}
-	}
-
-	.is-flex-grow-1 {
-
-		@media (max-width: 600px) {
-			flex-basis: 100%;
 		}
 	}
 }

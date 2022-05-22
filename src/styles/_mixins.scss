@@ -1,0 +1,16 @@
+@mixin screen-size-m {
+
+	@media (min-width: 600px) {
+		@content
+	}
+}
+
+@mixin hover {
+
+	@media (hover: hover) {
+
+		&:hover {
+			@content
+		}
+	}
+}

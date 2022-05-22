@@ -30,7 +30,6 @@ export default defineComponent({
 				week: {
 					startsOn: 'monday',
 					nDays: 7,
-					scrollToHour: 8,
 				},
 				locale: 'de-DE'
 			} as configInterface,

@@ -166,9 +166,7 @@ export default defineComponent({
 
 			if (weekWrapper) {
 				const scrollToHourFromConfig = this.config?.week?.scrollToHour
-				console.log(scrollToHourFromConfig)
 				const scrollToHour = scrollToHourFromConfig ? (scrollToHourFromConfig * 50) : 400 // 400 for 08:00
-				console.log(scrollToHour)
 				weekWrapper.scroll(0, scrollToHour - 10) // -10 to display the hour in DayTimeline
 			}
 		}

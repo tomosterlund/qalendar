@@ -2,7 +2,7 @@
 	<div class="date-picker">
 		<div class="date-picker__value-display" @click="openPeriodSelector">
 			<font-awesome-icon :icon="icons.calendarIcon"></font-awesome-icon>
-			{{ period }}
+			<span class="date-picker__value-display-text">{{ period }}</span>
 		</div>
 
 		<div class="date-picker__week-picker" v-if="showDatePicker">
@@ -136,6 +136,9 @@ export default defineComponent({
 		},
 
 		openPeriodSelector() {
+			this.weekPickerDates = this.time.getCalendarMonthSplitInWeeks(
+				this.datePickerCurrentDate.getFullYear(), this.datePickerCurrentDate.getMonth()
+			)
 			this.showDatePicker = true
 
 			setTimeout(() => this.setClickOutsideListener(), 100)
@@ -228,7 +231,6 @@ export default defineComponent({
 			}
 
 			newDate.setDate(newDatePayload)
-			console.log(newDate)
 			this.setWeek(newDate)
 		}
 	},
@@ -247,15 +249,18 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '../../styles/mixins.scss' as mixins;
 
 .date-picker {
 	position: relative;
 	width: fit-content;
-	min-width: 300px;
+
+	@include mixins.screen-size-m {
+		min-width: 300px;
+	}
 
 	&__value-display {
 		height: 36px;
-		border: 1px solid #d1d5db;
 		border-radius: 4px;
 		padding: 0 var(--qalendar-spacing);
 		font-size: 16px;
@@ -264,6 +269,26 @@ export default defineComponent({
 		align-items: center;
 		justify-content: center;
 		gap: var(--qalendar-spacing-half);
+
+		@include mixins.screen-size-m {
+			border: var(--qalendar-border-gray-thin);
+		}
+
+		.date-picker__value-display-text {
+			display: none;
+
+			@include mixins.screen-size-m {
+				display: initial;
+			}
+		}
+
+		svg {
+			font-size: 20px;
+
+			@include mixins.screen-size-m {
+				font-size: initial;
+			}
+		}
 	}
 
 	&__week-picker {
@@ -274,10 +299,14 @@ export default defineComponent({
 		border: var(--qalendar-border-gray-thin);
 		border-radius: 4px;
 		top: calc(100% - 1px);
-		left: 50%;
-		transform: translateX(-50%);
+		right: 0;
 		width: 250px;
 		box-shadow: 0 2px 4px rgba(240, 236, 236, 0.76);
+
+		@include mixins.screen-size-m {
+			left: 50%;
+			transform: translateX(-50%);
+		}
 	}
 
 	&__week-picker-navigation {
@@ -293,12 +322,9 @@ export default defineComponent({
 			transition: var(--qalendar-text-transition);
 			color: #131313;
 
-			@media (hover: hover) {
-
-				&:hover {
-					color: var(--qalendar-blue);
-					cursor: pointer;
-				}
+			@include mixins.hover {
+				color: var(--qalendar-blue);
+				cursor: pointer;
 			}
 		}
 	}
@@ -306,12 +332,9 @@ export default defineComponent({
 	&__toggle-mode {
 		transition: var(--qalendar-text-transition);
 
-		@media (hover: hover) {
-
-			&:hover {
-				color: var(--qalendar-blue);
-				cursor: pointer;
-			}
+		@include mixins.hover {
+			color: var(--qalendar-blue);
+			cursor: pointer;
 		}
 	}
 
@@ -339,11 +362,8 @@ export default defineComponent({
 
 			&.has-day {
 
-				@media (hover: hover) {
-
-					&:hover {
-						background-color: var(--qalendar-light-gray);
-					}
+				@include mixins.hover {
+					background-color: var(--qalendar-light-gray);
 				}
 			}
 
@@ -380,13 +400,10 @@ export default defineComponent({
 			font-size: 12px;
 			transition: all 0.2s ease;
 
-			@media (hover: hover) {
-
-				&:hover {
-					background-color: var(--qalendar-theme-color);
-					color: #fff;
-					border: var(--qalendar-border-blue-thin);
-				}
+			@include mixins.hover {
+				background-color: var(--qalendar-theme-color);
+				color: #fff;
+				border: var(--qalendar-border-blue-thin);
 			}
 		}
 	}
