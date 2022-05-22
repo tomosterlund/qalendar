@@ -1,15 +1,17 @@
 <template>
 	<div class="calendar-week__event"
-		 :class="getEventColor"
+		 :class="`${isEditable ? 'is-editable' : 'is-not-editable'}`"
 		 :style="{
 			 top: getPositionInDay(event.time.start),
 		 	 height: getLengthOfEvent(event.time.start, event.time.end),
 		 	 left: getLeftRule + '%',
 		 	 width: getWidthRule + '%',
 		 	 border: getBorderRule,
+		 	 color: eventColor,
+		 	 backgroundColor: eventBackgroundColor
 		 }"
 		 @click="handleClickOnEvent"
-		 @mouseenter="showResizeElements = true"
+		 @mouseenter="showResizeElements = isEditable"
 		 @mouseleave="showResizeElements = false">
 		<div class="calendar-week__event-info-wrapper">
 			<div v-if="showResizeElements" class="calendar-week__event-resize calendar-week__event-resize-up"
@@ -32,14 +34,14 @@
 				<span>{{ event.with }}</span>
 			</div>
 
-			<div class="calendar-week__event-row" v-if="event.description">
+			<div class="calendar-week__event-row is-description" v-if="event.description">
 				<font-awesome-icon :icon="icons.description" class="calendar-week__event-icon" />
 				<span>{{ event.description }}</span>
 			</div>
 
 			<div v-if="eventIsLongerThan30Minutes"
 				 class="calendar-week__event-blend-out"
-				 :style="{ backgroundImage: 'linear-gradient(to bottom, transparent, ' + getEventColorCSSValue + ')' }" />
+				 :style="{ backgroundImage: 'linear-gradient(to bottom, transparent, ' + eventBackgroundColor + ')' }" />
 
 			<div v-if="showResizeElements" class="calendar-week__event-resize calendar-week__event-resize-down"
 				 @mousedown="resizeEvent('down')" />
@@ -54,6 +56,7 @@ import EventPosition from "../../helpers/EventPosition";
 import {faClock, faComment, faUser, faMapMarkerAlt} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import Time from "../../helpers/Time";
+import {configInterface} from "../../typings/config.interface";
 const eventPositionHelper = new EventPosition()
 
 
@@ -71,6 +74,10 @@ export default defineComponent({
 		},
 		time: {
 			type: Object as PropType<Time>,
+			required: true,
+		},
+		config: {
+			type: Object as PropType<configInterface>,
 			required: true,
 		},
 	},
@@ -95,22 +102,18 @@ export default defineComponent({
 			resizingDirection: '',
 			changeInQuarterHoursEventStart: 0,
 			changeInQuarterHoursEventEnd: 0,
+			isEditable: this.eventProp.isEditable || false,
+			colors: {
+				yellow: '#F4B400',
+				blue: 'rgba(38, 132, 255, 0.9)',
+				green: 'rgb(51, 182, 121)',
+			} as { [key: string]: string },
+			eventColor: '#fff',
+			eventBackgroundColor: '',
 		}
 	},
 
 	computed: {
-		getEventColor() {
-			if (this.event?.color) return 'is-' + this.event.color
-
-			return 'is-blue'
-		},
-
-		getEventColorCSSValue() {
-			if (this.getEventColor === 'is-blue') return 'rgba(38, 132, 255, 0.9)'
-			if (this.getEventColor === 'is-green') return 'rgb(51, 182, 121)'
-			if (this.getEventColor === 'is-yellow') return '#F4B400'
-		},
-
 		getEventTime() {
 			return this.time.getLocalizedTime(this.event.time.start) + ' - ' + this.time.getLocalizedTime(this.event.time.end)
 		},
@@ -250,6 +253,25 @@ export default defineComponent({
 		getMinutesFromTimePoints(timePoints: number) {
 			return timePoints / this.timePointsInOneMinute
 		},
+
+		setColors() {
+			// First, if the event has a customColorScheme, and the name of that
+			if (
+				this.event?.colorScheme
+				&& this.config.style?.colorSchemes
+				&& this.config.style.colorSchemes[this.event.colorScheme]
+			) {
+				this.eventColor = this.config.style.colorSchemes[this.event.colorScheme].color
+				return this.eventBackgroundColor = this.config.style.colorSchemes[this.event.colorScheme].backgroundColor
+			}
+
+			if (this.event?.color) {
+				this.eventColor = '#fff'
+				return this.eventBackgroundColor = this.colors[this.event.color]
+			}
+
+			return this.eventBackgroundColor = this.colors.blue
+		},
 	},
 	
 	watch: {
@@ -294,6 +316,10 @@ export default defineComponent({
 				&& newEndOfTimeDateTimeString <= endOfDayDateTimeString
 			) this.event.time.end = newEndOfTimeDateTimeString
 		},
+	},
+
+	mounted() {
+		this.setColors()
 	}
 })
 </script>
@@ -306,21 +332,6 @@ export default defineComponent({
 	border-radius: 4px;
 	cursor: pointer;
 	box-sizing: content-box;
-
-	&.is-blue {
-		color: #fff;
-		background-color: var(--qalendar-blue-transparent);
-	}
-
-	&.is-yellow {
-		color: #fff;
-		background-color: #F4B400;
-	}
-
-	&.is-green {
-		color: #fff;
-		background-color: var(--qalendar-green);
-	}
 
 	.calendar-week__event-row {
 		display: flex;

@@ -1,51 +1,54 @@
 <template>
 	<div class="event-flyout"
-		 :class="{ 'is-visible': isVisible }"
+		 :class="{ 'is-visible': isVisible, 'is-not-editable': ! isEditable }"
 		 :style="eventFlyoutInlineStyles">
-		<div class="event-flyout__menu">
-			<span>
-				<font-awesome-icon class="event-flyout__menu-item is-edit-icon"
-								   :icon="icons.edit"
-								   @click="editEvent" />
-				<font-awesome-icon class="event-flyout__menu-item is-trash-icon"
-								   :icon="icons.trash"
-								   @click="deleteEvent" />
-			</span>
+		<div class="event-flyout__relative-wrapper">
+			<div class="event-flyout__menu">
+				<span class="event-flyout__menu-editable" v-if="isEditable">
+					<font-awesome-icon class="event-flyout__menu-item is-edit-icon"
+									   :icon="icons.edit"
+									   @click="editEvent" />
 
-			<span>
-				<font-awesome-icon class="event-flyout__menu-item is-times-icon"
-								   :icon="icons.times"
-								   @click="closeFlyout" />
-			</span>
-		</div>
+					<font-awesome-icon class="event-flyout__menu-item is-trash-icon"
+									   :icon="icons.trash"
+									   @click="deleteEvent" />
+				</span>
 
-		<div class="event-flyout__info-wrapper" v-if="calendarEvent">
-			<div v-if="calendarEvent.title" class="event-flyout__row is-title">
-				{{ calendarEvent.title }}
+				<span class="event-flyout__menu-close">
+					<font-awesome-icon class="event-flyout__menu-item is-times-icon"
+									   :icon="icons.times"
+									   @click="closeFlyout" />
+				</span>
 			</div>
 
-			<div class="event-flyout__row is-time" v-if="calendarEvent.time">
-				{{ getEventDate + ' ⋅ ' + getEventTime }}
-			</div>
+			<div class="event-flyout__info-wrapper" v-if="calendarEvent">
+				<div v-if="calendarEvent.title" class="event-flyout__row is-title">
+					{{ calendarEvent.title }}
+				</div>
 
-			<div class="event-flyout__row is-location" v-if="calendarEvent.location">
-				<font-awesome-icon :icon="icons.location" />
-				{{ calendarEvent.location }}
-			</div>
+				<div class="event-flyout__row is-time" v-if="calendarEvent.time">
+					{{ getEventDate + ' ⋅ ' + getEventTime }}
+				</div>
 
-			<div v-if="calendarEvent.with" class="event-flyout__row">
-				<font-awesome-icon :icon="icons.user" />
-				{{ calendarEvent.with }}
-			</div>
+				<div class="event-flyout__row is-location" v-if="calendarEvent.location">
+					<font-awesome-icon :icon="icons.location" />
+					{{ calendarEvent.location }}
+				</div>
 
-			<div v-if="calendarEvent.topic" class="event-flyout__row">
-				<font-awesome-icon :icon="icons.topic" class="calendar-week__event-icon" />
-				{{ calendarEvent.topic }}
-			</div>
+				<div v-if="calendarEvent.with" class="event-flyout__row">
+					<font-awesome-icon :icon="icons.user" />
+					{{ calendarEvent.with }}
+				</div>
 
-			<div v-if="calendarEvent.description" class="event-flyout__row">
-				<font-awesome-icon :icon="icons.description" class="calendar-week__event-icon" />
-				{{ calendarEvent.description }}
+				<div v-if="calendarEvent.topic" class="event-flyout__row">
+					<font-awesome-icon :icon="icons.topic" class="calendar-week__event-icon" />
+					{{ calendarEvent.topic }}
+				</div>
+
+				<div v-if="calendarEvent.description" class="event-flyout__row">
+					<font-awesome-icon :icon="icons.description" class="calendar-week__event-icon" />
+					{{ calendarEvent.description }}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -58,9 +61,10 @@ import {DOMRect} from "../../typings/types";
 import EventFlyoutPosition, {EVENT_FLYOUT_WIDTH} from "../../helpers/EventFlyoutPosition";
 import {faMapMarkerAlt, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {faClock, faComment, faUser, faEdit, faTrashAlt, faQuestionCircle} from "@fortawesome/free-regular-svg-icons";
-const eventFlyoutPositionHelper = new EventFlyoutPosition()
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import {configInterface} from "../../typings/config.interface";
 import Time from "../../helpers/Time";
+const eventFlyoutPositionHelper = new EventFlyoutPosition()
 
 export default defineComponent({
 	name: 'EventFlyout',
@@ -80,6 +84,10 @@ export default defineComponent({
 		},
 		time: {
 			type: Object as PropType<Time>,
+			required: true,
+		},
+		config: {
+			type: Object as PropType<configInterface>,
 			required: true,
 		},
 	},
@@ -103,6 +111,7 @@ export default defineComponent({
 			},
 			calendarEvent: this.calendarEventProp,
 			flyoutWidth: EVENT_FLYOUT_WIDTH + 'px',
+			isEditable: this.calendarEventProp?.isEditable || false,
 		}
 	},
 
@@ -213,15 +222,29 @@ export default defineComponent({
 		pointer-events: initial
 	}
 
+	&__relative-wrapper {
+		position: relative;
+	}
+
 	&__menu {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: var(--qalendar-spacing) var(--qalendar-spacing) 0 var(--qalendar-spacing);
 
-		span {
+		.event-flyout__menu-editable,
+		.event-flyout__menu-close {
+			padding: var(--qalendar-spacing) var(--qalendar-spacing) 0 var(--qalendar-spacing);
 			display: flex;
 			grid-gap: 20px;
+		}
+
+		.event-flyout__menu-close {
+
+			.is-not-editable & {
+				position: absolute;
+				top: 0;
+				right: 0;
+			}
 		}
 	}
 
@@ -264,6 +287,10 @@ export default defineComponent({
 
 	.is-title {
 		font-size: 20px;
+
+		.is-not-editable & {
+			max-width: 90%;
+		}
 	}
 
 	.is-time {

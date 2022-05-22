@@ -33,7 +33,17 @@ export default defineComponent({
 				},
 				locale: 'de-DE',
 				style: {
-					// fontFamily: 'Verdana',
+					fontFamily: 'Verdana',
+					colorSchemes: {
+						meetings: {
+							color: '#fff',
+							backgroundColor: '#131313',
+						},
+						ladies: {
+							color: '#fff',
+							backgroundColor: '#ff4081',
+						}
+					}
 				},
 			} as configInterface,
 			events: seededEvents as eventInterface[],

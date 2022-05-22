@@ -10,6 +10,7 @@
 			<EventFlyout :calendar-event-prop="selectedEvent"
 						 :event-element-dom-rect="selectedEventDOMRect"
 						 :time="time"
+						 :config="config"
 						 @hide="selectedEvent = null"
 						 @edit-event="$emit('edit-event', $event)"
 						 @delete-event="$emit('edit-event', $event)" />
@@ -19,6 +20,7 @@
 					 :key="day.dateTimeString + mode"
 					 :day="day"
 					 :time="time"
+					 :config="config"
 					 @event-was-clicked="handleClickOnEvent"
 					 @event-was-resized="$emit('event-was-resized', $event)" />
 			</div>
@@ -52,7 +54,7 @@ export default defineComponent({
 	props: {
 		config: {
 			type: Object as PropType<configInterface>,
-			default: () => ({}),
+			required: true,
 		},
 		events: {
 			type: Array as PropType<eventInterface[]>,
@@ -120,7 +122,14 @@ export default defineComponent({
 				}
 			}
 
-			if (this.nDays === 5) days.splice(5, 2)
+			if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === 'monday') {
+				// Delete Saturday & Sunday
+				days.splice(5, 2)
+			} else if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === 'sunday') {
+				// First delete Saturday, then Sunday
+				days.splice(6, 1)
+				days.splice(0, 1)
+			}
 
 			this.days = days
 		},

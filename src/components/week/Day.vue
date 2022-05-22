@@ -5,6 +5,7 @@
 				  :event-prop="event"
 				  :day="day"
 				  :time="time"
+				  :config="config"
 				  @event-was-clicked="$emit('event-was-clicked', $event)"
 				  @event-was-resized="handleEventWasResized" />
 	</div>
@@ -17,6 +18,7 @@ import DayEvent from "./DayEvent.vue";
 import EventConcurrency from "../../helpers/EventConcurrency";
 import { eventInterface } from "../../typings/interfaces/event.interface";
 import Time from "../../helpers/Time";
+import {configInterface} from "../../typings/config.interface";
 const eventConcurrencyHelper = new EventConcurrency()
 
 export default defineComponent({
@@ -31,6 +33,10 @@ export default defineComponent({
 		},
 		time: {
 			type: Object as PropType<Time>,
+			required: true,
+		},
+		config: {
+			type: Object as PropType<configInterface>,
 			required: true,
 		},
 	},
