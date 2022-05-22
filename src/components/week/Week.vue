@@ -37,6 +37,7 @@ import Day from "./Day.vue";
 import EventFlyout from "../partials/EventFlyout.vue";
 import {eventInterface} from "../../typings/interfaces/event.interface";
 import Time from "../../helpers/Time";
+import {WEEK_HEIGHT} from "../../constants";
 
 export default defineComponent({
 	name: 'Week',
@@ -88,6 +89,7 @@ export default defineComponent({
 			mode: this.modeProp as 'day' | 'week' |'month',
 			selectedEvent: null as eventInterface | null,
 			selectedEventDOMRect: {},
+			weekHeight: WEEK_HEIGHT + 'px',
 		}
 	},
 
@@ -158,14 +160,23 @@ export default defineComponent({
 			this.selectedEventDOMRect = event.eventElement.getBoundingClientRect()
 			this.selectedEvent = event.clickedEvent
 		},
+
+		scrollOnMount() {
+			const weekWrapper = document.querySelector('.calendar-week__wrapper')
+
+			if (weekWrapper) {
+				const scrollToHourFromConfig = this.config?.week?.scrollToHour
+				console.log(scrollToHourFromConfig)
+				const scrollToHour = scrollToHourFromConfig ? (scrollToHourFromConfig * 50) : 400 // 400 for 08:00
+				console.log(scrollToHour)
+				weekWrapper.scroll(0, scrollToHour - 10) // -10 to display the hour in DayTimeline
+			}
+		}
 	},
 
 	mounted() {
 		this.setInitialEvents(this.modeProp)
-
-		const weekWrapper = document.querySelector('.calendar-week__wrapper')
-
-		if (weekWrapper) weekWrapper.scroll(0, 390)
+		this.scrollOnMount()
 	},
 
 	watch: {
@@ -201,7 +212,7 @@ export default defineComponent({
 	&__events {
 		display: flex;
 		width: 100%;
-		height: 1200px;
+		height: v-bind(weekHeight);
 	}
 }
 </style>

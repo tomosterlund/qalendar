@@ -1,0 +1,1 @@
+export const WEEK_HEIGHT = 1200

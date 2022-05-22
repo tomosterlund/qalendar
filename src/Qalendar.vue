@@ -10,6 +10,7 @@
 
 			<Week :events="events"
 				  :period="period"
+				  :config="config"
 				  :key="period.start.getTime() + period.end.getTime()"
 				  :mode-prop="mode"
 				  :n-days="week.nDays"

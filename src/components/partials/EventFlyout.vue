@@ -119,7 +119,7 @@ export default defineComponent({
 			if ( ! this.calendarEvent) return null
 
 			return new Date(this.calendarEvent.time.start).toLocaleDateString(
-				(<any>window).qalendar?.locale || navigator.language,
+				this.time.CALENDAR_LOCALE,
 				{
 					month: 'long',
 					day: 'numeric',
