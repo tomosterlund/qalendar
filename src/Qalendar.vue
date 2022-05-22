@@ -77,7 +77,8 @@ export default defineComponent({
 			time: new Time(
 				this.config?.week?.startsOn,
 				this.config?.locale || null
-			) as Time|any
+			) as Time|any,
+			fontFamily: this.config?.style?.fontFamily || '\'Verdana\', \'Open Sans\', serif',
 		}
 	},
 
@@ -127,7 +128,7 @@ export default defineComponent({
 	.calendar-root {
 		border: var(--qalendar-border-gray-thin);
 		border-radius: var(--qalendar-border-radius);
-		font-family: 'Verdana', 'Open Sans';
+		font-family: v-bind(fontFamily);
 
 		position: relative;
 		width: 100%;

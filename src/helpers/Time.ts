@@ -37,7 +37,7 @@ export default class Time {
 	getCalendarWeekDateObjects(date: Date | null = null): calendarWeekType {
 		const selectedDate = date ? date : new Date()
 
-		// We need to cound currentDate.getDate() - the current Nday of the week, to get the first date
+		// We need to count currentDate.getDate() - the current Nday of the week, to get the first date
 		let subtractedDaysToGetFirstDate
 		if (this.FIRST_DAY_OF_WEEK === 'sunday') subtractedDaysToGetFirstDate = selectedDate.getDay()
 		else subtractedDaysToGetFirstDate = selectedDate.getDay() === 0 ? 6 : (selectedDate.getDay() - 1)
