@@ -6,10 +6,6 @@ export interface configInterface {
 	texts?: configTextsInterface;
 	locale?: string;
 	week?: {
-		dayBoundaries?: {
-			start: dayStartOrEnd;
-			end: dayStartOrEnd;
-		},
 		nDays?: 5 | 7;
 		startsOn?: 'sunday' | 'monday'
 	},

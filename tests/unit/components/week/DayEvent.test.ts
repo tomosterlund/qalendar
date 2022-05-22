@@ -15,7 +15,6 @@ describe('DayEvent.vue', () => {
 				time: { start: '2022-05-20 09:00', end: '2022-05-20 10:00' },
 				color: 'blue',
 			},
-			dayBoundaries: { start: 1200, end: 1600},
 			time: new Time('sunday', 'en-US')
 		}
 	})

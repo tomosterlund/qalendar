@@ -9,10 +9,6 @@ describe('Header.vue', () => {
 	test('viewing the month(s) name', () => {
 		wrapper = mount(Header, {
 			props: {
-				dayBoundaries: {
-					start: 0,
-					end: 2400
-				},
 				time: new Time('monday', 'en-US')
 			},
 		})

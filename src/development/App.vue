@@ -29,10 +29,6 @@ export default defineComponent({
 			config: {
 				week: {
 					startsOn: 'monday',
-					dayBoundaries: {
-						start: 0,
-						end: 2400,
-					},
 					nDays: 7,
 				},
 				locale: 'en-US'
