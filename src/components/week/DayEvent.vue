@@ -179,7 +179,7 @@ export default defineComponent({
 		 * */
 		getEventElementFromChildElement(event: any) {
 			const eventTarget = event.target
-			if ( ! eventTarget) return null
+			if ( ! eventTarget || typeof eventTarget.className.includes !== 'function') return null
 
 			if (eventTarget.className.includes('.calendar-week__event')) return event.target
 

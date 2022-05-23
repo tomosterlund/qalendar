@@ -221,9 +221,10 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '../../styles/mixins' as mixins;
 
 .event-flyout {
-	position: fixed;
+	position: absolute;
 	z-index: 50;
 	background-color: #fff;
 	max-height: 100%;
@@ -238,6 +239,11 @@ export default defineComponent({
 	transform: translateY(-40px);
 	opacity: 0;
 	pointer-events: none;
+
+	.qalendar-is-small & {
+		position: fixed;
+		transform: translateY(0px);
+	}
 
 	&.is-visible {
 		opacity: 1;
