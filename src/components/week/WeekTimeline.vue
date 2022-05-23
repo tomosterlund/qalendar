@@ -55,7 +55,6 @@ export default defineComponent({
 <style scoped lang="scss">
 
 .week-timeline {
-	width: calc(100% - var(--qalendar-week-padding-left));
 	height: fit-content;
 	display: flex;
 	justify-content: space-evenly;
@@ -89,8 +88,6 @@ export default defineComponent({
 		margin-bottom: 4px;
 		padding: 6px;
 		border-radius: 50%;
-		height: 30px;
-		width: 30px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
