@@ -97,6 +97,7 @@ export default defineComponent({
 
 	methods: {
 		setDays() {
+			// TODO: Refactor and use map, after first having filtered out all events that are not in the period
 			const days = []
 
 			const week = this.time.getCalendarWeekDateObjects(this.period.start)

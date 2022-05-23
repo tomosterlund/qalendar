@@ -10,3 +10,5 @@ export interface DOMRect {
 	x: number;
 	y: number;
 }
+
+export type modeType = 'day' | 'week' | 'month'

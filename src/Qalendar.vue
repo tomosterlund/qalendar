@@ -30,6 +30,7 @@ import {configInterface, dayStartOrEnd} from "./typings/config.interface";
 import Time from "./helpers/Time";
 import Header from "./components/header/Header.vue";
 import Week from "./components/week/Week.vue";
+import {modeType} from "./typings/types";
 
 export default defineComponent({
 	name: 'Qalendar',
@@ -73,7 +74,7 @@ export default defineComponent({
 			week: {
 				nDays: this.config?.week?.nDays || 7,
 			},
-			mode: 'week' as 'day' | 'week' | 'month',
+			mode: 'week' as modeType,
 			time: new Time(
 				this.config?.week?.startsOn,
 				this.config?.locale || null
