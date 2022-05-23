@@ -111,7 +111,6 @@ export default defineComponent({
 			},
 			calendarEvent: this.calendarEventProp,
 			flyoutWidth: EVENT_FLYOUT_WIDTH + 'px',
-			isEditable: this.calendarEventProp?.isEditable || false,
 		}
 	},
 
@@ -149,6 +148,10 @@ export default defineComponent({
 				top: this.top + 'px',
 				left: this.left + 'px',
 			}
+		},
+
+		isEditable() {
+			return this.calendarEventProp?.isEditable || false
 		}
 	},
 
@@ -212,13 +215,17 @@ export default defineComponent({
 	max-width: 98%;
 	border: var(--qalendar-border-gray-thin);
 	border-radius: 8px;
-	box-shadow: var(--qalendar-box-shadow);
+	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.09), 0 6px 12px rgba(0, 0, 0, 0.18);
+
+	transition: all 0.2s ease;
+	transition-property: opacity, transform;
+	transform: translateY(-40px);
 	opacity: 0;
 	pointer-events: none;
-	transition: opacity 0.18s ease;
 
 	&.is-visible {
 		opacity: 1;
+		transform: translateY(0px);
 		pointer-events: initial
 	}
 

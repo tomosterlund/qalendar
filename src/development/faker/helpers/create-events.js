@@ -21,7 +21,8 @@ const createEvents = (monthArg = null) => {
 				start: time.start,
 				end: time.end,
 			},
-			color: getRandomElementInArray(colors)
+			color: getRandomElementInArray(colors),
+			isEditable: true,
 		}
 
 		if (Math.random() < 0.5) event.description = getRandomElementInArray(descriptions)

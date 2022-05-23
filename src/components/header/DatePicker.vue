@@ -149,6 +149,7 @@ export default defineComponent({
 		},
 
 		openPeriodSelector() {
+			console.log('openPeriodSelector')
 			this.weekPickerDates = this.time.getCalendarMonthSplitInWeeks(
 				this.datePickerCurrentDate.getFullYear(), this.datePickerCurrentDate.getMonth()
 			)

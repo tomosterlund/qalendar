@@ -24,7 +24,7 @@ export default class EventFlyoutPosition {
 		}
 
 		/** Calendar is wide */
-		// Set 'top' for events whose bottom is outside of the viewport
+		// Set 'top' for events whose bottom is outside the viewport
 		const topWhenSpaceToBottomIsNegative = spaceToBottom < 0
 				? (windowDimensions.height - flyoutDimensions.height) - 10
 				: null
