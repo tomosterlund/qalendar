@@ -352,5 +352,22 @@ describe('Time.ts', () => {
 		})
 	});
 
-	it.todo('checks if a given date is in a given week')
+	it('checks if a given date is in a given week', () => {
+		const date1 = new Date(2022, (5 - 1), 23)
+		const week1 = timeM.getCalendarWeekDateObjects(date1)
+		expect(timeM.dateIsInWeek(date1, week1)).toBe(true)
+
+		const date2 = new Date(2018, (12 - 1), 31)
+		const week2 = [
+			new Date(2018, 11, 31),
+			new Date(2019, 0, 1),
+			new Date(2019, 0, 2),
+			new Date(2019, 0, 3),
+			new Date(2019, 0, 4),
+			new Date(2019, 0, 5),
+			new Date(2019, 0, 6),
+		]
+		expect(timeM.dateIsInWeek(date2, week2)).toBe(true)
+		expect(timeM.dateIsInWeek(new Date(2018, 11, 30), week2)).toBe(false)
+	})
 })
