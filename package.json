@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite build && tsc --emitDeclarationOnly",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
     "test:e2e": "start-server-and-test preview http://127.0.0.1:5050/ 'cypress open'",
@@ -13,6 +13,18 @@
     "lint": "eslint qalendar --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "seed": "node src/development/faker/seed.js"
   },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/qalendar.umd.js",
+  "module": "./dist/qalendar.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/qalendar.es.js",
+      "require": "./dist/qalendar.umd.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.0",
     "@fortawesome/free-regular-svg-icons": "^6.0.0",
