@@ -23,6 +23,7 @@
 
 			<div class="event-flyout__info-wrapper" v-if="calendarEvent">
 				<div v-if="calendarEvent.title" class="event-flyout__row is-title">
+					<div class="event-flyout__color-icon" :style="{ backgroundColor: eventBackgroundColor }" />
 					{{ calendarEvent.title }}
 				</div>
 
@@ -64,6 +65,7 @@ import {faClock, faComment, faUser, faEdit, faTrashAlt, faQuestionCircle} from "
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {configInterface} from "../../typings/config.interface";
 import Time from "../../helpers/Time";
+import {EVENT_COLORS} from "../../constants";
 const eventFlyoutPositionHelper = new EventFlyoutPosition()
 
 export default defineComponent({
@@ -111,6 +113,7 @@ export default defineComponent({
 			},
 			calendarEvent: this.calendarEventProp,
 			flyoutWidth: EVENT_FLYOUT_WIDTH + 'px',
+			colors: EVENT_COLORS
 		}
 	},
 
@@ -152,6 +155,19 @@ export default defineComponent({
 
 		isEditable() {
 			return this.calendarEventProp?.isEditable || false
+		},
+
+		eventBackgroundColor() {
+			// First, if the event has a customColorScheme, and the name of that
+			if (
+				this.calendarEvent?.colorScheme
+				&& this.config.style?.colorSchemes
+				&& this.config.style.colorSchemes[this.calendarEvent.colorScheme]
+			) {
+				return this.config.style.colorSchemes[this.calendarEvent.colorScheme].backgroundColor
+			}
+
+			return this.colors[this.calendarEvent?.color || 'blue']
 		}
 	},
 
@@ -279,6 +295,7 @@ export default defineComponent({
 
 	&__row {
 		display: flex;
+		align-items: center;
 		grid-gap: var(--qalendar-spacing);
 		margin-bottom: 4px;
 		font-weight: 400;
@@ -290,6 +307,14 @@ export default defineComponent({
 			color: #5f6368;
 			width: 14px;
 		}
+	}
+
+	&__color-icon {
+		--icon-height: 16px;
+
+		border-radius: 50%;
+		height: var(--icon-height);
+		width: var(--icon-height);
 	}
 
 	.is-title {

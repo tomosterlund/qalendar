@@ -1,11 +1,12 @@
 <template>
-	<div class="date-picker">
-		<div class="date-picker__value-display" @click="openPeriodSelector">
+	<div class="date-picker" @mouseleave="hideDatePicker">
+		<div class="date-picker__value-display"
+			 @click="togglePeriodSelector">
 			<font-awesome-icon :icon="icons.calendarIcon"></font-awesome-icon>
 			<span class="date-picker__value-display-text">{{ period }}</span>
 		</div>
 
-		<div class="date-picker__week-picker" v-if="showDatePicker">
+		<div class="date-picker__week-picker" v-if="showDatePicker" @mouseleave="hideDatePicker">
 			<div class="date-picker__week-picker-navigation">
 				<font-awesome-icon class="is-icon is-chevron-left"
 								   :icon="icons.chevronLeft"
@@ -126,36 +127,11 @@ export default defineComponent({
 			this.weekPickerDates = this.time.getCalendarMonthSplitInWeeks(year, month)
 		},
 
-		clickOutsideListener(event: MouseEvent) {
-			const weekPicker = document.querySelector('.date-picker__week-picker')
-			const valueDisplay = document.querySelector('.date-picker__value-display')
-
-			if ( ! weekPicker) return
-
-			// @ts-ignore
-			if (valueDisplay && valueDisplay.isEqualNode(event.target)) {
-				return this.showDatePicker = true
-			}
-
-			// @ts-ignore
-			if ( ! weekPicker.contains(event.target)) {
-				this.showDatePicker = false
-				window.removeEventListener('click', this.clickOutsideListener)
-			}
-		},
-
-		setClickOutsideListener() {
-			window.addEventListener('click', (event) => this.clickOutsideListener(event))
-		},
-
-		openPeriodSelector() {
-			console.log('openPeriodSelector')
+		togglePeriodSelector() {
 			this.weekPickerDates = this.time.getCalendarMonthSplitInWeeks(
 				this.datePickerCurrentDate.getFullYear(), this.datePickerCurrentDate.getMonth()
 			)
-			this.showDatePicker = true
-
-			setTimeout(() => this.setClickOutsideListener(), 100)
+			this.showDatePicker = !this.showDatePicker
 		},
 
 		setWeek(date: Date) {
@@ -248,6 +224,10 @@ export default defineComponent({
 
 			newDate.setDate(newDatePayload)
 			this.setWeek(newDate)
+		},
+
+		hideDatePicker() {
+			setTimeout(() => this.showDatePicker = false, 100)
 		}
 	},
 
@@ -329,7 +309,7 @@ export default defineComponent({
 		font-weight: 900;
 		display: flex;
 		align-items: center;
-		justify-content: space-evenly;
+		justify-content: space-between;
 		gap: var(--qalendar-spacing-half);
 		margin-bottom: var(--qalendar-spacing-half);
 		user-select: none;

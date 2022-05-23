@@ -57,6 +57,7 @@ import {faClock, faComment, faUser, faMapMarkerAlt} from "@fortawesome/free-soli
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import Time from "../../helpers/Time";
 import {configInterface} from "../../typings/config.interface";
+import {EVENT_COLORS} from "../../constants";
 const eventPositionHelper = new EventPosition()
 
 
@@ -103,11 +104,7 @@ export default defineComponent({
 			changeInQuarterHoursEventStart: 0,
 			changeInQuarterHoursEventEnd: 0,
 			isEditable: this.eventProp.isEditable || false,
-			colors: {
-				yellow: '#F4B400',
-				blue: 'rgba(38, 132, 255, 0.9)',
-				green: 'rgb(51, 182, 121)',
-			} as { [key: string]: string },
+			colors: EVENT_COLORS as { [key: string]: string },
 			eventColor: '#fff',
 			eventBackgroundColor: '',
 		}
