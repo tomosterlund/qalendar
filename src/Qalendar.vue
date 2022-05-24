@@ -110,7 +110,7 @@ export default defineComponent({
 			const calendarWidth = calendarRoot.clientWidth
 			const dayModeBreakpoint = 700
 
-			this.qalendarIsSmall = calendarWidth < 850;
+			this.qalendarIsSmall = calendarWidth < 850
 
 			if (calendarWidth < dayModeBreakpoint) this.mode = 'day'
 			if (calendarWidth > dayModeBreakpoint) this.mode = 'week'
