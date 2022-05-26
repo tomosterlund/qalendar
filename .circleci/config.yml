@@ -42,6 +42,14 @@ jobs:
           command: npx vitest run --silent
     environment:
       TZ: "Asia/Tokyo"
+  build_docs:
+    docker:
+      - image: cimg/node:17.2.0
+    steps:
+      - checkout
+      - run:
+          name: Build & publish docs
+          command: deploy-docs.sh
 
 workflows:
   test_london:
@@ -53,3 +61,6 @@ workflows:
   test_tokyo:
     jobs:
       - test_tokyo
+  docs:
+    jobs:
+      - build_docs

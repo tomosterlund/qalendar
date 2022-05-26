@@ -1,6 +1,10 @@
 <template>
 	<div class="calendar-root-wrapper">
-		<div class="calendar-root" :class="rootClasses">
+		<div class="calendar-root" :class="{
+			'mode-is-day': mode === 'day',
+			'mode-is-week': mode === 'week',
+			'qalendar-is-small': qalendarIsSmall
+		}">
 			<Header :config="config"
 					:key="wasInitialized"
 					:mode="mode"
@@ -81,15 +85,6 @@ export default defineComponent({
 			fontFamily: this.config?.style?.fontFamily || '\'Verdana\', \'Open Sans\', serif',
 			qalendarIsSmall: false,
 		}
-	},
-
-	computed: {
-		rootClasses() {
-			let rootClasses = this.mode === 'week' ? 'mode-is-week' : 'mode-is-day'
-			if (this.qalendarIsSmall) rootClasses += ' qalendar-is-small'
-
-			return
-		},
 	},
 
 	methods: {

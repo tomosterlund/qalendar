@@ -19,7 +19,6 @@ import Qalendar from "../Qalendar.vue";
 import {defineComponent} from "vue";
 import {configInterface} from "../typings/config.interface";
 import {eventInterface} from "../typings/interfaces/event.interface";
-import {eventsList} from "./data/manually-created-events";
 import {seededEvents} from "./data/seeded-events";
 
 export default defineComponent({
@@ -50,7 +49,7 @@ export default defineComponent({
 						}
 					}
 				},
-			},
+			} as configInterface,
 			events: seededEvents as eventInterface[],
 		}
 	},

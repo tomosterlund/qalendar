@@ -224,7 +224,7 @@ export default defineComponent({
 @use '../../styles/mixins' as mixins;
 
 .event-flyout {
-	position: absolute;
+	position: fixed;
 	z-index: 50;
 	background-color: #fff;
 	max-height: 100%;
@@ -241,7 +241,7 @@ export default defineComponent({
 	pointer-events: none;
 
 	.qalendar-is-small & {
-		position: fixed;
+		position: absolute;
 		transform: translateY(0px);
 	}
 

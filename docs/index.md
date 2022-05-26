@@ -10,7 +10,7 @@ This library is still in an early Beta version, and is not yet suitable for prod
 
 ### Installing
 
-``` sh
+```
 npm install qalendar
 ```
 
