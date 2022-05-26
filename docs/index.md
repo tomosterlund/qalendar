@@ -22,7 +22,7 @@ npm install qalendar
 </template>
 
 <script>
-import Qalendar from "../Qalendar.vue";
+import Qalendar from "qalendar";
 
 export default {
     components: {
@@ -53,6 +53,8 @@ export default {
 </script>
 
 <style>
+    /** Please observe,
+    that your path to the node_modules directory might be different */
     @import '../../node_modules/qalendar/dist/style.css';
 </style>
 ```
@@ -136,7 +138,7 @@ data() {
 ## Guide
 
 ### Calendar event properties
-A calendar event can bed given the following properties:
+A calendar event can have the following properties:
 
 |   Property    |       type / accepted values       | Required  |                                                 |
 |:-------------:|:----------------------------------:|:---------:|:-----------------------------------------------:|
