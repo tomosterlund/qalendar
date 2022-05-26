@@ -42,21 +42,6 @@ jobs:
           command: npx vitest run --silent
     environment:
       TZ: "Asia/Tokyo"
-  build_docs:
-    docker:
-      - image: cimg/node:17.2.0
-    steps:
-      - checkout
-      - run:
-          name: Install packages
-          command: npm i
-      - run:
-          command: git config --global user.email "tom.osterlund1@gmail.com"
-      - run:
-          command: git config --global user.name "Tom Österlund"
-      - run:
-          name: Build & publish docs
-          command: ./deploy-docs.sh
 
 workflows:
   test_london:
@@ -68,11 +53,3 @@ workflows:
   test_tokyo:
     jobs:
       - test_tokyo
-  docs:
-    jobs:
-      - build_docs:
-          filters:
-            branches:
-              only:
-                - master
-                - dev/create-vitepress-docs
