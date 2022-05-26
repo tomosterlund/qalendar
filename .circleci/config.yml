@@ -49,7 +49,7 @@ jobs:
       - checkout
       - run:
           name: Build & publish docs
-          command: deploy-docs.sh
+          command: ./deploy-docs.sh
 
 workflows:
   test_london:
