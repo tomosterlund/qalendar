@@ -64,8 +64,8 @@ workflows:
   docs:
     jobs:
       - build_docs
-        filters:
-          branches:
-            only:
-              - dev/create-vitepress-docs
-              - master
+          filters:
+            branches:
+              only:
+                - dev/create-vitepress-docs
+                - master
