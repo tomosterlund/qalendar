@@ -51,6 +51,10 @@ jobs:
           name: Install packages
           command: npm i
       - run:
+          command: git config --global user.email "tom.osterlund1@gmail.com"
+      - run:
+          command: git config --global user.name "Tom Österlund"
+      - run:
           name: Build & publish docs
           command: ./deploy-docs.sh
 
