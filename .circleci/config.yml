@@ -48,8 +48,8 @@ jobs:
     steps:
       - checkout
       - run:
-            name: Install packages
-            command: npm i
+          name: Install packages
+          command: npm i
       - run:
           name: Build & publish docs
           command: ./deploy-docs.sh
