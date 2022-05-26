@@ -1,6 +1,6 @@
 {
   "name": "qalendar",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build && tsc --emitDeclarationOnly",
@@ -13,9 +13,9 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint qalendar --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "seed": "node src/development/faker/seed.js",
-	"docs:dev": "vitepress dev docs",
-	"docs:build": "vitepress build docs",
-	"docs:serve": "vitepress serve docs --port=8080"
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs --port=8080"
   },
   "files": [
     "dist"
