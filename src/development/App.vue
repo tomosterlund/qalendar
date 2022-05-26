@@ -5,7 +5,12 @@
 	<main>
 		<Qalendar :selected-date-default="new Date()"
 				  :config="config"
-				  :events="events" />
+				  :events="events"
+				  @event-was-clicked="reactToEvent"
+				  @updated-period="reactToEvent"
+				  @event-was-resized="reactToEvent"
+				  @edit-event="reactToEvent"
+				  @delete-event="reactToEvent" />
 	</main>
 </template>
 
@@ -14,7 +19,6 @@ import Qalendar from "../Qalendar.vue";
 import {defineComponent} from "vue";
 import {configInterface} from "../typings/config.interface";
 import {eventInterface} from "../typings/interfaces/event.interface";
-import {eventsList} from "./data/manually-created-events";
 import {seededEvents} from "./data/seeded-events";
 
 export default defineComponent({
@@ -49,6 +53,12 @@ export default defineComponent({
 			events: seededEvents as eventInterface[],
 		}
 	},
+
+	methods: {
+		reactToEvent(payload: any) {
+			console.log(payload)
+		}
+	}
 })
 </script>
 
