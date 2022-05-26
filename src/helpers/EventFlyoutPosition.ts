@@ -13,26 +13,27 @@ export default class EventFlyoutPosition {
 		const calendarRoot = document.querySelector('.calendar-root')
 		if ( ! calendarRoot) return
 
-		const calendarWidth = calendarRoot.clientWidth
 		const calendarDomRect = calendarRoot.getBoundingClientRect()
-		const spaceOnRight = calendarDomRect.width - eventElementDOMRect.right
-		const spaceToBottom = calendarDomRect.height - eventElementDOMRect.bottom
 
-		/** Calendar is thin */
-		if (calendarWidth < 850) {
-			return { top: null, left: null }
-		}
+		// The four variables below, contain the space in pixels, from the event to the calendar border
+		// i.e. spaceTop === length from event top border, to calendar top border
+		// and spaceRight === length from event right border to calendar right border
+		const spaceTop = eventElementDOMRect.top - calendarDomRect.top
+		const spaceRight = calendarDomRect.right - eventElementDOMRect.right
+		const spaceBottom = calendarDomRect.bottom - eventElementDOMRect.bottom
+		const spaceLeft =  eventElementDOMRect.left - calendarDomRect.left
 
-		/** Calendar is wide */
+		const flyoutNeededWidth = (flyoutDimensions.width + 10)
+
 		// Set 'top' for events whose bottom is outside the viewport
-		const topWhenSpaceToBottomIsNegative = spaceToBottom < 0
-				? (windowDimensions.height - flyoutDimensions.height) - 10
+		const topWhenSpaceToBottomIsNegative = spaceBottom < 0
+				? (calendarDomRect.bottom - flyoutDimensions.height) - 10
 				: null
 
 		// Position flyout to the right of event, facing downwards, when possible
 		if (
-			spaceToBottom > flyoutDimensions.height
-			&& spaceOnRight > (flyoutDimensions.width + 10)
+			spaceBottom > flyoutDimensions.height
+			&& spaceRight > flyoutNeededWidth
 		) {
 			return {
 				top: Math.round(eventElementDOMRect.top),
@@ -42,8 +43,8 @@ export default class EventFlyoutPosition {
 
 		// Position flyout to the right of event, facing upwards, when too close to the bottom
 		if (
-			spaceToBottom < flyoutDimensions.height
-			&& spaceOnRight > (flyoutDimensions.width + 10)
+			spaceTop > flyoutDimensions.height
+			&& spaceRight > flyoutNeededWidth
 		) {
 			return {
 				top: topWhenSpaceToBottomIsNegative
@@ -53,22 +54,29 @@ export default class EventFlyoutPosition {
 			}
 		}
 
-		if (spaceOnRight < (flyoutDimensions.width + 10)) {
-			if (spaceToBottom > flyoutDimensions.height) {
-				return {
-					top: eventElementDOMRect.top,
-					left: Math.round(eventElementDOMRect.left - (flyoutDimensions.width + 10))
-				}
-			} else {
-				return {
-					top: topWhenSpaceToBottomIsNegative
-						? topWhenSpaceToBottomIsNegative
-						: Math.round(eventElementDOMRect.bottom - flyoutDimensions.height),
-					left: Math.round(eventElementDOMRect.left - (flyoutDimensions.width + 10))
-				}
+		// Position flyout left of event, facing downwards, when possible
+		if (spaceLeft > flyoutNeededWidth
+			&& spaceBottom > flyoutDimensions.height
+		) {
+			return {
+				top: eventElementDOMRect.top,
+				left: Math.round(eventElementDOMRect.left - (flyoutDimensions.width + 10))
 			}
 		}
 
-		return { top: 0, left: 0 }
+		// Position flyout left of event, facing upwards when possible
+		if (spaceLeft > flyoutNeededWidth
+			&& spaceTop > flyoutDimensions.height
+		) {
+			return {
+				top: topWhenSpaceToBottomIsNegative
+					? topWhenSpaceToBottomIsNegative
+					: Math.round(eventElementDOMRect.bottom - flyoutDimensions.height),
+				left: Math.round(eventElementDOMRect.left - (flyoutDimensions.width + 10))
+			}
+		}
+
+		// Fallback - will lead to the flyout being centered horizontally and vertically over the calendar
+		return { top: null, left: null }
 	}
 }
