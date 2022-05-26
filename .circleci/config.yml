@@ -63,9 +63,9 @@ workflows:
       - test_tokyo
   docs:
     jobs:
-      - build_docs
+      - build_docs:
           filters:
             branches:
               only:
-                - dev/create-vitepress-docs
                 - master
+                - dev/create-vitepress-docs
