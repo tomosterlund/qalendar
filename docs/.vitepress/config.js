@@ -1,8 +1,5 @@
-module.exports = {
-	base: 'https://tomosterlund.github.io/qalendar/',
+export default {
+	base: '/qalendar/',
 	title: 'Qalendar',
 	description: 'Vue 3 calendar component',
-	nav: [
-		{ text: "Home", link: "/" },
-	]
 }
