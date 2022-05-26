@@ -3,6 +3,5 @@ module.exports = {
 	description: 'Vue 3 calendar component',
 	nav: [
 		{ text: "Home", link: "/" },
-		{ text: "Guide", link: "/guide" },
 	]
 }
