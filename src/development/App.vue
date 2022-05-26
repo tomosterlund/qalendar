@@ -5,7 +5,12 @@
 	<main>
 		<Qalendar :selected-date-default="new Date()"
 				  :config="config"
-				  :events="events" />
+				  :events="events"
+				  @event-was-clicked="reactToEvent"
+				  @updated-period="reactToEvent"
+				  @event-was-resized="reactToEvent"
+				  @edit-event="reactToEvent"
+				  @delete-event="reactToEvent" />
 	</main>
 </template>
 
@@ -45,10 +50,16 @@ export default defineComponent({
 						}
 					}
 				},
-			} as configInterface,
+			},
 			events: seededEvents as eventInterface[],
 		}
 	},
+
+	methods: {
+		reactToEvent(payload: any) {
+			console.log(payload)
+		}
+	}
 })
 </script>
 
