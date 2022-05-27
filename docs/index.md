@@ -105,18 +105,16 @@ data() {
     return {
         config: {
             style: {
-                style: {
-                    colorSchemes: {
-                        meetings: {
-                            color: '#fff',
-                            backgroundColor: '#131313',
-                        },
-                        sports: {
-                            color: '#fff',
-                            backgroundColor: '#ff4081',
-                        }
+                colorSchemes: {
+                    meetings: {
+                        color: '#fff',
+                        backgroundColor: '#131313',
+                    },
+                    sports: {
+                        color: '#fff',
+                        backgroundColor: '#ff4081',
                     }
-                },
+                }
             },
         },
         events: [

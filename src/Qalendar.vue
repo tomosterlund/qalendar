@@ -3,7 +3,6 @@
 		<div class="calendar-root" :class="{
 			'mode-is-day': mode === 'day',
 			'mode-is-week': mode === 'week',
-			'qalendar-is-small': qalendarIsSmall
 		}">
 			<Header :config="config"
 					:key="wasInitialized"
@@ -83,7 +82,6 @@ export default defineComponent({
 				this.config?.locale || null
 			) as Time|any,
 			fontFamily: this.config?.style?.fontFamily || '\'Verdana\', \'Open Sans\', serif',
-			qalendarIsSmall: false,
 		}
 	},
 
@@ -104,8 +102,6 @@ export default defineComponent({
 
 			const calendarWidth = calendarRoot.clientWidth
 			const dayModeBreakpoint = 700
-
-			this.qalendarIsSmall = calendarWidth < 850;
 
 			if (calendarWidth < dayModeBreakpoint) this.mode = 'day'
 			if (calendarWidth > dayModeBreakpoint) this.mode = 'week'
