@@ -1,6 +1,9 @@
 <template>
 	<div class="calendar-root-wrapper">
-		<div class="calendar-root" :class="mode === 'week' ? 'mode-is-week' : 'mode-is-day'">
+		<div class="calendar-root" :class="{
+			'mode-is-day': mode === 'day',
+			'mode-is-week': mode === 'week',
+		}">
 			<Header :config="config"
 					:key="wasInitialized"
 					:mode="mode"
@@ -133,8 +136,9 @@ export default defineComponent({
 
 		position: relative;
 		width: 100%;
-		margin-right: 0;
+		margin: 0 auto;
 		max-width: 1400px;
+		max-height: 700px;
 		height: calc(100vh - var(--qalendar-spacing-double));
 		display: flex;
 		flex-flow: column;

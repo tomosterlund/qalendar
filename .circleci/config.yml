@@ -42,6 +42,17 @@ jobs:
           command: npx vitest run --silent
     environment:
       TZ: "Asia/Tokyo"
+  run_build:
+    docker:
+      - image: cimg/node:17.2.0
+    steps:
+      - checkout
+      - run:
+          name: Install packages
+          command: npm i
+      - run:
+          name: Build
+          command: npm run build
 
 workflows:
   test_london:
@@ -53,3 +64,6 @@ workflows:
   test_tokyo:
     jobs:
       - test_tokyo
+  run_build:
+    jobs:
+      - run_build

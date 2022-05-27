@@ -129,9 +129,12 @@ export default defineComponent({
 		getEventDate() {
 			if ( ! this.calendarEvent) return null
 
-			return new Date(this.calendarEvent.time.start).toLocaleDateString(
+			const { year, month, date } = this.time.getAllVariablesFromDateTimeString(this.calendarEvent.time.start)
+
+			return new Date(year, month, date).toLocaleDateString(
 				this.time.CALENDAR_LOCALE,
 				{
+					year: 'numeric',
 					month: 'long',
 					day: 'numeric',
 				}
@@ -143,6 +146,7 @@ export default defineComponent({
 				return {
 					top: '50%',
 					left: '50%',
+					position: 'absolute' as 'absolute', // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
 					transform: 'translate(-50%, -50%)',
 				}
 			}
@@ -150,6 +154,7 @@ export default defineComponent({
 			return {
 				top: this.top + 'px',
 				left: this.left + 'px',
+				position: 'fixed' as 'fixed' // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
 			}
 		},
 
@@ -177,7 +182,6 @@ export default defineComponent({
 
 			const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
 				this.eventElementDomRect,
-				{ width: window.innerWidth, height: window.innerHeight },
 				{ height: flyout?.clientHeight || 300, width: flyout?.clientWidth || 0 }
 			)
 
@@ -221,6 +225,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '../../styles/mixins' as mixins;
 
 .event-flyout {
 	position: fixed;
@@ -273,7 +278,6 @@ export default defineComponent({
 
 	&__menu-item {
 		font-size: 20px;
-		border-radius: 50%;
 		color: gray;
 
 		&:hover {

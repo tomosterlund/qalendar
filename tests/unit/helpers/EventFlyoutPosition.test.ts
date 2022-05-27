@@ -1,144 +1,110 @@
 import {describe, expect, test} from "vitest";
 import EventFlyoutPositionHelper from "../../../src/helpers/EventFlyoutPosition";
-const eventFlyoutPositionHelper = new EventFlyoutPositionHelper()
+const eventFlyoutPosition = new EventFlyoutPositionHelper()
 
 describe('EventFlyoutPositionHelper.ts', () => {
-	/**
-	 * Yield a position that opens on the right-hand side,
-	 * of an event positioned far to the top left of the window
-	 * */
-	test('Positioning the Flyout relative to an event in the top left', () => {
-		const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
-			{
-				bottom: 369,
-				height: 109.5,
-				left: 310.203125,
-				right: 449.40625,
-				top: 259.5,
-				width: 139.203125,
-				x: 310.203125,
-				y: 259.5,
-			},
-			{ height: 1200, width: 15000 },
-			{ height: 300, width: 350 }
-		)
 
-		if ( ! flyoutPosition) return
+	test('Positioning the flyout where spaceRight && spaceBottom is enough', () => {
+		const eventDOMRect = { "x": 186.71875,  "y": 155.328125,  "width": 119.71875,  "height": 100,  "top": 155.328125,  "right": 306.4375,  "bottom": 255.328125,  "left": 186.71875}
+		const flyoutDimensions = { "height": 171,  "width": 400 }
+		const calendarDomRect = { "x": 8, "y": 26, "width": 903, "height": 702, "top": 26, "right": 911, "bottom": 728, "left": 8 }
 
-		expect(flyoutPosition.top).toEqual(260)
-		// expect space to the DOMRect.right + 10 (for having space between event and flyout)
-		expect(flyoutPosition.left).toEqual(459)
+		const position = eventFlyoutPosition.calculateFlyoutPosition(eventDOMRect, flyoutDimensions, calendarDomRect)
+
+		if ( ! position) throw new Error('No position')
+
+		expect(position.top).toBe(155)
+		expect(position.left).toBe(316)
 	})
 
-	test('Positioning the Flyout on a small device, with space to bottom', () => {
-		const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
-			{
-				bottom: 369,
-				height: 109.5,
-				left: 50,
-				right: 400,
-				top: 259.5,
-				width: 139.203125,
-				x: 310.203125,
-				y: 259.5,
-			},
-			{ height: 800, width: 350 },
-			{ height: 300, width: 350 }
-		)
+	test('Positioning the flyout where spaceRight && spaceBottom is just about enough', () => {
+		const eventDOMRect = { "x": 270.84375, "y": 197, "width": 101.421875, "height": 100, "top": 197, "right": 372.265625, "bottom": 297, "left": 270.84375 }
+		const flyoutDimensions = { "height": 262,  "width": 400 }
+		const calendarDomRect = { "x": 8, "y": 26, "width": 775, "height": 702, "top": 26, "right": 783, "bottom": 728, "left": 8 }
 
-		if ( ! flyoutPosition) return
+		const position = eventFlyoutPosition.calculateFlyoutPosition(eventDOMRect, flyoutDimensions, calendarDomRect)
 
-		expect(flyoutPosition.top).toEqual(260)
-		expect(flyoutPosition.left).toEqual(50)
+		if ( ! position) throw new Error('No position')
+
+		expect(position.top).toBe(197)
+		expect(position.left).toBe(382)
 	})
 
-	test('Positioning the Flyout on a small device, without space to bottom', () => {
-		const flyoutHeight = 300
-		const flyoutRectBottom = 750
+	test('Positioning the flyout where spaceTop && spaceRight is enough', () => {
+		const eventDOMRect = { "x": 168.421875, "y": 647, "width": 101.421875, "height": 75, "top": 647, "right": 269.84375, "bottom": 722, "left": 168.421875 }
+		const flyoutDimensions = { "height": 148,  "width": 400 }
+		const calendarDomRect = { "x": 8, "y": 26, "width": 775, "height": 702, "top": 26, "right": 783, "bottom": 728, "left": 8 }
 
-		const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
-			{
-				bottom: flyoutRectBottom,
-				height: 200,
-				left: 50,
-				right: 449.40625,
-				top: 600,
-				width: 139.203125,
-				x: 310.203125,
-				y: 259.5,
-			},
-			{ height: 800, width: 350 },
-			{ height: flyoutHeight, width: 350 }
-		)
+		const position = eventFlyoutPosition.calculateFlyoutPosition(eventDOMRect, flyoutDimensions, calendarDomRect)
 
-		if ( ! flyoutPosition) return
+		if ( ! position) throw new Error('No position')
 
-		expect(flyoutPosition.top).toEqual(flyoutRectBottom - flyoutHeight)
-		expect(flyoutPosition.left).toEqual(50)
+		expect(position.top).toBe(574)
+		expect(position.left).toBe(280)
 	})
 
-	test('Positioning the flyout for an event close to the bottom of the screen', () => {
-		const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
-			{
-				bottom: 1227,
-				height: 80.625,
-				left: 173,
-				right: 447.203125,
-				top: 1146.375,
-				width: 274.203125,
-				x: 173,
-				y: 1146.375,
-			},
-			{ width: 1720, height: 1247 },
-			{ height: 350, width: 350 }
-		)
+	test('Positioning the flyout where spaceLeft && spaceBottom is enough', () => {
+		const eventDOMRect = { "x": 680.53125, "y": 197, "width": 101.421875, "height": 41.65625, "top": 197, "right": 781.953125, "bottom": 238.65625, "left": 680.53125 }
+		const flyoutDimensions = { "height": 148,  "width": 400 }
+		const calendarDomRect = { "x": 8, "y": 26, "width": 775, "height": 702, "top": 26, "right": 783, "bottom": 728, "left": 8 }
 
-		if ( ! flyoutPosition) return
+		const position = eventFlyoutPosition.calculateFlyoutPosition(eventDOMRect, flyoutDimensions, calendarDomRect)
 
-		expect(flyoutPosition.top).toEqual(877)
-		expect(flyoutPosition.left).toEqual(457)
+		if ( ! position) throw new Error('No position')
+
+		expect(position.top).toBe(197)
+		expect(position.left).toBe(271)
 	})
 
-	test('Positioning the flyout for an event close to the right border of the screen', () => {
-		const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
-			{
-				bottom: 232.625,
-				height: 80.625,
-				left: 1273.8125,
-				right: 1548.015625,
-				top: 152,
-				width: 274.203125,
-				x: 1273.8125,
-				y: 152,
-			},
-			{width: 1720, height: 1247},
-			{height: 116, width: 350}
-		)
-		if ( ! flyoutPosition) return
+	test('Positioning the flyout where spaceLeft && spaceTop is enough', () => {
+		const eventDOMRect = { "x": 1197.46875, "y": 551, "width": 187.578125, "height": 75, "top": 551, "right": 1385.046875, "bottom": 626, "left": 1197.46875 }
+		const flyoutDimensions = { "height": 206,  "width": 400 }
+		const calendarDomRect = { "x": 8, "y": 26, "width": 1378, "height": 702, "top": 26, "right": 1386, "bottom": 728, "left": 8 }
 
-		expect(flyoutPosition.top).toEqual(152)
-		expect(flyoutPosition.left).toEqual(914)
+		const position = eventFlyoutPosition.calculateFlyoutPosition(eventDOMRect, flyoutDimensions, calendarDomRect)
+
+		if ( ! position) throw new Error('No position')
+
+		expect(position.top).toBe(420)
+		expect(position.left).toBe(787)
 	})
 
-	test('Positioning the flyout for an event close to the right & bottom borders of the screen', () => {
-		const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
-			{
-				bottom: 1227,
-				height: 80.625,
-				left: 1273.8125,
-				right: 1548.015625,
-				top: 1146.375,
-				width: 274.203125,
-				x: 1273.8125,
-				y: 1146.375,
-			},
-			{width: 1720, height: 1247},
-			{height: 116, width: 350}
-		)
+	test('Positioning the flyout where spaceRight && spaceBottom is enough, but spaceTop is negative', () => {
+		const eventDOMRect = { "x": 505.671875, "y": -188, "width": 127.046875, "height": 414.5, "top": -188, "right": 632.71875, "bottom": 226.5, "left": 505.671875 }
+		const flyoutDimensions = { "height": 183,  "width": 400 }
+		const calendarDomRect = { "x": 8, "y": 26, "width": 1378, "height": 702, "top": 26, "right": 1386, "bottom": 728, "left": 8 }
 
-		if ( ! flyoutPosition) return
+		const position = eventFlyoutPosition.calculateFlyoutPosition(eventDOMRect, flyoutDimensions, calendarDomRect)
 
-		expect(flyoutPosition.top).toEqual(1227 - 116)
-		expect(flyoutPosition.left).toEqual(Math.round(1273.8125 - (350 + 10)))
+		if ( ! position) throw new Error('No position')
+
+		expect(position.top).toBe(36)
+		expect(position.left).toBe(643)
+	})
+
+	test('Positioning the flyout where spaceRight && spaceTop is enough, but spaceBottom is negative', () => {
+		const eventDOMRect = { "x": 443.15625, "y": 687, "width": 187.578125, "height": 100, "top": 687, "right": 630.734375, "bottom": 787, "left": 443.15625 }
+		const flyoutDimensions = { "height": 206,  "width": 400 }
+		const calendarDomRect = { "x": 8, "y": 26, "width": 1378, "height": 702, "top": 26, "right": 1386, "bottom": 728, "left": 8 }
+
+		const position = eventFlyoutPosition.calculateFlyoutPosition(eventDOMRect, flyoutDimensions, calendarDomRect)
+
+		if ( ! position) throw new Error('No position')
+
+		expect(position.top).toBe(512)
+		expect(position.left).toBe(641)
+	})
+
+	test('Getting null values for small calendar widths, which are then used to position flyout centered over the calendar', () => {
+		const eventDOMRect = { "x": 66, "y": 495, "width": 509, "height": 75, "top": 495, "right": 575, "bottom": 570, "left": 66 }
+		const flyoutDimensions = { "height": 125,  "width": 400 }
+		const calendarDomRect = { "x": 8, "y": 26, "width": 568, "height": 702, "top": 26, "right": 576, "bottom": 728, "left": 8 }
+
+		const position = eventFlyoutPosition.calculateFlyoutPosition(eventDOMRect, flyoutDimensions, calendarDomRect)
+
+		if ( ! position) throw new Error('No position')
+
+		expect(position.top).toBeNull()
+		expect(position.left).toBeNull()
 	})
 })
