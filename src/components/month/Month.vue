@@ -7,6 +7,7 @@
 				 :key="weekIndex"
 				 class="calendar-month__week">
 				<Day v-for="(day, dayIndex) in week"
+					 :is-first-week="weekIndex === 0"
 					 :config="config"
 					 :key="dayIndex"
 					 :day="day"
@@ -89,5 +90,17 @@ export default defineComponent({
 .calendar-month {
 	height: 100%;
 	width: 100%;
+
+	.calendar-month__weeks {
+		height: 100%;
+		display: flex;
+		flex-flow: column;
+		justify-content: space-between;
+	}
+
+	.calendar-month__week {
+		display: flex;
+		flex: 1;
+	}
 }
 </style>

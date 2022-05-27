@@ -11,7 +11,8 @@
 					:selected-date-default="selectedDateDefault"
 					@updated-period="handleUpdatedPeriod" />
 
-			<Week :events="events"
+			<Week v-if="['week', 'day'].includes(mode)"
+				  :events="events"
 				  :period="period"
 				  :config="config"
 				  :key="period.start.getTime() + period.end.getTime()"
@@ -22,6 +23,13 @@
 				  @event-was-resized="$emit('event-was-resized', $event)"
 				  @edit-event="$emit('edit-event', $event)"
 				  @delete-event="$emit('delete-event', $event)" />
+
+			<Month v-if="mode === 'month'"
+				   :key="period.start.getTime() + period.end.getTime()"
+				   :events="events"
+				   :time="time"
+				   :config="config"
+				   :period="period" />
 		</div>
 	</div>
 </template>
@@ -34,11 +42,13 @@ import Time from "./helpers/Time";
 import Header from "./components/header/Header.vue";
 import Week from "./components/week/Week.vue";
 import {modeType} from "./typings/types";
+import Month from "./components/month/Month.vue";
 
 export default defineComponent({
 	name: 'Qalendar',
 
 	components: {
+		Month,
 		Header,
 		Week,
 	},
@@ -77,7 +87,7 @@ export default defineComponent({
 			week: {
 				nDays: this.config?.week?.nDays || 7,
 			},
-			mode: 'week' as modeType,
+			mode: 'month' as modeType,
 			time: new Time(
 				this.config?.week?.startsOn,
 				this.config?.locale || null
@@ -105,7 +115,7 @@ export default defineComponent({
 			const dayModeBreakpoint = 700
 
 			if (calendarWidth < dayModeBreakpoint) this.mode = 'day'
-			if (calendarWidth > dayModeBreakpoint) this.mode = 'week'
+			if (calendarWidth > dayModeBreakpoint) this.mode = 'month' // TODO: change back to week
 		},
 	},
 

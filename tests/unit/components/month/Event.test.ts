@@ -18,6 +18,6 @@ describe('Event.vue', () => {
 
 	test('Displaying the time', () => {
 		const time = wrapper.find('.calendar-month__event-time')
-		expect(time.text()).toBe('12:00 AM - 1:00 AM')
+		expect(time.text()).toBe('12:00 AM')
 	})
 })
