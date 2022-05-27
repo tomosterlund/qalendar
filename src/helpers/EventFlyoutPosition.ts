@@ -7,13 +7,13 @@ export default class EventFlyoutPosition {
 
 	calculateFlyoutPosition(
 		eventElementDOMRect: DOMRect,
-		windowDimensions: elementDimensions,
 		flyoutDimensions: elementDimensions,
+		calendarDomRectParam: DOMRect|null = null
 	) : { top: number|null, left: number|null } | undefined {
 		const calendarRoot = document.querySelector('.calendar-root')
-		if ( ! calendarRoot) return
-
-		const calendarDomRect = calendarRoot.getBoundingClientRect()
+		// In order for the function to be properly tested, we need to be able to pass the calendarDomRect as a parameter
+		// @ts-ignore
+		const calendarDomRect = calendarDomRectParam ? calendarDomRectParam : calendarRoot.getBoundingClientRect()
 
 		// The four variables below, contain the space in pixels, from the event to the calendar border
 		// i.e. spaceTop === length from event top border, to calendar top border
@@ -30,13 +30,18 @@ export default class EventFlyoutPosition {
 				? (calendarDomRect.bottom - flyoutDimensions.height) - 10
 				: null
 
+		// TODO: build variable topWhenSpaceTopIsNegative
+		const topWhenSpaceTopIsNegative = spaceTop < 0
+			? (calendarDomRect.top + 10)
+			: null
+
 		// Position flyout to the right of event, facing downwards, when possible
 		if (
 			spaceBottom > flyoutDimensions.height
 			&& spaceRight > flyoutNeededWidth
 		) {
 			return {
-				top: Math.round(eventElementDOMRect.top),
+				top: topWhenSpaceTopIsNegative ? topWhenSpaceTopIsNegative : Math.round(eventElementDOMRect.top),
 				left: Math.round(eventElementDOMRect.right) + 10
 			}
 		}
@@ -59,7 +64,7 @@ export default class EventFlyoutPosition {
 			&& spaceBottom > flyoutDimensions.height
 		) {
 			return {
-				top: eventElementDOMRect.top,
+				top: topWhenSpaceTopIsNegative ? topWhenSpaceTopIsNegative : eventElementDOMRect.top,
 				left: Math.round(eventElementDOMRect.left - (flyoutDimensions.width + 10))
 			}
 		}

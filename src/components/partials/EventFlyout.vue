@@ -129,9 +129,12 @@ export default defineComponent({
 		getEventDate() {
 			if ( ! this.calendarEvent) return null
 
-			return new Date(this.calendarEvent.time.start).toLocaleDateString(
+			const { year, month, date } = this.time.getAllVariablesFromDateTimeString(this.calendarEvent.time.start)
+
+			return new Date(year, month, date).toLocaleDateString(
 				this.time.CALENDAR_LOCALE,
 				{
+					year: 'numeric',
 					month: 'long',
 					day: 'numeric',
 				}
@@ -143,6 +146,7 @@ export default defineComponent({
 				return {
 					top: '50%',
 					left: '50%',
+					position: 'absolute',
 					transform: 'translate(-50%, -50%)',
 				}
 			}
@@ -177,7 +181,6 @@ export default defineComponent({
 
 			const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
 				this.eventElementDomRect,
-				{ width: window.innerWidth, height: window.innerHeight },
 				{ height: flyout?.clientHeight || 300, width: flyout?.clientWidth || 0 }
 			)
 
@@ -239,11 +242,6 @@ export default defineComponent({
 	transform: translateY(-40px);
 	opacity: 0;
 	pointer-events: none;
-
-	.qalendar-is-small & {
-		position: absolute;
-		transform: translateY(0px);
-	}
 
 	&.is-visible {
 		opacity: 1;
