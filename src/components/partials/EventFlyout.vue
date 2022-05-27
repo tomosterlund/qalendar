@@ -277,7 +277,6 @@ export default defineComponent({
 
 	&__menu-item {
 		font-size: 20px;
-		border-radius: 50%;
 		color: gray;
 
 		&:hover {
