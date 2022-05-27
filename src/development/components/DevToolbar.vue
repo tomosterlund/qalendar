@@ -20,6 +20,11 @@
 				<option value="zh-CN">zh-CN</option>
 			</select>
 
+			<select name="nDays" id="nDays" v-model="nDays">
+				<option value="7">7 days</option>
+				<option value="5">5 days</option>
+			</select>
+
 			<button @click="isVisible = false">X</button>
 		</div>
 	</transition>
@@ -42,6 +47,7 @@ export default defineComponent({
 			isVisible: false,
 			layout: 'none',
 			locale: 'en-US',
+			nDays: 7,
 		}
 	},
 
@@ -54,6 +60,9 @@ export default defineComponent({
 
 		const localeSetting = localStorage.getItem('locale-setting')
 		if (localeSetting) this.locale = localeSetting
+
+		const nDaysSetting = localStorage.getItem('nDays-setting')
+		if (nDaysSetting) this.nDays = +nDaysSetting
 	},
 
 	watch: {
@@ -69,6 +78,11 @@ export default defineComponent({
 		locale(value) {
 			this.$emit('selected-locale', value)
 			localStorage.setItem('locale-setting', value)
+		},
+
+		nDays(value) {
+			this.$emit('selected-n-days', +value)
+			localStorage.setItem('nDays-setting', value)
 		}
 	}
 })

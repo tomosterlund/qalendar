@@ -5,7 +5,7 @@
 		<DevHeader v-if="layout === 'header'" />
 
 		<main>
-			<Qalendar :key="config.locale"
+			<Qalendar :key="config.locale + config.week.nDays"
 					  :selected-date-default="new Date()"
 					  :config="config"
 					  :events="events"
@@ -16,7 +16,7 @@
 					  @delete-event="reactToEvent" />
 		</main>
 
-		<DevToolbar @selected-locale="config.locale = $event" @selected-layout="layout = $event" />
+		<DevToolbar @selected-locale="config.locale = $event" @selected-layout="layout = $event" @selected-n-days="config.week.nDays = $event" />
 	</div>
 </template>
 
