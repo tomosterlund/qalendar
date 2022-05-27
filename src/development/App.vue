@@ -1,17 +1,23 @@
 <template>
-	<header>
-		Timezone offset: {{ new Date().getTimezoneOffset() }}
-	</header>
-	<main>
-		<Qalendar :selected-date-default="new Date()"
-				  :config="config"
-				  :events="events"
-				  @event-was-clicked="reactToEvent"
-				  @updated-period="reactToEvent"
-				  @event-was-resized="reactToEvent"
-				  @edit-event="reactToEvent"
-				  @delete-event="reactToEvent" />
-	</main>
+	<div class="app-container" :class="'layout-has-' + layout">
+		<DevSidebar v-if="layout === 'sidebar'" />
+
+		<DevHeader v-if="layout === 'header'" />
+
+		<main>
+			<Qalendar :key="config.locale"
+					  :selected-date-default="new Date()"
+					  :config="config"
+					  :events="events"
+					  @event-was-clicked="reactToEvent"
+					  @updated-period="reactToEvent"
+					  @event-was-resized="reactToEvent"
+					  @edit-event="reactToEvent"
+					  @delete-event="reactToEvent" />
+		</main>
+
+		<DevToolbar @selected-locale="config.locale = $event" @selected-layout="layout = $event" />
+	</div>
 </template>
 
 <script lang="ts">
@@ -20,11 +26,17 @@ import {defineComponent} from "vue";
 import {configInterface} from "../typings/config.interface";
 import {eventInterface} from "../typings/interfaces/event.interface";
 import {seededEvents} from "./data/seeded-events";
+import DevToolbar from "./components/DevToolbar.vue";
+import DevSidebar from "./components/DevSidebar.vue";
+import DevHeader from "./components/DevHeader.vue";
 
 export default defineComponent({
 	name: 'App',
 
 	components: {
+		DevHeader,
+		DevSidebar,
+		DevToolbar,
 		Qalendar,
 	},
 
@@ -35,7 +47,7 @@ export default defineComponent({
 					startsOn: 'monday',
 					nDays: 7,
 				},
-				locale: 'de-DE',
+				locale: 'en-US',
 				style: {
 					fontFamily: 'Verdana',
 					colorSchemes: {
@@ -51,6 +63,8 @@ export default defineComponent({
 				},
 			} as configInterface,
 			events: seededEvents as eventInterface[],
+
+			layout: 'none',
 		}
 	},
 
@@ -62,4 +76,30 @@ export default defineComponent({
 })
 </script>
 
-<style></style>
+<style lang="scss">
+
+.app-container {
+	padding: 10px;
+}
+
+body {
+	margin: 0;
+}
+
+.layout-has-sidebar {
+	display: flex;
+
+	main {
+		width: 100%;
+	}
+}
+
+.layout-has-header {
+
+	main {
+		display: flex;
+		justify-content: center;
+	}
+}
+
+</style>
