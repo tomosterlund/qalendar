@@ -146,7 +146,7 @@ export default defineComponent({
 				return {
 					top: '50%',
 					left: '50%',
-					position: 'absolute',
+					position: 'absolute' as 'absolute', // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
 					transform: 'translate(-50%, -50%)',
 				}
 			}
@@ -154,6 +154,7 @@ export default defineComponent({
 			return {
 				top: this.top + 'px',
 				left: this.left + 'px',
+				position: 'fixed' as 'fixed' // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
 			}
 		},
 
