@@ -135,7 +135,7 @@ export default defineComponent({
 
 		position: relative;
 		width: 100%;
-		margin-right: 0;
+		margin: 0 auto;
 		max-width: 1400px;
 		max-height: 700px;
 		height: calc(100vh - var(--qalendar-spacing-double));
