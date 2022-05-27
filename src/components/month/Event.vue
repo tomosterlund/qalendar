@@ -1,5 +1,6 @@
 <template>
-	<div class="calendar-month__event">
+	<div class="calendar-month__event"
+		 :id="eventIdPrefix + calendarEvent.id" @click="handleClickOnEvent">
 		<span class="calendar-month__event-color"></span>
 
 		<span class="calendar-month__event-time">
@@ -41,6 +42,7 @@ export default defineComponent({
 		return {
 			colors: EVENT_COLORS as { [key: string]: string },
 			eventBackgroundColor: '',
+			eventIdPrefix: 'calendar-month__event-',
 		}
 	},
 
@@ -67,6 +69,14 @@ export default defineComponent({
 
 			return this.eventBackgroundColor = this.colors.blue
 		},
+
+		handleClickOnEvent() {
+			const eventElement = document.getElementById(this.eventIdPrefix + this.calendarEvent.id)
+
+			if ( ! eventElement) return
+
+			this.$emit('event-was-clicked', { clickedEvent: this.calendarEvent, eventElement })
+		}
 	},
 
 	mounted() {

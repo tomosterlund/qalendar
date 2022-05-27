@@ -23,6 +23,7 @@ const createEvents = (monthArg = null) => {
 			},
 			color: getRandomElementInArray(colors),
 			isEditable: true,
+			id: Math.random().toString(16).substring(2, 8) + Math.random().toString(16).substring(2, 8),
 		}
 
 		if (Math.random() < 0.5) event.description = getRandomElementInArray(descriptions)

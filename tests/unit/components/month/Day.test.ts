@@ -29,4 +29,18 @@ describe('Day.vue', () => {
 		const dateDisplay = wrapper.find('.calendar-month__day-date')
 		expect(dateDisplay.text()).toBe('23')
 	})
+
+	test('Displaying the day name, if the isFirstWeek-prop === true', () => {
+		wrapper = mount(Day, {
+			props: {
+				time: new Time('sunday', 'en-US'),
+				config: {},
+				day: { events: [], dayName: 'Mon', dateTimeString: '2022-05-23 16:38' },
+				isFirstWeek: true,
+			}
+		})
+
+		const dayName = wrapper.find('.calendar-month__day-name')
+		expect(dayName.text()).toContain('Mon')
+	})
 })

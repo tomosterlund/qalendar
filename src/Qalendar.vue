@@ -29,7 +29,10 @@
 				   :events="events"
 				   :time="time"
 				   :config="config"
-				   :period="period" />
+				   :period="period"
+				   @event-was-clicked="$emit('event-was-clicked', $event)"
+				   @edit-event="$emit('edit-event', $event)"
+				   @delete-event="$emit('delete-event', $event)" />
 		</div>
 	</div>
 </template>

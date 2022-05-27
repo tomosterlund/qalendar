@@ -1,4 +1,4 @@
-export type eventId = string | number | symbol
+export type eventId = string | number
 
 export interface eventInterface {
 	id: eventId;

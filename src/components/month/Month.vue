@@ -11,9 +11,18 @@
 					 :config="config"
 					 :key="dayIndex"
 					 :day="day"
-					 :time="time"/>
+					 :time="time"
+					 @event-was-clicked="handleClickOnEvent" />
 			</div>
 		</div>
+
+		<EventFlyout :calendar-event-prop="selectedEvent"
+					 :event-element-dom-rect="selectedEventDOMRect"
+					 :time="time"
+					 :config="config"
+					 @hide="selectedEvent = null"
+					 @edit-event="$emit('edit-event', $event)"
+					 @delete-event="$emit('edit-event', $event)" />
 	</div>
 </template>
 
@@ -26,11 +35,15 @@ import {configInterface} from "../../typings/config.interface";
 import {eventInterface} from "../../typings/interfaces/event.interface";
 import EDate from "../../helpers/EDate";
 import {dayInterface} from "../../typings/interfaces/day.interface";
+import EventFlyout from "../partials/EventFlyout.vue";
 
 export default defineComponent({
 	name: 'Month',
 
-	components: {Day},
+	components: {
+		Day,
+		EventFlyout,
+	},
 
 	props: {
 		config: {
@@ -51,9 +64,13 @@ export default defineComponent({
 		},
 	},
 
+	emits: ['edit-event', 'delete-event'],
+
 	data() {
 		return {
-			month: [] as dayInterface[][]
+			month: [] as dayInterface[][],
+			selectedEvent: null as eventInterface | null,
+			selectedEventDOMRect: {},
 		}
 	},
 
@@ -76,7 +93,14 @@ export default defineComponent({
 					}
 				})
 			})
-		}
+		},
+
+		handleClickOnEvent(event: { eventElement: HTMLDivElement, clickedEvent: eventInterface }) {
+			this.$emit('event-was-clicked', event)
+
+			this.selectedEventDOMRect = event.eventElement.getBoundingClientRect()
+			this.selectedEvent = event.clickedEvent
+		},
 	},
 
 	mounted() {

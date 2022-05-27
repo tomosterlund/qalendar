@@ -13,7 +13,8 @@
 				   :key="calendarEvent.id"
 				   :calendar-event="calendarEvent"
 				   :config="config"
-				   :time="time"/>
+				   :time="time"
+				   @event-was-clicked="$emit('event-was-clicked', $event)"/>
 		</div>
 
 		<div class="calendar-month__weekday-more" v-if="day.events.length >= 4">+ more events</div>
@@ -49,7 +50,9 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		}
-	}
+	},
+
+	emits: ['event-was-clicked'],
 })
 </script>
 
