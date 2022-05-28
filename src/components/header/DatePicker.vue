@@ -176,9 +176,14 @@ export default defineComponent({
 				end = lastWeek[lastWeek.length - 1]
 			}
 
+			else if (this.mode === 'day') {
+				start = this.selectedDate
+				end = this.selectedDate
+			}
+
 			this.$emit('updated', {
-				start,
-				end,
+				start: new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0),
+				end: new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999),
 				selectedDate: this.datePickerCurrentDate,
 			});
 		},

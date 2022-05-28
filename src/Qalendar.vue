@@ -3,13 +3,15 @@
 		<div class="calendar-root" :class="{
 			'mode-is-day': mode === 'day',
 			'mode-is-week': mode === 'week',
+			'qalendar-is-small': calendarWidth < 700,
 		}">
 			<Header :config="config"
-					:key="wasInitialized"
+					:key="wasInitialized + mode"
 					:mode="mode"
 					:time="time"
 					:selected-date-default="selectedDateDefault"
 					:period="period"
+					@change-mode="mode = $event"
 					@updated-period="handleUpdatedPeriod" />
 
 			<Week v-if="['week', 'day'].includes(mode)"
@@ -93,12 +95,13 @@ export default defineComponent({
 			week: {
 				nDays: this.config?.week?.nDays || 7,
 			},
-			mode: 'month' as modeType,
+			mode: 'week' as modeType,
 			time: new Time(
 				this.config?.week?.startsOn,
 				this.config?.locale || null
 			) as Time|any,
 			fontFamily: this.config?.style?.fontFamily || '\'Verdana\', \'Open Sans\', serif',
+			calendarWidth: 0,
 		}
 	},
 
@@ -107,6 +110,9 @@ export default defineComponent({
 			this.wasInitialized = 1
 		},
 
+		/**
+		 * setModeWeek is used as flag, when the user clicks "+ see more" for a day, in the month view
+		 * */
 		handleUpdatedPeriod(value: { start: Date, end: Date; selectedDate: Date; }, setModeWeek: boolean = false) {
 			this.$emit('updated-period', { start: value.start, end: value.end })
 			this.period = value
@@ -119,11 +125,11 @@ export default defineComponent({
 
 			if ( ! calendarRoot) return
 
-			const calendarWidth = calendarRoot.clientWidth
+			this.calendarWidth = calendarRoot.clientWidth
 			const dayModeBreakpoint = 700
 
-			if (calendarWidth < dayModeBreakpoint) this.mode = 'day'
-			if (calendarWidth > dayModeBreakpoint) this.mode = 'month' // TODO: change back to week
+			if (this.calendarWidth < dayModeBreakpoint) this.mode = 'day'
+			if (this.calendarWidth >= dayModeBreakpoint) this.mode = 'week'
 		},
 	},
 
