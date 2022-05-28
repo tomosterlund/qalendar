@@ -1,4 +1,5 @@
-export default {
+export const languageKeys = {
+	/** The following three keys, describe the calendar modes */
 	week: {
 		'en-US': 'Week',
 		'de-DE': 'Woche',
@@ -16,5 +17,13 @@ export default {
 		'de-DE': 'Tag',
 		'sv-SE': 'Dag',
 		'zn-CH': '标签',
+	},
+
+	/** Other keys */
+	moreEvents: {
+		'en-US': '+ more events',
+		'de-DE': '+ weitere Ereignisse',
+		'sv-SE': '+ fler händelser',
+		'zn-CH': '其他活动',
 	}
 }

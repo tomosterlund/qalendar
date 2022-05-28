@@ -306,6 +306,7 @@ export default defineComponent({
 		align-items: center;
 		justify-content: center;
 		gap: var(--qalendar-spacing-half);
+		user-select: none;
 
 		@include mixins.screen-size-m {
 			border: var(--qalendar-border-gray-thin);

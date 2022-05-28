@@ -17,7 +17,9 @@
 				   @event-was-clicked="$emit('event-was-clicked', $event)"/>
 		</div>
 
-		<div class="calendar-month__weekday-more" v-if="day.events.length>= 4" @click="switchToWeekMode">+ more events</div>
+		<div class="calendar-month__weekday-more" v-if="day.events.length>= 4" @click="switchToWeekMode">
+			{{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
+		</div>
 	</div>
 </template>
 
@@ -27,11 +29,14 @@ import {configInterface} from "../../typings/config.interface";
 import Time from "../../helpers/Time";
 import Event from "./Event.vue";
 import {dayInterface} from "../../typings/interfaces/day.interface";
+import getLanguage from '../../language/index'
 
 export default defineComponent({
 	name: 'Day',
 
 	components: {Event},
+
+	mixins: [getLanguage],
 
 	props: {
 		config: {

@@ -1,6 +1,7 @@
 # Developing
 ## Getting up and running
 * `npm i`
+* `husky install` - configuring the gitHooks
 * `npm run seed` - Seed the current calendar month with events, or use the [advanced seeding options](#seeding). 
 * `npm run dev`
 
