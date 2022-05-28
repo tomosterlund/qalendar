@@ -12,7 +12,8 @@
 					 :key="dayIndex"
 					 :day="day"
 					 :time="time"
-					 @event-was-clicked="handleClickOnEvent" />
+					 @event-was-clicked="handleClickOnEvent"
+					 @updated-period="$emit('updated-period', $event)" />
 			</div>
 		</div>
 
@@ -64,7 +65,7 @@ export default defineComponent({
 		},
 	},
 
-	emits: ['edit-event', 'delete-event'],
+	emits: ['edit-event', 'delete-event', 'event-was-clicked', 'updated-period'],
 
 	data() {
 		return {

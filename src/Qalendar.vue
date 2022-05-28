@@ -9,6 +9,7 @@
 					:mode="mode"
 					:time="time"
 					:selected-date-default="selectedDateDefault"
+					:period="period"
 					@updated-period="handleUpdatedPeriod" />
 
 			<Week v-if="['week', 'day'].includes(mode)"
@@ -31,6 +32,7 @@
 				   :config="config"
 				   :period="period"
 				   @event-was-clicked="$emit('event-was-clicked', $event)"
+				   @updated-period="handleUpdatedPeriod($event, true)"
 				   @edit-event="$emit('edit-event', $event)"
 				   @delete-event="$emit('delete-event', $event)" />
 		</div>
@@ -76,7 +78,8 @@ export default defineComponent({
 		'updated-period',
 		'event-was-resized',
 		'edit-event',
-		'delete-event'
+		'delete-event',
+		'updated-period',
 	],
 
 	data() {
@@ -85,7 +88,7 @@ export default defineComponent({
 			period: {
 				start: new Date(),
 				end: new Date(),
-				selectedDate: new Date(),
+				selectedDate: this.selectedDateDefault ? this.selectedDateDefault : new Date(),
 			},
 			week: {
 				nDays: this.config?.week?.nDays || 7,
@@ -104,9 +107,11 @@ export default defineComponent({
 			this.wasInitialized = 1
 		},
 
-		handleUpdatedPeriod(value: { start: Date, end: Date; selectedDate: Date; }) {
+		handleUpdatedPeriod(value: { start: Date, end: Date; selectedDate: Date; }, setModeWeek: boolean = false) {
 			this.$emit('updated-period', { start: value.start, end: value.end })
 			this.period = value
+
+			if (setModeWeek) this.mode = 'week'
 		},
 
 		onCalendarResize() {

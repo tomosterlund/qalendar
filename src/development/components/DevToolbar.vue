@@ -42,6 +42,12 @@ import {defineComponent} from "vue";
 export default defineComponent({
 	name: 'DevToolbar',
 
+	emits: [
+		'selected-layout',
+		'selected-locale',
+		'selected-n-days',
+	],
+
 	data() {
 		return {
 			isVisible: false,

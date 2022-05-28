@@ -16,9 +16,9 @@
 			</div>
 
 			<DatePicker ref="periodSelect"
-						  :selected-date-default="selectedDateDefault"
 						  :mode="mode"
 						  :time="time"
+						  :period="period"
 						  @updated="handlePeriodChange" />
 		</div>
 	</div>
@@ -31,6 +31,7 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {configInterface} from "../../typings/config.interface";
 import Time from "../../helpers/Time";
+import {periodInterface} from "../../typings/interfaces/period.interface";
 
 export default defineComponent ({
 	name: 'Header',
@@ -56,7 +57,11 @@ export default defineComponent ({
 		time: {
 			type: Object as PropType<Time>,
 			default: () => ({}),
-		}
+		},
+		period: {
+			type: Object as PropType<periodInterface>,
+			required: true
+		},
 	},
 
 	data() {
@@ -69,11 +74,7 @@ export default defineComponent ({
 				chevronLeft: faChevronLeft,
 				chevronRight: faChevronRight,
 			},
-			currentPeriod: {
-				start: new Date(),
-				end: new Date(),
-				selectedDate: new Date(),
-			},
+			currentPeriod: this.period,
 		};
 	},
 

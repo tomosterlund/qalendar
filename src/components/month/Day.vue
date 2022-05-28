@@ -17,7 +17,7 @@
 				   @event-was-clicked="$emit('event-was-clicked', $event)"/>
 		</div>
 
-		<div class="calendar-month__weekday-more" v-if="day.events.length >= 4">+ more events</div>
+		<div class="calendar-month__weekday-more" v-if="day.events.length>= 4" @click="switchToWeekMode">+ more events</div>
 	</div>
 </template>
 
@@ -52,7 +52,19 @@ export default defineComponent({
 		}
 	},
 
-	emits: ['event-was-clicked'],
+	emits: ['event-was-clicked', 'updated-period'],
+
+	methods: {
+		switchToWeekMode() {
+			const { date, month, year } = this.time.getAllVariablesFromDateTimeString(this.day.dateTimeString)
+			const selectedDate = new Date(year, month, date)
+			const week = this.time.getCalendarWeekDateObjects(selectedDate)
+			const start = week[0]
+			const end = week[6]
+
+			this.$emit('updated-period', { start, end, selectedDate })
+		}
+	}
 })
 </script>
 

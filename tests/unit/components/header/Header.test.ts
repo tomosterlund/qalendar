@@ -9,7 +9,12 @@ describe('Header.vue', () => {
 	test('viewing the month(s) name', () => {
 		wrapper = mount(Header, {
 			props: {
-				time: new Time('monday', 'en-US')
+				time: new Time('monday', 'en-US'),
+				period: {
+					selectedDate: new Date(),
+					start: new Date(),
+					end: new Date(),
+				}
 			},
 		})
 

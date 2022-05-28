@@ -15,7 +15,11 @@ describe('DatePicker.vue', () => {
 		wrapper = mount(DatePicker, {
 			props: {
 				time: new Time('monday', 'en-US'),
-				selectedDateDefault: new Date(2022, (5 - 1), 1)
+				period: {
+					selectedDate: new Date(2022, (5 - 1), 1),
+					start: new Date(),
+					end: new Date()
+				}
 			},
 		})
 		await openDatePicker()
@@ -27,7 +31,11 @@ describe('DatePicker.vue', () => {
 		wrapper = mount(DatePicker, {
 			props: {
 				time: new Time('monday', 'en-US'),
-				selectedDateDefault: new Date(2022, (1 - 1), 4)
+				period: {
+					selectedDate: new Date(2022, (1 - 1), 4),
+					start: new Date(),
+					end: new Date()
+				}
 			},
 		})
 		await openDatePicker()
@@ -40,7 +48,11 @@ describe('DatePicker.vue', () => {
 		wrapper = mount(DatePicker, {
 			props: {
 				time: new Time('monday', 'en-US'),
-				selectedDateDefault: new Date(2023, (12 - 1), 16)
+				period: {
+					selectedDate: new Date(2023, (12 - 1), 16),
+					start: new Date(),
+					end: new Date()
+				}
 			},
 		})
 		await openDatePicker()
@@ -53,7 +65,11 @@ describe('DatePicker.vue', () => {
 		wrapper = mount(DatePicker, {
 			props: {
 				time: new Time('monday', 'de-DE'),
-				selectedDateDefault: new Date(2023, (12 - 1),16)
+				period: {
+					selectedDate: new Date(2023, (12 - 1),16),
+					start: new Date(),
+					end: new Date()
+				}
 			},
 		})
 		await openDatePicker()
@@ -68,7 +84,11 @@ describe('DatePicker.vue', () => {
 		wrapper = mount(DatePicker, {
 			props: {
 				time: new Time('monday', 'de-DE'),
-				selectedDateDefault: new Date(2032, (10 - 1),16)
+				period: {
+					selectedDate: new Date(2032, (10 - 1),16),
+					start: new Date(),
+					end: new Date()
+				}
 			},
 		})
 		await openDatePicker()
