@@ -4,19 +4,19 @@ export const languageKeys = {
 		'en-US': 'Week',
 		'de-DE': 'Woche',
 		'sv-SE': 'Vecka',
-		'zn-CH': '周',
+		'zh-CN': '周',
 	},
 	month: {
 		'en-US': 'Month',
 		'de-DE': 'Monat',
 		'sv-SE': 'Månad',
-		'zn-CH': '月',
+		'zh-CN': '月',
 	},
 	day: {
 		'en-US': 'Day',
 		'de-DE': 'Tag',
 		'sv-SE': 'Dag',
-		'zn-CH': '标签',
+		'zh-CN': '标签',
 	},
 
 	/** Other keys */
@@ -24,6 +24,6 @@ export const languageKeys = {
 		'en-US': '+ more events',
 		'de-DE': '+ weitere Ereignisse',
 		'sv-SE': '+ fler händelser',
-		'zn-CH': '其他活动',
+		'zh-CN': '其他活动',
 	}
 }

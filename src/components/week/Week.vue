@@ -19,7 +19,7 @@
 		</section>
 
 		<EventFlyout :calendar-event-prop="selectedEvent"
-					 :event-element-dom-rect="selectedEventDOMRect"
+					 :event-element="selectedEventElement"
 					 :time="time"
 					 :config="config"
 					 @hide="selectedEvent = null"
@@ -90,7 +90,7 @@ export default defineComponent({
 			days: [] as dayInterface[],
 			mode: this.modeProp as 'day' | 'week' |'month',
 			selectedEvent: null as eventInterface | null,
-			selectedEventDOMRect: {},
+			selectedEventElement: null as any | null,
 			weekHeight: WEEK_HEIGHT + 'px',
 		}
 	},
@@ -167,7 +167,7 @@ export default defineComponent({
 		handleClickOnEvent(event: { eventElement: HTMLDivElement, clickedEvent: eventInterface }) {
 			this.$emit('event-was-clicked', event)
 
-			this.selectedEventDOMRect = event.eventElement.getBoundingClientRect()
+			this.selectedEventElement = event.eventElement
 			this.selectedEvent = event.clickedEvent
 		},
 

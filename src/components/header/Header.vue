@@ -182,13 +182,12 @@ export default defineComponent ({
 	&__chevron-arrows {
 		display: flex;
 		align-items: center;
-		grid-gap: 8px;
+		grid-gap: 20px;
 
 		.calendar-header__chevron-arrow {
-			position: relative;
 			cursor: pointer;
 			transition: color 0.2s ease;
-			padding: 10px;
+			font-size: 16px;
 
 			@include mixins.hover {
 				color: var(--qalendar-gray-quite-dark);

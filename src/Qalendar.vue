@@ -95,7 +95,7 @@ export default defineComponent({
 			week: {
 				nDays: this.config?.week?.nDays || 7,
 			},
-			mode: 'week' as modeType,
+			mode: this.config?.defaultMode || 'week' as modeType,
 			time: new Time(
 				this.config?.week?.startsOn,
 				this.config?.locale || null
@@ -129,7 +129,7 @@ export default defineComponent({
 			const dayModeBreakpoint = 700
 
 			if (this.calendarWidth < dayModeBreakpoint) this.mode = 'day'
-			if (this.calendarWidth >= dayModeBreakpoint) this.mode = 'week'
+			if (this.calendarWidth >= dayModeBreakpoint) this.mode = this.config?.defaultMode || 'week'
 		},
 	},
 
