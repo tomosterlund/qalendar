@@ -3,7 +3,7 @@
 		<div class="date-picker__value-display"
 			 @click="togglePeriodSelector">
 			<font-awesome-icon :icon="icons.calendarIcon"></font-awesome-icon>
-			<span class="date-picker__value-display-text">{{ period }}</span>
+			<span class="date-picker__value-display-text">{{ periodText }}</span>
 		</div>
 
 		<div class="date-picker__week-picker" v-if="showDatePicker" @mouseleave="hideDatePicker">
@@ -67,6 +67,7 @@ import {defineComponent, PropType} from "vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {faCalendarDay, faChevronCircleLeft, faChevronCircleRight} from "@fortawesome/free-solid-svg-icons";
 import Time, {calendarMonthType, calendarWeekType, calendarYearMonths} from "../../helpers/Time";
+import {periodInterface} from "../../typings/interfaces/period.interface";
 
 export default defineComponent({
 	name: 'DatePicker',
@@ -74,10 +75,6 @@ export default defineComponent({
 	components: { FontAwesomeIcon },
 
 	props: {
-		selectedDateDefault: {
-			type: Date,
-			default: new Date(),
-		},
 		mode: {
 			type: String as PropType<'day' | 'week' | 'month'>,
 			default: 'week',
@@ -85,14 +82,18 @@ export default defineComponent({
 		time: {
 			type: Object as PropType<Time>,
 			required: true,
-		}
+		},
+		period: {
+			type: Object as PropType<periodInterface>,
+			required: true,
+		},
 	},
 
 	emits: ['updated'],
 
 	data() {
 		return {
-			period: '',
+			periodText: '',
 			weekPickerDates: [] as calendarMonthType,
 			monthPickerDates: [] as calendarYearMonths,
 			icons: {
@@ -111,8 +112,8 @@ export default defineComponent({
 			 * This should not change as the user browses in the date picker, only when the user
 			 * PICKS a date in the date picker
 			 * */
-			datePickerCurrentDate: this.selectedDateDefault ? this.selectedDateDefault : new Date(),
-			selectedDate: this.selectedDateDefault ? this.selectedDateDefault : new Date(),
+			datePickerCurrentDate: this.period.selectedDate,
+			selectedDate: this.period.selectedDate,
 			datePickerMode: 'month' as 'month' | 'year',
 			weekDays: [] as calendarWeekType, // Used only for printing week day names
 		}
@@ -141,7 +142,17 @@ export default defineComponent({
 			const start = currentWeek[0]
 			const end = currentWeek[6]
 
-			this.period = `${this.time.getLocalizedDateString(start)} - ${this.time.getLocalizedDateString(end)}`
+			switch (this.mode) {
+				case 'week':
+					this.periodText = `${this.time.getLocalizedDateString(start)} - ${this.time.getLocalizedDateString(end)}`
+					break;
+				case 'month':
+					this.periodText = this.time.getLocalizedNameOfMonth(date)
+					break;
+				default:
+					this.periodText = this.time.getLocalizedDateString(date)
+			}
+
 			this.emitChange(start, end)
 		},
 
@@ -158,9 +169,21 @@ export default defineComponent({
 		emitChange(start: Date, end: Date) {
 			this.selectedDate = this.datePickerCurrentDate
 
+			if (this.mode === 'month') {
+				const month = this.time.getCalendarMonthSplitInWeeks(this.selectedDate.getFullYear(), this.selectedDate.getMonth())
+				start = month[0][0]
+				const lastWeek = month[month.length - 1]
+				end = lastWeek[lastWeek.length - 1]
+			}
+
+			else if (this.mode === 'day') {
+				start = this.selectedDate
+				end = this.selectedDate
+			}
+
 			this.$emit('updated', {
-				start,
-				end,
+				start: new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0),
+				end: new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999),
 				selectedDate: this.datePickerCurrentDate,
 			});
 		},
@@ -215,6 +238,14 @@ export default defineComponent({
 				newDatePayload = direction === 'next'
 					? newDate.getDate() + 7
 					: newDate.getDate() - 7
+			} else if (this.mode === 'month') {
+				newDate = new Date(this.datePickerCurrentDate)
+				const nDaysNextMonth = new Date(this.datePickerCurrentDate.getFullYear(), this.datePickerCurrentDate.getMonth() + 2, 0).getDate()
+				const nDaysPreviousMonth = new Date(this.datePickerCurrentDate.getFullYear(), this.datePickerCurrentDate.getMonth(), 0).getDate()
+
+				newDatePayload = direction === 'next'
+					? newDate.getDate() + nDaysNextMonth
+					: newDate.getDate() - nDaysPreviousMonth
 			} else { // day
 				newDate = new Date(this.datePickerCurrentDate)
 				newDatePayload = direction === 'next'
@@ -228,17 +259,27 @@ export default defineComponent({
 
 		hideDatePicker() {
 			setTimeout(() => this.showDatePicker = false, 100)
+		},
+
+		hydrateDatePicker() {
+			const date = this.period.selectedDate
+			this.setMonthDaysInWeekPicker(date.getMonth(), date.getFullYear())
+			this.setWeek(date)
 		}
 	},
 
 	mounted() {
-		if ( ! this.selectedDateDefault) {
-			this.setWeek(new Date())
-			this.setMonthDaysInWeekPicker()
-		} else if (this.selectedDateDefault) {
-			const defaultDate = new Date(this.selectedDateDefault)
-			this.setMonthDaysInWeekPicker(defaultDate.getMonth(), defaultDate.getFullYear())
-			this.setWeek(this.selectedDateDefault)
+		this.hydrateDatePicker()
+	},
+
+	watch: {
+		period: {
+			deep: true,
+			handler() {
+				if (this.selectedDate.getTime() === this.period.selectedDate.getTime()) return
+
+				this.hydrateDatePicker()
+			}
 		}
 	},
 })
@@ -265,6 +306,7 @@ export default defineComponent({
 		align-items: center;
 		justify-content: center;
 		gap: var(--qalendar-spacing-half);
+		user-select: none;
 
 		@include mixins.screen-size-m {
 			border: var(--qalendar-border-gray-thin);
@@ -394,7 +436,7 @@ export default defineComponent({
 		span {
 			padding: 4px;
 			border: var(--qalendar-border-gray-thin);
-			border-radius: 4px;
+			border-radius: 2px;
 			flex: 1 0 33%;
 			text-align: center;
 			cursor: pointer;

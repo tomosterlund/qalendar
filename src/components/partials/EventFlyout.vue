@@ -80,8 +80,8 @@ export default defineComponent({
 			type: Object as PropType<eventInterface | null>,
 			default: () => ({}),
 		},
-		eventElementDomRect: {
-			type: Object as PropType<DOMRect|any>,
+		eventElement: {
+			type: Object as PropType<HTMLElement | any>,
 			required: true,
 		},
 		time: {
@@ -178,11 +178,15 @@ export default defineComponent({
 
 	methods: {
 		setFlyoutPosition() {
+			const calendar = this.eventElement?.closest('.calendar-root')
 			const flyout = document.querySelector('.event-flyout')
 
+			if ( ! this.eventElement) return
+
 			const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
-				this.eventElementDomRect,
-				{ height: flyout?.clientHeight || 300, width: flyout?.clientWidth || 0 }
+				this.eventElement?.getBoundingClientRect(),
+				{ height: flyout?.clientHeight || 300, width: flyout?.clientWidth || 0 },
+				calendar ? calendar.getBoundingClientRect() : null
 			)
 
 			this.top = flyoutPosition?.top || null

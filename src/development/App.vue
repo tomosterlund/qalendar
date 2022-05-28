@@ -61,6 +61,7 @@ export default defineComponent({
 						}
 					}
 				},
+				defaultMode: 'month'
 			} as configInterface,
 			events: seededEvents as eventInterface[],
 

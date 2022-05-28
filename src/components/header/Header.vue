@@ -16,10 +16,32 @@
 			</div>
 
 			<DatePicker ref="periodSelect"
-						  :selected-date-default="selectedDateDefault"
 						  :mode="mode"
 						  :time="time"
+						  :period="period"
 						  @updated="handlePeriodChange" />
+
+			<div class="calendar-header__mode-picker">
+				<div class="calendar-header__mode-value" @click="showModePicker = true">
+					{{ modeName }}
+				</div>
+
+				<div class="calendar-header__mode-options"
+					 v-if="showModePicker"
+					 @mouseleave="showModePicker = false">
+					<div class="calendar-header__mode-option is-month-mode" @click="$emit('change-mode', 'month')">
+						{{ getLanguage(languageKeys.month, time.CALENDAR_LOCALE) }}
+					</div>
+
+					<div class="calendar-header__mode-option is-week-mode" @click="$emit('change-mode', 'week')">
+						{{ getLanguage(languageKeys.week, time.CALENDAR_LOCALE) }}
+					</div>
+
+					<div class="calendar-header__mode-option is-day-mode" @click="$emit('change-mode', 'day')">
+						{{ getLanguage(languageKeys.day, time.CALENDAR_LOCALE) }}
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -31,6 +53,8 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {configInterface} from "../../typings/config.interface";
 import Time from "../../helpers/Time";
+import {periodInterface} from "../../typings/interfaces/period.interface";
+import getLanguage from "../../language";
 
 export default defineComponent ({
 	name: 'Header',
@@ -39,6 +63,8 @@ export default defineComponent ({
 		DatePicker,
 		FontAwesomeIcon,
 	},
+
+	mixins: [getLanguage],
 
 	props: {
 		config: {
@@ -56,7 +82,11 @@ export default defineComponent ({
 		time: {
 			type: Object as PropType<Time>,
 			default: () => ({}),
-		}
+		},
+		period: {
+			type: Object as PropType<periodInterface>,
+			required: true
+		},
 	},
 
 	data() {
@@ -69,11 +99,8 @@ export default defineComponent ({
 				chevronLeft: faChevronLeft,
 				chevronRight: faChevronRight,
 			},
-			currentPeriod: {
-				start: new Date(),
-				end: new Date(),
-				selectedDate: new Date(),
-			},
+			currentPeriod: this.period,
+			showModePicker: false,
 		};
 	},
 
@@ -89,7 +116,12 @@ export default defineComponent ({
 			// day
 			return this.time.getLocalizedNameOfMonth(this.currentPeriod?.selectedDate, 'short')
 				+ ' '  + this.currentPeriod.selectedDate.getFullYear()
-		}
+		},
+
+		modeName() {
+			// @ts-ignore
+			return this.getLanguage(this.languageKeys[this.mode], this.time?.CALENDAR_LOCALE)
+		},
 	},
 
 	methods: {
@@ -150,14 +182,60 @@ export default defineComponent ({
 	&__chevron-arrows {
 		display: flex;
 		align-items: center;
-		gap: var(--qalendar-spacing);
+		grid-gap: 20px;
 
 		.calendar-header__chevron-arrow {
 			cursor: pointer;
 			transition: color 0.2s ease;
+			font-size: 16px;
 
 			@include mixins.hover {
 				color: var(--qalendar-gray-quite-dark);
+			}
+		}
+	}
+
+	&__mode-picker {
+		/** TODO: refactor into mixin, used for mode-picker and DatePicker.vue */
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: fit-content;
+		height: 36px;
+		border-radius: 4px;
+		font-size: 16px;
+		cursor: pointer;
+		border: var(--qalendar-border-gray-thin);
+
+		.calendar-header__mode-value {
+			padding: 0 var(--qalendar-spacing);
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			user-select: none;
+		}
+
+		.qalendar-is-small & {
+			display: none;
+		}
+
+		.calendar-header__mode-options {
+			position: absolute;
+			z-index: 51;
+			top: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			border: var(--qalendar-border-gray-thin);
+			background-color: #fff;
+
+			.calendar-header__mode-option {
+				padding: var(--qalendar-spacing-half) var(--qalendar-spacing);
+
+				@include mixins.hover {
+					background-color: var(--qalendar-light-gray);
+				}
 			}
 		}
 	}
