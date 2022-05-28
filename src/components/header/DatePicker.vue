@@ -436,7 +436,7 @@ export default defineComponent({
 		span {
 			padding: 4px;
 			border: var(--qalendar-border-gray-thin);
-			border-radius: 4px;
+			border-radius: 2px;
 			flex: 1 0 33%;
 			text-align: center;
 			cursor: pointer;
