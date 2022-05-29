@@ -82,7 +82,7 @@ export default defineComponent({
 		},
 		eventElement: {
 			type: Object as PropType<HTMLElement | any>,
-			required: true,
+			default: null,
 		},
 		time: {
 			type: Object as PropType<Time>,

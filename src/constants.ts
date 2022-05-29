@@ -6,3 +6,5 @@ export const EVENT_COLORS = {
 	green: 'rgb(51, 182, 121)',
 	red: '#ff5456',
 }
+
+export const DATE_TIME_STRING_PATTERN = /\d{4}-\d{2}-\d{2} \d{2}:\d{2}/

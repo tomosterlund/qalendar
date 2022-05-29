@@ -98,30 +98,15 @@ export default defineComponent({
 	methods: {
 		setDays() {
 			// TODO: Refactor and use map, after first having filtered out all events that are not in the period
-			const days = []
-
-			const week = this.time.getCalendarWeekDateObjects(this.period.start)
-
-			for (const day of week) {
-				days.push({
-					dayName: this.time.getLocalizedNameOfWeekday(day, 'long'),
-					dateTimeString: this.time.getDateTimeStringFromDate(day, 'start'),
-					events: [] as eventInterface[],
+			const days = this.time.getCalendarWeekDateObjects(this.period.start).map((day: Date) => {
+				const dayName = this.time.getLocalizedNameOfWeekday(day, 'long')
+				const dateTimeString = this.time.getDateTimeStringFromDate(day, 'start')
+				const events = this.events.filter((event: eventInterface) => {
+					return event.time.start.substring(0, 11) === dateTimeString.substring(0, 11)
 				})
-			}
 
-			for (const calendarEvent of this.events) {
-				const eventIsInPeriod = calendarEvent.time.start > this.time.getDateTimeStringFromDate(this.period?.start, 'start')
-					&& calendarEvent.time.start < this.time.getDateTimeStringFromDate(this.period.end, 'end')
-				if ( ! eventIsInPeriod) continue
-
-				for (const [dayIndex, day] of days.entries()) {
-					const dayDate = day.dateTimeString.substring(0, 11)
-					const eventDate = calendarEvent.time.start.substring(0, 11)
-
-					if (dayDate === eventDate) days[dayIndex].events.push(calendarEvent)
-				}
-			}
+				return { dayName, dateTimeString, events }
+			})
 
 			if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === 'monday') {
 				// Delete Saturday & Sunday

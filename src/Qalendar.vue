@@ -50,6 +50,7 @@ import Header from "./components/header/Header.vue";
 import Week from "./components/week/Week.vue";
 import {modeType} from "./typings/types";
 import Month from "./components/month/Month.vue";
+import Errors from "./helpers/Errors";
 
 export default defineComponent({
 	name: 'Qalendar',
@@ -131,6 +132,17 @@ export default defineComponent({
 			if (this.calendarWidth < dayModeBreakpoint) this.mode = 'day'
 			if (this.calendarWidth >= dayModeBreakpoint) this.mode = this.config?.defaultMode || 'week'
 		},
+	},
+
+	watch: {
+		events: {
+			deep: true,
+			handler() {
+				// Log potential warnings for events in the console
+				this.events.forEach(e => Errors.checkEventProperties(e))
+			},
+			immediate: true,
+		}
 	},
 
 	mounted() {
