@@ -1,9 +1,8 @@
 # Documentation
-## About
 Qalendar is an event calendar for Vue 3. It is written in Typescript, in order to provide the best possible usability for JS- as well as TS-based applications.
 
 ::: warning
-This library is still in an early Beta version, and is not yet suitable for production applications.
+This component is still in an 0.X.X-version, and is not yet suitable for production applications.
 :::
 
 ## Getting started
@@ -33,15 +32,18 @@ export default {
         return {
             events: [
                 {
+                    id: "123"
                     title: 'Beep',
                     color: 'blue',
                     time: { start: '2022-01-01 08:00', end: '2022-05-16 09:00' }
                 },
                 {
+                    id: "456"
                     title: 'Boop',
                     color: 'green',
                     time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' }
                 {
+                    id: "789"
                     title: 'Foo',
                     color: 'blue',
                     time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' }
@@ -162,7 +164,13 @@ Qalendar emits the following events that can be listened to:
 |    edit-event     |   is triggered, when a user clicks the edit-icon of an event    |
 |   delete-event    |  is triggered, when a user clicks the delete-icon of an event   |
 
-### More elaborate example
+### A word on language
+
+As stated in the configuration section, `config.locale` can be any locale understood by the browser. This is made possible, since all occurrences of time or date in the calendar are localized through the native JavaScript APIs. However, since a few words ("month", "week" etc.) need to be hard coded, some words may not be translated in the selected locale. For all vocabulary where translations are missing, translations for "en-US" will be used as a fallback.
+
+If you're using Qalendar, and translations for your specific locale are missing, consider opening a [pull request](https://github.com/tomosterlund/qalendar), editing the two files in ./src/language.
+
+### A more elaborate example
 
 A month view:
 
