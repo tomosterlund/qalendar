@@ -163,7 +163,6 @@ export default defineComponent({
 .calendar-root-wrapper {
 	width: 100%;
 	min-height: 700px;
-	max-height: 1400px;
 
 	.calendar-root {
 		border: var(--qalendar-border-gray-thin);
