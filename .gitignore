@@ -1,4 +1,4 @@
-/src/development/data/seeded-events.ts
+#/src/development/data/seeded-events.ts
 
 # Logs
 logs
@@ -15,9 +15,6 @@ dist
 dist-ssr
 coverage
 *.local
-
-/cypress/videos/
-/cypress/screenshots/
 
 # Editor directories and files
 .vscode/extensions.json

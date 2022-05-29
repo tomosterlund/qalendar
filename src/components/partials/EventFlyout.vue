@@ -82,7 +82,7 @@ export default defineComponent({
 		},
 		eventElement: {
 			type: Object as PropType<HTMLElement | any>,
-			required: true,
+			default: null,
 		},
 		time: {
 			type: Object as PropType<Time>,
@@ -303,7 +303,6 @@ export default defineComponent({
 
 	&__row {
 		display: flex;
-		align-items: center;
 		grid-gap: var(--qalendar-spacing);
 		margin-bottom: 4px;
 		font-weight: 400;
@@ -327,6 +326,7 @@ export default defineComponent({
 
 	.is-title {
 		font-size: 20px;
+		align-items: center;
 
 		.is-not-editable & {
 			max-width: 90%;

@@ -50,6 +50,7 @@ import Header from "./components/header/Header.vue";
 import Week from "./components/week/Week.vue";
 import {modeType} from "./typings/types";
 import Month from "./components/month/Month.vue";
+import Errors from "./helpers/Errors";
 
 export default defineComponent({
 	name: 'Qalendar',
@@ -133,6 +134,17 @@ export default defineComponent({
 		},
 	},
 
+	watch: {
+		events: {
+			deep: true,
+			handler() {
+				// Log potential warnings for events in the console
+				this.events.forEach(e => Errors.checkEventProperties(e))
+			},
+			immediate: true,
+		}
+	},
+
 	mounted() {
 		this.setConfigOnMount()
 		this.onCalendarResize() // Trigger once on mount, in order to set the correct mode, if viewing on a small screen
@@ -151,7 +163,6 @@ export default defineComponent({
 .calendar-root-wrapper {
 	width: 100%;
 	min-height: 700px;
-	max-height: 1400px;
 
 	.calendar-root {
 		border: var(--qalendar-border-gray-thin);
