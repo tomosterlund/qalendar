@@ -1,6 +1,7 @@
 <template>
 	<div class="date-picker" @mouseleave="hideDatePicker">
-		<div class="date-picker__value-display"
+		<div v-if=" ! isStandAloneComponent"
+			 class="date-picker__value-display"
 			 @click="togglePeriodSelector">
 			<font-awesome-icon :icon="icons.calendarIcon"></font-awesome-icon>
 			<span class="date-picker__value-display-text">{{ periodText }}</span>
@@ -34,7 +35,7 @@
 
 			<div v-for="(week, weekIndex) in weekPickerDates"
 				 class="week"
-				 :class="time.dateIsInWeek(selectedDate, week) ? 'is-active' : ''"
+				 :class="time.dateIsInWeek(selectedDate, week) && ! isStandAloneComponent ? 'is-active' : ''"
 				 :key="weekIndex"
 				 v-show="datePickerMode === 'month'">
 				<span v-for="(day, dayIndex) in week"
@@ -79,14 +80,28 @@ export default defineComponent({
 			type: String as PropType<'day' | 'week' | 'month'>,
 			default: 'week',
 		},
-		time: {
+		timeProp: {
 			type: Object as PropType<Time>,
-			required: true,
+			default: null,
 		},
-		period: {
+		periodProp: {
 			type: Object as PropType<periodInterface>,
-			required: true,
+			default: null,
 		},
+
+		/** For usage of the component as a standalone component, outside Qalendar */
+		locale: {
+			type: String,
+			default: '',
+		},
+		firstDayOfWeek: {
+			type: String as PropType<'sunday' | 'monday'>,
+			default: '',
+		},
+		defaultDate: {
+			type: Date,
+			default: new Date(),
+		}
 	},
 
 	emits: ['updated'],
@@ -101,7 +116,7 @@ export default defineComponent({
 				chevronLeft: faChevronCircleLeft,
 				chevronRight: faChevronCircleRight,
 			},
-			showDatePicker: false,
+			showDatePicker: !!(this.locale && this.firstDayOfWeek) as boolean, // Set to automatic show, when used as a standalone component
 			/**
 			 * Though selectedDate might look identical to datePickerCurrentDate, it is not
 			 * There is a need for separate state for:
@@ -112,10 +127,24 @@ export default defineComponent({
 			 * This should not change as the user browses in the date picker, only when the user
 			 * PICKS a date in the date picker
 			 * */
-			datePickerCurrentDate: this.period.selectedDate,
-			selectedDate: this.period.selectedDate,
+			datePickerCurrentDate: this.periodProp?.selectedDate || new Date(),
+			selectedDate: this.periodProp?.selectedDate || new Date(),
 			datePickerMode: 'month' as 'month' | 'year',
-			weekDays: [] as calendarWeekType, // Used only for printing week day names
+			weekDays: [] as calendarWeekType, // Used only for printing week day names,
+			time: this.timeProp ? this.timeProp : new Time(this.firstDayOfWeek, this.locale),
+			period: this.periodProp || {
+				start: new Date(), end: new Date(), selectedDate: this.defaultDate ? this.defaultDate : new Date(),
+			},
+		}
+	},
+
+	computed: {
+		/**
+		 * If both following props are set, this means the component is being used as a stand alone component
+		 * and not inside Qalendar
+		 * */
+		isStandAloneComponent() {
+			return this.locale && this.firstDayOfWeek
 		}
 	},
 
@@ -181,11 +210,21 @@ export default defineComponent({
 				end = this.selectedDate
 			}
 
-			this.$emit('updated', {
-				start: new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0),
-				end: new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999),
-				selectedDate: this.datePickerCurrentDate,
-			});
+			// Emit event, for usage within Qalendar
+			if ( ! this.isStandAloneComponent) {
+				this.$emit('updated', {
+					start: new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0),
+					end: new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999),
+					selectedDate: this.datePickerCurrentDate,
+				});
+			} else {
+			// Emit event for usage as a stand-alone component
+				this.$emit('updated', {
+					year: this.datePickerCurrentDate.getFullYear(),
+					month: this.datePickerCurrentDate.getMonth(),
+					date: this.datePickerCurrentDate.getDate(),
+				});
+			}
 		},
 
 		toggleDatePickerPeriod(direction: 'previous' | 'next') {
@@ -258,11 +297,11 @@ export default defineComponent({
 		},
 
 		hideDatePicker() {
-			setTimeout(() => this.showDatePicker = false, 100)
+			if ( ! this.isStandAloneComponent) setTimeout(() => this.showDatePicker = false, 100)
 		},
 
 		hydrateDatePicker() {
-			const date = this.period.selectedDate
+			const date = this.selectedDate
 			this.setMonthDaysInWeekPicker(date.getMonth(), date.getFullYear())
 			this.setWeek(date)
 		}

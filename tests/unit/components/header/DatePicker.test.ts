@@ -14,8 +14,8 @@ describe('DatePicker.vue', () => {
 	test('Opening the date picker', async () => {
 		wrapper = mount(DatePicker, {
 			props: {
-				time: new Time('monday', 'en-US'),
-				period: {
+				timeProp: new Time('monday', 'en-US'),
+				periodProp: {
 					selectedDate: new Date(2022, (5 - 1), 1),
 					start: new Date(),
 					end: new Date()
@@ -30,8 +30,8 @@ describe('DatePicker.vue', () => {
 	test('Navigating a month back: January => December', async () => {
 		wrapper = mount(DatePicker, {
 			props: {
-				time: new Time('monday', 'en-US'),
-				period: {
+				timeProp: new Time('monday', 'en-US'),
+				periodProp: {
 					selectedDate: new Date(2022, (1 - 1), 4),
 					start: new Date(),
 					end: new Date()
@@ -47,8 +47,8 @@ describe('DatePicker.vue', () => {
 	test('Navigating a month forward: December => January', async () => {
 		wrapper = mount(DatePicker, {
 			props: {
-				time: new Time('monday', 'en-US'),
-				period: {
+				timeProp: new Time('monday', 'en-US'),
+				periodProp: {
 					selectedDate: new Date(2023, (12 - 1), 16),
 					start: new Date(),
 					end: new Date()
@@ -64,8 +64,8 @@ describe('DatePicker.vue', () => {
 	test('Navigating between months via the month picker', async () => {
 		wrapper = mount(DatePicker, {
 			props: {
-				time: new Time('monday', 'de-DE'),
-				period: {
+				timeProp: new Time('monday', 'de-DE'),
+				periodProp: {
 					selectedDate: new Date(2023, (12 - 1),16),
 					start: new Date(),
 					end: new Date()
@@ -83,8 +83,8 @@ describe('DatePicker.vue', () => {
 	test('Navigating between years via the month picker', async () => {
 		wrapper = mount(DatePicker, {
 			props: {
-				time: new Time('monday', 'de-DE'),
-				period: {
+				timeProp: new Time('monday', 'de-DE'),
+				periodProp: {
 					selectedDate: new Date(2032, (10 - 1),16),
 					start: new Date(),
 					end: new Date()

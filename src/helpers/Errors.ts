@@ -1,5 +1,6 @@
 import {eventInterface} from "../typings/interfaces/event.interface";
 import {DATE_TIME_STRING_PATTERN} from "../constants";
+import {configInterface} from "../typings/config.interface";
 
 export default class Errors {
 	public static PREFIX = '[Qalendar warning]'
@@ -19,5 +20,10 @@ export default class Errors {
 		if (typeof event.title !== 'string') console.warn(`${this.PREFIX} event property 'title' expects a string, received ${typeof event.title} \n${this.SUFFIX}`)
 		if (!DATE_TIME_STRING_PATTERN.test(event.time.start)) console.warn(`${this.PREFIX} event property 'time.start' expects a string formatted like 'YYYY-MM-DD hh:mm', received ${event.time.start} \n${this.SUFFIX}`)
 		if (!DATE_TIME_STRING_PATTERN.test(event.time.end)) console.warn(`${this.PREFIX} event property 'time.end' expects a string formatted like 'YYYY-MM-DD hh:mm', received ${event.time.end} \n${this.SUFFIX}`)
+	}
+
+	static checkConfig(config: configInterface) {
+		if (config.locale && ! /^[a-z]{2}-[A-Z]{2}$/.test(config.locale)) console.warn(`${this.PREFIX} config.locale expects a string of format xx-XX, received: ${config.locale}`)
+		if (config.defaultMode && ! ['month', 'week', 'day'].some(mode => mode === config.defaultMode)) console.warn(`${this.PREFIX} config.defaultMode expects either one of the values "day", "week" or "month"`)
 	}
 }

@@ -17,8 +17,8 @@
 
 			<DatePicker ref="periodSelect"
 						  :mode="mode"
-						  :time="time"
-						  :period="period"
+						  :time-prop="time"
+						  :period-prop="period"
 						  @updated="handlePeriodChange" />
 
 			<div class="calendar-header__mode-picker">

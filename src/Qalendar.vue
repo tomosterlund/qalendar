@@ -142,7 +142,15 @@ export default defineComponent({
 				this.events.forEach(e => Errors.checkEventProperties(e))
 			},
 			immediate: true,
-		}
+		},
+
+		config: {
+			deep: true,
+			handler(value: configInterface) {
+				Errors.checkConfig(value)
+			},
+			immediate: true,
+		},
 	},
 
 	mounted() {
