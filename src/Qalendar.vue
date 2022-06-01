@@ -9,7 +9,6 @@
 					:key="wasInitialized + mode"
 					:mode="mode"
 					:time="time"
-					:selected-date-default="selectedDateDefault"
 					:period="period"
 					@change-mode="mode = $event"
 					@updated-period="handleUpdatedPeriod" />

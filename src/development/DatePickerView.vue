@@ -14,8 +14,9 @@ export default defineComponent({
 	components: {DatePicker},
 
 	methods: {
-		updateDate(event: { year: number; month: number; date: number; }) {
-			console.log(event)
+		updateDate(payload: { year: number; month: number; date: number; }) {
+			const { year, month, date } = payload
+			console.log(`${year}-${month}-${date}`)
 		}
 	}
 })

@@ -9,7 +9,10 @@
 			<span class="date-picker__value-display-text">{{ periodText }}</span>
 		</div>
 
-		<div class="date-picker__week-picker" v-if="showDatePicker" @mouseleave="hideDatePicker">
+		<div class="date-picker__week-picker"
+			 :class="{ 'is-in-qalendar': ! isStandAloneComponent }"
+			 v-if="showDatePicker"
+			 @mouseleave="hideDatePicker">
 			<div class="date-picker__week-picker-navigation">
 				<font-awesome-icon class="is-icon is-chevron-left"
 								   :icon="icons.chevronLeft"
@@ -339,6 +342,14 @@ export default defineComponent({
 		min-width: 300px;
 	}
 
+	&:not(.is-in-qalendar) {
+		margin: 0 auto;
+
+		@include mixins.screen-size-m {
+			min-width: initial;
+		}
+	}
+
 	&__value-display {
 		height: 36px;
 		border-radius: 4px;
@@ -373,20 +384,23 @@ export default defineComponent({
 	}
 
 	&__week-picker {
-		position: absolute;
 		padding: var(--qalendar-spacing-half);
 		z-index: 51;
 		background-color: #fff;
 		border: var(--qalendar-border-gray-thin);
 		border-radius: 4px;
-		top: calc(100% - 1px);
-		right: 0;
 		width: 250px;
 		box-shadow: 0 2px 4px rgba(240, 236, 236, 0.76);
 
-		@include mixins.screen-size-m {
-			left: 50%;
-			transform: translateX(-50%);
+		&.is-in-qalendar {
+			top: calc(100% - 1px);
+			position: absolute;
+			right: 0;
+
+			@include mixins.screen-size-m {
+				left: 50%;
+				transform: translateX(-50%);
+			}
 		}
 	}
 
