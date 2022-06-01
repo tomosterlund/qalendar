@@ -62,7 +62,7 @@ export default defineComponent({
 		flex-flow: column;
 		justify-content: flex-start;
 		height: 100%;
-		font-size: 10px;
+		font-size: var(--qalendar-font-2xs);
 		color: var(--qalendar-gray-quite-dark);
 
 		&:first-child {

@@ -16,10 +16,10 @@
 			</div>
 
 			<DatePicker ref="periodSelect"
-						  :mode="mode"
-						  :time="time"
-						  :period="period"
-						  @updated="handlePeriodChange" />
+						:mode="mode"
+						:time-prop="time"
+						:period-prop="period"
+						@updated="handlePeriodChange"/>
 
 			<div class="calendar-header__mode-picker">
 				<div class="calendar-header__mode-value" @click="showModePicker = true">
@@ -74,10 +74,6 @@ export default defineComponent ({
 		mode: {
 			type: String as PropType<'day' | 'week' | 'month'>,
 			default: 'week',
-		},
-		selectedDateDefault: {
-			type: Date,
-			default: new Date()
 		},
 		time: {
 			type: Object as PropType<Time>,

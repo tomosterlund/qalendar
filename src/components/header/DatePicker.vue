@@ -1,12 +1,18 @@
 <template>
-	<div class="date-picker" @mouseleave="hideDatePicker">
-		<div class="date-picker__value-display"
+	<div class="date-picker"
+		 :class="{ 'date-picker-root': isStandAloneComponent }"
+		 @mouseleave="hideDatePicker">
+		<div v-if=" ! isStandAloneComponent"
+			 class="date-picker__value-display"
 			 @click="togglePeriodSelector">
 			<font-awesome-icon :icon="icons.calendarIcon"></font-awesome-icon>
 			<span class="date-picker__value-display-text">{{ periodText }}</span>
 		</div>
 
-		<div class="date-picker__week-picker" v-if="showDatePicker" @mouseleave="hideDatePicker">
+		<div class="date-picker__week-picker"
+			 :class="{ 'is-in-qalendar': ! isStandAloneComponent }"
+			 v-if="showDatePicker"
+			 @mouseleave="hideDatePicker">
 			<div class="date-picker__week-picker-navigation">
 				<font-awesome-icon class="is-icon is-chevron-left"
 								   :icon="icons.chevronLeft"
@@ -34,7 +40,7 @@
 
 			<div v-for="(week, weekIndex) in weekPickerDates"
 				 class="week"
-				 :class="time.dateIsInWeek(selectedDate, week) ? 'is-active' : ''"
+				 :class="time.dateIsInWeek(selectedDate, week) && ! isStandAloneComponent ? 'is-active' : ''"
 				 :key="weekIndex"
 				 v-show="datePickerMode === 'month'">
 				<span v-for="(day, dayIndex) in week"
@@ -79,14 +85,28 @@ export default defineComponent({
 			type: String as PropType<'day' | 'week' | 'month'>,
 			default: 'week',
 		},
-		time: {
+		timeProp: {
 			type: Object as PropType<Time>,
-			required: true,
+			default: null,
 		},
-		period: {
+		periodProp: {
 			type: Object as PropType<periodInterface>,
-			required: true,
+			default: null,
 		},
+
+		/** For usage of the component as a standalone component, outside Qalendar */
+		locale: {
+			type: String,
+			default: '',
+		},
+		firstDayOfWeek: {
+			type: String as PropType<'sunday' | 'monday'>,
+			default: '',
+		},
+		defaultDate: {
+			type: Date,
+			default: new Date(),
+		}
 	},
 
 	emits: ['updated'],
@@ -101,7 +121,7 @@ export default defineComponent({
 				chevronLeft: faChevronCircleLeft,
 				chevronRight: faChevronCircleRight,
 			},
-			showDatePicker: false,
+			showDatePicker: !!(this.locale && this.firstDayOfWeek) as boolean, // Set to automatic show, when used as a standalone component
 			/**
 			 * Though selectedDate might look identical to datePickerCurrentDate, it is not
 			 * There is a need for separate state for:
@@ -112,10 +132,24 @@ export default defineComponent({
 			 * This should not change as the user browses in the date picker, only when the user
 			 * PICKS a date in the date picker
 			 * */
-			datePickerCurrentDate: this.period.selectedDate,
-			selectedDate: this.period.selectedDate,
+			datePickerCurrentDate: this.periodProp?.selectedDate || new Date(),
+			selectedDate: this.periodProp?.selectedDate || new Date(),
 			datePickerMode: 'month' as 'month' | 'year',
-			weekDays: [] as calendarWeekType, // Used only for printing week day names
+			weekDays: [] as calendarWeekType, // Used only for printing week day names,
+			time: this.timeProp ? this.timeProp : new Time(this.firstDayOfWeek, this.locale),
+			period: this.periodProp || {
+				start: new Date(), end: new Date(), selectedDate: this.defaultDate ? this.defaultDate : new Date(),
+			},
+		}
+	},
+
+	computed: {
+		/**
+		 * If both following props are set, this means the component is being used as a stand alone component
+		 * and not inside Qalendar
+		 * */
+		isStandAloneComponent() {
+			return this.locale && this.firstDayOfWeek
 		}
 	},
 
@@ -181,11 +215,21 @@ export default defineComponent({
 				end = this.selectedDate
 			}
 
-			this.$emit('updated', {
-				start: new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0),
-				end: new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999),
-				selectedDate: this.datePickerCurrentDate,
-			});
+			// Emit event, for usage within Qalendar
+			if ( ! this.isStandAloneComponent) {
+				this.$emit('updated', {
+					start: new Date(start.getFullYear(), start.getMonth(), start.getDate(), 0, 0, 0),
+					end: new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999),
+					selectedDate: this.datePickerCurrentDate,
+				});
+			} else {
+			// Emit event for usage as a stand-alone component
+				this.$emit('updated', {
+					year: this.datePickerCurrentDate.getFullYear(),
+					month: this.datePickerCurrentDate.getMonth(),
+					date: this.datePickerCurrentDate.getDate(),
+				});
+			}
 		},
 
 		toggleDatePickerPeriod(direction: 'previous' | 'next') {
@@ -258,11 +302,12 @@ export default defineComponent({
 		},
 
 		hideDatePicker() {
-			setTimeout(() => this.showDatePicker = false, 100)
+			// When DatePicker acts as stand-alone component, it should never close automatically. This way the user has full power over its closing
+			if ( ! this.isStandAloneComponent) setTimeout(() => this.showDatePicker = false, 100)
 		},
 
 		hydrateDatePicker() {
-			const date = this.period.selectedDate
+			const date = this.selectedDate
 			this.setMonthDaysInWeekPicker(date.getMonth(), date.getFullYear())
 			this.setWeek(date)
 		}
@@ -287,6 +332,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @use '../../styles/mixins.scss' as mixins;
+@use '../../styles/variables.scss';
 
 .date-picker {
 	position: relative;
@@ -294,6 +340,14 @@ export default defineComponent({
 
 	@include mixins.screen-size-m {
 		min-width: 300px;
+	}
+
+	&:not(.is-in-qalendar) {
+		margin: 0 auto;
+
+		@include mixins.screen-size-m {
+			min-width: initial;
+		}
 	}
 
 	&__value-display {
@@ -330,20 +384,23 @@ export default defineComponent({
 	}
 
 	&__week-picker {
-		position: absolute;
 		padding: var(--qalendar-spacing-half);
 		z-index: 51;
 		background-color: #fff;
 		border: var(--qalendar-border-gray-thin);
 		border-radius: 4px;
-		top: calc(100% - 1px);
-		right: 0;
 		width: 250px;
 		box-shadow: 0 2px 4px rgba(240, 236, 236, 0.76);
 
-		@include mixins.screen-size-m {
-			left: 50%;
-			transform: translateX(-50%);
+		&.is-in-qalendar {
+			top: calc(100% - 1px);
+			position: absolute;
+			right: 0;
+
+			@include mixins.screen-size-m {
+				left: 50%;
+				transform: translateX(-50%);
+			}
 		}
 	}
 
@@ -397,7 +454,7 @@ export default defineComponent({
 			flex: 1 1 100%;
 			cursor: pointer;
 			border-radius: 50%;
-			font-size: 12px;
+			font-size: var(--qalendar-font-xs);
 
 			&.is-weekend {
 				color: gray;
@@ -424,7 +481,7 @@ export default defineComponent({
 	&__day-names {
 		text-transform: uppercase;
 		font-weight: 700;
-		font-size: 14px;
+		font-size: var(--qalendar-font-s);
 	}
 
 
@@ -440,7 +497,7 @@ export default defineComponent({
 			flex: 1 0 33%;
 			text-align: center;
 			cursor: pointer;
-			font-size: 12px;
+			font-size: var(--qalendar-font-xs);
 			transition: all 0.2s ease;
 
 			@include mixins.hover {

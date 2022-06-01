@@ -52,7 +52,7 @@ export default defineComponent({
 		return {
 			isVisible: false,
 			layout: 'none',
-			locale: 'en-US',
+			locale: '',
 			nDays: 7,
 		}
 	},

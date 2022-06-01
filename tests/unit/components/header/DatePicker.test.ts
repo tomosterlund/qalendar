@@ -14,8 +14,8 @@ describe('DatePicker.vue', () => {
 	test('Opening the date picker', async () => {
 		wrapper = mount(DatePicker, {
 			props: {
-				time: new Time('monday', 'en-US'),
-				period: {
+				timeProp: new Time('monday', 'en-US'),
+				periodProp: {
 					selectedDate: new Date(2022, (5 - 1), 1),
 					start: new Date(),
 					end: new Date()
@@ -30,8 +30,8 @@ describe('DatePicker.vue', () => {
 	test('Navigating a month back: January => December', async () => {
 		wrapper = mount(DatePicker, {
 			props: {
-				time: new Time('monday', 'en-US'),
-				period: {
+				timeProp: new Time('monday', 'en-US'),
+				periodProp: {
 					selectedDate: new Date(2022, (1 - 1), 4),
 					start: new Date(),
 					end: new Date()
@@ -47,8 +47,8 @@ describe('DatePicker.vue', () => {
 	test('Navigating a month forward: December => January', async () => {
 		wrapper = mount(DatePicker, {
 			props: {
-				time: new Time('monday', 'en-US'),
-				period: {
+				timeProp: new Time('monday', 'en-US'),
+				periodProp: {
 					selectedDate: new Date(2023, (12 - 1), 16),
 					start: new Date(),
 					end: new Date()
@@ -64,8 +64,8 @@ describe('DatePicker.vue', () => {
 	test('Navigating between months via the month picker', async () => {
 		wrapper = mount(DatePicker, {
 			props: {
-				time: new Time('monday', 'de-DE'),
-				period: {
+				timeProp: new Time('monday', 'de-DE'),
+				periodProp: {
 					selectedDate: new Date(2023, (12 - 1),16),
 					start: new Date(),
 					end: new Date()
@@ -83,8 +83,8 @@ describe('DatePicker.vue', () => {
 	test('Navigating between years via the month picker', async () => {
 		wrapper = mount(DatePicker, {
 			props: {
-				time: new Time('monday', 'de-DE'),
-				period: {
+				timeProp: new Time('monday', 'de-DE'),
+				periodProp: {
 					selectedDate: new Date(2032, (10 - 1),16),
 					start: new Date(),
 					end: new Date()
@@ -109,5 +109,24 @@ describe('DatePicker.vue', () => {
 		await months[11].trigger('click')
 		period = wrapper.find('.date-picker__toggle-mode')
 		expect(period.text()).toBe('Dezember 2030')
+	})
+
+	test('Emitting the correct event, when used as a stand-alone component', async () => {
+		wrapper = mount(DatePicker, {
+			props: {
+				locale: 'sv-SE',
+				firstDayOfWeek: 'monday'
+			},
+		})
+
+		await wrapper.setData({ showDatePicker: true })
+
+		const firstDay = wrapper.find('.has-day')
+		await firstDay.trigger('click')
+		const emittedEvent = wrapper.emitted('updated')
+		expect(emittedEvent[0][0]).toHaveProperty('year')
+		expect(emittedEvent[0][0]).toHaveProperty('month')
+		expect(emittedEvent[0][0]).toHaveProperty('date')
+
 	})
 })

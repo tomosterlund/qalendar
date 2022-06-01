@@ -9,7 +9,6 @@
 					:key="wasInitialized + mode"
 					:mode="mode"
 					:time="time"
-					:selected-date-default="selectedDateDefault"
 					:period="period"
 					@change-mode="mode = $event"
 					@updated-period="handleUpdatedPeriod" />
@@ -142,7 +141,15 @@ export default defineComponent({
 				this.events.forEach(e => Errors.checkEventProperties(e))
 			},
 			immediate: true,
-		}
+		},
+
+		config: {
+			deep: true,
+			handler(value: configInterface) {
+				Errors.checkConfig(value)
+			},
+			immediate: true,
+		},
 	},
 
 	mounted() {

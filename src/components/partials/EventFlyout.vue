@@ -334,7 +334,7 @@ export default defineComponent({
 	}
 
 	.is-time {
-		font-size: 14px;
+		font-size: var(--qalendar-font-s);
 		margin-bottom: var(--qalendar-spacing-half);
 	}
 }

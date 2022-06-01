@@ -21,7 +21,7 @@ npm install qalendar
 </template>
 
 <script>
-import Qalendar from "qalendar";
+import {Qalendar} from "qalendar";
 
 export default {
     components: {
@@ -136,18 +136,18 @@ data() {
 ### Calendar event properties
 A calendar event can have the following properties:
 
-|   Property    |       type / accepted values       | Required  |                                                 |
-|:-------------:|:----------------------------------:|:---------:|:-----------------------------------------------:|
-|      id       |               string               |    yes    |                                                 |
-|     title     |               string               |    yes    |                                                 |
-|     time      |     eventTime (see type below)     |    yes    |                                                 |
-|     topic     |               string               |    no     |                                                 |
-|  description  |               string               |    no     |                                                 |
-|   location    |               string               |    no     |                                                 |
-|     with      |               string               |    no     |                                                 |
-|     color     | 'blue', 'yellow', 'green' or 'red' |    no     |                                                 |
-|  colorScheme  |               string               |    no     |               overwrites 'color'                |
-|  isEditable   |              boolean               |    no     | Yields icons for editing and deleting an event  |
+|   Property    |       type / accepted values       | Required |                                                |
+|:-------------:|:----------------------------------:|:--------:|:----------------------------------------------:|
+|     `id`      |               string               |   yes    |                                                |
+|    `title`    |               string               |   yes    |                                                |
+|    `time`     |     eventTime (see type below)     |   yes    |                                                |
+|    `topic`    |               string               |    no    |                                                |
+| `description` |               string               |    no    |                                                |
+|  `location`   |               string               |    no    |                                                |
+|    `with`     |               string               |    no    |                                                |
+|    `color`    | 'blue', 'yellow', 'green' or 'red' |    no    |                                                |
+| `colorScheme` |               string               |    no    |               overwrites 'color'               |
+| `isEditable`  |              boolean               |    no    | Yields icons for editing and deleting an event |
 
 ``` ts
 type eventTime = { start: string, end: string } // start & end need the format YYYY-MM-DD hh:mm
@@ -156,13 +156,13 @@ type eventTime = { start: string, end: string } // start & end need the format Y
 ### Emitted events
 Qalendar emits the following events that can be listened to:
 
-|    Event name     |                             Purpose                             |
-|:-----------------:|:---------------------------------------------------------------:|
-| event-was-clicked |                                                                 |
-|  updated-period   | emits the value with the new period selected in the date picker |
-| event-was-resized |       emits the updated event, after an event was resized       |
-|    edit-event     |   is triggered, when a user clicks the edit-icon of an event    |
-|   delete-event    |  is triggered, when a user clicks the delete-icon of an event   |
+|     Event name      |                             Purpose                             |
+|:-------------------:|:---------------------------------------------------------------:|
+| `event-was-clicked` |                                                                 |
+|  `updated-period`   | emits the value with the new period selected in the date picker |
+| `event-was-resized` |       emits the updated event, after an event was resized       |
+|    `edit-event`     |   is triggered, when a user clicks the edit-icon of an event    |
+|   `delete-event`    |  is triggered, when a user clicks the delete-icon of an event   |
 
 ### A word on language
 
@@ -184,7 +184,7 @@ From this code:
 </template>
 
 <script>
-import Qalendar from "qalendar";
+import {Qalendar} from "qalendar";
 
 export default {
     components: {
@@ -246,8 +246,48 @@ export default {
 </script>
 ```
 
+## Date picker
+
+### Usage
+
+The date picker from the Qalendar-header, can also be used as a stand-alone component:
+
+``` vue
+<template>
+    <DatePicker locale="en-US" firstDayOfWeek="sunday" @updated="handleUpdate" />
+</template>
+
+<script>
+import {DatePicker} from "qalendar";
+
+export default {
+    components: { DatePicker },
+    
+    methods: {
+        handleUpdate(payload) {
+            const { year, month, date } = payload
+        }
+    }
+}
+</script>
+```
+
+<DatePicker locale="en-US" firstDayOfWeek="sunday"  />
+
+The DatePicker component emits one event, `updated`, the payload of which can be spread into three variables: `year`, `month` and `date`, see example above. 
+
+### Props
+
+|       Prop       |                           required                           |
+|:----------------:|:------------------------------------------------------------:|
+|     `locale`     |                             yes                              |
+| `firstDayOfWeek` |                             yes                              |
+|  `defaultDate`   |                              no                              |
+
+
 <script setup>
 import Qalendar from '../src/Qalendar.vue';
+import DatePicker from '../src/components/header/DatePicker.vue';
 
 const events = [{
 	"title": "Meeting with Dora",

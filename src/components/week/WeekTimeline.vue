@@ -77,16 +77,18 @@ export default defineComponent({
 	}
 
 	&__day-name {
-		font-size: 10px;
+		font-size: var(--qalendar-font-2xs);
 		font-weight: 400;
 		margin-bottom: 4px;
 		color: var(--qalendar-gray-quite-dark);
 	}
 
 	&__date {
-		font-size: 20px;
+		font-size: 1.2rem;
 		margin-bottom: 4px;
 		padding: 6px;
+		height: 1.4rem;
+		width: 1.4rem;
 		border-radius: 50%;
 		display: flex;
 		align-items: center;

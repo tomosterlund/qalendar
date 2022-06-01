@@ -1,6 +1,6 @@
 @mixin screen-size-m {
 
-	@media (min-width: 600px) {
+	@media (min-width: 37.5rem) {
 		@content
 	}
 }
