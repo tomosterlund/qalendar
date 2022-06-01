@@ -93,7 +93,7 @@ export default defineComponent({
 	align-items: center;
 	overflow: hidden;
 	border-radius: 4px;
-	font-size: 11px;
+	font-size: var(--qalendar-font-2xs);
 	width: 100%;
 	margin-bottom: 4px;
 	padding: 2px 4px;

@@ -158,7 +158,7 @@ export default defineComponent ({
 	}
 
 	&__period-name {
-		font-size: 24px;
+		font-size: var(--qalendar-font-l);
 		margin-bottom: 4px;
 		text-align: center;
 
@@ -183,7 +183,7 @@ export default defineComponent ({
 		.calendar-header__chevron-arrow {
 			cursor: pointer;
 			transition: color 0.2s ease;
-			font-size: 16px;
+			font-size: var(--qalendar-font-m);
 
 			@include mixins.hover {
 				color: var(--qalendar-gray-quite-dark);
@@ -200,7 +200,7 @@ export default defineComponent ({
 		width: fit-content;
 		height: 36px;
 		border-radius: 4px;
-		font-size: 16px;
+		font-size: var(--qalendar-font-m);
 		cursor: pointer;
 		border: var(--qalendar-border-gray-thin);
 

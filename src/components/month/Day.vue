@@ -107,7 +107,7 @@ export default defineComponent({
 	}
 
 	.calendar-month__weekday-more {
-		font-size: 11px;
+		font-size: var(--qalendar-font-2xs);
 		width: 100%;
 		padding-left: 4px;
 		color: var(--qalendar-gray-quite-dark);

@@ -121,7 +121,7 @@ export default defineComponent({
 		background-color: inherit;
 		color: #fff;
 		border: 0;
-		font-size: 20px;
+		font-size: var(--qalendar-font-l);
 		cursor: pointer;
 	}
 }

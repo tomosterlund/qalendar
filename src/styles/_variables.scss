@@ -24,9 +24,13 @@
 	--qalendar-week-padding-left: 56px; // is used for creating space in calendar-week, for the DayTimeline.vue component
 
 	/** Font */
-	--qalendar-font-2xs: 0.625rem;
+	--qalendar-font-3xs: 0.625rem;
+	--qalendar-font-2xs: 0.688rem;
 	--qalendar-font-xs: 0.75rem;
 	--qalendar-font-s: 0.875rem;
+	--qalendar-font-m: 1rem;
+	--qalendar-font-l: 1.25rem;
+	--qalendar-font-xl: 1.5rem;
 }
 
 @media (min-width: 62rem) {

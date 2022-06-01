@@ -241,6 +241,7 @@ export default defineComponent({
 	border: var(--qalendar-border-gray-thin);
 	border-radius: 8px;
 	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.09), 0 6px 12px rgba(0, 0, 0, 0.18);
+	overflow: hidden;
 
 	transition: all 0.2s ease;
 	transition-property: opacity, transform;
@@ -281,7 +282,7 @@ export default defineComponent({
 	}
 
 	&__menu-item {
-		font-size: 20px;
+		font-size: var(--qalendar-font-l);
 		color: gray;
 
 		&:hover {
@@ -325,7 +326,7 @@ export default defineComponent({
 	}
 
 	.is-title {
-		font-size: 20px;
+		font-size: var(--qalendar-font-l);
 		align-items: center;
 
 		.is-not-editable & {

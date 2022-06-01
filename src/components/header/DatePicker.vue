@@ -354,7 +354,7 @@ export default defineComponent({
 		height: 36px;
 		border-radius: 4px;
 		padding: 0 var(--qalendar-spacing);
-		font-size: 16px;
+		font-size: var(--qalendar-font-m);
 		cursor: pointer;
 		display: flex;
 		align-items: center;
@@ -375,7 +375,7 @@ export default defineComponent({
 		}
 
 		svg {
-			font-size: 20px;
+			font-size: var(--qalendar-font-l);
 
 			@include mixins.screen-size-m {
 				font-size: initial;
@@ -389,7 +389,7 @@ export default defineComponent({
 		background-color: #fff;
 		border: var(--qalendar-border-gray-thin);
 		border-radius: 4px;
-		width: 250px;
+		min-width: 250px;
 		box-shadow: 0 2px 4px rgba(240, 236, 236, 0.76);
 
 		&.is-in-qalendar {
@@ -447,8 +447,8 @@ export default defineComponent({
 
 		span {
 			display: flex;
-			height: 32px;
-			width: 32px;
+			min-height: 32px;
+			min-width: 32px;
 			justify-content: center;
 			align-items: center;
 			flex: 1 1 100%;
