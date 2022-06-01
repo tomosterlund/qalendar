@@ -14,4 +14,8 @@ export default defineComponent({
 
 <style lang="scss">
 
+//:root {
+//	font-size: 24px;
+//}
+
 </style>

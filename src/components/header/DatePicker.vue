@@ -1,5 +1,7 @@
 <template>
-	<div class="date-picker" @mouseleave="hideDatePicker">
+	<div class="date-picker"
+		 :class="{ 'date-picker-root': isStandAloneComponent }"
+		 @mouseleave="hideDatePicker">
 		<div v-if=" ! isStandAloneComponent"
 			 class="date-picker__value-display"
 			 @click="togglePeriodSelector">
@@ -297,6 +299,7 @@ export default defineComponent({
 		},
 
 		hideDatePicker() {
+			// When DatePicker acts as stand-alone component, it should never close automatically. This way the user has full power over its closing
 			if ( ! this.isStandAloneComponent) setTimeout(() => this.showDatePicker = false, 100)
 		},
 
@@ -326,6 +329,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @use '../../styles/mixins.scss' as mixins;
+@use '../../styles/variables.scss';
 
 .date-picker {
 	position: relative;
@@ -436,7 +440,7 @@ export default defineComponent({
 			flex: 1 1 100%;
 			cursor: pointer;
 			border-radius: 50%;
-			font-size: 12px;
+			font-size: var(--qalendar-font-xs);
 
 			&.is-weekend {
 				color: gray;
@@ -463,7 +467,7 @@ export default defineComponent({
 	&__day-names {
 		text-transform: uppercase;
 		font-weight: 700;
-		font-size: 14px;
+		font-size: var(--qalendar-font-s);
 	}
 
 
@@ -479,7 +483,7 @@ export default defineComponent({
 			flex: 1 0 33%;
 			text-align: center;
 			cursor: pointer;
-			font-size: 12px;
+			font-size: var(--qalendar-font-xs);
 			transition: all 0.2s ease;
 
 			@include mixins.hover {

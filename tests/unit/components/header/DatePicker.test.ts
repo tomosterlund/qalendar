@@ -110,4 +110,23 @@ describe('DatePicker.vue', () => {
 		period = wrapper.find('.date-picker__toggle-mode')
 		expect(period.text()).toBe('Dezember 2030')
 	})
+
+	test('Emitting the correct event, when used as a stand-alone component', async () => {
+		wrapper = mount(DatePicker, {
+			props: {
+				locale: 'sv-SE',
+				firstDayOfWeek: 'monday'
+			},
+		})
+
+		await wrapper.setData({ showDatePicker: true })
+
+		const firstDay = wrapper.find('.has-day')
+		await firstDay.trigger('click')
+		const emittedEvent = wrapper.emitted('updated')
+		expect(emittedEvent[0][0]).toHaveProperty('year')
+		expect(emittedEvent[0][0]).toHaveProperty('month')
+		expect(emittedEvent[0][0]).toHaveProperty('date')
+
+	})
 })

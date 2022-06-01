@@ -21,7 +21,7 @@ npm install qalendar
 </template>
 
 <script>
-import Qalendar from "qalendar";
+import {Qalendar} from "qalendar";
 
 export default {
     components: {
@@ -184,7 +184,7 @@ From this code:
 </template>
 
 <script>
-import Qalendar from "qalendar";
+import {Qalendar} from "qalendar";
 
 export default {
     components: {
@@ -246,8 +246,39 @@ export default {
 </script>
 ```
 
+## Date picker
+
+### Props
+
+|       Prop       |                           required                           |
+|:----------------:|:------------------------------------------------------------:|
+|     `locale`     |                             yes                              |
+| `firstDayOfWeek` |                             yes                              |
+|  `defaultDate`   |                              no                              |
+
+### Usage
+
+The date picker from the Qalendar-header, can also be used as a stand-alone component:
+
+``` vue
+<template>
+    <DatePicker locale="en-US" firstDayOfWeek="sunday"  />
+</template>
+
+<script>
+import {DatePicker} from "qalendar";
+
+export default {
+    components: { DatePicker },
+}
+</script>
+```
+
+<DatePicker locale="en-US" firstDayOfWeek="sunday"  />
+
 <script setup>
 import Qalendar from '../src/Qalendar.vue';
+import DatePicker from '../src/components/header/DatePicker.vue';
 
 const events = [{
 	"title": "Meeting with Dora",

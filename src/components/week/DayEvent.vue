@@ -339,7 +339,7 @@ export default defineComponent({
 	.calendar-week__event-info-wrapper {
 		position: relative;
 		padding: var(--qalendar-spacing-half);
-		font-size: 12px;
+		font-size: var(--qalendar-font-xs);
 		height: 100%;
 		box-sizing: border-box;
 		overflow: hidden;
@@ -356,7 +356,7 @@ export default defineComponent({
 
 	.calendar-week__event-icon {
 		margin: 2px 4px 0 0;
-		font-size: 12px;
+		font-size: var(--qalendar-font-xs);
 	}
 
 	.calendar-week__event-resize {

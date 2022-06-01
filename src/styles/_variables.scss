@@ -1,4 +1,5 @@
-.calendar-root {
+.calendar-root,
+.date-picker-root {
 	/** Color */
 	--qalendar-blue: #2684ff;
 	--qalendar-blue-transparent: rgba(38, 132, 255, 0.9);
@@ -21,9 +22,14 @@
 	--qalendar-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.18);
 	--qalendar-text-transition: color 0.2s ease;
 	--qalendar-week-padding-left: 56px; // is used for creating space in calendar-week, for the DayTimeline.vue component
+
+	/** Font */
+	--qalendar-font-2xs: 0.625rem;
+	--qalendar-font-xs: 0.75rem;
+	--qalendar-font-s: 0.875rem;
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 62rem) {
 
 	.calendar-root {
 		--qalendar-spacing: 20px;

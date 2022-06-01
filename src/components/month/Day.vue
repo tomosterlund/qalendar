@@ -94,7 +94,7 @@ export default defineComponent({
 
 	.calendar-month__day-name,
 	.calendar-month__day-date {
-		font-size: 12px;
+		font-size: var(--qalendar-font-xs);
 		color: var(--qalendar-gray-quite-dark);
 
 		&:first-child {

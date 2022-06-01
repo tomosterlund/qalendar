@@ -1,5 +1,7 @@
 <template>
-	<DatePicker locale="sv-SE" first-day-of-week="sunday" @updated="updateDate" />
+	<div class="date-picker-parent">
+		<DatePicker locale="de-DE" first-day-of-week="sunday" @updated="updateDate" />
+	</div>
 </template>
 
 <script lang="ts">
@@ -20,5 +22,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
+.date-picker-parent {
+	font-family: Verdana, sans-serif;
+}
 
 </style>
