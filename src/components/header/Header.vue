@@ -159,7 +159,6 @@ export default defineComponent ({
 
 	&__period-name {
 		font-size: var(--qalendar-font-l);
-		margin-bottom: 4px;
 		text-align: center;
 
 		@include mixins.screen-size-m {

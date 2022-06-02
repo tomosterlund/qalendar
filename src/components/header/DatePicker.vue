@@ -410,7 +410,7 @@ export default defineComponent({
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--qalendar-spacing-half);
-		margin-bottom: var(--qalendar-spacing-half);
+		margin-bottom: 0.25em;
 		user-select: none;
 
 		.is-icon {

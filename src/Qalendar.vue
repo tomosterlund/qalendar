@@ -121,12 +121,17 @@ export default defineComponent({
 		},
 
 		onCalendarResize() {
+			// Calculate break point for day mode based on root font-size
+			const documentRoot = document.documentElement
 			const calendarRoot = document.querySelector('.calendar-root')
+			const documentFontSize = +window.getComputedStyle(documentRoot).fontSize.split('p')[0]
+			const breakPointFor1RemEquals16px = 700
+			const multiplier = 16 / documentFontSize
+			const dayModeBreakpoint = breakPointFor1RemEquals16px / multiplier // For 16px root font-size, break point is at 43.75rem
 
 			if ( ! calendarRoot) return
 
 			this.calendarWidth = calendarRoot.clientWidth
-			const dayModeBreakpoint = 700
 
 			if (this.calendarWidth < dayModeBreakpoint) this.mode = 'day'
 			if (this.calendarWidth >= dayModeBreakpoint) this.mode = this.config?.defaultMode || 'week'
@@ -180,7 +185,7 @@ export default defineComponent({
 		width: 100%;
 		margin: 0 auto;
 		max-width: 1400px;
-		max-height: 700px;
+		max-height: 1000px;
 		height: calc(100vh - var(--qalendar-spacing-double));
 		display: flex;
 		flex-flow: column;
