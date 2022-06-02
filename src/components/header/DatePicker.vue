@@ -169,7 +169,7 @@ export default defineComponent({
 			this.showDatePicker = !this.showDatePicker
 		},
 
-		setWeek(date: Date) {
+		setWeek(date: Date, isOnMountHook = false) {
 			this.datePickerCurrentDate = date
 			const currentWeek = this.time.getCalendarWeekDateObjects(date)
 			this.weekDays = currentWeek
@@ -186,6 +186,8 @@ export default defineComponent({
 				default:
 					this.periodText = this.time.getLocalizedDateString(date)
 			}
+
+			if (isOnMountHook) return
 
 			this.emitChange(start, end)
 		},
@@ -309,7 +311,7 @@ export default defineComponent({
 		hydrateDatePicker() {
 			const date = this.selectedDate
 			this.setMonthDaysInWeekPicker(date.getMonth(), date.getFullYear())
-			this.setWeek(date)
+			this.setWeek(date, true)
 		}
 	},
 
