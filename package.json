@@ -1,6 +1,6 @@
 {
   "name": "qalendar",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build && tsc --emitDeclarationOnly",
