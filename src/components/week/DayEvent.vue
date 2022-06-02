@@ -333,7 +333,7 @@ export default defineComponent({
 	.calendar-week__event-row {
 		display: flex;
 		align-items: flex-start;
-		margin-bottom: 4px;
+		margin-bottom: 0.25em;
 	}
 
 	.calendar-week__event-info-wrapper {

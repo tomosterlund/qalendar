@@ -305,13 +305,14 @@ export default defineComponent({
 	&__row {
 		display: flex;
 		grid-gap: var(--qalendar-spacing);
-		margin-bottom: 4px;
+		margin-bottom: 0.25em;
 		font-weight: 400;
 	}
 
 	&__row {
 
 		svg {
+			margin-top: 0.1rem;
 			color: #5f6368;
 			width: 14px;
 		}
@@ -336,7 +337,7 @@ export default defineComponent({
 
 	.is-time {
 		font-size: var(--qalendar-font-s);
-		margin-bottom: var(--qalendar-spacing-half);
+		margin-bottom: 0.75em;
 	}
 }
 
