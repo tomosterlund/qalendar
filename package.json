@@ -1,6 +1,11 @@
 {
   "name": "qalendar",
   "version": "0.3.2",
+  "homepage": "https://tomosterlund.github.io/qalendar/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tomosterlund/qalendar"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build && tsc --emitDeclarationOnly",
