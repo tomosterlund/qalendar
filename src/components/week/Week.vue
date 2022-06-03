@@ -116,7 +116,6 @@ export default defineComponent({
   mounted() {
     this.setInitialEvents(this.modeProp);
     this.scrollOnMount();
-    console.log("hello");
   },
 
   methods: {
@@ -131,10 +130,6 @@ export default defineComponent({
             "start"
           );
           const events = this.events.filter((event: eventInterface) => {
-            console.log(this.period);
-            console.log(event.time.start);
-            console.log(dateTimeString);
-
             return (
               event.time.start.substring(0, 11) ===
               dateTimeString.substring(0, 11)
@@ -152,8 +147,6 @@ export default defineComponent({
         days.splice(6, 1);
         days.splice(0, 1);
       }
-
-      console.log(days);
 
       this.days = days;
     },
@@ -189,8 +182,6 @@ export default defineComponent({
           if (dayDate === eventDate) days[dayIndex].events.push(calendarEvent);
         }
       }
-
-      console.log(days);
 
       this.days = days;
     },
