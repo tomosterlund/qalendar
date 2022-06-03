@@ -80,7 +80,15 @@ export default defineComponent({
 <style lang="scss">
 
 .app-container {
-	padding: 10px;
+	--container-padding: 10px;
+
+	padding: var(--container-padding);
+
+	main {
+		width: 1400px;
+		max-width: 90%;
+		height: 800px;
+	}
 }
 
 body {

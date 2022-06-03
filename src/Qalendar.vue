@@ -3,7 +3,8 @@
 		<div class="calendar-root" :class="{
 			'mode-is-day': mode === 'day',
 			'mode-is-week': mode === 'week',
-			'qalendar-is-small': calendarWidth < 700,
+			'mode-is-month': mode === 'month',
+			'qalendar-is-small': calendarWidth < 700
 		}">
 			<Header :config="config"
 					:key="wasInitialized + mode"
@@ -174,9 +175,12 @@ export default defineComponent({
 
 .calendar-root-wrapper {
 	width: 100%;
+	max-width: 100vw;
+	height: 100%;
 	min-height: 700px;
 
 	.calendar-root {
+		height: 100%;
 		border: var(--qalendar-border-gray-thin);
 		border-radius: var(--qalendar-border-radius);
 		font-family: v-bind(fontFamily);
@@ -184,9 +188,6 @@ export default defineComponent({
 		position: relative;
 		width: 100%;
 		margin: 0 auto;
-		max-width: 1400px;
-		max-height: 1000px;
-		height: calc(100vh - var(--qalendar-spacing-double));
 		display: flex;
 		flex-flow: column;
 	}

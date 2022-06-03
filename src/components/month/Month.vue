@@ -115,6 +115,7 @@ export default defineComponent({
 .calendar-month {
 	height: 100%;
 	width: 100%;
+	overflow-y: auto;
 
 	.calendar-month__weeks {
 		height: 100%;

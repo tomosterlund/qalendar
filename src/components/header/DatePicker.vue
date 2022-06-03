@@ -399,9 +399,15 @@ export default defineComponent({
 			position: absolute;
 			right: 0;
 
-			@include mixins.screen-size-m {
-				left: 50%;
-				transform: translateX(-50%);
+			.mode-is-month,
+			.mode-is-week & {
+
+				// week-picker can only be centered, if it is not the most far-right element in header
+				// which is the case in month- and week mode, but not in day mode
+				@include mixins.screen-size-m {
+					left: 50%;
+					transform: translateX(-50%);
+				}
 			}
 		}
 	}
