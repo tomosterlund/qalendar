@@ -1,0 +1,1 @@
+import{_ as e,o as a,a as r,s as t}from"./app.ff213fea.js";const f='{"title":"Planned features","description":"","frontmatter":{},"headers":[],"relativePath":"planned-features.md"}',s={},n=t("",5),i=[n];function l(d,o,h,_,c,p){return a(),r("div",null,i)}var m=e(s,[["render",l]]);export{f as __pageData,m as default};
