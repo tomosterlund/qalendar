@@ -3,7 +3,7 @@
 Qalendar is an event calendar for Vue 3. It is written in Typescript, in order to provide the best possible usability for JS- as well as TS-based applications.
 
 ::: warning
-This component is still in an 0.X.X-version, and is not yet suitable for production applications.
+This component is still in a 0.X.X-version, and is not yet suitable for production applications.
 :::
 
 ## Getting started
@@ -65,12 +65,12 @@ export default {
 <br>
 
 <div style="height: 800px">
-    <Qalendar :selected-date-default="new Date(2022, 4, 16)" :events="[ { id: 1, title: 'Foo', color: 'blue', time: { start: '2022-05-16 08:00', end: '2022-05-16 09:00' } }, { id: 2, title: 'Bar', color: 'green', time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' } }, { id: 3, title: 'Foo', color: 'blue', time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' } } ]" />
+    <Qalendar :selected-date="new Date(2022, 4, 16)" :events="[ { id: 1, title: 'Foo', color: 'blue', time: { start: '2022-05-16 08:00', end: '2022-05-16 09:00' } }, { id: 2, title: 'Bar', color: 'green', time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' } }, { id: 3, title: 'Foo', color: 'blue', time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' } } ]" />
 </div>
 
 ### Style
 
-As in the code example above, you need to import the styles for the component. Since Qalendar is aiming to be a responsive multi-purpose component, it avoids use of fixed height and width where possible. Therefore, for most use-cases you would probably want to place it in a wrapper with a fixed height, and possibly a max-width.
+As in the code example above, you need to import the styles for the component. Since Qalendar is aiming to be a responsive multi-purpose component, it avoids use of fixed height and width where possible. Therefore, for most use-cases you would probably want to place it in a wrapper with a fixed `height`, and possibly a `max-width`.
 
 ## Configuration
 
@@ -145,6 +145,16 @@ data() {
 
 ## Guide
 
+### Props
+
+|      Name       |                                  Type                                   |                  Purpose                  |
+|:---------------:|:-----------------------------------------------------------------------:|:-----------------------------------------:|
+| `selected-date` |                                  Date                                   |    Define which date to show on render    |
+|  `is-loading`   |                                 boolean                                 | Display a loading animation in the header |
+|    `events`     | [see section "Calendar event properties"](./#calendar-event-properties) |                                           |
+|    `config`     |             [see section "Configuration"](./#configuration)             |                                           |
+
+
 ### Calendar event properties
 
 A calendar event can have the following properties:
@@ -189,7 +199,7 @@ If you're using Qalendar, and translations for your specific locale are missing,
 A month view:
 
 <div style="height: 800px">
-    <Qalendar :selected-date-default="new Date(2022, 0, 8)" :events="events" :config="config"  />
+    <Qalendar :selected-date="new Date(2022, 0, 8)" :events="events" :config="config"  />
 </div>
 
 From this code:
@@ -197,7 +207,7 @@ From this code:
 ```vue
 <template>
   <Qalendar
-    :selected-date-default="new Date(2022, 0, 8)"
+    :selected-date="new Date(2022, 0, 8)"
     :events="events"
     :config="config"
   />
@@ -294,17 +304,17 @@ export default {
 </script>
 ```
 
-<DatePicker locale="en-US" firstDayOfWeek="sunday"  />
+<DatePicker locale="en-US" first-day-of-week="sunday"  />
 
 The DatePicker component emits one event, `updated`, the payload of which can be spread into three variables: `year`, `month` and `date`, see example above.
 
 ### Props
 
-|       Prop       | required |
-| :--------------: | :------: |
-|     `locale`     |   yes    |
-| `firstDayOfWeek` |   yes    |
-|  `defaultDate`   |    no    |
+|        Prop         | Type / Accepted values | Required |
+|:-------------------:|:----------------------:|:--------:|
+|      `locale`       |         string         |   yes    |
+| `first-day-of-week` |  `sunday` or `monday`  |   yes    |
+|   `default-date`    |          Date          |    no    |
 
 <script setup>
 import Qalendar from '../src/Qalendar.vue';

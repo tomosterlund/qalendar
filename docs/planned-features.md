@@ -2,11 +2,11 @@
 
 #### Versions 0.X.X (pre-release)
 
-- Console warnings on faulty configuration
-- Loading animation
+- All planned features are ready. Merely testing and improving them remains before v.1.0.0
 
 #### Post-release
 
-- Drag & drop of events
+- Multi-day events
 - Year mode
 - Indication in date picker, on which days there are events
+- Drag & drop of events
