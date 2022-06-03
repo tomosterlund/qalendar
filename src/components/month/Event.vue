@@ -88,8 +88,6 @@ export default defineComponent({
         this.eventIdPrefix + this.calendarEvent.id
       );
 
-      if (!eventElement) return;
-
       this.$emit("event-was-clicked", {
         clickedEvent: this.calendarEvent,
         eventElement,

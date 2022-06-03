@@ -7,9 +7,10 @@
     <main>
       <Qalendar
         :key="config.locale + config.week.nDays"
-        :selected-date-default="new Date()"
+        :selected-date="new Date()"
         :config="config"
         :events="events"
+        :is-loading="isLoading"
         @event-was-clicked="reactToEvent"
         @updated-period="reactToEvent"
         @event-was-resized="reactToEvent"
@@ -72,13 +73,24 @@ export default defineComponent({
       events: seededEvents as eventInterface[],
 
       layout: "none",
+      isLoading: false,
     };
+  },
+
+  mounted() {
+    // this.triggerLoadAnimations()
   },
 
   methods: {
     reactToEvent(payload: any) {
       console.log(payload);
     },
+
+    triggerLoadAnimations() {
+      this.isLoading = !this.isLoading
+
+      setTimeout(() => this.triggerLoadAnimations(), 5000)
+    }
   },
 });
 </script>

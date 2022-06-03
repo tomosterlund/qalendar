@@ -10,8 +10,9 @@ describe("Event.vue", () => {
       calendarEvent: {
         title: "Foo",
         time: { start: "2022-05-22 00:00", end: "2022-05-22 01:00" },
-        id: "1",
+        id: "123",
       },
+      config: {}
     },
   });
 
@@ -24,4 +25,15 @@ describe("Event.vue", () => {
     const time = wrapper.find(".calendar-month__event-time");
     expect(time.text()).toBe("12:00 AM");
   });
+
+  test('Emitting event "event-was-clicked"', async () => {
+    const eventElement = wrapper.find('.calendar-month__event')
+    await eventElement.trigger('click')
+    const wasClickedEvent = wrapper.emitted('event-was-clicked')
+
+    // @ts-ignore
+    expect(wasClickedEvent[0][0]).toHaveProperty('clickedEvent')
+    // @ts-ignore
+    expect(wasClickedEvent[0][0]).toHaveProperty('eventElement')
+  })
 });

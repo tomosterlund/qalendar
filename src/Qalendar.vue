@@ -6,9 +6,13 @@
         'mode-is-day': mode === 'day',
         'mode-is-week': mode === 'week',
         'mode-is-month': mode === 'month',
-        'qalendar-is-small': calendarWidth < 700,
+        'qalendar-is-small': calendarWidth < 700
       }"
     >
+      <Transition name="loading">
+        <div v-if="isLoading" class="top-bar-loader" />
+      </Transition>
+
       <Header
         :key="wasInitialized + mode"
         :config="config"
@@ -79,9 +83,13 @@ export default defineComponent({
       type: Array as PropType<eventInterface[]>,
       default: () => [],
     },
-    selectedDateDefault: {
+    selectedDate: {
       type: Date,
       default: new Date(),
+    },
+    isLoading: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -100,8 +108,8 @@ export default defineComponent({
       period: {
         start: new Date(),
         end: new Date(),
-        selectedDate: this.selectedDateDefault
-          ? this.selectedDateDefault
+        selectedDate: this.selectedDate
+          ? this.selectedDate
           : new Date(),
       },
       week: {
@@ -207,7 +215,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "./styles/variables.scss";
 
 .calendar-root-wrapper {
@@ -228,6 +236,55 @@ export default defineComponent({
     margin: 0 auto;
     display: flex;
     flex-flow: column;
+
+    .top-bar-loader {
+      position: absolute;
+      top: 1px;
+      left: 2px;
+      width: calc(100% - 4px);
+      height: 3px;
+      background: rgba(241, 241, 241, 0.2);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .top-bar-loader:before {
+      content: '';
+      height: 4px;
+      width: calc(100% - 4px);
+      position: absolute;
+      top: 1px;
+      left: 2px;
+      background: rgb(38,132,255);
+      background: linear-gradient(90deg, rgba(38,132,255,1) 0%, rgba(38,132,255,0.5088410364145659) 48%, rgba(38,132,255,1) 100%);
+      animation: load 1.8s infinite;
+      border-radius: 16px;
+    }
+
+    @keyframes load {
+      0% {
+        width: 0;
+        left: -100%;
+      }
+      50% {
+        left: 0;
+        width: 100%;
+      }
+      100% {
+        width: 0;
+        left: 100%;
+      }
+    }
+
+    .loading-enter-active,
+    .loading-leave-active {
+      transition: background 0.5s ease;
+    }
+
+    .loading-leave-to,
+    .loading-enter-from {
+      background-color: rgba(255, 255, 255, 0);
+    }
   }
 }
 </style>

@@ -1,7 +1,5 @@
 <template>
   <div class="calendar-month">
-    <div class="calendar-month__timeline"></div>
-
     <div class="calendar-month__weeks">
       <div
         v-for="(week, weekIndex) in month"
