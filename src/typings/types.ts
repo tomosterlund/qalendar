@@ -1,14 +1,14 @@
-import {dayStartOrEnd} from "./config.interface";
+import { dayStartOrEnd } from "./config.interface";
 
 export interface DOMRect {
-	bottom: number;
-	height: number;
-	left: number;
-	right: number;
-	top: number;
-	width: number;
-	x: number;
-	y: number;
+  bottom: number;
+  height: number;
+  left: number;
+  right: number;
+  top: number;
+  width: number;
+  x: number;
+  y: number;
 }
 
-export type modeType = 'day' | 'week' | 'month'
+export type modeType = "day" | "week" | "month";

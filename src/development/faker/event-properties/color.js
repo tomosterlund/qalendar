@@ -1,5 +1,1 @@
-module.exports = [
-	'blue',
-	'yellow',
-	'green',
-]
+module.exports = ["blue", "yellow", "green"];

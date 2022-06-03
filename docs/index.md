@@ -1,4 +1,5 @@
 # Documentation
+
 Qalendar is an event calendar for Vue 3. It is written in Typescript, in order to provide the best possible usability for JS- as well as TS-based applications.
 
 ::: warning
@@ -32,18 +33,18 @@ export default {
         return {
             events: [
                 {
-                    id: "123"
+                    id: '123'
                     title: 'Beep',
                     color: 'blue',
                     time: { start: '2022-01-01 08:00', end: '2022-05-16 09:00' }
                 },
                 {
-                    id: "456"
+                    id: '456',
                     title: 'Boop',
                     color: 'green',
                     time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' }
                 {
-                    id: "789"
+                    id: '789',
                     title: 'Foo',
                     color: 'blue',
                     time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' }
@@ -63,7 +64,13 @@ export default {
 
 <br>
 
-<Qalendar :selected-date-default="new Date(2022, 4, 16)" :events="[ { title: 'Foo', color: 'blue', time: { start: '2022-05-16 08:00', end: '2022-05-16 09:00' } }, { title: 'Bar', color: 'green', time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' } }, { title: 'Foo', color: 'blue', time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' } } ]" />
+<div style="height: 800px">
+    <Qalendar :selected-date-default="new Date(2022, 4, 16)" :events="[ { id: 1, title: 'Foo', color: 'blue', time: { start: '2022-05-16 08:00', end: '2022-05-16 09:00' } }, { id: 2, title: 'Bar', color: 'green', time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' } }, { id: 3, title: 'Foo', color: 'blue', time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' } } ]" />
+</div>
+
+### Style
+
+As in the code example above, you need to import the styles for the component. Since Qalendar is aiming to be a responsive multi-purpose component, it avoids use of fixed height and width where possible. Therefore, for most use-cases you would probably want to place it in a wrapper with a fixed height, and possibly a max-width.
 
 ## Configuration
 
@@ -71,7 +78,7 @@ Qalendar takes a `config` prop, which contains all the most crucial options for 
 
 ### Basic configuration
 
-``` js
+```js
 data() {
     return {
         config: {
@@ -89,6 +96,9 @@ data() {
                 // When adding a custom font, please also set the fallback(s) yourself
                 fontFamily: 'Nunito', sans-serif,
             },
+            // if not set, the mode defaults to 'week'. The three available options are 'month', 'week' and 'day'
+            // Please note, that smaller devices can only utilize the day mode
+            defaultMode: 'day'
         }
     }
 }
@@ -98,7 +108,7 @@ data() {
 
 All events can be given the `color` property with any of the given values `'blue' | 'green' | 'yellow' | 'red'`. However, you can also pass further color schemes in the `config` object, which the events can then utilize, such as:
 
-``` js
+```js
 data() {
     return {
         config: {
@@ -119,12 +129,14 @@ data() {
             {
                 title: 'Beep',
                 time: { start: '2022-05-16 08:00', end: '2022-05-16 09:00' },
-                colorScheme: 'meetings'
+                colorScheme: 'meetings',
+                id: '1',
             },
             {
                 title: 'Boop',
                 time: { start: '2022-05-16 08:00', end: '2022-05-16 09:00' },
-                colorScheme: 'sports'
+                colorScheme: 'sports',
+                id: '2',
             },
         ]
     }
@@ -134,11 +146,12 @@ data() {
 ## Guide
 
 ### Calendar event properties
+
 A calendar event can have the following properties:
 
 |   Property    |       type / accepted values       | Required |                                                |
 |:-------------:|:----------------------------------:|:--------:|:----------------------------------------------:|
-|     `id`      |               string               |   yes    |                                                |
+|     `id`      |           string, number           |   yes    |                                                |
 |    `title`    |               string               |   yes    |                                                |
 |    `time`     |     eventTime (see type below)     |   yes    |                                                |
 |    `topic`    |               string               |    no    |                                                |
@@ -149,15 +162,16 @@ A calendar event can have the following properties:
 | `colorScheme` |               string               |    no    |               overwrites 'color'               |
 | `isEditable`  |              boolean               |    no    | Yields icons for editing and deleting an event |
 
-``` ts
-type eventTime = { start: string, end: string } // start & end need the format YYYY-MM-DD hh:mm
+```ts
+type eventTime = { start: string; end: string }; // start & end need the format YYYY-MM-DD hh:mm
 ```
 
 ### Emitted events
+
 Qalendar emits the following events that can be listened to:
 
 |     Event name      |                             Purpose                             |
-|:-------------------:|:---------------------------------------------------------------:|
+| :-----------------: | :-------------------------------------------------------------: |
 | `event-was-clicked` |                                                                 |
 |  `updated-period`   | emits the value with the new period selected in the date picker |
 | `event-was-resized` |       emits the updated event, after an event was resized       |
@@ -174,75 +188,83 @@ If you're using Qalendar, and translations for your specific locale are missing,
 
 A month view:
 
-<Qalendar :selected-date-default="new Date(2022, 0, 8)" :events="events" :config="config"  />
+<div style="height: 800px">
+    <Qalendar :selected-date-default="new Date(2022, 0, 8)" :events="events" :config="config"  />
+</div>
 
 From this code:
 
-``` vue
+```vue
 <template>
-    <Qalendar :selected-date-default="new Date(2022, 0, 8)" :events="events" :config="config"  />
+  <Qalendar
+    :selected-date-default="new Date(2022, 0, 8)"
+    :events="events"
+    :config="config"
+  />
 </template>
 
 <script>
-import {Qalendar} from "qalendar";
+import { Qalendar } from "qalendar";
 
 export default {
-    components: {
-        Qalendar,
-    },
+  components: {
+    Qalendar,
+  },
 
-    data() {
-        return {
-            events: [
-                {
-                    title: "Meeting with Dora",
-                    with: "Albert Einstein",
-                    time: {"start": "2022-01-01 04:52", "end": "2022-01-01 05:37"},
-                    color: "green",
-                    isEditable: true,
-                    id: "de471c78cb5c",
-                    description: "Think of me as Yoda. Only instead of being little and green, I wear suites and I'm awesome."
-                },
-                {
-                    title: "Advanced algebra",
-                    with: "Pheobe Buffay",
-                    time: {"start": "2022-01-02 20:05", "end": "2022-01-02 21:35"},
-                    colorScheme: "sports",
-                    isEditable: true,
-                    id: "6d3c0980a5cf",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda corporis doloremque et expedita molestias necessitatibus quam quas temporibus veritatis. Deserunt excepturi illum nobis perferendis praesentium repudiandae saepe sapiente voluptatem!"
-                },
-                {
-                    title: "Break",
-                    with: "Marshall Eriksen",
-                    time: {"start": "2022-01-02 22:10", "end": "2022-01-02 22:55"},
-                    colorScheme: "meetings",
-                    isEditable: true,
-                    id: "9f1b209982f1",
-                    location: "Zoom"
-                },
-                // ... and more
-            ],
-            
-            config: {
-                locale: 'zh-CN',
-                defaultMode: 'month',
-                style: {
-                    colorSchemes: {
-                        meetings: {
-                            color: '#fff',
-                            backgroundColor: '#131313',
-                        },
-                        sports: {
-                            color: '#fff',
-                            backgroundColor: '#ff4081',
-                        }
-                    }
-                },
-            }
-        }
-    },
-}
+  data() {
+    return {
+      events: [
+        {
+          title: "Meeting with Dora",
+          with: "Albert Einstein",
+          time: { start: "2022-01-01 04:52", end: "2022-01-01 05:37" },
+          color: "green",
+          isEditable: true,
+          id: "de471c78cb5c",
+          description:
+            "Think of me as Yoda. Only instead of being little and green, I wear suites and I'm awesome.",
+        },
+        {
+          title: "Advanced algebra",
+          with: "Pheobe Buffay",
+          time: { start: "2022-01-02 20:05", end: "2022-01-02 21:35" },
+          colorScheme: "sports",
+          isEditable: true,
+          id: "6d3c0980a5cf",
+          description:
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda corporis doloremque et expedita molestias necessitatibus quam quas temporibus veritatis. Deserunt excepturi illum nobis perferendis praesentium repudiandae saepe sapiente voluptatem!",
+        },
+        {
+          title: "Break",
+          with: "Marshall Eriksen",
+          time: { start: "2022-01-02 22:10", end: "2022-01-02 22:55" },
+          colorScheme: "meetings",
+          isEditable: true,
+          id: "9f1b209982f1",
+          location: "Zoom",
+        },
+        // ... and more
+      ],
+
+      config: {
+        locale: "zh-CN",
+        defaultMode: "month",
+        style: {
+          colorSchemes: {
+            meetings: {
+              color: "#fff",
+              backgroundColor: "#131313",
+            },
+            sports: {
+              color: "#fff",
+              backgroundColor: "#ff4081",
+            },
+          },
+        },
+      },
+    };
+  },
+};
 </script>
 ```
 
@@ -252,38 +274,37 @@ export default {
 
 The date picker from the Qalendar-header, can also be used as a stand-alone component:
 
-``` vue
+```vue
 <template>
-    <DatePicker locale="en-US" firstDayOfWeek="sunday" @updated="handleUpdate" />
+  <DatePicker locale="en-US" firstDayOfWeek="sunday" @updated="handleUpdate" />
 </template>
 
 <script>
-import {DatePicker} from "qalendar";
+import { DatePicker } from "qalendar";
 
 export default {
-    components: { DatePicker },
-    
-    methods: {
-        handleUpdate(payload) {
-            const { year, month, date } = payload
-        }
-    }
-}
+  components: { DatePicker },
+
+  methods: {
+    handleUpdate(payload) {
+      const { year, month, date } = payload;
+    },
+  },
+};
 </script>
 ```
 
 <DatePicker locale="en-US" firstDayOfWeek="sunday"  />
 
-The DatePicker component emits one event, `updated`, the payload of which can be spread into three variables: `year`, `month` and `date`, see example above. 
+The DatePicker component emits one event, `updated`, the payload of which can be spread into three variables: `year`, `month` and `date`, see example above.
 
 ### Props
 
-|       Prop       |                           required                           |
-|:----------------:|:------------------------------------------------------------:|
-|     `locale`     |                             yes                              |
-| `firstDayOfWeek` |                             yes                              |
-|  `defaultDate`   |                              no                              |
-
+|       Prop       | required |
+| :--------------: | :------: |
+|     `locale`     |   yes    |
+| `firstDayOfWeek` |   yes    |
+|  `defaultDate`   |    no    |
 
 <script setup>
 import Qalendar from '../src/Qalendar.vue';

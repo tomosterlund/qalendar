@@ -1,7 +1,7 @@
-const getRandomElementOfArray = list => {
-	const randomIndex = Math.floor(Math.random() * list.length)
+const getRandomElementOfArray = (list) => {
+  const randomIndex = Math.floor(Math.random() * list.length);
 
-	return list[randomIndex]
-}
+  return list[randomIndex];
+};
 
-module.exports = getRandomElementOfArray
+module.exports = getRandomElementOfArray;
