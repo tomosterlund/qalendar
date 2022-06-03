@@ -1,344 +1,377 @@
 <template>
-	<div class="event-flyout"
-		 :class="{ 'is-visible': isVisible, 'is-not-editable': ! isEditable }"
-		 :style="eventFlyoutInlineStyles">
-		<div class="event-flyout__relative-wrapper">
-			<div class="event-flyout__menu">
-				<span class="event-flyout__menu-editable" v-if="isEditable">
-					<font-awesome-icon class="event-flyout__menu-item is-edit-icon"
-									   :icon="icons.edit"
-									   @click="editEvent" />
+  <div
+    class="event-flyout"
+    :class="{ 'is-visible': isVisible, 'is-not-editable': !isEditable }"
+    :style="eventFlyoutInlineStyles"
+  >
+    <div class="event-flyout__relative-wrapper">
+      <div class="event-flyout__menu">
+        <span v-if="isEditable" class="event-flyout__menu-editable">
+          <font-awesome-icon
+            class="event-flyout__menu-item is-edit-icon"
+            :icon="icons.edit"
+            @click="editEvent"
+          />
 
-					<font-awesome-icon class="event-flyout__menu-item is-trash-icon"
-									   :icon="icons.trash"
-									   @click="deleteEvent" />
-				</span>
+          <font-awesome-icon
+            class="event-flyout__menu-item is-trash-icon"
+            :icon="icons.trash"
+            @click="deleteEvent"
+          />
+        </span>
 
-				<span class="event-flyout__menu-close">
-					<font-awesome-icon class="event-flyout__menu-item is-times-icon"
-									   :icon="icons.times"
-									   @click="closeFlyout" />
-				</span>
-			</div>
+        <span class="event-flyout__menu-close">
+          <font-awesome-icon
+            class="event-flyout__menu-item is-times-icon"
+            :icon="icons.times"
+            @click="closeFlyout"
+          />
+        </span>
+      </div>
 
-			<div class="event-flyout__info-wrapper" v-if="calendarEvent">
-				<div v-if="calendarEvent.title" class="event-flyout__row is-title">
-					<div class="event-flyout__color-icon" :style="{ backgroundColor: eventBackgroundColor }" />
-					{{ calendarEvent.title }}
-				</div>
+      <div v-if="calendarEvent" class="event-flyout__info-wrapper">
+        <div v-if="calendarEvent.title" class="event-flyout__row is-title">
+          <div
+            class="event-flyout__color-icon"
+            :style="{ backgroundColor: eventBackgroundColor }"
+          />
+          {{ calendarEvent.title }}
+        </div>
 
-				<div class="event-flyout__row is-time" v-if="calendarEvent.time">
-					{{ getEventDate + ' ⋅ ' + getEventTime }}
-				</div>
+        <div v-if="calendarEvent.time" class="event-flyout__row is-time">
+          {{ getEventDate + " ⋅ " + getEventTime }}
+        </div>
 
-				<div class="event-flyout__row is-location" v-if="calendarEvent.location">
-					<font-awesome-icon :icon="icons.location" />
-					{{ calendarEvent.location }}
-				</div>
+        <div
+          v-if="calendarEvent.location"
+          class="event-flyout__row is-location"
+        >
+          <font-awesome-icon :icon="icons.location" />
+          {{ calendarEvent.location }}
+        </div>
 
-				<div v-if="calendarEvent.with" class="event-flyout__row">
-					<font-awesome-icon :icon="icons.user" />
-					{{ calendarEvent.with }}
-				</div>
+        <div v-if="calendarEvent.with" class="event-flyout__row">
+          <font-awesome-icon :icon="icons.user" />
+          {{ calendarEvent.with }}
+        </div>
 
-				<div v-if="calendarEvent.topic" class="event-flyout__row">
-					<font-awesome-icon :icon="icons.topic" class="calendar-week__event-icon" />
-					{{ calendarEvent.topic }}
-				</div>
+        <div v-if="calendarEvent.topic" class="event-flyout__row">
+          <font-awesome-icon
+            :icon="icons.topic"
+            class="calendar-week__event-icon"
+          />
+          {{ calendarEvent.topic }}
+        </div>
 
-				<div v-if="calendarEvent.description" class="event-flyout__row">
-					<font-awesome-icon :icon="icons.description" class="calendar-week__event-icon" />
-					{{ calendarEvent.description }}
-				</div>
-			</div>
-		</div>
-	</div>
+        <div v-if="calendarEvent.description" class="event-flyout__row">
+          <font-awesome-icon
+            :icon="icons.description"
+            class="calendar-week__event-icon"
+          />
+          {{ calendarEvent.description }}
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from "vue";
-import {eventInterface} from "../../typings/interfaces/event.interface";
-import {DOMRect} from "../../typings/types";
-import EventFlyoutPosition, {EVENT_FLYOUT_WIDTH} from "../../helpers/EventFlyoutPosition";
-import {faMapMarkerAlt, faTimes} from "@fortawesome/free-solid-svg-icons";
-import {faClock, faComment, faUser, faEdit, faTrashAlt, faQuestionCircle} from "@fortawesome/free-regular-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {configInterface} from "../../typings/config.interface";
+import { defineComponent, PropType } from "vue";
+import { eventInterface } from "../../typings/interfaces/event.interface";
+import EventFlyoutPosition, {
+  EVENT_FLYOUT_WIDTH,
+} from "../../helpers/EventFlyoutPosition";
+import { faMapMarkerAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  faClock,
+  faComment,
+  faUser,
+  faEdit,
+  faTrashAlt,
+  faQuestionCircle,
+} from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { configInterface } from "../../typings/config.interface";
 import Time from "../../helpers/Time";
-import {EVENT_COLORS} from "../../constants";
-const eventFlyoutPositionHelper = new EventFlyoutPosition()
+import { EVENT_COLORS } from "../../constants";
+const eventFlyoutPositionHelper = new EventFlyoutPosition();
 
 export default defineComponent({
-	name: 'EventFlyout',
+  name: "EventFlyout",
 
-	components: {
-		FontAwesomeIcon,
-	},
+  components: {
+    FontAwesomeIcon,
+  },
 
-	props: {
-		calendarEventProp: {
-			type: Object as PropType<eventInterface | null>,
-			default: () => ({}),
-		},
-		eventElement: {
-			type: Object as PropType<HTMLElement | any>,
-			default: null,
-		},
-		time: {
-			type: Object as PropType<Time>,
-			required: true,
-		},
-		config: {
-			type: Object as PropType<configInterface>,
-			required: true,
-		},
-	},
+  props: {
+    calendarEventProp: {
+      type: Object as PropType<eventInterface | null>,
+      default: () => ({}),
+    },
+    eventElement: {
+      type: Object as PropType<HTMLElement | any>,
+      default: null,
+    },
+    time: {
+      type: Object as PropType<Time>,
+      required: true,
+    },
+    config: {
+      type: Object as PropType<configInterface>,
+      required: true,
+    },
+  },
 
-	emits: ['hide', 'edit-event', 'delete-event'],
+  emits: ["hide", "edit-event", "delete-event"],
 
-	data() {
-		return {
-			isVisible: false,
-			top: 0 as number | null,
-			left: 0 as number | null,
-			icons: {
-				clock: faClock,
-				user: faUser,
-				description: faComment,
-				trash: faTrashAlt,
-				edit: faEdit,
-				times: faTimes,
-				topic: faQuestionCircle,
-				location: faMapMarkerAlt,
-			},
-			calendarEvent: this.calendarEventProp,
-			flyoutWidth: EVENT_FLYOUT_WIDTH + 'px',
-			colors: EVENT_COLORS
-		}
-	},
+  data() {
+    return {
+      isVisible: false,
+      top: 0 as number | null,
+      left: 0 as number | null,
+      icons: {
+        clock: faClock,
+        user: faUser,
+        description: faComment,
+        trash: faTrashAlt,
+        edit: faEdit,
+        times: faTimes,
+        topic: faQuestionCircle,
+        location: faMapMarkerAlt,
+      },
+      calendarEvent: this.calendarEventProp,
+      flyoutWidth: EVENT_FLYOUT_WIDTH + "px",
+      colors: EVENT_COLORS,
+    };
+  },
 
-	computed: {
-		getEventTime() {
-			if ( ! this.calendarEvent || ! this.calendarEvent.time) return null
+  computed: {
+    getEventTime() {
+      if (!this.calendarEvent || !this.calendarEvent.time) return null;
 
-			return this.time.getLocalizedTime(this.calendarEvent.time.start)
-				+ ' - '
-				+ this.time.getLocalizedTime(this.calendarEvent.time.end)
-		},
+      return (
+        this.time.getLocalizedTime(this.calendarEvent.time.start) +
+        " - " +
+        this.time.getLocalizedTime(this.calendarEvent.time.end)
+      );
+    },
 
-		getEventDate() {
-			if ( ! this.calendarEvent) return null
+    getEventDate() {
+      if (!this.calendarEvent) return null;
 
-			const { year, month, date } = this.time.getAllVariablesFromDateTimeString(this.calendarEvent.time.start)
+      const { year, month, date } = this.time.getAllVariablesFromDateTimeString(
+        this.calendarEvent.time.start
+      );
 
-			return new Date(year, month, date).toLocaleDateString(
-				this.time.CALENDAR_LOCALE,
-				{
-					year: 'numeric',
-					month: 'long',
-					day: 'numeric',
-				}
-			)
-		},
+      return new Date(year, month, date).toLocaleDateString(
+        this.time.CALENDAR_LOCALE,
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }
+      );
+    },
 
-		eventFlyoutInlineStyles() {
-			if ([typeof this.top, typeof this.left].some(x => x !== 'number')) {
-				return {
-					top: '50%',
-					left: '50%',
-					position: 'absolute' as 'absolute', // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
-					transform: 'translate(-50%, -50%)',
-				}
-			}
+    eventFlyoutInlineStyles() {
+      if ([typeof this.top, typeof this.left].some((x) => x !== "number")) {
+        return {
+          top: "50%",
+          left: "50%",
+          position: "absolute" as const, // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
+          transform: "translate(-50%, -50%)",
+        };
+      }
 
-			return {
-				top: this.top + 'px',
-				left: this.left + 'px',
-				position: 'fixed' as 'fixed' // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
-			}
-		},
+      return {
+        top: this.top + "px",
+        left: this.left + "px",
+        position: "fixed" as const, // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
+      };
+    },
 
-		isEditable() {
-			return this.calendarEventProp?.isEditable || false
-		},
+    isEditable() {
+      return this.calendarEventProp?.isEditable || false;
+    },
 
-		eventBackgroundColor() {
-			// First, if the event has a customColorScheme, and the name of that
-			if (
-				this.calendarEvent?.colorScheme
-				&& this.config.style?.colorSchemes
-				&& this.config.style.colorSchemes[this.calendarEvent.colorScheme]
-			) {
-				return this.config.style.colorSchemes[this.calendarEvent.colorScheme].backgroundColor
-			}
+    eventBackgroundColor() {
+      // First, if the event has a customColorScheme, and the name of that
+      if (
+        this.calendarEvent?.colorScheme &&
+        this.config.style?.colorSchemes &&
+        this.config.style.colorSchemes[this.calendarEvent.colorScheme]
+      ) {
+        return this.config.style.colorSchemes[this.calendarEvent.colorScheme]
+          .backgroundColor;
+      }
 
-			return this.colors[this.calendarEvent?.color || 'blue']
-		}
-	},
+      return this.colors[this.calendarEvent?.color || "blue"];
+    },
+  },
 
-	methods: {
-		setFlyoutPosition() {
-			const calendar = this.eventElement?.closest('.calendar-root')
-			const flyout = document.querySelector('.event-flyout')
+  watch: {
+    calendarEventProp: {
+      deep: true,
+      handler(value) {
+        this.isVisible = !!value;
+        this.calendarEvent = value;
 
-			if ( ! this.eventElement) return
+        setTimeout(() => {
+          this.setFlyoutPosition();
+        }, 1);
+      },
+    },
+  },
 
-			const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
-				this.eventElement?.getBoundingClientRect(),
-				{ height: flyout?.clientHeight || 300, width: flyout?.clientWidth || 0 },
-				calendar ? calendar.getBoundingClientRect() : null
-			)
+  methods: {
+    setFlyoutPosition() {
+      const calendar = this.eventElement?.closest(".calendar-root");
+      const flyout = document.querySelector(".event-flyout");
 
-			this.top = flyoutPosition?.top || null
-			this.left = flyoutPosition?.left || null
-		},
+      if (!this.eventElement) return;
 
-		editEvent() {
-			this.$emit('edit-event', this.calendarEvent?.id)
-			this.closeFlyout()
-		},
+      const flyoutPosition = eventFlyoutPositionHelper.calculateFlyoutPosition(
+        this.eventElement?.getBoundingClientRect(),
+        {
+          height: flyout?.clientHeight || 300,
+          width: flyout?.clientWidth || 0,
+        },
+        calendar ? calendar.getBoundingClientRect() : null
+      );
 
-		deleteEvent() {
-			this.$emit('delete-event', this.calendarEvent?.id)
-			this.closeFlyout()
-		},
+      this.top = flyoutPosition?.top || null;
+      this.left = flyoutPosition?.left || null;
+    },
 
-		closeFlyout() {
-			this.isVisible = false
+    editEvent() {
+      this.$emit("edit-event", this.calendarEvent?.id);
+      this.closeFlyout();
+    },
 
-			setTimeout(() => {
-				this.$emit('hide')
-			}, 100)
-		}
-	},
-	
-	watch: {
-		calendarEventProp: {
-			deep: true,
-			handler(value) {
-				this.isVisible = !!value;
-				this.calendarEvent = value
+    deleteEvent() {
+      this.$emit("delete-event", this.calendarEvent?.id);
+      this.closeFlyout();
+    },
 
-				setTimeout(() => {
-					this.setFlyoutPosition()
-				}, 1)
-			}
-		}
-	}
-})
+    closeFlyout() {
+      this.isVisible = false;
+
+      setTimeout(() => {
+        this.$emit("hide");
+      }, 100);
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">
-@use '../../styles/mixins' as mixins;
+@use "../../styles/mixins" as mixins;
 
 .event-flyout {
-	position: fixed;
-	z-index: 50;
-	background-color: #fff;
-	max-height: 100%;
-	width: v-bind(flyoutWidth);
-	max-width: 98%;
-	border: var(--qalendar-border-gray-thin);
-	border-radius: 8px;
-	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.09), 0 6px 12px rgba(0, 0, 0, 0.18);
-	overflow: hidden;
+  position: fixed;
+  z-index: 50;
+  background-color: #fff;
+  max-height: 100%;
+  width: v-bind(flyoutWidth);
+  max-width: 98%;
+  border: var(--qalendar-border-gray-thin);
+  border-radius: 8px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.09), 0 6px 12px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
 
-	transition: all 0.2s ease;
-	transition-property: opacity, transform;
-	transform: translateY(-40px);
-	opacity: 0;
-	pointer-events: none;
+  transition: all 0.2s ease;
+  transition-property: opacity, transform;
+  transform: translateY(-40px);
+  opacity: 0;
+  pointer-events: none;
 
-	&.is-visible {
-		opacity: 1;
-		transform: translateY(0px);
-		pointer-events: initial
-	}
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0px);
+    pointer-events: initial;
+  }
 
-	&__relative-wrapper {
-		position: relative;
-	}
+  &__relative-wrapper {
+    position: relative;
+  }
 
-	&__menu {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+  &__menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-		.event-flyout__menu-editable,
-		.event-flyout__menu-close {
-			padding: var(--qalendar-spacing) var(--qalendar-spacing) 0 var(--qalendar-spacing);
-			display: flex;
-			grid-gap: 20px;
-		}
+    .event-flyout__menu-editable,
+    .event-flyout__menu-close {
+      padding: var(--qalendar-spacing) var(--qalendar-spacing) 0
+        var(--qalendar-spacing);
+      display: flex;
+      grid-gap: 20px;
+    }
 
-		.event-flyout__menu-close {
+    .event-flyout__menu-close {
+      .is-not-editable & {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    }
+  }
 
-			.is-not-editable & {
-				position: absolute;
-				top: 0;
-				right: 0;
-			}
-		}
-	}
+  &__menu-item {
+    font-size: var(--qalendar-font-l);
+    color: gray;
 
-	&__menu-item {
-		font-size: var(--qalendar-font-l);
-		color: gray;
+    &:hover {
+      color: var(--qalendar-theme-color);
+      cursor: pointer;
+    }
+  }
 
-		&:hover {
-			color: var(--qalendar-theme-color);
-			cursor: pointer;
-		}
-	}
+  .is-trash-icon {
+    &:hover {
+      color: red;
+    }
+  }
 
-	.is-trash-icon {
+  &__info-wrapper {
+    padding: var(--qalendar-spacing);
+  }
 
-		&:hover {
-			color: red;
-		}
-	}
+  &__row {
+    display: flex;
+    grid-gap: var(--qalendar-spacing);
+    margin-bottom: 0.25em;
+    font-weight: 400;
+  }
 
-	&__info-wrapper {
-		padding: var(--qalendar-spacing);
-	}
+  &__row {
+    svg {
+      margin-top: 0.1rem;
+      color: #5f6368;
+      width: 14px;
+    }
+  }
 
-	&__row {
-		display: flex;
-		grid-gap: var(--qalendar-spacing);
-		margin-bottom: 0.25em;
-		font-weight: 400;
-	}
+  &__color-icon {
+    --icon-height: 16px;
 
-	&__row {
+    border-radius: 50%;
+    height: var(--icon-height);
+    width: var(--icon-height);
+  }
 
-		svg {
-			margin-top: 0.1rem;
-			color: #5f6368;
-			width: 14px;
-		}
-	}
+  .is-title {
+    font-size: var(--qalendar-font-l);
+    align-items: center;
 
-	&__color-icon {
-		--icon-height: 16px;
+    .is-not-editable & {
+      max-width: 90%;
+    }
+  }
 
-		border-radius: 50%;
-		height: var(--icon-height);
-		width: var(--icon-height);
-	}
-
-	.is-title {
-		font-size: var(--qalendar-font-l);
-		align-items: center;
-
-		.is-not-editable & {
-			max-width: 90%;
-		}
-	}
-
-	.is-time {
-		font-size: var(--qalendar-font-s);
-		margin-bottom: 0.75em;
-	}
+  .is-time {
+    font-size: var(--qalendar-font-s);
+    margin-bottom: 0.75em;
+  }
 }
-
 </style>

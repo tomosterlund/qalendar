@@ -1,196 +1,233 @@
 <template>
-	<div class="calendar-root-wrapper">
-		<div class="calendar-root" :class="{
-			'mode-is-day': mode === 'day',
-			'mode-is-week': mode === 'week',
-			'mode-is-month': mode === 'month',
-			'qalendar-is-small': calendarWidth < 700
-		}">
-			<Header :config="config"
-					:key="wasInitialized + mode"
-					:mode="mode"
-					:time="time"
-					:period="period"
-					@change-mode="mode = $event"
-					@updated-period="handleUpdatedPeriod" />
+  <div class="calendar-root-wrapper">
+    <div
+      class="calendar-root"
+      :class="{
+        'mode-is-day': mode === 'day',
+        'mode-is-week': mode === 'week',
+        'mode-is-month': mode === 'month',
+        'qalendar-is-small': calendarWidth < 700,
+      }"
+    >
+      <Header
+        :key="wasInitialized + mode"
+        :config="config"
+        :mode="mode"
+        :time="time"
+        :period="period"
+        @change-mode="mode = $event"
+        @updated-period="handleUpdatedPeriod"
+      />
 
-			<Week v-if="['week', 'day'].includes(mode)"
-				  :events="events"
-				  :period="period"
-				  :config="config"
-				  :key="period.start.getTime() + period.end.getTime()"
-				  :mode-prop="mode"
-				  :n-days="week.nDays"
-				  :time="time"
-				  @event-was-clicked="$emit('event-was-clicked', $event)"
-				  @event-was-resized="$emit('event-was-resized', $event)"
-				  @edit-event="$emit('edit-event', $event)"
-				  @delete-event="$emit('delete-event', $event)" />
+      <Week
+        v-if="['week', 'day'].includes(mode)"
+        :key="period.start.getTime() + period.end.getTime()"
+        :events="events"
+        :period="period"
+        :config="config"
+        :mode-prop="mode"
+        :n-days="week.nDays"
+        :time="time"
+        @event-was-clicked="$emit('event-was-clicked', $event)"
+        @event-was-resized="$emit('event-was-resized', $event)"
+        @edit-event="$emit('edit-event', $event)"
+        @delete-event="$emit('delete-event', $event)"
+      />
 
-			<Month v-if="mode === 'month'"
-				   :key="period.start.getTime() + period.end.getTime()"
-				   :events="events"
-				   :time="time"
-				   :config="config"
-				   :period="period"
-				   @event-was-clicked="$emit('event-was-clicked', $event)"
-				   @updated-period="handleUpdatedPeriod($event, true)"
-				   @edit-event="$emit('edit-event', $event)"
-				   @delete-event="$emit('delete-event', $event)" />
-		</div>
-	</div>
+      <Month
+        v-if="mode === 'month'"
+        :key="period.start.getTime() + period.end.getTime()"
+        :events="events"
+        :time="time"
+        :config="config"
+        :period="period"
+        @event-was-clicked="$emit('event-was-clicked', $event)"
+        @updated-period="handleUpdatedPeriod($event, true)"
+        @edit-event="$emit('edit-event', $event)"
+        @delete-event="$emit('delete-event', $event)"
+      />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from "vue";
-import { eventInterface } from './typings/interfaces/event.interface'
-import {configInterface, dayStartOrEnd} from "./typings/config.interface";
+import { defineComponent, PropType } from "vue";
+import { eventInterface } from "./typings/interfaces/event.interface";
+import { configInterface } from "./typings/config.interface";
 import Time from "./helpers/Time";
 import Header from "./components/header/Header.vue";
 import Week from "./components/week/Week.vue";
-import {modeType} from "./typings/types";
+import { modeType } from "./typings/types";
 import Month from "./components/month/Month.vue";
 import Errors from "./helpers/Errors";
 
 export default defineComponent({
-	name: 'Qalendar',
+  name: "Qalendar",
 
-	components: {
-		Month,
-		Header,
-		Week,
-	},
+  components: {
+    Month,
+    Header,
+    Week,
+  },
 
-	props: {
-		config: {
-			type: Object as PropType<configInterface>,
-			default: () => ({}),
-		},
-		events: {
-			type: Array as PropType<eventInterface[]>,
-			default: () => ([]),
-		},
-		selectedDateDefault: {
-			type: Date,
-			default: new Date(),
-		},
-	},
+  props: {
+    config: {
+      type: Object as PropType<configInterface>,
+      default: () => ({}),
+    },
+    events: {
+      type: Array as PropType<eventInterface[]>,
+      default: () => [],
+    },
+    selectedDateDefault: {
+      type: Date,
+      default: new Date(),
+    },
+  },
 
-	emits: [
-		'event-was-clicked',
-		'updated-period',
-		'event-was-resized',
-		'edit-event',
-		'delete-event',
-		'updated-period',
-	],
+  emits: [
+    "event-was-clicked",
+    "updated-period",
+    "event-was-resized",
+    "edit-event",
+    "delete-event",
+    "updated-period",
+  ],
 
-	data() {
-		return {
-			wasInitialized: 0,
-			period: {
-				start: new Date(),
-				end: new Date(),
-				selectedDate: this.selectedDateDefault ? this.selectedDateDefault : new Date(),
-			},
-			week: {
-				nDays: this.config?.week?.nDays || 7,
-			},
-			mode: this.config?.defaultMode || 'week' as modeType,
-			time: new Time(
-				this.config?.week?.startsOn,
-				this.config?.locale || null
-			) as Time|any,
-			fontFamily: this.config?.style?.fontFamily || '\'Verdana\', \'Open Sans\', serif',
-			calendarWidth: 0,
-		}
-	},
+  data() {
+    return {
+      wasInitialized: 0,
+      period: {
+        start: new Date(),
+        end: new Date(),
+        selectedDate: this.selectedDateDefault
+          ? this.selectedDateDefault
+          : new Date(),
+      },
+      week: {
+        nDays: this.config?.week?.nDays || 7,
+      },
+      mode: this.config?.defaultMode || ("week" as modeType),
+      time: new Time(
+        this.config?.week?.startsOn,
+        this.config?.locale || null
+      ) as Time | any,
+      fontFamily:
+        this.config?.style?.fontFamily || "'Verdana', 'Open Sans', serif",
+      calendarWidth: 0,
+    };
+  },
 
-	methods: {
-		setConfigOnMount() {
-			this.wasInitialized = 1
-		},
+  watch: {
+    events: {
+      deep: true,
+      handler() {
+        // Log potential warnings for events in the console
+        this.events.forEach((e) => Errors.checkEventProperties(e));
+      },
+      immediate: true,
+    },
 
-		/**
-		 * setModeWeek is used as flag, when the user clicks "+ see more" for a day, in the month view
-		 * */
-		handleUpdatedPeriod(value: { start: Date, end: Date; selectedDate: Date; }, setModeWeek: boolean = false) {
-			this.$emit('updated-period', { start: value.start, end: value.end })
-			this.period = value
+    config: {
+      deep: true,
+      handler(value: configInterface) {
+        Errors.checkConfig(value);
+      },
+      immediate: true,
+    },
+  },
 
-			if (setModeWeek) this.mode = 'week'
-		},
+  mounted() {
+    this.setConfigOnMount();
+    this.onCalendarResize(); // Trigger once on mount, in order to set the correct mode, if viewing on a small screen
+    this.setPeriodOnMount();
+    window.addEventListener("resize", this.onCalendarResize);
+  },
 
-		onCalendarResize() {
-			// Calculate break point for day mode based on root font-size
-			const documentRoot = document.documentElement
-			const calendarRoot = document.querySelector('.calendar-root')
-			const documentFontSize = +window.getComputedStyle(documentRoot).fontSize.split('p')[0]
-			const breakPointFor1RemEquals16px = 700
-			const multiplier = 16 / documentFontSize
-			const dayModeBreakpoint = breakPointFor1RemEquals16px / multiplier // For 16px root font-size, break point is at 43.75rem
+  beforeUnmount() {
+    window.removeEventListener("resize", this.onCalendarResize);
+  },
 
-			if ( ! calendarRoot) return
+  methods: {
+    setConfigOnMount() {
+      this.wasInitialized = 1;
+    },
 
-			this.calendarWidth = calendarRoot.clientWidth
+    /**
+     * setModeWeek is used as flag, when the user clicks "+ see more" for a day, in the month view
+     * */
+    handleUpdatedPeriod(
+      value: { start: Date; end: Date; selectedDate: Date },
+      setModeWeek = false
+    ) {
+      this.$emit("updated-period", { start: value.start, end: value.end });
+      this.period = value;
 
-			if (this.calendarWidth < dayModeBreakpoint) this.mode = 'day'
-			if (this.calendarWidth >= dayModeBreakpoint) this.mode = this.config?.defaultMode || 'week'
-		},
-	},
+      if (setModeWeek) this.mode = "week";
+    },
 
-	watch: {
-		events: {
-			deep: true,
-			handler() {
-				// Log potential warnings for events in the console
-				this.events.forEach(e => Errors.checkEventProperties(e))
-			},
-			immediate: true,
-		},
+    onCalendarResize() {
+      // Calculate break point for day mode based on root font-size
+      const documentRoot = document.documentElement;
+      const calendarRoot = document.querySelector(".calendar-root");
+      const documentFontSize = +window
+        .getComputedStyle(documentRoot)
+        .fontSize.split("p")[0];
+      const breakPointFor1RemEquals16px = 700;
+      const multiplier = 16 / documentFontSize;
+      const dayModeBreakpoint = breakPointFor1RemEquals16px / multiplier; // For 16px root font-size, break point is at 43.75rem
 
-		config: {
-			deep: true,
-			handler(value: configInterface) {
-				Errors.checkConfig(value)
-			},
-			immediate: true,
-		},
-	},
+      if (!calendarRoot) return;
 
-	mounted() {
-		this.setConfigOnMount()
-		this.onCalendarResize() // Trigger once on mount, in order to set the correct mode, if viewing on a small screen
-		window.addEventListener('resize', this.onCalendarResize)
-	},
+      this.calendarWidth = calendarRoot.clientWidth;
 
-	beforeUnmount() {
-		window.removeEventListener('resize', this.onCalendarResize)
-	}
-})
+      if (this.calendarWidth < dayModeBreakpoint) this.mode = "day";
+      if (this.calendarWidth >= dayModeBreakpoint)
+        this.mode = this.config?.defaultMode || "week";
+    },
+
+    setPeriodOnMount() {
+      if (this.mode === "week") {
+        const currentWeek = this.time.getCalendarWeekDateObjects(
+          this.period.selectedDate
+        );
+        this.period.start = currentWeek[0];
+        this.period.end = currentWeek[6];
+      } else if (this.mode === "month") {
+        const month = this.time.getCalendarMonthSplitInWeeks(
+          this.period.selectedDate.getFullYear(),
+          this.period.selectedDate.getMonth()
+        );
+        this.period.start = month[0][0];
+        const lastWeek = month[month.length - 1];
+        this.period.end = lastWeek[lastWeek.length - 1];
+      }
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">
-@import './styles/variables.scss';
+@import "./styles/variables.scss";
 
 .calendar-root-wrapper {
-	width: 100%;
-	max-width: 100vw;
-	height: 100%;
-	min-height: 700px;
+  width: 100%;
+  max-width: 100vw;
+  height: 100%;
+  min-height: 700px;
+  display: flex;
 
-	.calendar-root {
-		height: 100%;
-		border: var(--qalendar-border-gray-thin);
-		border-radius: var(--qalendar-border-radius);
-		font-family: v-bind(fontFamily);
+  .calendar-root {
+    flex: 1;
+    border: var(--qalendar-border-gray-thin);
+    border-radius: var(--qalendar-border-radius);
+    font-family: v-bind(fontFamily);
 
-		position: relative;
-		width: 100%;
-		margin: 0 auto;
-		display: flex;
-		flex-flow: column;
-	}
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: column;
+  }
 }
-
 </style>

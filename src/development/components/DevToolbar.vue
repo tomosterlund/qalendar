@@ -1,151 +1,141 @@
 <template>
-	<transition name="slide">
-		<div class="dev-toolbar" v-show="isVisible">
-			<div>
-				TZ offset: {{ new Date().getTimezoneOffset() }}
-			</div>
+  <transition name="slide">
+    <div v-show="isVisible" class="dev-toolbar">
+      <div>TZ offset: {{ new Date().getTimezoneOffset() }}</div>
 
-			<select name="layout" id="layout" v-model="layout">
-				<option value="none">No layout</option>
-				<option value="sidebar">Sidebar</option>
-				<option value="header">Header</option>
-			</select>
+      <select id="layout" v-model="layout" name="layout">
+        <option value="none">No layout</option>
+        <option value="sidebar">Sidebar</option>
+        <option value="header">Header</option>
+      </select>
 
-			<select name="locale" id="locale" v-model="locale">
-				<option value="en-US">en-US</option>
-				<option value="de-DE">de-DE</option>
-				<option value="sv-SE">sv-SE</option>
-				<option value="ja-JP">ja-JP</option>
-				<option value="ru-RU">ru-RU</option>
-				<option value="zh-CN">zh-CN</option>
-			</select>
+      <select id="locale" v-model="locale" name="locale">
+        <option value="en-US">en-US</option>
+        <option value="de-DE">de-DE</option>
+        <option value="sv-SE">sv-SE</option>
+        <option value="ja-JP">ja-JP</option>
+        <option value="ru-RU">ru-RU</option>
+        <option value="zh-CN">zh-CN</option>
+      </select>
 
-			<select name="nDays" id="nDays" v-model="nDays">
-				<option value="7">7 days</option>
-				<option value="5">5 days</option>
-			</select>
+      <select id="nDays" v-model="nDays" name="nDays">
+        <option value="7">7 days</option>
+        <option value="5">5 days</option>
+      </select>
 
-			<button @click="isVisible = false">X</button>
-		</div>
-	</transition>
+      <button @click="isVisible = false">X</button>
+    </div>
+  </transition>
 
-	<button v-if=" ! isVisible"
-			class="toolbar-toggle"
-			@click="isVisible = true">
-		Dev toolbar
-	</button>
+  <button v-if="!isVisible" class="toolbar-toggle" @click="isVisible = true">
+    Dev toolbar
+  </button>
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: 'DevToolbar',
+  name: "DevToolbar",
 
-	emits: [
-		'selected-layout',
-		'selected-locale',
-		'selected-n-days',
-	],
+  emits: ["selected-layout", "selected-locale", "selected-n-days"],
 
-	data() {
-		return {
-			isVisible: false,
-			layout: 'none',
-			locale: '',
-			nDays: 7,
-		}
-	},
+  data() {
+    return {
+      isVisible: false,
+      layout: "none",
+      locale: "",
+      nDays: 7,
+    };
+  },
 
-	mounted() {
-		const visibleSetting = localStorage.getItem('toolbar-visible')
-		if (visibleSetting && visibleSetting === 'true') this.isVisible = true
+  watch: {
+    isVisible(value) {
+      localStorage.setItem("toolbar-visible", value);
+    },
 
-		const layoutSetting = localStorage.getItem('layout-setting')
-		if (layoutSetting) this.layout = layoutSetting
+    layout(value) {
+      this.$emit("selected-layout", value);
+      localStorage.setItem("layout-setting", value);
+    },
 
-		const localeSetting = localStorage.getItem('locale-setting')
-		if (localeSetting) this.locale = localeSetting
+    locale(value) {
+      this.$emit("selected-locale", value);
+      localStorage.setItem("locale-setting", value);
+    },
 
-		const nDaysSetting = localStorage.getItem('nDays-setting')
-		if (nDaysSetting) this.nDays = +nDaysSetting
-	},
+    nDays(value) {
+      this.$emit("selected-n-days", +value);
+      localStorage.setItem("nDays-setting", value);
+    },
+  },
 
-	watch: {
-		isVisible(value) {
-			localStorage.setItem('toolbar-visible', value)
-		},
+  mounted() {
+    const visibleSetting = localStorage.getItem("toolbar-visible");
+    if (visibleSetting && visibleSetting === "true") this.isVisible = true;
 
-		layout(value) {
-			this.$emit('selected-layout', value)
-			localStorage.setItem('layout-setting', value)
-		},
+    const layoutSetting = localStorage.getItem("layout-setting");
+    if (layoutSetting) this.layout = layoutSetting;
 
-		locale(value) {
-			this.$emit('selected-locale', value)
-			localStorage.setItem('locale-setting', value)
-		},
+    const localeSetting = localStorage.getItem("locale-setting");
+    if (localeSetting) this.locale = localeSetting;
 
-		nDays(value) {
-			this.$emit('selected-n-days', +value)
-			localStorage.setItem('nDays-setting', value)
-		}
-	}
-})
+    const nDaysSetting = localStorage.getItem("nDays-setting");
+    if (nDaysSetting) this.nDays = +nDaysSetting;
+  },
+});
 </script>
 
 <style lang="scss" scoped>
-
 .dev-toolbar {
-	font-family: Courier, 'sans-serif';
-	position: fixed;
-	bottom: 20px;
-	left: 50%;
-	transform: translateX(-50%);
-	height: 50px;
-	padding: 10px;
-	border-radius: 10px;
-	background-color: #181818;
-	color: #fff;
-	display: flex;
-	align-items: center;
-	grid-gap: 40px;
-	transition: all 0.2s ease;
+  font-family: Courier, "sans-serif";
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 50px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #181818;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  grid-gap: 40px;
+  transition: all 0.2s ease;
 
-	select {
-		padding: 12px;
-		font-family: inherit;
-	}
+  select {
+    padding: 12px;
+    font-family: inherit;
+  }
 
-	button {
-		background-color: inherit;
-		color: #fff;
-		border: 0;
-		font-size: var(--qalendar-font-l);
-		cursor: pointer;
-	}
+  button {
+    background-color: inherit;
+    color: #fff;
+    border: 0;
+    font-size: var(--qalendar-font-l);
+    cursor: pointer;
+  }
 }
 
 .slide-enter-active,
 .slide-leave-active {
-	transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .slide-enter-from,
 .slide-leave-to {
-	bottom: -100px;
+  bottom: -100px;
 }
 
 .toolbar-toggle {
-	position: fixed;
-	bottom: 20px;
-	right: 20px;
-	background-color: #181818;
-	color: #fff;
-	padding: 8px 16px;
-	font-family: Courier, 'sans-serif';
-	border: 0;
-	border-radius: 4px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #181818;
+  color: #fff;
+  padding: 8px 16px;
+  font-family: Courier, "sans-serif";
+  border: 0;
+  border-radius: 4px;
 }
-
 </style>
