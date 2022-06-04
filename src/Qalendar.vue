@@ -130,10 +130,14 @@ export default defineComponent({
   watch: {
     events: {
       deep: true,
-      handler() {
-        // Log potential warnings for events in the console
+      handler(newVal, oldVal) {
         this.events.forEach((e) => Errors.checkEventProperties(e));
-        this.eventRenderingKey = this.eventRenderingKey + 1
+
+        // The check on strict equality as primitive values is needed,
+        // since we do not want to trigger a rerender on event-was-resized
+        if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+          this.eventRenderingKey = this.eventRenderingKey + 1
+        }
       },
       immediate: true,
     },
