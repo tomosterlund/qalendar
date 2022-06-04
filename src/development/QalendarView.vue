@@ -70,7 +70,7 @@ export default defineComponent({
         },
         defaultMode: "week",
       } as configInterface,
-      events: seededEvents as eventInterface[],
+      events: [] as eventInterface[],
 
       layout: "none",
       isLoading: false,

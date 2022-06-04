@@ -25,7 +25,7 @@
 
       <Week
         v-if="['week', 'day'].includes(mode)"
-        :key="period.start.getTime() + period.end.getTime()"
+        :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
         :events="events"
         :period="period"
         :config="config"
@@ -40,7 +40,7 @@
 
       <Month
         v-if="mode === 'month'"
-        :key="period.start.getTime() + period.end.getTime()"
+        :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
         :events="events"
         :time="time"
         :config="config"
@@ -123,6 +123,7 @@ export default defineComponent({
       fontFamily:
         this.config?.style?.fontFamily || "'Verdana', 'Open Sans', serif",
       calendarWidth: 0,
+      eventRenderingKey: 0, // Works only as a dummy value, for re-rendering Month- and Week components, when events-watcher triggers
     };
   },
 
@@ -132,6 +133,7 @@ export default defineComponent({
       handler() {
         // Log potential warnings for events in the console
         this.events.forEach((e) => Errors.checkEventProperties(e));
+        this.eventRenderingKey = this.eventRenderingKey + 1
       },
       immediate: true,
     },
