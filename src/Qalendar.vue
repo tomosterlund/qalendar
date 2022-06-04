@@ -25,7 +25,7 @@
 
       <Week
         v-if="['week', 'day'].includes(mode)"
-        :key="period.start.getTime() + period.end.getTime()"
+        :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
         :events="events"
         :period="period"
         :config="config"
@@ -40,7 +40,7 @@
 
       <Month
         v-if="mode === 'month'"
-        :key="period.start.getTime() + period.end.getTime()"
+        :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
         :events="events"
         :time="time"
         :config="config"
@@ -123,15 +123,21 @@ export default defineComponent({
       fontFamily:
         this.config?.style?.fontFamily || "'Verdana', 'Open Sans', serif",
       calendarWidth: 0,
+      eventRenderingKey: 0, // Works only as a dummy value, for re-rendering Month- and Week components, when events-watcher triggers
     };
   },
 
   watch: {
     events: {
       deep: true,
-      handler() {
-        // Log potential warnings for events in the console
+      handler(newVal, oldVal) {
         this.events.forEach((e) => Errors.checkEventProperties(e));
+
+        // The check on strict equality as primitive values is needed,
+        // since we do not want to trigger a rerender on event-was-resized
+        if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+          this.eventRenderingKey = this.eventRenderingKey + 1
+        }
       },
       immediate: true,
     },

@@ -1,9 +1,9 @@
 .calendar-root,
 .date-picker-root {
   /** Color */
-  --qalendar-blue: #2684ff;
+  --qalendar-blue: rgb(38, 132, 255);
   --qalendar-blue-transparent: rgba(38, 132, 255, 0.9);
-  --qalendar-gray-quite-dark: #6e6e6e;
+  --qalendar-gray-quite-dark: rgb(110, 110, 110);
   --qalendar-green: rgb(51, 182, 121);
   --qalendar-theme-color: var(--qalendar-blue);
   --qalendar-light-gray: rgba(240, 236, 236, 0.76);
