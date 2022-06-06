@@ -26,7 +26,7 @@
       :config="config"
       @hide="selectedEvent = null"
       @edit-event="$emit('edit-event', $event)"
-      @delete-event="$emit('edit-event', $event)"
+      @delete-event="$emit('delete-event', $event)"
     />
   </div>
 </template>

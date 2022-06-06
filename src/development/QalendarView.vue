@@ -14,8 +14,8 @@
         @event-was-clicked="reactToEvent"
         @updated-period="reactToEvent"
         @event-was-resized="reactToEvent"
-        @edit-event="reactToEvent"
-        @delete-event="reactToEvent"
+        @edit-event="editEvent"
+        @delete-event="deleteEvent"
       />
     </main>
 
@@ -90,7 +90,15 @@ export default defineComponent({
       this.isLoading = !this.isLoading
 
       setTimeout(() => this.triggerLoadAnimations(), 5000)
-    }
+    },
+
+    editEvent(payload: string) {
+      console.log('editEvent%s: ', payload)
+    },
+
+    deleteEvent(payload: string) {
+      console.log('deleteEvent%s: ', payload)
+    },
   },
 });
 </script>

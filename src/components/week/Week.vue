@@ -25,7 +25,7 @@
       :config="config"
       @hide="selectedEvent = null"
       @edit-event="$emit('edit-event', $event)"
-      @delete-event="$emit('edit-event', $event)"
+      @delete-event="$emit('delete-event', $event)"
     />
   </div>
 </template>
@@ -68,7 +68,7 @@ export default defineComponent({
     },
     nDays: {
       type: Number as PropType<5 | 7>,
-      default: 5,
+      required: true,
     },
     modeProp: {
       type: String as PropType<"day" | "week" | "month">,

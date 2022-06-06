@@ -1,5 +1,15 @@
 type elementDimensions = { height: number; width: number };
 import { DOMRect } from "../typings/types";
+const calendarDomRectForVitest = {
+  x: 8,
+  y: 26,
+  width: 903,
+  height: 702,
+  top: 26,
+  right: 911,
+  bottom: 728,
+  left: 8,
+}
 
 export const EVENT_FLYOUT_WIDTH = 400;
 
@@ -9,13 +19,7 @@ export default class EventFlyoutPosition {
     flyoutDimensions: elementDimensions,
     calendarDomRectParam: DOMRect | null = null
   ): { top: number | null; left: number | null } | undefined {
-    const calendarRoot = document.querySelector(".calendar-root")
-    // In order for the function to be properly tested, we need to be able to pass the calendarDomRect as a parameter
-    // disable ESlint here so that it does displace ts-ignore from calendarRoot.getBoundingClientRect()
-    /*eslint-disable */
-    // @ts-ignore
-    const calendarDomRect = calendarDomRectParam ? calendarDomRectParam : calendarRoot.getBoundingClientRect();
-    /*eslint-enable */
+    const calendarDomRect = calendarDomRectParam || calendarDomRectForVitest;
 
     // The four variables below, contain the space in pixels, from the event to the calendar border
     // i.e. spaceTop === length from event top border, to calendar top border
