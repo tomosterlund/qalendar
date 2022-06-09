@@ -6,6 +6,7 @@
 
 #### Post-release
 
+- Events repeated weekly
 - Multi-day events
 - Year mode
 - Indication in date picker, on which days there are events

@@ -2,10 +2,6 @@
 
 Qalendar is an event calendar for Vue 3. It is written in Typescript, in order to provide the best possible usability for JS- as well as TS-based applications.
 
-::: warning
-This component is still in a 0.X.X-version, and is not yet suitable for production applications.
-:::
-
 ## Getting started
 
 ### Installing
@@ -98,7 +94,9 @@ data() {
             },
             // if not set, the mode defaults to 'week'. The three available options are 'month', 'week' and 'day'
             // Please note, that smaller devices can only utilize the day mode
-            defaultMode: 'day'
+            defaultMode: 'day',
+            // The silent flag can be added, to disable the development warnings. This will also bring a slight performance boost
+            isSilent: true,
         }
     }
 }

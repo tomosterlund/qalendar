@@ -3,10 +3,12 @@ import DayEvent from "../../../../src/components/week/DayEvent.vue";
 import { describe, expect, test } from "vitest";
 import Time from "../../../../src/helpers/Time";
 import { nextTick } from "vue";
+import {mountComponent} from "../../../vitest-setup";
+const dayEvent = mountComponent(mount, DayEvent)
 
 describe("DayEvent.vue", () => {
   test("Displaying the texts fed as props", () => {
-    let wrapper = mount(DayEvent, {
+    let wrapper = dayEvent({
       props: {
         eventProp: {
           id: "sdfgdfsda-435643-dsfghgd",
@@ -32,7 +34,7 @@ describe("DayEvent.vue", () => {
   });
 
   test("Setting colors via a colorScheme", async () => {
-    let wrapper = mount(DayEvent, {
+    let wrapper = dayEvent({
       props: {
         eventProp: {
           id: "sdfgdfsda-435643-dsfghgd",

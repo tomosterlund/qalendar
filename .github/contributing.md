@@ -1,19 +1,28 @@
-# Developing
+# Contributor's guide
 
-## Getting up and running
+## Issues
+
+For bug reports or feature requests, choose one of the templates provided at: https://github.com/tomosterlund/qalendar/issues/new/choose
+
+Before opening a feature request, please first check that you don't propose a feature that is already planned:
+https://tomosterlund.github.io/qalendar/planned-features.html
+
+## Developing
+
+### Getting up and running
 
 - `npm i`
 - `husky install` - configuring the gitHooks
 - `npm run seed` - Seed the current calendar month with events, or use the [advanced seeding options](#seeding).
 - `npm run dev`
 
-## Running tests
+### Running tests
 
 While developing, please run `vitest watch`, in order to monitor that all tests are passing.
 
 Since Qalendar is making heavy use of the native JavaScript Date-Object, which has the possibility to create difference output in different time zones, please also run `npm run test:docker` before pushing. This will spin up 3 docker containers, in 3 different time zones, and then run all tests.
 
-## Seeding
+### Seeding
 
 For seeding several months or even a year, you can use the following CLI: `node src/development/faker/seed.js`. Two arguments are available:
 
