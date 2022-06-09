@@ -44,5 +44,6 @@ export interface configInterface {
     fontFamily?: string;
     colorSchemes?: colorSchemes;
   };
-  defaultMode: modeType;
+  defaultMode?: modeType;
+  isSilent?: boolean;
 }

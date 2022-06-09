@@ -6,7 +6,7 @@
         'mode-is-day': mode === 'day',
         'mode-is-week': mode === 'week',
         'mode-is-month': mode === 'month',
-        'qalendar-is-small': calendarWidth < 700
+        'qalendar-is-small': calendarWidth < 700,
       }"
     >
       <Transition name="loading">
@@ -108,9 +108,7 @@ export default defineComponent({
       period: {
         start: new Date(),
         end: new Date(),
-        selectedDate: this.selectedDate
-          ? this.selectedDate
-          : new Date(),
+        selectedDate: this.selectedDate ? this.selectedDate : new Date(),
       },
       week: {
         nDays: this.config?.week?.nDays || 7,
@@ -131,13 +129,16 @@ export default defineComponent({
     events: {
       deep: true,
       handler(newVal, oldVal) {
-        this.events.forEach((e) => Errors.checkEventProperties(e));
-
         // The check on strict equality as primitive values is needed,
         // since we do not want to trigger a rerender on event-was-resized
         if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
-          this.eventRenderingKey = this.eventRenderingKey + 1
+          this.eventRenderingKey = this.eventRenderingKey + 1;
         }
+
+        // Disable console warnings, if config.isSilent === true
+        if (this.config.isSilent) return;
+
+        this.events.forEach((e) => Errors.checkEventProperties(e));
       },
       immediate: true,
     },
@@ -255,14 +256,19 @@ export default defineComponent({
     }
 
     .top-bar-loader:before {
-      content: '';
+      content: "";
       height: 4px;
       width: calc(100% - 4px);
       position: absolute;
       top: 1px;
       left: 2px;
-      background: rgb(38,132,255);
-      background: linear-gradient(90deg, rgba(38,132,255,1) 0%, rgba(38,132,255,0.5088410364145659) 48%, rgba(38,132,255,1) 100%);
+      background: rgb(38, 132, 255);
+      background: linear-gradient(
+        90deg,
+        rgba(38, 132, 255, 1) 0%,
+        rgba(38, 132, 255, 0.5088410364145659) 48%,
+        rgba(38, 132, 255, 1) 100%
+      );
       animation: load 1.8s infinite;
       border-radius: 16px;
     }

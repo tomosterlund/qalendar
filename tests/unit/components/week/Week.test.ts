@@ -2,9 +2,12 @@ import {describe, expect, test} from "vitest";
 import Week from '../../../../src/components/week/Week.vue'
 import {mount} from "@vue/test-utils";
 import Time from '../../../../src/helpers/Time'
+import {mountComponent} from '../../../vitest-setup'
+
+const week = mountComponent(mount, Week)
 
 describe('Week.vue', () => {
-  let wrapper = mount(Week, {
+  let wrapper = week({
     props: {
       config: {},
       time: new Time('sunday', 'en-US'),
@@ -52,7 +55,7 @@ describe('Week.vue', () => {
   })
 
   test('Creating a week with 5 days', async() => {
-    wrapper = mount(Week, {
+    wrapper = week({
       props: {
         config: {},
         time: new Time('sunday', 'en-US'),

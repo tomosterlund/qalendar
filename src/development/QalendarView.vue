@@ -68,7 +68,8 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: "week",
+        // defaultMode: "week",
+        // isSilent: true,
       } as configInterface,
       events: seededEvents as eventInterface[],
 
@@ -87,17 +88,17 @@ export default defineComponent({
     },
 
     triggerLoadAnimations() {
-      this.isLoading = !this.isLoading
+      this.isLoading = !this.isLoading;
 
-      setTimeout(() => this.triggerLoadAnimations(), 5000)
+      setTimeout(() => this.triggerLoadAnimations(), 5000);
     },
 
     editEvent(payload: string) {
-      console.log('editEvent%s: ', payload)
+      console.log("editEvent%s: ", payload);
     },
 
     deleteEvent(payload: string) {
-      console.log('deleteEvent%s: ', payload)
+      console.log("deleteEvent%s: ", payload);
     },
   },
 });

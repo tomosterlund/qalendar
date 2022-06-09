@@ -2,6 +2,8 @@ import { describe, expect, test } from "vitest";
 import { mount } from "@vue/test-utils";
 import Time from "../../../../src/helpers/Time";
 import DatePicker from "../../../../src/components/header/DatePicker.vue";
+import {mountComponent} from "../../../vitest-setup";
+const datePicker = mountComponent(mount, DatePicker)
 
 describe("DatePicker.vue", () => {
   let wrapper: any;
@@ -12,7 +14,7 @@ describe("DatePicker.vue", () => {
   };
 
   test("Opening the date picker", async () => {
-    wrapper = mount(DatePicker, {
+    wrapper = datePicker({
       props: {
         timeProp: new Time("monday", "en-US"),
         periodProp: {
@@ -28,7 +30,7 @@ describe("DatePicker.vue", () => {
   });
 
   test("Navigating a month back: January => December", async () => {
-    wrapper = mount(DatePicker, {
+    wrapper = datePicker({
       props: {
         timeProp: new Time("monday", "en-US"),
         periodProp: {
@@ -45,7 +47,7 @@ describe("DatePicker.vue", () => {
   });
 
   test("Navigating a month forward: December => January", async () => {
-    wrapper = mount(DatePicker, {
+    wrapper = datePicker({
       props: {
         timeProp: new Time("monday", "en-US"),
         periodProp: {
@@ -62,7 +64,7 @@ describe("DatePicker.vue", () => {
   });
 
   test("Navigating between months via the month picker", async () => {
-    wrapper = mount(DatePicker, {
+    wrapper = datePicker({
       props: {
         timeProp: new Time("monday", "de-DE"),
         periodProp: {
@@ -81,7 +83,7 @@ describe("DatePicker.vue", () => {
   });
 
   test("Navigating between years via the month picker", async () => {
-    wrapper = mount(DatePicker, {
+    wrapper = datePicker({
       props: {
         timeProp: new Time("monday", "de-DE"),
         periodProp: {
@@ -112,7 +114,7 @@ describe("DatePicker.vue", () => {
   });
 
   test("Emitting the correct event, when used as a stand-alone component", async () => {
-    wrapper = mount(DatePicker, {
+    wrapper = datePicker({
       props: {
         locale: "sv-SE",
         firstDayOfWeek: "monday",

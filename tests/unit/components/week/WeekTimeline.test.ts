@@ -2,9 +2,11 @@ import { mount } from "@vue/test-utils";
 import WeekTimeline from "../../../../src/components/week/WeekTimeline.vue";
 import { describe, expect, test } from "vitest";
 import Time from "../../../../src/helpers/Time";
+import {mountComponent} from "../../../vitest-setup";
+const weekTimeline = mountComponent(mount, WeekTimeline)
 
 describe("WeekTimeline.vue", () => {
-  let wrapper = mount(WeekTimeline, {
+  let wrapper = weekTimeline({
     props: {
       time: new Time("sunday", "de-DE"),
       days: [
@@ -34,7 +36,7 @@ describe("WeekTimeline.vue", () => {
   });
 
   test("Rendering in day mode", () => {
-    wrapper = mount(WeekTimeline, {
+    wrapper = weekTimeline({
       props: {
         time: new Time("sunday", "en-US"),
         days: [

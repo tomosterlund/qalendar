@@ -578,6 +578,7 @@ export default defineComponent({
     display: flex;
     flex-wrap: wrap;
     gap: var(--qalendar-spacing-half);
+    max-width: 20rem;
 
     span {
       padding: 4px;

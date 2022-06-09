@@ -2,9 +2,11 @@ import { mount } from "@vue/test-utils";
 import { describe, test, expect } from "vitest";
 import Day from "../../../../src/components/month/Day.vue";
 import Time from "../../../../src/helpers/Time";
+import {mountComponent} from "../../../vitest-setup";
+const day = mountComponent(mount, Day)
 
 describe("Day.vue", () => {
-  let wrapper = mount(Day, {
+  let wrapper = day({
     props: {
       time: new Time("sunday", "en-US"),
       config: {},
@@ -43,7 +45,7 @@ describe("Day.vue", () => {
   });
 
   test("Displaying the day name, if the isFirstWeek-prop === true", () => {
-    wrapper = mount(Day, {
+    wrapper = day({
       props: {
         time: new Time("sunday", "en-US"),
         config: {},
