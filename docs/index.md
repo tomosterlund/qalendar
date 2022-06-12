@@ -1,4 +1,9 @@
-# Documentation
+# Qalendar
+
+Build:
+[![tomosterlund](https://circleci.com/gh/tomosterlund/qalendar.svg?style=svg)](https://app.circleci.com/pipelines/github/tomosterlund/qalendar/118/workflows/3cbdb226-a509-4844-9c29-20a8c7ac65be)  
+Tests:
+[![tomosterlund](https://circleci.com/gh/tomosterlund/qalendar.svg?style=svg)](https://app.circleci.com/pipelines/github/tomosterlund/qalendar/118/workflows/475754d4-62b4-4e4b-aa3f-7b660131f2c4)
 
 Qalendar is an event calendar for Vue 3. It is written in Typescript, in order to provide the best possible usability for JS- as well as TS-based applications.
 
