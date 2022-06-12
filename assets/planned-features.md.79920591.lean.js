@@ -1,0 +1,1 @@
+import{_ as e,o as a,a as t,s as r}from"./app.bfe1d0bc.js";const p='{"title":"Planned features","description":"","frontmatter":{},"headers":[],"relativePath":"planned-features.md"}',n={},i=r("",5),s=[i];function d(l,o,c,h,_,u){return a(),t("div",null,s)}var v=e(n,[["render",d]]);export{p as __pageData,v as default};
