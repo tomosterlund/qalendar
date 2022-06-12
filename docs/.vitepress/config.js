@@ -7,6 +7,7 @@ export default {
       { text: "Home", link: "/" },
       { text: "Planned features", link: "/planned-features" },
       { text: "Github", link: "https://github.com/tomosterlund/qalendar" },
+      { text: "npm", link: "https://www.npmjs.com/package/qalendar" },
     ],
   },
 };

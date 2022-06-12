@@ -1,13 +1,11 @@
 # Planned features
 
-#### Versions 0.X.X (pre-release)
-
-- All planned features are ready. Merely testing and improving them remains before v.1.0.0
-
-#### Post-release
-
+#### v1.1.0
 - Events repeated weekly
 - Multi-day events
+
+#### Later features
 - Year mode
 - Indication in date picker, on which days there are events
 - Drag & drop of events
+- Public holidays
