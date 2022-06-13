@@ -16,7 +16,7 @@ describe('Week.vue', () => {
         start: new Date(2022, (6 - 1), 6),
         end: new Date(2022, (6 - 1), 6)
       },
-      events: [
+      eventsProp: [
         {
           id: '123',
           title: 'Foo',

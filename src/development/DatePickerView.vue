@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import DatePicker from "../components/header/DatePicker.vue";
+import { defineComponent } from 'vue';
+import DatePicker from '../components/header/DatePicker.vue';
 
 export default defineComponent({
-  name: "DatePickerApp",
+  name: 'DatePickerApp',
 
   components: { DatePicker },
 

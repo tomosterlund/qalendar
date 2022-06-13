@@ -80,23 +80,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { eventInterface } from "../../typings/interfaces/event.interface";
-import EventPosition from "../../helpers/EventPosition";
+import { defineComponent, PropType } from 'vue';
+import { eventInterface } from '../../typings/interfaces/event.interface';
+import EventPosition from '../../helpers/EventPosition';
 import {
   faClock,
   faComment,
   faUser,
   faMapMarkerAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import Time from "../../helpers/Time";
-import { configInterface } from "../../typings/config.interface";
-import { EVENT_COLORS } from "../../constants";
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import Time from '../../helpers/Time';
+import { configInterface } from '../../typings/config.interface';
+import { EVENT_COLORS } from '../../constants';
 const eventPositionHelper = new EventPosition();
 
 export default defineComponent({
-  name: "DayEvent",
+  name: 'DayEvent',
 
   components: {
     FontAwesomeIcon,
@@ -117,7 +117,7 @@ export default defineComponent({
     },
   },
 
-  emits: ["event-was-clicked", "event-was-resized"],
+  emits: ['event-was-clicked', 'event-was-resized'],
 
   data() {
     return {
@@ -134,13 +134,13 @@ export default defineComponent({
       resizingStartingPoint: undefined,
       resizingStartingPointEndOfTime: this.eventProp.time.end,
       resizingStartingPointStartOfTime: this.eventProp.time.start,
-      resizingDirection: "",
+      resizingDirection: '',
       changeInQuarterHoursEventStart: 0,
       changeInQuarterHoursEventEnd: 0,
       isEditable: this.eventProp.isEditable || false,
       colors: EVENT_COLORS as { [key: string]: string },
-      eventColor: "#fff",
-      eventBackgroundColor: "",
+      eventColor: '#fff',
+      eventBackgroundColor: '',
     };
   },
 
@@ -148,7 +148,7 @@ export default defineComponent({
     getEventTime() {
       return (
         this.time.getLocalizedTime(this.event.time.start) +
-        " - " +
+        ' - ' +
         this.time.getLocalizedTime(this.event.time.end)
       );
     },
@@ -180,9 +180,9 @@ export default defineComponent({
     },
 
     getBorderRule() {
-      if (!this.event.nOfPreviousConcurrentEvents) return "none";
+      if (!this.event.nOfPreviousConcurrentEvents) return 'none';
 
-      return "1px solid #fff";
+      return '1px solid #fff';
     },
 
     eventIsLongerThan30Minutes() {
@@ -280,7 +280,7 @@ export default defineComponent({
             this.time.DAY_START,
             this.time.DAY_END
           )
-          .toString() + "%"
+          .toString() + '%'
       );
     },
 
@@ -299,7 +299,7 @@ export default defineComponent({
         );
       const length = endOfEvent - startOfEvent;
 
-      return length + "%";
+      return length + '%';
     },
 
     handleClickOnEvent(event: any) {
@@ -307,7 +307,7 @@ export default defineComponent({
 
       if (!eventElement) return;
 
-      this.$emit("event-was-clicked", {
+      this.$emit('event-was-clicked', {
         clickedEvent: this.event,
         eventElement,
       });
@@ -318,23 +318,23 @@ export default defineComponent({
      * */
     getEventElementFromChildElement(event: any) {
       const eventTarget = event.target;
-      if (!eventTarget || typeof eventTarget.className.includes !== "function")
+      if (!eventTarget || typeof eventTarget.className.includes !== 'function')
         return null;
 
-      if (eventTarget.className.includes(".calendar-week__event"))
+      if (eventTarget.className.includes('.calendar-week__event'))
         return event.target;
 
-      return eventTarget.closest(".calendar-week__event");
+      return eventTarget.closest('.calendar-week__event');
     },
 
     /**
      * Handle mousemove-events, while the event is being resized
      * */
     onMouseMove(event: any) {
-      const eventsContainer = document.querySelector(".calendar-week__events");
+      const eventsContainer = document.querySelector('.calendar-week__events');
 
       if (!eventsContainer) return;
-      if (typeof this.resizingStartingPoint === "undefined")
+      if (typeof this.resizingStartingPoint === 'undefined')
         this.resizingStartingPoint = event.clientY;
 
       const cursorPositionY = event.clientY;
@@ -351,7 +351,7 @@ export default defineComponent({
 
       // Count how many quarters have changed, since the event will only be updated
       // for every quarter that is added or subtracted
-      if (this.resizingDirection === "down") {
+      if (this.resizingDirection === 'down') {
         this.changeInQuarterHoursEventEnd = Math.floor(changeInMinutes / 15);
       } else {
         this.changeInQuarterHoursEventStart = Math.floor(changeInMinutes / 15);
@@ -365,17 +365,17 @@ export default defineComponent({
       this.stopResizing();
     },
 
-    resizeEvent(direction: "down" | "up") {
+    resizeEvent(direction: 'down' | 'up') {
       this.resizingDirection = direction;
-      document.addEventListener("mousemove", this.onMouseMove);
-      document.addEventListener("mouseup", this.onMouseUp);
+      document.addEventListener('mousemove', this.onMouseMove);
+      document.addEventListener('mouseup', this.onMouseUp);
     },
 
     stopResizing() {
-      document.removeEventListener("mousemove", this.onMouseMove);
-      document.removeEventListener("mouseup", this.onMouseUp);
+      document.removeEventListener('mousemove', this.onMouseMove);
+      document.removeEventListener('mouseup', this.onMouseUp);
       this.resetResizingValues();
-      this.$emit("event-was-resized", this.event);
+      this.$emit('event-was-resized', this.event);
     },
 
     /**
@@ -411,7 +411,7 @@ export default defineComponent({
       }
 
       if (this.event?.color) {
-        this.eventColor = "#fff";
+        this.eventColor = '#fff';
         return (this.eventBackgroundColor = this.colors[this.event.color]);
       }
 

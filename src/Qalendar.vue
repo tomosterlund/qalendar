@@ -26,7 +26,7 @@
       <Week
         v-if="['week', 'day'].includes(mode)"
         :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
-        :events="events"
+        :events-prop="events"
         :period="period"
         :config="config"
         :mode-prop="mode"
@@ -55,18 +55,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { eventInterface } from "./typings/interfaces/event.interface";
-import { configInterface } from "./typings/config.interface";
-import Time from "./helpers/Time";
-import Header from "./components/header/Header.vue";
-import Week from "./components/week/Week.vue";
-import { modeType } from "./typings/types";
-import Month from "./components/month/Month.vue";
-import Errors from "./helpers/Errors";
+import { defineComponent, PropType } from 'vue';
+import { eventInterface } from './typings/interfaces/event.interface';
+import { configInterface } from './typings/config.interface';
+import Time from './helpers/Time';
+import Header from './components/header/Header.vue';
+import Week from './components/week/Week.vue';
+import { modeType } from './typings/types';
+import Month from './components/month/Month.vue';
+import Errors from './helpers/Errors';
 
 export default defineComponent({
-  name: "Qalendar",
+  name: 'Qalendar',
 
   components: {
     Month,
@@ -94,12 +94,12 @@ export default defineComponent({
   },
 
   emits: [
-    "event-was-clicked",
-    "updated-period",
-    "event-was-resized",
-    "edit-event",
-    "delete-event",
-    "updated-period",
+    'event-was-clicked',
+    'updated-period',
+    'event-was-resized',
+    'edit-event',
+    'delete-event',
+    'updated-period',
   ],
 
   data() {
@@ -113,7 +113,7 @@ export default defineComponent({
       week: {
         nDays: this.config?.week?.nDays || 7,
       },
-      mode: this.config?.defaultMode || ("week" as modeType),
+      mode: this.config?.defaultMode || ('week' as modeType),
       time: new Time(
         this.config?.week?.startsOn,
         this.config?.locale || null
@@ -156,11 +156,11 @@ export default defineComponent({
     this.setConfigOnMount();
     this.onCalendarResize(); // Trigger once on mount, in order to set the correct mode, if viewing on a small screen
     this.setPeriodOnMount();
-    window.addEventListener("resize", this.onCalendarResize);
+    window.addEventListener('resize', this.onCalendarResize);
   },
 
   beforeUnmount() {
-    window.removeEventListener("resize", this.onCalendarResize);
+    window.removeEventListener('resize', this.onCalendarResize);
   },
 
   methods: {
@@ -175,19 +175,19 @@ export default defineComponent({
       value: { start: Date; end: Date; selectedDate: Date },
       setModeWeek = false
     ) {
-      this.$emit("updated-period", { start: value.start, end: value.end });
+      this.$emit('updated-period', { start: value.start, end: value.end });
       this.period = value;
 
-      if (setModeWeek) this.mode = "week";
+      if (setModeWeek) this.mode = 'week';
     },
 
     onCalendarResize() {
       // Calculate break point for day mode based on root font-size
       const documentRoot = document.documentElement;
-      const calendarRoot = document.querySelector(".calendar-root");
+      const calendarRoot = document.querySelector('.calendar-root');
       const documentFontSize = +window
         .getComputedStyle(documentRoot)
-        .fontSize.split("p")[0];
+        .fontSize.split('p')[0];
       const breakPointFor1RemEquals16px = 700;
       const multiplier = 16 / documentFontSize;
       const dayModeBreakpoint = breakPointFor1RemEquals16px / multiplier; // For 16px root font-size, break point is at 43.75rem
@@ -196,19 +196,19 @@ export default defineComponent({
 
       this.calendarWidth = calendarRoot.clientWidth;
 
-      if (this.calendarWidth < dayModeBreakpoint) this.mode = "day";
+      if (this.calendarWidth < dayModeBreakpoint) this.mode = 'day';
       if (this.calendarWidth >= dayModeBreakpoint)
-        this.mode = this.config?.defaultMode || "week";
+        this.mode = this.config?.defaultMode || 'week';
     },
 
     setPeriodOnMount() {
-      if (this.mode === "week") {
+      if (this.mode === 'week') {
         const currentWeek = this.time.getCalendarWeekDateObjects(
           this.period.selectedDate
         );
         this.period.start = currentWeek[0];
         this.period.end = currentWeek[6];
-      } else if (this.mode === "month") {
+      } else if (this.mode === 'month') {
         const month = this.time.getCalendarMonthSplitInWeeks(
           this.period.selectedDate.getFullYear(),
           this.period.selectedDate.getMonth()
@@ -223,7 +223,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "./styles/variables.scss";
+@import './styles/variables.scss';
 
 .calendar-root-wrapper {
   width: 100%;
@@ -256,7 +256,7 @@ export default defineComponent({
     }
 
     .top-bar-loader:before {
-      content: "";
+      content: '';
       height: 4px;
       width: calc(100% - 4px);
       position: absolute;

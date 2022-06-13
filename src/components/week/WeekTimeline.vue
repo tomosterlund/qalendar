@@ -21,12 +21,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { dayInterface } from "../../typings/interfaces/day.interface";
-import Time from "../../helpers/Time";
+import { defineComponent, PropType } from 'vue';
+import { dayInterface } from '../../typings/interfaces/day.interface';
+import Time from '../../helpers/Time';
+import { eventInterface } from '../../typings/interfaces/event.interface';
 
 export default defineComponent({
-  name: "WeekTimeline",
+  name: 'WeekTimeline',
 
   props: {
     days: {
@@ -36,6 +37,10 @@ export default defineComponent({
     time: {
       type: Object as PropType<Time>,
       required: true,
+    },
+    fullDayEvents: {
+      type: Array as PropType<eventInterface[]>,
+      default: () => [],
     },
   },
 

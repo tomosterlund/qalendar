@@ -8,3 +8,4 @@ export const EVENT_COLORS = {
 };
 
 export const DATE_TIME_STRING_PATTERN = /\d{4}-\d{2}-\d{2} \d{2}:\d{2}/;
+export const DATE_TIME_STRING_FULL_DAY_PATTERN = /\d{4}-\d{2}-\d{2}/;

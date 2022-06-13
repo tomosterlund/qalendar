@@ -1,5 +1,5 @@
 <template>
-  <WeekTimeline :days="days" :time="time" />
+  <WeekTimeline :days="days" :time="time" :full-day-events="fullDayEvents" />
 
   <div class="calendar-week__wrapper">
     <section class="calendar-week">
@@ -31,20 +31,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { configInterface } from "../../typings/config.interface";
-import DayTimeline from "./DayTimeline.vue";
-import { periodInterface } from "../../typings/interfaces/period.interface";
-import { dayInterface } from "../../typings/interfaces/day.interface";
-import WeekTimeline from "./WeekTimeline.vue";
-import Day from "./Day.vue";
-import EventFlyout from "../partials/EventFlyout.vue";
-import { eventInterface } from "../../typings/interfaces/event.interface";
-import Time from "../../helpers/Time";
-import { WEEK_HEIGHT } from "../../constants";
+import { defineComponent, PropType } from 'vue';
+import { configInterface } from '../../typings/config.interface';
+import DayTimeline from './DayTimeline.vue';
+import { periodInterface } from '../../typings/interfaces/period.interface';
+import { dayInterface } from '../../typings/interfaces/day.interface';
+import WeekTimeline from './WeekTimeline.vue';
+import Day from './Day.vue';
+import EventFlyout from '../partials/EventFlyout.vue';
+import { eventInterface } from '../../typings/interfaces/event.interface';
+import Time from '../../helpers/Time';
+import {
+  DATE_TIME_STRING_FULL_DAY_PATTERN,
+  DATE_TIME_STRING_PATTERN,
+  WEEK_HEIGHT,
+} from '../../constants';
 
 export default defineComponent({
-  name: "Week",
+  name: 'Week',
 
   components: {
     Day,
@@ -58,7 +62,7 @@ export default defineComponent({
       type: Object as PropType<configInterface>,
       required: true,
     },
-    events: {
+    eventsProp: {
       type: Array as PropType<eventInterface[]>,
       default: () => [],
     },
@@ -71,8 +75,8 @@ export default defineComponent({
       required: true,
     },
     modeProp: {
-      type: String as PropType<"day" | "week" | "month">,
-      default: "week",
+      type: String as PropType<'day' | 'week' | 'month'>,
+      default: 'week',
     },
     time: {
       type: Object as PropType<Time | any>,
@@ -81,19 +85,21 @@ export default defineComponent({
   },
 
   emits: [
-    "event-was-clicked",
-    "event-was-resized",
-    "edit-event",
-    "delete-event",
+    'event-was-clicked',
+    'event-was-resized',
+    'edit-event',
+    'delete-event',
   ],
 
   data() {
     return {
       days: [] as dayInterface[],
-      mode: this.modeProp as "day" | "week" | "month",
+      mode: this.modeProp as 'day' | 'week' | 'month',
       selectedEvent: null as eventInterface | null,
       selectedEventElement: null as any | null,
-      weekHeight: WEEK_HEIGHT + "px",
+      weekHeight: WEEK_HEIGHT + 'px',
+      events: this.eventsProp,
+      fullDayEvents: [] as eventInterface[],
     };
   },
 
@@ -114,20 +120,38 @@ export default defineComponent({
   },
 
   mounted() {
+    this.filterOurFullDayEvents();
     this.setInitialEvents(this.modeProp);
     this.scrollOnMount();
   },
 
   methods: {
+    filterOurFullDayEvents() {
+      const fullDayEvents = [];
+      const allOtherEvents = [];
+
+      for (const scheduleEvent of this.events) {
+        if (scheduleEvent.time.start.match(DATE_TIME_STRING_PATTERN)) {
+          allOtherEvents.push(scheduleEvent);
+        } else if (
+          scheduleEvent.time.start.match(DATE_TIME_STRING_FULL_DAY_PATTERN)
+        ) {
+          fullDayEvents.push(scheduleEvent);
+        }
+      }
+
+      this.fullDayEvents = fullDayEvents;
+      this.events = allOtherEvents;
+    },
+
     setDays() {
-      // TODO: Refactor and use map, after first having filtered out all events that are not in the period
       const days = this.time
         .getCalendarWeekDateObjects(this.period.start)
         .map((day: Date) => {
-          const dayName = this.time.getLocalizedNameOfWeekday(day, "long");
+          const dayName = this.time.getLocalizedNameOfWeekday(day, 'long');
           const dateTimeString = this.time.getDateTimeStringFromDate(
             day,
-            "start"
+            'start'
           );
           const events = this.events.filter((event: eventInterface) => {
             return (
@@ -139,10 +163,10 @@ export default defineComponent({
           return { dayName, dateTimeString, events };
         });
 
-      if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === "monday") {
+      if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === 'monday') {
         // Delete Saturday & Sunday
         days.splice(5, 2);
-      } else if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === "sunday") {
+      } else if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === 'sunday') {
         // First delete Saturday, then Sunday
         days.splice(6, 1);
         days.splice(0, 1);
@@ -157,11 +181,11 @@ export default defineComponent({
         {
           dayName: new Date(this.period.selectedDate).toLocaleDateString(
             this.time.CALENDAR_LOCALE,
-            { weekday: "long" }
+            { weekday: 'long' }
           ),
           dateTimeString: this.time.getDateTimeStringFromDate(
             this.period.selectedDate,
-            "start"
+            'start'
           ),
           events: [] as eventInterface[],
         },
@@ -186,23 +210,23 @@ export default defineComponent({
       this.days = days;
     },
 
-    setInitialEvents(mode: "day" | "week" | "month") {
-      if (mode === "day") this.setDay();
-      if (mode === "week") this.setDays();
+    setInitialEvents(mode: 'day' | 'week' | 'month') {
+      if (mode === 'day') this.setDay();
+      if (mode === 'week') this.setDays();
     },
 
     handleClickOnEvent(event: {
       eventElement: HTMLDivElement;
       clickedEvent: eventInterface;
     }) {
-      this.$emit("event-was-clicked", event);
+      this.$emit('event-was-clicked', event);
 
       this.selectedEventElement = event.eventElement;
       this.selectedEvent = event.clickedEvent;
     },
 
     scrollOnMount() {
-      const weekWrapper = document.querySelector(".calendar-week__wrapper");
+      const weekWrapper = document.querySelector('.calendar-week__wrapper');
 
       if (weekWrapper) {
         const scrollToHourFromConfig = this.config?.week?.scrollToHour;

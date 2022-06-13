@@ -39,7 +39,7 @@
         </div>
 
         <div v-if="calendarEvent.time" class="event-flyout__row is-time">
-          {{ getEventDate + " ⋅ " + getEventTime }}
+          {{ getEventDate + ' ⋅ ' + getEventTime }}
         </div>
 
         <div
@@ -76,12 +76,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { eventInterface } from "../../typings/interfaces/event.interface";
+import { defineComponent, PropType } from 'vue';
+import { eventInterface } from '../../typings/interfaces/event.interface';
 import EventFlyoutPosition, {
   EVENT_FLYOUT_WIDTH,
-} from "../../helpers/EventFlyoutPosition";
-import { faMapMarkerAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
+} from '../../helpers/EventFlyoutPosition';
+import { faMapMarkerAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import {
   faClock,
   faComment,
@@ -89,15 +89,15 @@ import {
   faEdit,
   faTrashAlt,
   faQuestionCircle,
-} from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { configInterface } from "../../typings/config.interface";
-import Time from "../../helpers/Time";
-import { EVENT_COLORS } from "../../constants";
+} from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { configInterface } from '../../typings/config.interface';
+import Time from '../../helpers/Time';
+import { EVENT_COLORS } from '../../constants';
 const eventFlyoutPositionHelper = new EventFlyoutPosition();
 
 export default defineComponent({
-  name: "EventFlyout",
+  name: 'EventFlyout',
 
   components: {
     FontAwesomeIcon,
@@ -122,7 +122,7 @@ export default defineComponent({
     },
   },
 
-  emits: ["hide", "edit-event", "delete-event"],
+  emits: ['hide', 'edit-event', 'delete-event'],
 
   data() {
     return {
@@ -140,7 +140,7 @@ export default defineComponent({
         location: faMapMarkerAlt,
       },
       calendarEvent: this.calendarEventProp,
-      flyoutWidth: EVENT_FLYOUT_WIDTH + "px",
+      flyoutWidth: EVENT_FLYOUT_WIDTH + 'px',
       colors: EVENT_COLORS,
     };
   },
@@ -151,7 +151,7 @@ export default defineComponent({
 
       return (
         this.time.getLocalizedTime(this.calendarEvent.time.start) +
-        " - " +
+        ' - ' +
         this.time.getLocalizedTime(this.calendarEvent.time.end)
       );
     },
@@ -166,27 +166,27 @@ export default defineComponent({
       return new Date(year, month, date).toLocaleDateString(
         this.time.CALENDAR_LOCALE,
         {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
         }
       );
     },
 
     eventFlyoutInlineStyles() {
-      if ([typeof this.top, typeof this.left].some((x) => x !== "number")) {
+      if ([typeof this.top, typeof this.left].some((x) => x !== 'number')) {
         return {
-          top: "50%",
-          left: "50%",
-          position: "absolute" as const, // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
-          transform: "translate(-50%, -50%)",
+          top: '50%',
+          left: '50%',
+          position: 'absolute' as const, // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
+          transform: 'translate(-50%, -50%)',
         };
       }
 
       return {
-        top: this.top + "px",
-        left: this.left + "px",
-        position: "fixed" as const, // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
+        top: this.top + 'px',
+        left: this.left + 'px',
+        position: 'fixed' as const, // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
       };
     },
 
@@ -205,7 +205,7 @@ export default defineComponent({
           .backgroundColor;
       }
 
-      return this.colors[this.calendarEvent?.color || "blue"];
+      return this.colors[this.calendarEvent?.color || 'blue'];
     },
   },
 
@@ -225,8 +225,8 @@ export default defineComponent({
 
   methods: {
     setFlyoutPosition() {
-      const calendar = this.eventElement?.closest(".calendar-root");
-      const flyout = document.querySelector(".event-flyout");
+      const calendar = this.eventElement?.closest('.calendar-root');
+      const flyout = document.querySelector('.event-flyout');
 
       if (!this.eventElement) return;
 
@@ -244,12 +244,12 @@ export default defineComponent({
     },
 
     editEvent() {
-      this.$emit("edit-event", this.calendarEvent?.id);
+      this.$emit('edit-event', this.calendarEvent?.id);
       this.closeFlyout();
     },
 
     deleteEvent() {
-      this.$emit("delete-event", this.calendarEvent?.id);
+      this.$emit('delete-event', this.calendarEvent?.id);
       this.closeFlyout();
     },
 
@@ -257,7 +257,7 @@ export default defineComponent({
       this.isVisible = false;
 
       setTimeout(() => {
-        this.$emit("hide");
+        this.$emit('hide');
       }, 100);
     },
   },
@@ -265,7 +265,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@use "../../styles/mixins" as mixins;
+@use '../../styles/mixins' as mixins;
 
 .event-flyout {
   position: fixed;

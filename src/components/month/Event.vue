@@ -17,14 +17,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import Time from "../../helpers/Time";
-import { eventInterface } from "../../typings/interfaces/event.interface";
-import { EVENT_COLORS } from "../../constants";
-import { configInterface } from "../../typings/config.interface";
+import { defineComponent, PropType } from 'vue';
+import Time from '../../helpers/Time';
+import { eventInterface } from '../../typings/interfaces/event.interface';
+import { EVENT_COLORS } from '../../constants';
+import { configInterface } from '../../typings/config.interface';
 
 export default defineComponent({
-  name: "Event",
+  name: 'Event',
 
   props: {
     time: {
@@ -41,13 +41,13 @@ export default defineComponent({
     },
   },
 
-  emits: ["event-was-clicked"],
+  emits: ['event-was-clicked'],
 
   data() {
     return {
       colors: EVENT_COLORS as { [key: string]: string },
-      eventBackgroundColor: "",
-      eventIdPrefix: "calendar-month__event-",
+      eventBackgroundColor: '',
+      eventIdPrefix: 'calendar-month__event-',
     };
   },
 
@@ -88,7 +88,7 @@ export default defineComponent({
         this.eventIdPrefix + this.calendarEvent.id
       );
 
-      this.$emit("event-was-clicked", {
+      this.$emit('event-was-clicked', {
         clickedEvent: this.calendarEvent,
         eventElement,
       });
@@ -98,7 +98,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use "../../styles/mixins" as mixins;
+@use '../../styles/mixins' as mixins;
 
 .calendar-month__event {
   display: flex;

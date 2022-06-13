@@ -12,6 +12,7 @@ export default class Time {
   ALL_HOURS: dayStartOrEnd[];
   DAY_START: number;
   DAY_END: number;
+  MS_PER_DAY: number
 
   constructor(
     firstDayOfWeekIs: "sunday" | "monday" = "monday",
@@ -27,9 +28,10 @@ export default class Time {
     ];
     this.DAY_START = 0;
     this.DAY_END = 2400;
+    this.MS_PER_DAY = 86400000;
   }
 
-  protected getDatesBetweenTwoDates(start: Date, end: Date) {
+  getDatesBetweenTwoDates(start: Date, end: Date) {
     for (
       var arr = [], dt = new Date(start);
       dt <= end;
@@ -281,5 +283,13 @@ export default class Time {
     }
 
     return false;
+  }
+
+  getDateStringFromDate(date: Date) {
+    const yyyy = date.getFullYear()
+    const mm = (date.getMonth() + 1)
+    const dd = date.getDate()
+
+    return `${yyyy}-${mm >= 10 ? mm : "0" + mm}-${dd >= 10 ? dd : "0" + dd}`;
   }
 }

@@ -33,54 +33,54 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "DevToolbar",
+  name: 'DevToolbar',
 
-  emits: ["selected-layout", "selected-locale", "selected-n-days"],
+  emits: ['selected-layout', 'selected-locale', 'selected-n-days'],
 
   data() {
     return {
       isVisible: false,
-      layout: "none",
-      locale: "",
+      layout: 'none',
+      locale: '',
       nDays: 7,
     };
   },
 
   watch: {
     isVisible(value) {
-      localStorage.setItem("toolbar-visible", value);
+      localStorage.setItem('toolbar-visible', value);
     },
 
     layout(value) {
-      this.$emit("selected-layout", value);
-      localStorage.setItem("layout-setting", value);
+      this.$emit('selected-layout', value);
+      localStorage.setItem('layout-setting', value);
     },
 
     locale(value) {
-      this.$emit("selected-locale", value);
-      localStorage.setItem("locale-setting", value);
+      this.$emit('selected-locale', value);
+      localStorage.setItem('locale-setting', value);
     },
 
     nDays(value) {
-      this.$emit("selected-n-days", +value);
-      localStorage.setItem("nDays-setting", value);
+      this.$emit('selected-n-days', +value);
+      localStorage.setItem('nDays-setting', value);
     },
   },
 
   mounted() {
-    const visibleSetting = localStorage.getItem("toolbar-visible");
-    if (visibleSetting && visibleSetting === "true") this.isVisible = true;
+    const visibleSetting = localStorage.getItem('toolbar-visible');
+    if (visibleSetting && visibleSetting === 'true') this.isVisible = true;
 
-    const layoutSetting = localStorage.getItem("layout-setting");
+    const layoutSetting = localStorage.getItem('layout-setting');
     if (layoutSetting) this.layout = layoutSetting;
 
-    const localeSetting = localStorage.getItem("locale-setting");
+    const localeSetting = localStorage.getItem('locale-setting');
     if (localeSetting) this.locale = localeSetting;
 
-    const nDaysSetting = localStorage.getItem("nDays-setting");
+    const nDaysSetting = localStorage.getItem('nDays-setting');
     if (nDaysSetting) this.nDays = +nDaysSetting;
   },
 });
@@ -88,7 +88,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .dev-toolbar {
-  font-family: Courier, "sans-serif";
+  font-family: Courier, 'sans-serif';
   position: fixed;
   bottom: 20px;
   left: 50%;
@@ -134,7 +134,7 @@ export default defineComponent({
   background-color: #181818;
   color: #fff;
   padding: 8px 16px;
-  font-family: Courier, "sans-serif";
+  font-family: Courier, 'sans-serif';
   border: 0;
   border-radius: 4px;
 }

@@ -34,15 +34,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { configInterface } from "../../typings/config.interface";
-import Time from "../../helpers/Time";
-import Event from "./Event.vue";
-import { dayInterface } from "../../typings/interfaces/day.interface";
-import getLanguage from "../../language/index";
+import { defineComponent, PropType } from 'vue';
+import { configInterface } from '../../typings/config.interface';
+import Time from '../../helpers/Time';
+import Event from './Event.vue';
+import { dayInterface } from '../../typings/interfaces/day.interface';
+import getLanguage from '../../language/index';
 
 export default defineComponent({
-  name: "Day",
+  name: 'Day',
 
   components: { Event },
 
@@ -67,7 +67,7 @@ export default defineComponent({
     },
   },
 
-  emits: ["event-was-clicked", "updated-period"],
+  emits: ['event-was-clicked', 'updated-period'],
 
   methods: {
     switchToWeekMode() {
@@ -79,7 +79,7 @@ export default defineComponent({
       const start = week[0];
       const end = week[6];
 
-      this.$emit("updated-period", { start, end, selectedDate });
+      this.$emit('updated-period', { start, end, selectedDate });
     },
   },
 });
