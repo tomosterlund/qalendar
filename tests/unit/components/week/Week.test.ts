@@ -24,6 +24,7 @@ describe('Week.vue', () => {
           isEditable: true,
         }
       ],
+      nDays: 7,
     }
   })
 

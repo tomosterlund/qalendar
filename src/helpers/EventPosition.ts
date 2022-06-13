@@ -42,16 +42,16 @@ export default class EventPosition {
   }
 
   positionFullDayEventsInWeek(weekStart: Date, weekEnd: Date, events: eventInterface[]) {
-    // 1. add an array 'allDates', to all events
-    const eventsWithDatesSpan = events.map((e: eventInterface) => {
-      const { year: startYear, month: startMonth, date: startDate } = TimeHelper.getAllVariablesFromDateTimeString(e.time.start)
-      const { year: endYear, month: endMonth, date: endDate } = TimeHelper.getAllVariablesFromDateTimeString(e.time.end)
-      e.timeJS = {
+    // 1. add timeJS.start and timeJS.end to all objects
+    const eventsWithJSDates = events.map((scheduleEvent: eventInterface) => {
+      const { year: startYear, month: startMonth, date: startDate } = TimeHelper.getAllVariablesFromDateTimeString(scheduleEvent.time.start)
+      const { year: endYear, month: endMonth, date: endDate } = TimeHelper.getAllVariablesFromDateTimeString(scheduleEvent.time.end)
+      scheduleEvent.timeJS = {
         start: new Date(startYear, startMonth, startDate),
         end: new Date(endYear, endMonth, endDate),
       }
 
-      return e
+      return scheduleEvent
     }).sort((a, b) => {
       if (a.time.start < b.time.start) return -1;
       if (a.time.start > b.time.start) return 1;
@@ -64,23 +64,27 @@ export default class EventPosition {
     const allDatesOfWeek = TimeHelper.getDatesBetweenTwoDates(weekStart, weekEnd)
     const week: { date: Date; [key: string]: object|string }[] = allDatesOfWeek.map(d => ({ date: d }))
 
-    for (const e of eventsWithDatesSpan) {
+    for (const scheduleEvent of eventsWithJSDates) {
       for (const [dayIndex, day] of week.entries()) {
-        const nOfLevelsInDay = Object.entries(day).length
-
         // @ts-ignore
-        if (TimeHelper.getDateStringFromDate(e.timeJS.start) <= TimeHelper.getDateStringFromDate(day.date)) {
-          // 2A. If time.start is less than or equal the day, set the event on this day
-          week[dayIndex][`level${nOfLevelsInDay}`] = e
+        if (TimeHelper.getDateStringFromDate(scheduleEvent.timeJS.start) <= TimeHelper.getDateStringFromDate(day.date)) {
+          // 2A. Get the first free level of the day
+          let levelToStartOn = 1
+          while (typeof week[dayIndex][`level${levelToStartOn}`] !== 'undefined') {
+            levelToStartOn++
+          }
 
-          // 2B. And block the specified level, for the following days of the event
+          // 2B. set the event on this day
+          week[dayIndex][`level${levelToStartOn}`] = scheduleEvent
+
+          // 2C. And block the specified level, for the following days of the event
           // @ts-ignore
-          let eventNDays = Math.ceil((e.timeJS.end.getTime() - day.date.getTime()) / TimeHelper.MS_PER_DAY)
+          let eventNDays = (Math.ceil((scheduleEvent.timeJS.end.getTime() - day.date.getTime()) / TimeHelper.MS_PER_DAY) + 1) // Get difference in days, plus the first day itself
           const remainingDaysOfWeek = (week.length - (dayIndex + 1))
           if (eventNDays > remainingDaysOfWeek) eventNDays = remainingDaysOfWeek
 
           for (let i = 1; i < eventNDays; i++) {
-            week[dayIndex][`level${nOfLevelsInDay}`] = 'blocked'
+            week[dayIndex + i][`level${levelToStartOn}`] = 'blocked'
           }
 
           break
