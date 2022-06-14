@@ -1,5 +1,5 @@
 import { eventInterface } from "../typings/interfaces/event.interface";
-import { DATE_TIME_STRING_PATTERN } from "../constants";
+import {DATE_TIME_STRING_FULL_DAY_PATTERN, DATE_TIME_STRING_PATTERN} from "../constants";
 import { configInterface } from "../typings/config.interface";
 
 export default class Errors {
@@ -39,7 +39,7 @@ export default class Errors {
           this.SUFFIX
         }`
       );
-    if (typeof event.title !== "string")
+    if (typeof event.title !== 'string')
       console.warn(
         `${
           this.PREFIX
@@ -47,13 +47,19 @@ export default class Errors {
           this.SUFFIX
         }`
       );
-    if (!DATE_TIME_STRING_PATTERN.test(event.time.start))
+    if (
+      !DATE_TIME_STRING_PATTERN.test(event.time.start)
+      && !DATE_TIME_STRING_FULL_DAY_PATTERN.test(event.time.start)
+    )
       console.warn(
-        `${this.PREFIX} event property 'time.start' expects a string formatted like 'YYYY-MM-DD hh:mm', received ${event.time.start} \n${this.SUFFIX}`
+        `${this.PREFIX} event property 'time.start' expects a string formatted like 'YYYY-MM-DD hh:mm', or 'YYYY-MM-DD', received ${event.time.start} \n${this.SUFFIX}`
       );
-    if (!DATE_TIME_STRING_PATTERN.test(event.time.end))
+    if (
+      !DATE_TIME_STRING_PATTERN.test(event.time.end)
+      && !DATE_TIME_STRING_FULL_DAY_PATTERN.test(event.time.end)
+    )
       console.warn(
-        `${this.PREFIX} event property 'time.end' expects a string formatted like 'YYYY-MM-DD hh:mm', received ${event.time.end} \n${this.SUFFIX}`
+        `${this.PREFIX} event property 'time.end' expects a string formatted like 'YYYY-MM-DD hh:mm',  or 'YYYY-MM-DD', received ${event.time.end} \n${this.SUFFIX}`
       );
   }
 

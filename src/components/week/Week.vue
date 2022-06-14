@@ -1,5 +1,10 @@
 <template>
-  <WeekTimeline :days="days" :time="time" :full-day-events="fullDayEvents" />
+  <WeekTimeline
+    :days="days"
+    :time="time"
+    :full-day-events="fullDayEvents"
+    :config="config"
+  />
 
   <div class="calendar-week__wrapper">
     <section class="calendar-week">
@@ -46,6 +51,9 @@ import {
   DATE_TIME_STRING_PATTERN,
   WEEK_HEIGHT,
 } from '../../constants';
+import EventPosition from '../../helpers/EventPosition';
+import { fullDayEventsWeek } from '../../typings/interfaces/full-day-events-week.type';
+const eventPosition = new EventPosition();
 
 export default defineComponent({
   name: 'Week',
@@ -99,7 +107,7 @@ export default defineComponent({
       selectedEventElement: null as any | null,
       weekHeight: WEEK_HEIGHT + 'px',
       events: this.eventsProp,
-      fullDayEvents: [] as eventInterface[],
+      fullDayEvents: [] as fullDayEventsWeek,
     };
   },
 
@@ -120,13 +128,13 @@ export default defineComponent({
   },
 
   mounted() {
-    this.filterOurFullDayEvents();
+    this.filterOutFullDayEvents();
     this.setInitialEvents(this.modeProp);
     this.scrollOnMount();
   },
 
   methods: {
-    filterOurFullDayEvents() {
+    filterOutFullDayEvents() {
       const fullDayEvents = [];
       const allOtherEvents = [];
 
@@ -140,7 +148,13 @@ export default defineComponent({
         }
       }
 
-      this.fullDayEvents = fullDayEvents;
+      this.fullDayEvents = fullDayEvents.length
+        ? eventPosition.positionFullDayEventsInWeek(
+            this.period.start,
+            this.period.end,
+            fullDayEvents
+          )
+        : [];
       this.events = allOtherEvents;
     },
 
@@ -166,18 +180,30 @@ export default defineComponent({
       if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === 'monday') {
         // Delete Saturday & Sunday
         days.splice(5, 2);
+        this.fullDayEvents.splice(5, 2);
       } else if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === 'sunday') {
         // First delete Saturday, then Sunday
         days.splice(6, 1);
+        this.fullDayEvents.splice(6, 1);
         days.splice(0, 1);
+        this.fullDayEvents.splice(0, 1);
       }
 
       this.days = days;
     },
 
+    mergeFullDayEventsIntoDays() {
+      for (const [dayIndex] of this.days.entries()) {
+        this.days[dayIndex].fullDayEvents = this.fullDayEvents[dayIndex];
+      }
+    },
+
     setDay() {
-      // Since we will still iterate over this.days for showing a single day, we'll initialize an array here too
-      const days = [
+      const dayDateTimeString = this.time.getDateTimeStringFromDate(
+        this.period.selectedDate
+      );
+      // 1. Set the timed events
+      this.days = [
         {
           dayName: new Date(this.period.selectedDate).toLocaleDateString(
             this.time.CALENDAR_LOCALE,
@@ -187,32 +213,35 @@ export default defineComponent({
             this.period.selectedDate,
             'start'
           ),
-          events: [] as eventInterface[],
+          events: this.events.filter((event: eventInterface) => {
+            return (
+              event.time.start.substring(0, 11) ===
+              dayDateTimeString.substring(0, 11)
+            );
+          }) as eventInterface[],
         },
       ];
 
-      for (const calendarEvent of this.events) {
-        const eventIsInPeriod =
-          calendarEvent.time.start.substring(0, 10) ===
-          this.time
-            .getDateTimeStringFromDate(this.period.selectedDate)
-            .substring(0, 10);
-        if (!eventIsInPeriod) continue;
+      if (!this.fullDayEvents.length) return;
 
-        for (const [dayIndex, day] of days.entries()) {
-          const dayDate = day.dateTimeString.substring(0, 11);
-          const eventDate = calendarEvent.time.start.substring(0, 11);
+      // 2. Set full day events
+      for (const day of this.fullDayEvents) {
+        const dayDateString = this.time.getDateTimeStringFromDate(day.date);
+        if (
+          dayDateString.substring(0, 11) === dayDateTimeString.substring(0, 11)
+        ) {
+          this.fullDayEvents = [day];
 
-          if (dayDate === eventDate) days[dayIndex].events.push(calendarEvent);
+          return;
         }
       }
-
-      this.days = days;
     },
 
     setInitialEvents(mode: 'day' | 'week' | 'month') {
       if (mode === 'day') this.setDay();
       if (mode === 'week') this.setDays();
+
+      this.mergeFullDayEventsIntoDays();
     },
 
     handleClickOnEvent(event: {

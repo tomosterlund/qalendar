@@ -51,7 +51,7 @@ export default defineComponent({
     return {
       config: {
         week: {
-          startsOn: 'monday',
+          startsOn: 'sunday',
           nDays: 7,
         },
         locale: 'de-DE',

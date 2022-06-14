@@ -1,6 +1,6 @@
 <template>
   <div class="week-timeline">
-    <span
+    <div
       v-for="(day, dayIndex) in days"
       :key="dayIndex"
       class="week-timeline__day"
@@ -9,14 +9,24 @@
           time.getDateTimeStringFromDate(now, 'start') === day.dateTimeString,
       }"
     >
-      <span class="week-timeline__day-name">
+      <div class="week-timeline__day-name">
         {{ day.dayName.substring(0, 2).toUpperCase() }}
-      </span>
+      </div>
 
-      <span class="week-timeline__date">
+      <div class="week-timeline__date">
         {{ getDaysDate(day) }}
-      </span>
-    </span>
+      </div>
+
+      <div class="week-timeline__events">
+        <template v-for="(event, key) in day.fullDayEvents" :key="key">
+          <FullDayEvent
+            v-if="key !== 'date'"
+            :schedule-event="typeof event === 'object' ? event : null"
+            :config="config"
+          />
+        </template>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,23 +34,29 @@
 import { defineComponent, PropType } from 'vue';
 import { dayInterface } from '../../typings/interfaces/day.interface';
 import Time from '../../helpers/Time';
-import { eventInterface } from '../../typings/interfaces/event.interface';
+import { dayWithFullDayEvents } from '../../typings/interfaces/full-day-events-week.type';
+import FullDayEvent from './FullDayEvent.vue';
+import { configInterface } from '../../typings/config.interface';
 
 export default defineComponent({
   name: 'WeekTimeline',
-
+  components: { FullDayEvent },
   props: {
     days: {
       type: Array as PropType<dayInterface[]>,
-      default: () => [],
+      required: true,
     },
     time: {
       type: Object as PropType<Time>,
       required: true,
     },
     fullDayEvents: {
-      type: Array as PropType<eventInterface[]>,
+      type: Array as PropType<dayWithFullDayEvents[]>,
       default: () => [],
+    },
+    config: {
+      type: Object as PropType<configInterface>,
+      required: true,
     },
   },
 
@@ -67,7 +83,6 @@ export default defineComponent({
   height: fit-content;
   display: flex;
   justify-content: space-evenly;
-  align-items: center;
   padding-bottom: var(--qalendar-spacing-half);
   padding-left: var(--qalendar-week-padding-left);
   border-bottom: var(--qalendar-border-gray-thin);
@@ -82,7 +97,7 @@ export default defineComponent({
     display: flex;
     flex-flow: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: flex-start;
   }
 
   &__day-name {
@@ -105,6 +120,16 @@ export default defineComponent({
     .is-today & {
       background-color: var(--qalendar-blue);
       color: #fff;
+    }
+  }
+
+  &__events {
+    width: 100%;
+    flex: 1;
+    border-right: 1px dashed rgb(224, 224, 224);
+
+    .week-timeline__day:first-child & {
+      border-left: 1px dashed rgb(224, 224, 224);
     }
   }
 }

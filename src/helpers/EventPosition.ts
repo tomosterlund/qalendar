@@ -4,6 +4,7 @@
  * */
 import {eventInterface} from '../typings/interfaces/event.interface';
 import Time from './Time';
+import {fullDayEventsWeek} from '../typings/interfaces/full-day-events-week.type';
 // IMPORTANT: this instance of Time, should not be used for anything sensitive to "locale" or "firstDayOfWeekIs"
 const TimeHelper = new Time()
 
@@ -65,7 +66,7 @@ export default class EventPosition {
     // 2. create a week array, where each day is represented as an object with different levels, level1, level2, level3, level4 etc.
     // An event starts on a certain level, the first day when it occurs, and then blocks that level for the rest of its duration
     const allDatesOfWeek = TimeHelper.getDatesBetweenTwoDates(weekStart, weekEnd)
-    const week: { date: Date; [key: string]: eventInterface|any|string }[] = allDatesOfWeek.map(d => ({ date: d }))
+    const week: fullDayEventsWeek = allDatesOfWeek.map(d => ({ date: d }))
 
     for (const scheduleEvent of eventsWithJSDates) {
       for (const [dayIndex, day] of week.entries()) {
@@ -84,14 +85,17 @@ export default class EventPosition {
           }
 
           // 2B. set the event on this day
-          week[dayIndex][`level${levelToStartOn}`] = scheduleEvent
-
-          // 2C. And block the specified level, for the following days of the event
           // @ts-ignore
           let eventNDays = (Math.ceil((scheduleEvent.timeJS.end.getTime() - day.date.getTime()) / TimeHelper.MS_PER_DAY) + 1) // Get difference in days, plus the first day itself
           const remainingDaysOfWeek = (week.length - dayIndex)
           if (eventNDays > remainingDaysOfWeek) eventNDays = remainingDaysOfWeek
 
+          week[dayIndex][`level${levelToStartOn}`] = {
+            ...scheduleEvent,
+            nDays: eventNDays, // Denotes the number of days to display in the week, not the actual number of days
+          }
+
+          // 2C. And block the specified level, for the following days of the event
           for (let i = 1; i < eventNDays; i++) {
             week[dayIndex + i][`level${levelToStartOn}`] = 'blocked'
           }
