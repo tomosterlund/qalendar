@@ -41,6 +41,9 @@ export default class EventPosition {
     return (eventPointsIntoDay / pointsInDay) * 100;
   }
 
+  /**
+   * Yields a full calendar week, with all full-day events positioned in it
+   * */
   positionFullDayEventsInWeek(weekStart: Date, weekEnd: Date, events: eventInterface[]) {
     // 1. add timeJS.start and timeJS.end to all objects
     const eventsWithJSDates = events.map((scheduleEvent: eventInterface) => {
@@ -62,12 +65,18 @@ export default class EventPosition {
     // 2. create a week array, where each day is represented as an object with different levels, level1, level2, level3, level4 etc.
     // An event starts on a certain level, the first day when it occurs, and then blocks that level for the rest of its duration
     const allDatesOfWeek = TimeHelper.getDatesBetweenTwoDates(weekStart, weekEnd)
-    const week: { date: Date; [key: string]: object|string }[] = allDatesOfWeek.map(d => ({ date: d }))
+    const week: { date: Date; [key: string]: eventInterface|any|string }[] = allDatesOfWeek.map(d => ({ date: d }))
 
     for (const scheduleEvent of eventsWithJSDates) {
       for (const [dayIndex, day] of week.entries()) {
-        // @ts-ignore
-        if (TimeHelper.getDateStringFromDate(scheduleEvent.timeJS.start) <= TimeHelper.getDateStringFromDate(day.date)) {
+        const thisDayDateString = TimeHelper.getDateStringFromDate(day.date)
+
+        if (
+          // @ts-ignore
+          TimeHelper.getDateStringFromDate(scheduleEvent.timeJS.start) <= thisDayDateString
+          // @ts-ignore
+          && TimeHelper.getDateStringFromDate(scheduleEvent.timeJS.end) >= thisDayDateString
+        ) {
           // 2A. Get the first free level of the day
           let levelToStartOn = 1
           while (typeof week[dayIndex][`level${levelToStartOn}`] !== 'undefined') {
@@ -80,7 +89,7 @@ export default class EventPosition {
           // 2C. And block the specified level, for the following days of the event
           // @ts-ignore
           let eventNDays = (Math.ceil((scheduleEvent.timeJS.end.getTime() - day.date.getTime()) / TimeHelper.MS_PER_DAY) + 1) // Get difference in days, plus the first day itself
-          const remainingDaysOfWeek = (week.length - (dayIndex + 1))
+          const remainingDaysOfWeek = (week.length - dayIndex)
           if (eventNDays > remainingDaysOfWeek) eventNDays = remainingDaysOfWeek
 
           for (let i = 1; i < eventNDays; i++) {
