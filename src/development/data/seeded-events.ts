@@ -388,7 +388,7 @@ export const seededEvents = [{
 }, {
   "title": "English essay deadline",
   "with": "Robin Scherbatsky",
-  "time": {"start": "2022-06-08 01:25", "end": "2022-06-08 02:55"},
+  "time": {"start": "2022-06-01", "end": "2022-06-30"},
   "color": "yellow",
   "isEditable": true,
   "id": "47a3e3686a57"
@@ -679,7 +679,7 @@ export const seededEvents = [{
   "title": "Advanced algebra",
   "with": "Tom Österlund",
   "time": {"start": "2022-06-13 11:25", "end": "2022-06-13 12:10"},
-  "color": "green",
+  "color": "red",
   "isEditable": true,
   "id": "e7c57f08185c"
 }, {
@@ -781,7 +781,7 @@ export const seededEvents = [{
   "title": "Break",
   "with": "Robin Scherbatsky",
   "time": {"start": "2022-06-15 15:52", "end": "2022-06-15 17:22"},
-  "color": "blue",
+  "color": "red",
   "isEditable": true,
   "id": "b69aef85d92c",
   "description": "Think of me as Yoda. Only instead of being little and green, I wear suites and I'm awesome."

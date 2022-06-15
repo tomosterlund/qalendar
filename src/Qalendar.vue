@@ -19,7 +19,7 @@
         :mode="mode"
         :time="time"
         :period="period"
-        @change-mode="mode = $event"
+        @change-mode="handleChangeMode"
         @updated-period="handleUpdatedPeriod"
       />
 
@@ -179,6 +179,37 @@ export default defineComponent({
       this.period = value;
 
       if (setModeWeek) this.mode = 'week';
+    },
+
+    /**
+     * Update this.period according to the new mode, and then set this.mode to the provided payload
+     * */
+    handleChangeMode(payload: modeType) {
+      if (payload === 'day') {
+        this.period.start = this.period.selectedDate;
+        this.period.end = this.period.selectedDate;
+      }
+
+      if (payload === 'week') {
+        const week = this.time.getCalendarWeekDateObjects(
+          this.period.selectedDate
+        );
+        this.period.start = week[0];
+        this.period.end = week[6];
+      }
+
+      if (payload === 'month') {
+        const month = this.time.getCalendarMonthSplitInWeeks(
+          this.period.selectedDate.getFullYear(),
+          this.period.selectedDate.getMonth()
+        );
+
+        this.period.start = month[0][0];
+        const lastWeek = month[month.length - 1];
+        this.period.end = lastWeek[lastWeek.length - 1];
+      }
+
+      this.mode = payload;
     },
 
     onCalendarResize() {

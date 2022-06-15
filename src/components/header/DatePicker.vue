@@ -114,6 +114,7 @@ import Time, {
   calendarYearMonths,
 } from '../../helpers/Time';
 import { periodInterface } from '../../typings/interfaces/period.interface';
+import { modeType } from '../../typings/types';
 
 export default defineComponent({
   name: 'DatePicker',
@@ -122,7 +123,7 @@ export default defineComponent({
 
   props: {
     mode: {
-      type: String as PropType<'day' | 'week' | 'month'>,
+      type: String as PropType<modeType>,
       default: 'week',
     },
     timeProp: {

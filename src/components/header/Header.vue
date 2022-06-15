@@ -75,6 +75,7 @@ import { configInterface } from '../../typings/config.interface';
 import Time from '../../helpers/Time';
 import { periodInterface } from '../../typings/interfaces/period.interface';
 import getLanguage from '../../language';
+import { modeType } from '../../typings/types';
 
 export default defineComponent({
   name: 'Header',
@@ -92,7 +93,7 @@ export default defineComponent({
       default: () => ({}),
     },
     mode: {
-      type: String as PropType<'day' | 'week' | 'month'>,
+      type: String as PropType<modeType>,
       default: 'week',
     },
     time: {

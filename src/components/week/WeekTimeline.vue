@@ -23,6 +23,8 @@
             v-if="key !== 'date'"
             :schedule-event="typeof event === 'object' ? event : null"
             :config="config"
+            :mode="mode"
+            @event-was-clicked="$emit('event-was-clicked', $event)"
           />
         </template>
       </div>
@@ -37,6 +39,7 @@ import Time from '../../helpers/Time';
 import { dayWithFullDayEvents } from '../../typings/interfaces/full-day-events-week.type';
 import FullDayEvent from './FullDayEvent.vue';
 import { configInterface } from '../../typings/config.interface';
+import { modeType } from '../../typings/types';
 
 export default defineComponent({
   name: 'WeekTimeline',
@@ -56,6 +59,10 @@ export default defineComponent({
     },
     config: {
       type: Object as PropType<configInterface>,
+      required: true,
+    },
+    mode: {
+      type: String as PropType<modeType>,
       required: true,
     },
   },

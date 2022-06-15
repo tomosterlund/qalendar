@@ -68,7 +68,7 @@ export default defineComponent({
             },
           },
         },
-        // defaultMode: "week",
+        // defaultMode: "day",
         // isSilent: true,
       } as configInterface,
       events: seededEvents as eventInterface[],
@@ -113,7 +113,8 @@ export default defineComponent({
   main {
     width: 1400px;
     max-width: 90%;
-    height: 800px;
+    height: 900px;
+    max-height: 100%;
   }
 }
 

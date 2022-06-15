@@ -4,6 +4,8 @@
     :time="time"
     :full-day-events="fullDayEvents"
     :config="config"
+    :mode="mode"
+    @event-was-clicked="handleClickOnEvent"
   />
 
   <div class="calendar-week__wrapper">
@@ -53,6 +55,7 @@ import {
 } from '../../constants';
 import EventPosition from '../../helpers/EventPosition';
 import { fullDayEventsWeek } from '../../typings/interfaces/full-day-events-week.type';
+import { modeType } from '../../typings/types';
 const eventPosition = new EventPosition();
 
 export default defineComponent({
@@ -83,7 +86,7 @@ export default defineComponent({
       required: true,
     },
     modeProp: {
-      type: String as PropType<'day' | 'week' | 'month'>,
+      type: String as PropType<modeType>,
       default: 'week',
     },
     time: {
@@ -102,7 +105,7 @@ export default defineComponent({
   data() {
     return {
       days: [] as dayInterface[],
-      mode: this.modeProp as 'day' | 'week' | 'month',
+      mode: this.modeProp as modeType,
       selectedEvent: null as eventInterface | null,
       selectedEventElement: null as any | null,
       weekHeight: WEEK_HEIGHT + 'px',
@@ -237,7 +240,7 @@ export default defineComponent({
       }
     },
 
-    setInitialEvents(mode: 'day' | 'week' | 'month') {
+    setInitialEvents(mode: modeType) {
       if (mode === 'day') this.setDay();
       if (mode === 'week') this.setDays();
 
