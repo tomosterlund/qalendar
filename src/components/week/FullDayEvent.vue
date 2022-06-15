@@ -46,6 +46,8 @@ export default defineComponent({
     },
   },
 
+  emits: ['event-was-clicked'],
+
   data() {
     return {
       colors: EVENT_COLORS as { [key: string]: string },

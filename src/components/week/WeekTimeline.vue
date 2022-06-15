@@ -43,7 +43,9 @@ import { modeType } from '../../typings/types';
 
 export default defineComponent({
   name: 'WeekTimeline',
+
   components: { FullDayEvent },
+
   props: {
     days: {
       type: Array as PropType<dayInterface[]>,
@@ -66,6 +68,8 @@ export default defineComponent({
       required: true,
     },
   },
+
+  emits: ['event-was-clicked'],
 
   data() {
     return {
