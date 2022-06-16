@@ -28,10 +28,10 @@
 </template>
 
 <script lang="ts">
-import Qalendar from '../Qalendar.vue';
+import Qalendar from '../src/Qalendar.vue';
 import { defineComponent } from 'vue';
-import { configInterface } from '../typings/config.interface';
-import { eventInterface } from '../typings/interfaces/event.interface';
+import { configInterface } from '../src/typings/config.interface';
+import { eventInterface } from '../src/typings/interfaces/event.interface';
 import { seededEvents } from './data/seeded-events';
 import DevToolbar from './components/DevToolbar.vue';
 import DevSidebar from './components/DevSidebar.vue';
@@ -51,7 +51,7 @@ export default defineComponent({
     return {
       config: {
         week: {
-          startsOn: 'sunday',
+          startsOn: 'monday',
           nDays: 7,
         },
         locale: 'de-DE',

@@ -12,8 +12,8 @@
     "lib": ["esnext", "dom"],
     "outDir": "dist",
     "declaration": true,
-    "types": ["vite/client"]
+    "types": ["vite/client", "cypress"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "cypress/**/*.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
