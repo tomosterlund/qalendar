@@ -115,6 +115,9 @@ export default defineComponent({
   // If the variable changes, so does the hard coded value of the 100% - (padding * 2), in computed property above
   --event-padding: 3px;
 
+  display: flex;
+  align-items: center;
+  height: 0.9rem;
   width: calc(100% - #{var(--event-padding)});
   font-size: var(--qalendar-font-2xs);
   border-radius: 4px;
