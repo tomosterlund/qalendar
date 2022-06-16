@@ -1,6 +1,10 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine.
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+orbs:
+  # import Cypress orb by specifying an exact version x.y.z
+  # or the latest version 1.x.x using "@1" syntax
+  cypress: cypress-io/cypress@2
 
 jobs:
   test_london:
@@ -42,17 +46,6 @@ jobs:
           command: npx vitest run --silent
     environment:
       TZ: "Asia/Tokyo"
-  test_e2e:
-    docker:
-      - image: cimg/node:17.2.0
-    steps:
-      - checkout
-      - run:
-          name: Install packages
-          command: npm i
-      - run:
-          name: Cypress
-          command: npm run test:e2e:ci
   run_build:
     docker:
       - image: cimg/node:17.2.0
@@ -73,7 +66,7 @@ workflows:
       - test_tokyo
   test_e2e:
     jobs:
-      - test_e2e
+      - cypress/run
   run_build:
     jobs:
       - run_build
