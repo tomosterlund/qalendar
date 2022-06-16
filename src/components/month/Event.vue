@@ -1,6 +1,6 @@
 <template>
   <div
-    :id="eventIdPrefix + calendarEvent.id"
+    :id="elementId"
     class="calendar-month__event"
     @click="handleClickOnEvent"
   >
@@ -17,14 +17,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import Time from "../../helpers/Time";
-import { eventInterface } from "../../typings/interfaces/event.interface";
-import { EVENT_COLORS } from "../../constants";
-import { configInterface } from "../../typings/config.interface";
+import { defineComponent, PropType } from 'vue';
+import Time from '../../helpers/Time';
+import { eventInterface } from '../../typings/interfaces/event.interface';
+import { EVENT_COLORS } from '../../constants';
+import { configInterface } from '../../typings/config.interface';
+import { dayInterface } from '../../typings/interfaces/day.interface';
 
 export default defineComponent({
-  name: "Event",
+  name: 'Event',
 
   props: {
     time: {
@@ -39,21 +40,33 @@ export default defineComponent({
       type: Object as PropType<configInterface>,
       required: true,
     },
+    day: {
+      type: Object as PropType<dayInterface>,
+      required: true,
+    },
   },
 
-  emits: ["event-was-clicked"],
+  emits: ['event-was-clicked'],
 
   data() {
     return {
       colors: EVENT_COLORS as { [key: string]: string },
-      eventBackgroundColor: "",
-      eventIdPrefix: "calendar-month__event-",
+      eventBackgroundColor: '',
+      eventIdPrefix: 'calendar-month__event-',
     };
   },
 
   computed: {
     eventTimeStart() {
       return this.time.getLocalizedTime(this.calendarEvent.time.start);
+    },
+
+    elementId() {
+      return (
+        this.eventIdPrefix +
+        this.calendarEvent.id +
+        this.day.dateTimeString.substring(0, 10)
+      );
     },
   },
 
@@ -84,11 +97,9 @@ export default defineComponent({
     },
 
     handleClickOnEvent() {
-      const eventElement = document.getElementById(
-        this.eventIdPrefix + this.calendarEvent.id
-      );
+      const eventElement = document.getElementById(this.elementId);
 
-      this.$emit("event-was-clicked", {
+      this.$emit('event-was-clicked', {
         clickedEvent: this.calendarEvent,
         eventElement,
       });
@@ -98,7 +109,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use "../../styles/mixins" as mixins;
+@use '../../styles/mixins' as mixins;
 
 .calendar-month__event {
   display: flex;

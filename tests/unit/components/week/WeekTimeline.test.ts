@@ -22,6 +22,8 @@ describe("WeekTimeline.vue", () => {
         { dayName: "Freitag", dateTimeString: "2022-05-20 00:00", events: [] },
         { dayName: "Samstag", dateTimeString: "2022-05-21 00:00", events: [] },
       ],
+      config: {},
+      mode: 'week',
     },
   });
 
@@ -42,6 +44,8 @@ describe("WeekTimeline.vue", () => {
         days: [
           { dayName: "Sunday", dateTimeString: "2022-05-15 00:00", events: [] },
         ],
+        config: {},
+        mode: 'week',
       },
     });
 

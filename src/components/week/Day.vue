@@ -14,17 +14,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { dayInterface } from "../../typings/interfaces/day.interface";
-import DayEvent from "./DayEvent.vue";
-import EventConcurrency from "../../helpers/EventConcurrency";
-import { eventInterface } from "../../typings/interfaces/event.interface";
-import Time from "../../helpers/Time";
-import { configInterface } from "../../typings/config.interface";
+import { defineComponent, PropType } from 'vue';
+import { dayInterface } from '../../typings/interfaces/day.interface';
+import DayEvent from './DayEvent.vue';
+import EventConcurrency from '../../helpers/EventConcurrency';
+import { eventInterface } from '../../typings/interfaces/event.interface';
+import Time from '../../helpers/Time';
+import { configInterface } from '../../typings/config.interface';
 const eventConcurrencyHelper = new EventConcurrency();
 
 export default defineComponent({
-  name: "Day",
+  name: 'Day',
 
   components: { DayEvent },
 
@@ -43,7 +43,7 @@ export default defineComponent({
     },
   },
 
-  emits: ["event-was-clicked", "event-was-resized"],
+  emits: ['event-was-clicked', 'event-was-resized'],
 
   data() {
     return {
@@ -63,7 +63,7 @@ export default defineComponent({
     },
 
     handleEventWasResized(event: any) {
-      this.$emit("event-was-resized", event);
+      this.$emit('event-was-resized', event);
       this.calculateEventConcurrency();
     },
   },

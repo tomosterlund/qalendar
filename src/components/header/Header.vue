@@ -64,20 +64,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import DatePicker from "./DatePicker.vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { defineComponent, PropType } from 'vue';
+import DatePicker from './DatePicker.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faChevronLeft,
   faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { configInterface } from "../../typings/config.interface";
-import Time from "../../helpers/Time";
-import { periodInterface } from "../../typings/interfaces/period.interface";
-import getLanguage from "../../language";
+} from '@fortawesome/free-solid-svg-icons';
+import { configInterface } from '../../typings/config.interface';
+import Time from '../../helpers/Time';
+import { periodInterface } from '../../typings/interfaces/period.interface';
+import getLanguage from '../../language';
+import { modeType } from '../../typings/types';
 
 export default defineComponent({
-  name: "Header",
+  name: 'Header',
 
   components: {
     DatePicker,
@@ -92,8 +93,8 @@ export default defineComponent({
       default: () => ({}),
     },
     mode: {
-      type: String as PropType<"day" | "week" | "month">,
-      default: "week",
+      type: String as PropType<modeType>,
+      default: 'week',
     },
     time: {
       type: Object as PropType<Time>,
@@ -105,13 +106,13 @@ export default defineComponent({
     },
   },
 
-  emits: ["change-mode", "updated-period"],
+  emits: ['change-mode', 'updated-period'],
 
   data() {
     return {
       modeOptions: [
-        { value: "week", label: "Week" },
-        { value: "month", label: "Month" },
+        { value: 'week', label: 'Week' },
+        { value: 'month', label: 'Month' },
       ],
       icons: {
         chevronLeft: faChevronLeft,
@@ -124,14 +125,14 @@ export default defineComponent({
 
   computed: {
     periodName() {
-      if (this.mode === "week") {
+      if (this.mode === 'week') {
         const startMonth = this.time.getLocalizedNameOfMonth(
           this.currentPeriod?.start,
-          "short"
+          'short'
         );
         const endMonth = this.time.getLocalizedNameOfMonth(
           this.currentPeriod?.end,
-          "short"
+          'short'
         );
 
         return startMonth === endMonth
@@ -143,9 +144,9 @@ export default defineComponent({
       return (
         this.time.getLocalizedNameOfMonth(
           this.currentPeriod?.selectedDate,
-          "short"
+          'short'
         ) +
-        " " +
+        ' ' +
         this.currentPeriod.selectedDate.getFullYear()
       );
     },
@@ -163,10 +164,10 @@ export default defineComponent({
     handlePeriodChange(value: { start: Date; end: Date; selectedDate: Date }) {
       this.currentPeriod = value;
 
-      this.$emit("updated-period", value);
+      this.$emit('updated-period', value);
     },
 
-    goToPeriod(direction: "previous" | "next") {
+    goToPeriod(direction: 'previous' | 'next') {
       // @ts-ignore
       this.$refs.periodSelect.goToPeriod(direction);
     },
@@ -175,7 +176,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@use "../../styles/mixins.scss" as mixins;
+@use '../../styles/mixins.scss' as mixins;
 
 .calendar-header {
   display: flex;

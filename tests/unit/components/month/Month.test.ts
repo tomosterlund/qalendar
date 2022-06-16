@@ -7,7 +7,7 @@ import { nextTick } from "vue";
 describe("Month.vue", () => {
   let wrapper = mount(Month, {
     props: {
-      events: [],
+      eventsProp: [],
 
       time: new Time("monday", "de-DE"),
       config: {},

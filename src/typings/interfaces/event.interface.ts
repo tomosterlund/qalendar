@@ -18,4 +18,5 @@ export interface eventInterface {
   zIndex?: number;
   nOfPreviousConcurrentEvents?: number;
   totalConcurrentEvents?: number;
+  timeJS?: { start: Date, end: Date }
 }

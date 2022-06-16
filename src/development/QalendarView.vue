@@ -28,17 +28,17 @@
 </template>
 
 <script lang="ts">
-import Qalendar from "../Qalendar.vue";
-import { defineComponent } from "vue";
-import { configInterface } from "../typings/config.interface";
-import { eventInterface } from "../typings/interfaces/event.interface";
-import { seededEvents } from "./data/seeded-events";
-import DevToolbar from "./components/DevToolbar.vue";
-import DevSidebar from "./components/DevSidebar.vue";
-import DevHeader from "./components/DevHeader.vue";
+import Qalendar from '../Qalendar.vue';
+import { defineComponent } from 'vue';
+import { configInterface } from '../typings/config.interface';
+import { eventInterface } from '../typings/interfaces/event.interface';
+import { seededEvents } from './data/seeded-events';
+import DevToolbar from './components/DevToolbar.vue';
+import DevSidebar from './components/DevSidebar.vue';
+import DevHeader from './components/DevHeader.vue';
 
 export default defineComponent({
-  name: "QalendarView",
+  name: 'QalendarView',
 
   components: {
     DevHeader,
@@ -51,29 +51,29 @@ export default defineComponent({
     return {
       config: {
         week: {
-          startsOn: "monday",
+          startsOn: 'sunday',
           nDays: 7,
         },
-        locale: "de-DE",
+        locale: 'de-DE',
         style: {
-          fontFamily: "Verdana",
+          fontFamily: `'Nunito', 'sans-serif', 'Verdana`,
           colorSchemes: {
             meetings: {
-              color: "#fff",
-              backgroundColor: "#131313",
+              color: '#fff',
+              backgroundColor: '#131313',
             },
             ladies: {
-              color: "#fff",
-              backgroundColor: "#ff4081",
+              color: '#fff',
+              backgroundColor: '#ff4081',
             },
           },
         },
-        // defaultMode: "week",
+        // defaultMode: "day",
         // isSilent: true,
       } as configInterface,
       events: seededEvents as eventInterface[],
 
-      layout: "none",
+      layout: 'none',
       isLoading: false,
     };
   },
@@ -94,11 +94,11 @@ export default defineComponent({
     },
 
     editEvent(payload: string) {
-      console.log("editEvent%s: ", payload);
+      console.log('editEvent%s: ', payload);
     },
 
     deleteEvent(payload: string) {
-      console.log("deleteEvent%s: ", payload);
+      console.log('deleteEvent%s: ', payload);
     },
   },
 });
@@ -113,7 +113,8 @@ export default defineComponent({
   main {
     width: 1400px;
     max-width: 90%;
-    height: 800px;
+    height: 900px;
+    max-height: 100%;
   }
 }
 

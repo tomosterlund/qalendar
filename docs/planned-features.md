@@ -1,8 +1,9 @@
 # Planned features
 
 #### v1.1.0
-- Events repeated weekly
 - Multi-day events
+- Full day events
+
 
 #### Later features
 - Year mode
