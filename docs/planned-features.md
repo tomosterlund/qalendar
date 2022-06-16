@@ -4,6 +4,7 @@
 - Multi-day events
 - Full day events
 
+
 #### Later features
 - Year mode
 - Indication in date picker, on which days there are events
