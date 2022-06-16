@@ -19,6 +19,7 @@
         :calendar-event="calendarEvent"
         :config="config"
         :time="time"
+        :day="day"
         @event-was-clicked="$emit('event-was-clicked', $event)"
       />
     </div>

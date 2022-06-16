@@ -39,7 +39,7 @@
         </div>
 
         <div v-if="calendarEvent.time" class="event-flyout__row is-time">
-          {{ getEventDate + ' ⋅ ' + getEventTime }}
+          {{ getEventTime }}
         </div>
 
         <div
@@ -93,7 +93,10 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { configInterface } from '../../typings/config.interface';
 import Time from '../../helpers/Time';
-import { EVENT_COLORS } from '../../constants';
+import {
+  DATE_TIME_STRING_FULL_DAY_PATTERN,
+  EVENT_COLORS,
+} from '../../constants';
 const eventFlyoutPositionHelper = new EventFlyoutPosition();
 
 export default defineComponent({
@@ -147,30 +150,32 @@ export default defineComponent({
 
   computed: {
     getEventTime() {
+      // 1. Null handling
       if (!this.calendarEvent || !this.calendarEvent.time) return null;
 
-      return (
-        this.time.getLocalizedTime(this.calendarEvent.time.start) +
-        ' - ' +
-        this.time.getLocalizedTime(this.calendarEvent.time.end)
-      );
-    },
+      // 2. Handle full day events
+      if (
+        DATE_TIME_STRING_FULL_DAY_PATTERN.test(this.calendarEvent.time.start)
+      ) {
+        const startDate = this.getDateFromDateString(
+          this.calendarEvent.time.start
+        );
+        const endDate = this.getDateFromDateString(this.calendarEvent.time.end);
+        if (startDate === endDate) return startDate;
 
-    getEventDate() {
-      if (!this.calendarEvent) return null;
+        return `${startDate} - ${endDate}`;
+      }
 
-      const { year, month, date } = this.time.getAllVariablesFromDateTimeString(
+      // 3. Handle timed events
+      let dateString = this.getDateFromDateString(
         this.calendarEvent.time.start
       );
+      let timeString =
+        this.time.getLocalizedTime(this.calendarEvent.time.start) +
+        ' - ' +
+        this.time.getLocalizedTime(this.calendarEvent.time.end);
 
-      return new Date(year, month, date).toLocaleDateString(
-        this.time.CALENDAR_LOCALE,
-        {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        }
-      );
+      return `${dateString} ⋅ ${timeString}`;
     },
 
     eventFlyoutInlineStyles() {
@@ -259,6 +264,20 @@ export default defineComponent({
       setTimeout(() => {
         this.$emit('hide');
       }, 100);
+    },
+
+    getDateFromDateString(dateString: string) {
+      const { year, month, date } =
+        this.time.getAllVariablesFromDateTimeString(dateString);
+
+      return new Date(year, month, date).toLocaleDateString(
+        this.time.CALENDAR_LOCALE,
+        {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }
+      );
     },
   },
 });

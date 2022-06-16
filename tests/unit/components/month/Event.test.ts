@@ -2,6 +2,7 @@ import { mount } from "@vue/test-utils";
 import { describe, test, expect } from "vitest";
 import Event from "../../../../src/components/month/Event.vue";
 import Time from "../../../../src/helpers/Time";
+import {dayInterface} from '../../../../dist/typings/interfaces/day.interface';
 
 describe("Event.vue", () => {
   let wrapper = mount(Event, {
@@ -12,7 +13,8 @@ describe("Event.vue", () => {
         time: { start: "2022-05-22 00:00", end: "2022-05-22 01:00" },
         id: "123",
       },
-      config: {}
+      config: {},
+      day: { dayName: 'monday', events: [], dateTimeString: '2022-01-01' } as dayInterface
     },
   });
 

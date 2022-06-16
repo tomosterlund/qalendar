@@ -1,6 +1,6 @@
 <template>
   <div
-    :id="eventIdPrefix + calendarEvent.id"
+    :id="elementId"
     class="calendar-month__event"
     @click="handleClickOnEvent"
   >
@@ -22,6 +22,7 @@ import Time from '../../helpers/Time';
 import { eventInterface } from '../../typings/interfaces/event.interface';
 import { EVENT_COLORS } from '../../constants';
 import { configInterface } from '../../typings/config.interface';
+import { dayInterface } from '../../typings/interfaces/day.interface';
 
 export default defineComponent({
   name: 'Event',
@@ -39,6 +40,10 @@ export default defineComponent({
       type: Object as PropType<configInterface>,
       required: true,
     },
+    day: {
+      type: Object as PropType<dayInterface>,
+      required: true,
+    },
   },
 
   emits: ['event-was-clicked'],
@@ -54,6 +59,14 @@ export default defineComponent({
   computed: {
     eventTimeStart() {
       return this.time.getLocalizedTime(this.calendarEvent.time.start);
+    },
+
+    elementId() {
+      return (
+        this.eventIdPrefix +
+        this.calendarEvent.id +
+        this.day.dateTimeString.substring(0, 10)
+      );
     },
   },
 
@@ -84,9 +97,7 @@ export default defineComponent({
     },
 
     handleClickOnEvent() {
-      const eventElement = document.getElementById(
-        this.eventIdPrefix + this.calendarEvent.id
-      );
+      const eventElement = document.getElementById(this.elementId);
 
       this.$emit('event-was-clicked', {
         clickedEvent: this.calendarEvent,

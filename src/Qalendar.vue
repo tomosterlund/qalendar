@@ -41,7 +41,7 @@
       <Month
         v-if="mode === 'month'"
         :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
-        :events="events"
+        :events-prop="events"
         :time="time"
         :config="config"
         :period="period"

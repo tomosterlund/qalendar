@@ -216,4 +216,39 @@ describe("EventPositionHelper.ts", () => {
       expect(week[dayIndex].level2).toBeUndefined()
     }
   })
+
+  test('position full-day events in a calendar month', () => {
+    const events = [
+      { id: 1, title: 'Foo', time: { start: '2022-01-01', end: '2022-01-31' } },
+      { id: 2, title: 'Bar', time: { start: '2022-01-02', end: '2022-01-02' } },
+      { id: 2, title: 'Baz', time: { start: '2022-01-05', end: '2022-01-10' } },
+    ]
+    const month = timeHelper.getCalendarMonthSplitInWeeks(2022, 0).map(week => {
+      return week.map(day => {
+        return {
+          dayName: timeHelper.getLocalizedNameOfWeekday(day),
+          dateTimeString: timeHelper.getDateTimeStringFromDate(day),
+          events: [],
+        }
+      })
+    })
+    const monthWithFullDayEvents = eventPositionHelper.positionFullDayEventsInMonth(month, events)
+    const firstWeek = monthWithFullDayEvents[0]
+    const secondWeek = monthWithFullDayEvents[1]
+    const thirdWeek = monthWithFullDayEvents[2]
+    const sixthWeek = monthWithFullDayEvents[5]
+
+    // Expect the event that start earliest, to occupy index 0 of every "events" array that it should fill
+    expect(firstWeek[5].events[0].title).toBe('Foo') // Jan 1st
+    expect(sixthWeek[0].events[0].title).toBe('Foo') // Jan 31st
+
+    expect(firstWeek[6].events[1].title).toBe('Bar') // Jan 2nd
+
+    expect(secondWeek[2].events[1].title).toBe('Baz') // Jan 5th
+    expect(secondWeek[3].events[1].title).toBe('Baz') // Jan 6th
+    expect(secondWeek[4].events[1].title).toBe('Baz') // Jan 7th
+    expect(secondWeek[5].events[1].title).toBe('Baz') // Jan 8th
+    expect(secondWeek[6].events[1].title).toBe('Baz') // Jan 9th
+    expect(thirdWeek[0].events[1].title).toBe('Baz') // Jan 1oth
+  })
 });

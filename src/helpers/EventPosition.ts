@@ -5,6 +5,7 @@
 import {eventInterface} from '../typings/interfaces/event.interface';
 import Time from './Time';
 import {fullDayEventsWeek} from '../typings/interfaces/full-day-events-week.type';
+import {dayInterface} from '../typings/interfaces/day.interface';
 // IMPORTANT: this instance of Time, should not be used for anything sensitive to "locale" or "firstDayOfWeekIs"
 const TimeHelper = new Time()
 
@@ -106,5 +107,63 @@ export default class EventPosition {
     }
 
     return week
+  }
+
+  positionFullDayEventsInMonth(
+    calendarMonth: dayInterface[][],
+    fullDayEvents: eventInterface[]
+  ): dayInterface[][] {
+    const newMonth: dayInterface[][] = []
+    const flatMonth = calendarMonth.flat()
+    // Create a map, where each key is a dateString in the format of YYYY-MM-DD, and the value is the calendarDay. This will help us skip 2 levels of nested loops.
+    // Instead of iterating over the following units for => week of calendarMonth => day of week => event of fullDayEvents => date of allDatesOfEvent
+    // we can stay on 2 levels of nesting with for => fullDayEvent of fullDayEvents => date of allDatesOfEvent, and then see if the map has a matching date
+    const monthMap = new Map()
+    flatMonth.forEach(day => monthMap.set(day.dateTimeString.substring(0, 10), day))
+    // Sort events with the latest first. This will help the algorithm place the oldest events at the start of each "events" array later
+    fullDayEvents = fullDayEvents.sort((a, b) => {
+      if (a.time.start < b.time.start) return 1;
+      if (a.time.start > b.time.start) return -1;
+
+      return 0
+    })
+    
+    for (const fullDayEvent of fullDayEvents) {
+      const { year: startYear, month: startMonth, date: startDate } = TimeHelper.getAllVariablesFromDateTimeString(fullDayEvent.time.start)
+      const { year: endYear, month: endMonth, date: endDate } = TimeHelper.getAllVariablesFromDateTimeString(fullDayEvent.time.end)
+      const allDatesOfEvent = TimeHelper.getDatesBetweenTwoDates(
+        new Date(startYear, startMonth, startDate),
+        new Date(endYear, endMonth, endDate),
+      )
+
+      for (const date of allDatesOfEvent) {
+        const dateString = TimeHelper.getDateStringFromDate(date)
+        const dateInMap = monthMap.get(dateString)
+
+        if (dateInMap) monthMap.set(dateString, {
+          ...dateInMap,
+          // Since we're iterating over the fullDayEvents sorted backwards, the earliest events will end up first (which is the wanted behavior)
+          events: [fullDayEvent, ...dateInMap.events]
+        })
+      }
+    }
+
+    let weekIterator = 0
+
+    monthMap.forEach(day => {
+      // For the very first day, create an array for the first week, and push day onto it
+      if ( ! newMonth.length) newMonth.push([day])
+
+      // When the week exists, and is not yet filled with 7 days, push day onto week
+      else if (newMonth[weekIterator] && newMonth[weekIterator].length < 7) newMonth[weekIterator].push(day)
+
+      // When the week exists, but is full, create a new week with the day in it, and increment the week iterator
+      else if (newMonth[weekIterator] && newMonth[weekIterator].length === 7) {
+        newMonth.push([day])
+        weekIterator++
+      }
+    })
+
+    return newMonth
   }
 }

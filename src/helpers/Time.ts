@@ -46,31 +46,37 @@ export default class Time {
   getCalendarWeekDateObjects(date: Date | null = null): calendarWeekType {
     const selectedDate = date ? date : new Date();
 
-    // We need to count currentDate.getDate() - the current Nday of the week, to get the first date
+    // If week starts on Sunday, we can get the first date of the week, by simply counting selectedDate.getDate() - selectedDate.getDay()
     let subtractedDaysToGetFirstDate;
     if (this.FIRST_DAY_OF_WEEK === "sunday")
       subtractedDaysToGetFirstDate = selectedDate.getDay();
+    // However, if week starts on Monday, we need to make sure Mondays are represented as 0, instead of Sundays
     else
       subtractedDaysToGetFirstDate =
         selectedDate.getDay() === 0 ? 6 : selectedDate.getDay() - 1;
 
-    const first = selectedDate.getDate() - subtractedDaysToGetFirstDate; // First date is the date of the month - the day of the week
+    const dateOfFirstDayOfWeek = selectedDate.getDate() - subtractedDaysToGetFirstDate; // First date of week is the date of the month - the day of the week
     const firstDay = new Date(
       selectedDate.getFullYear(),
       selectedDate.getMonth(),
-      first
-    );
-    const lastDay = new Date(
-      firstDay.getFullYear(),
-      firstDay.getMonth(),
-      firstDay.getDate() + 6
+      dateOfFirstDayOfWeek
     );
 
-    return this.getDatesBetweenTwoDates(firstDay, lastDay);
+    return this.getDatesBetweenTwoDates(
+      firstDay,
+      new Date(
+        firstDay.getFullYear(),
+        firstDay.getMonth(),
+        firstDay.getDate() + 6
+      )
+    );
   }
 
   /**
    * Returns an array of the weeks that comprise a month
+   *
+   * @param {number} yyyy
+   * @param {number} mm - zero indexed (January === 0)
    * */
   getCalendarMonthSplitInWeeks(yyyy: number, mm: number): calendarMonthType {
     const month: calendarMonthType = [];
@@ -243,13 +249,13 @@ export default class Time {
    * All variables are Date-Object compatible, meaning "month" is zero-indexed
    * */
   getAllVariablesFromDateTimeString(dateTimeString: string) {
-    const year = +dateTimeString.substring(0, 4);
-    const month = +dateTimeString.substring(5, 7) - 1;
-    const date = +dateTimeString.substring(8, 10);
-    const hour = +dateTimeString.substring(11, 13);
-    const minutes = +dateTimeString.substring(14, 16);
-
-    return { year, month, date, hour, minutes };
+    return {
+      year: +dateTimeString.substring(0, 4),
+      month: +dateTimeString.substring(5, 7) - 1,
+      date: +dateTimeString.substring(8, 10),
+      hour: +dateTimeString.substring(11, 13),
+      minutes: +dateTimeString.substring(14, 16),
+    };
   }
 
   dateIsToday(date: Date) {

@@ -56,7 +56,7 @@ export default defineComponent({
         },
         locale: 'de-DE',
         style: {
-          fontFamily: 'Verdana',
+          fontFamily: `'Nunito', 'sans-serif', 'Verdana`,
           colorSchemes: {
             meetings: {
               color: '#fff',
