@@ -106,7 +106,20 @@ export default class EventPosition {
       }
     }
 
-    return week
+    const weekWithSortedLevelsInDays = []
+
+    // 3. Sort the levels of the day objects
+    for (const day of week) {
+      weekWithSortedLevelsInDays.push(Object.keys(day).sort().reduce(
+        (obj: any, key: any) => {
+          obj[key] = day[key];
+          return obj;
+        },
+        {}
+      ))
+    }
+
+    return weekWithSortedLevelsInDays
   }
 
   positionFullDayEventsInMonth(
