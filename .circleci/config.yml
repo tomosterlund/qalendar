@@ -42,6 +42,17 @@ jobs:
           command: npx vitest run --silent
     environment:
       TZ: "Asia/Tokyo"
+  test_e2e:
+    docker:
+      - image: cimg/node:17.2.0
+    steps:
+      - checkout
+      - run:
+          name: Install packages
+          command: npm i
+      - run:
+          name: Cypress
+          command: npm run test:e2e:ci
   run_build:
     docker:
       - image: cimg/node:17.2.0
@@ -55,15 +66,14 @@ jobs:
           command: npm run build
 
 workflows:
-  test_london:
+  test_unit:
     jobs:
       - test_london
-  test_mountain_view:
-    jobs:
       - test_mountain_view
-  test_tokyo:
-    jobs:
       - test_tokyo
+  test_e2e:
+    jobs:
+      - test_e2e
   run_build:
     jobs:
       - run_build

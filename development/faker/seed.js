@@ -46,7 +46,7 @@ const writeEventsToFile = () => {
   );
 
   fileSystem.writeFile(
-    "./src/development/data/seeded-events.ts",
+    "./development/data/seeded-events.ts",
     payload,
     (err) => {
       if (err) console.error(err);

@@ -9,6 +9,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+/cypress/videos/
+/cypress/screenshots/
+
 node_modules
 .DS_Store
 dist
