@@ -66,9 +66,8 @@ workflows:
       - test_tokyo
   test_e2e:
     jobs:
-      - cypress/run
-          start
-            - npm run dev
+      - cypress/run:
+          start: npm run dev
   run_build:
     jobs:
       - run_build
