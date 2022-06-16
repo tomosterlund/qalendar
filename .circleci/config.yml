@@ -67,7 +67,8 @@ workflows:
   test_e2e:
     jobs:
       - cypress/run
-          start: npm run dev
+          start
+            - npm run dev
   run_build:
     jobs:
       - run_build
