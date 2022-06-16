@@ -1,10 +1,5 @@
 # Qalendar
 
-Build:
-[![tomosterlund](https://circleci.com/gh/tomosterlund/qalendar.svg?style=svg)](https://app.circleci.com/pipelines/github/tomosterlund/qalendar/118/workflows/3cbdb226-a509-4844-9c29-20a8c7ac65be)  
-Tests:
-[![tomosterlund](https://circleci.com/gh/tomosterlund/qalendar.svg?style=svg)](https://app.circleci.com/pipelines/github/tomosterlund/qalendar/118/workflows/475754d4-62b4-4e4b-aa3f-7b660131f2c4)
-
 Qalendar is an event calendar for Vue 3. It is written in Typescript, in order to provide the best possible usability for JS- as well as TS-based applications.
 
 ## Getting started
@@ -33,23 +28,25 @@ export default {
     data() {
         return {
             events: [
+                // ...
                 {
-                    id: '123'
-                    title: 'Beep',
-                    color: 'blue',
-                    time: { start: '2022-01-01 08:00', end: '2022-05-16 09:00' }
+                  title: "Advanced algebra",
+                  with: "Chandler Bing",
+                  time: { start: "2022-05-16 12:05", end: "2022-05-16 13:35" },
+                  color: "yellow",
+                  isEditable: true,
+                  id: "753944708f0f",
+                  description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda corporis doloremque et expedita molestias necessitatibus quam quas temporibus veritatis. Deserunt excepturi illum nobis perferendis praesentium repudiandae saepe sapiente voluptatem!"
                 },
                 {
-                    id: '456',
-                    title: 'Boop',
-                    color: 'green',
-                    time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' }
-                {
-                    id: '789',
-                    title: 'Foo',
-                    color: 'blue',
-                    time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' }
+                  title: "Ralph on holiday",
+                  with: "Rachel Greene",
+                  time: { start: "2022-05-10", end: "2022-05-22"},
+                  color: "green",
+                  isEditable: true,
+                  id: "5602b6f589fc"
                 }
+                // ...
             ],
         }
     },
@@ -66,7 +63,7 @@ export default {
 <br>
 
 <div style="height: 800px">
-    <Qalendar :selected-date="new Date(2022, 4, 16)" :events="[ { id: 1, title: 'Foo', color: 'blue', time: { start: '2022-05-16 08:00', end: '2022-05-16 09:00' } }, { id: 2, title: 'Bar', color: 'green', time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' } }, { id: 3, title: 'Foo', color: 'blue', time: { start: '2022-05-16 10:00', end: '2022-05-16 11:30' } } ]" />
+    <Qalendar :selected-date="new Date(2022, 4, 16)" :events="seededEventsDemoWeek" />
 </div>
 
 ### Style
@@ -176,8 +173,12 @@ A calendar event can have the following properties:
 | `isEditable`  |              boolean               |    no    | Yields icons for editing and deleting an event |
 
 ```ts
-type eventTime = { start: string; end: string }; // start & end need the format YYYY-MM-DD hh:mm
+type eventTime = { start: string; end: string };
 ```
+
+For timed events, the required format of `time.start` and `time.end` is `YYYY-MM-DD hh:mm`, for example `2022-06-16 16:00`.
+
+For full day events, or events spanning multiple days. The required format is `YYYY-MM-DD`, such as `2022-06-16`.
 
 ### Emitted events
 
@@ -322,6 +323,7 @@ The DatePicker component emits one event, `updated`, the payload of which can be
 <script setup>
 import Qalendar from '../src/Qalendar.vue';
 import DatePicker from '../src/components/header/DatePicker.vue';
+import {seededEventsDemoWeek} from './__data__/qalendar-demo';
 
 const events = [{
 	"title": "Meeting with Dora",
