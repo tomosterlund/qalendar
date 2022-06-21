@@ -298,4 +298,23 @@ export default class Time {
 
     return `${yyyy}-${mm >= 10 ? mm : "0" + mm}-${dd >= 10 ? dd : "0" + dd}`;
   }
+
+  addMinutesToDateTimeString(minutes: number, dateTimeString: string) {
+    const {
+      year: oldYear,
+      month: oldMonth,
+      date: oldDate,
+      hour: oldHour,
+      minutes: oldMinutes
+    } = this.getAllVariablesFromDateTimeString(dateTimeString)
+
+    const oldDateObject = new Date(oldYear, oldMonth, oldDate, oldHour, oldMinutes)
+    const newDateObject = new Date(oldDateObject.getTime() + (minutes * 60000))
+
+    return this.getDateTimeStringFromDate(newDateObject)
+  }
+
+  addDaysToDateTimeString(days: number, dateTimeString: string) {
+    return this.addMinutesToDateTimeString((days * 1440), dateTimeString)
+  }
 }

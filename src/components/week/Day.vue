@@ -7,6 +7,7 @@
       :day="day"
       :time="time"
       :config="config"
+      :drag-and-drop="dragAndDrop"
       @event-was-clicked="$emit('event-was-clicked', $event)"
       @event-was-resized="handleEventWasResized"
     />
@@ -21,6 +22,7 @@ import EventConcurrency from '../../helpers/EventConcurrency';
 import { eventInterface } from '../../typings/interfaces/event.interface';
 import Time from '../../helpers/Time';
 import { configInterface } from '../../typings/config.interface';
+import DragAndDrop from '../../helpers/DragAndDrop';
 const eventConcurrencyHelper = new EventConcurrency();
 
 export default defineComponent({
@@ -39,6 +41,10 @@ export default defineComponent({
     },
     config: {
       type: Object as PropType<configInterface>,
+      required: true,
+    },
+    dragAndDrop: {
+      type: Object as PropType<DragAndDrop>,
       required: true,
     },
   },

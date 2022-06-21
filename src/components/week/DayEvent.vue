@@ -14,6 +14,7 @@
     @click="handleClickOnEvent"
     @mouseenter="showResizeElements = isEditable"
     @mouseleave="showResizeElements = false"
+    @mousedown="handleMouseDown"
   >
     <div class="calendar-week__event-info-wrapper">
       <div
@@ -93,6 +94,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Time from '../../helpers/Time';
 import { configInterface } from '../../typings/config.interface';
 import { EVENT_COLORS } from '../../constants';
+import DragAndDrop from '../../helpers/DragAndDrop';
 const eventPositionHelper = new EventPosition();
 
 export default defineComponent({
@@ -113,6 +115,10 @@ export default defineComponent({
     },
     config: {
       type: Object as PropType<configInterface>,
+      required: true,
+    },
+    dragAndDrop: {
+      type: Object as PropType<DragAndDrop>,
       required: true,
     },
   },
@@ -141,6 +147,13 @@ export default defineComponent({
       colors: EVENT_COLORS as { [key: string]: string },
       eventColor: '#fff',
       eventBackgroundColor: '',
+
+      // Dragging events
+      canDrag: false, // set to true on mousedown and false on mouseup
+      clientYDragStart: null as null | number,
+      changeInHoursOnDrag: 0,
+      timeStartDragStart: this.eventProp.time.start,
+      timeEndDragStart: this.eventProp.time.end,
     };
   },
 
@@ -265,6 +278,19 @@ export default defineComponent({
       )
         this.event.time.end = newEndOfTimeDateTimeString;
     },
+
+    changeInHoursOnDrag(newValue) {
+      console.log('changeInHoursOnDrag');
+      console.log(newValue);
+      this.event.time.start = this.time.addMinutesToDateTimeString(
+        newValue * 60,
+        this.timeStartDragStart
+      );
+      this.event.time.end = this.time.addMinutesToDateTimeString(
+        newValue * 60,
+        this.timeEndDragStart
+      );
+    },
   },
 
   mounted() {
@@ -303,6 +329,7 @@ export default defineComponent({
     },
 
     handleClickOnEvent(event: any) {
+      console.log('handleClickOnEvent');
       const eventElement = this.getEventElementFromChildElement(event);
 
       if (!eventElement) return;
@@ -416,6 +443,48 @@ export default defineComponent({
       }
 
       return (this.eventBackgroundColor = this.colors.blue);
+    },
+
+    handleMouseDown(mouseEvent: MouseEvent) {
+      mouseEvent.preventDefault();
+      mouseEvent.stopPropagation();
+      // console.log('handleMouseDown')
+      // console.log(mouseEvent)
+      this.canDrag = true;
+
+      this.clientYDragStart = mouseEvent.clientY;
+      this.timeStartDragStart = this.event.time.start;
+      this.timeEndDragStart = this.event.time.end;
+      document.addEventListener('mousemove', this.handleDrag);
+      document.addEventListener('mouseup', this.handleDragEnd);
+    },
+
+    handleDragEnd(mouseEvent: MouseEvent) {
+      mouseEvent.preventDefault();
+      mouseEvent.stopPropagation();
+      // console.log('handleDragEnd')
+      this.canDrag = false;
+      document.removeEventListener('mousemove', this.handleDrag);
+      document.removeEventListener('mouseup', this.handleDragEnd);
+    },
+
+    handleDrag(mouseEvent: MouseEvent) {
+      // console.log('handleDrag')
+      const eventsContainer = document.querySelector('.calendar-week__events');
+      if (!this.canDrag || !this.clientYDragStart || !eventsContainer) return;
+
+      const nOfPixelsDistance = mouseEvent.clientY - this.clientYDragStart;
+      const eventsContainerHeight = eventsContainer.clientHeight;
+      const percentageOfDayChanged =
+        (nOfPixelsDistance / eventsContainerHeight) * 100;
+      const changeInTimePoints =
+        (this.timePointsInDay / 100) * percentageOfDayChanged;
+      const changeInMinutes = this.getMinutesFromTimePoints(changeInTimePoints);
+      this.changeInHoursOnDrag =
+        changeInMinutes < 0
+          ? Math.ceil(changeInMinutes / 60)
+          : Math.floor(changeInMinutes / 60);
+      // console.log(this.changeInHoursOnDrag)
     },
   },
 });

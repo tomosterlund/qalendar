@@ -19,6 +19,7 @@
           :day="day"
           :time="time"
           :config="config"
+          :drag-and-drop="dragAndDrop"
           @event-was-clicked="handleClickOnEvent"
           @event-was-resized="$emit('event-was-resized', $event)"
         />
@@ -56,6 +57,7 @@ import {
 import EventPosition from '../../helpers/EventPosition';
 import { fullDayEventsWeek } from '../../typings/interfaces/full-day-events-week.type';
 import { modeType } from '../../typings/types';
+import DragAndDrop from '../../helpers/DragAndDrop';
 const eventPosition = new EventPosition();
 
 export default defineComponent({
@@ -111,6 +113,7 @@ export default defineComponent({
       weekHeight: WEEK_HEIGHT + 'px',
       events: this.eventsProp,
       fullDayEvents: [] as fullDayEventsWeek,
+      dragAndDrop: new DragAndDrop(),
     };
   },
 
