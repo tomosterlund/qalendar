@@ -6,10 +6,14 @@ import {mountComponent} from "../../../vitest-setup";
 const day = mountComponent(mount, Day)
 
 describe("Day.vue", () => {
+  const propsForAllTests = {
+    dayInfo: { daysTotalN: 7, thisDayIndex: 1 },
+    config: {},
+    time: new Time("sunday", "en-US"),
+  }
+
   let wrapper = day({
     props: {
-      time: new Time("sunday", "en-US"),
-      config: {},
       day: {
         events: [
           {
@@ -31,6 +35,7 @@ describe("Day.vue", () => {
         dayName: "Monday",
         dateTimeString: "2022-05-23 16:38",
       },
+      ...propsForAllTests
     },
   });
 
@@ -47,10 +52,9 @@ describe("Day.vue", () => {
   test("Displaying the day name, if the isFirstWeek-prop === true", () => {
     wrapper = day({
       props: {
-        time: new Time("sunday", "en-US"),
-        config: {},
         day: { events: [], dayName: "Mon", dateTimeString: "2022-05-23 16:38" },
         isFirstWeek: true,
+        ...propsForAllTests
       },
     });
 

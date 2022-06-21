@@ -95,7 +95,11 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Time from '../../helpers/Time';
 import { configInterface } from '../../typings/config.interface';
-import { EVENT_COLORS } from '../../constants';
+import {
+  DATE_TIME_STRING_FULL_DAY_PATTERN,
+  DATE_TIME_STRING_PATTERN,
+  EVENT_COLORS,
+} from '../../constants';
 const eventPositionHelper = new EventPosition();
 
 export default defineComponent({
@@ -287,13 +291,22 @@ export default defineComponent({
     },
 
     changeInHoursOnDrag(newValue) {
-      this.event.time.start = this.time.addMinutesToDateTimeString(
+      const newStart = this.time.addMinutesToDateTimeString(
         newValue * 60,
         this.timeStartDragStart
       );
-      this.event.time.end = this.time.addMinutesToDateTimeString(
+      const newEnd = this.time.addMinutesToDateTimeString(
         newValue * 60,
         this.timeEndDragStart
+      );
+      // Only change the portion of a string that affects time
+      this.event.time.start = this.event.time.start.replace(
+        /\d{2}:\d{2}/,
+        newStart.substring(11, 16)
+      );
+      this.event.time.end = this.event.time.end.replace(
+        /\d{2}:\d{2}/,
+        newEnd.substring(11, 16)
       );
     },
 
@@ -308,13 +321,22 @@ export default defineComponent({
 
       const pixelsToTransform = newValue * this.dayElement.clientWidth;
       this.eventTransformValue = `translateX(${pixelsToTransform}px)`;
-      this.event.time.start = this.time.addDaysToDateTimeString(
+      // Only change the portion of the string that affects date
+      const newStart = this.time.addDaysToDateTimeString(
         newValue,
         this.timeStartDragStart
       );
-      this.event.time.end = this.time.addDaysToDateTimeString(
+      const newEnd = this.time.addDaysToDateTimeString(
         newValue,
         this.timeEndDragStart
+      );
+      this.event.time.start = this.event.time.start.replace(
+        /\d{4}-\d{2}-\d{2}/,
+        newStart.substring(0, 10)
+      );
+      this.event.time.end = this.event.time.end.replace(
+        /\d{4}-\d{2}-\d{2}/,
+        newEnd.substring(0, 10)
       );
     },
   },

@@ -34,6 +34,7 @@
         :time="time"
         @event-was-clicked="$emit('event-was-clicked', $event)"
         @event-was-resized="$emit('event-was-resized', $event)"
+        @event-was-dragged="$emit('event-was-dragged', $event)"
         @edit-event="$emit('edit-event', $event)"
         @delete-event="$emit('delete-event', $event)"
       />
@@ -95,11 +96,11 @@ export default defineComponent({
 
   emits: [
     'event-was-clicked',
-    'updated-period',
     'event-was-resized',
+    'event-was-dragged',
+    'updated-period',
     'edit-event',
     'delete-event',
-    'updated-period',
   ],
 
   data() {
