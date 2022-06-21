@@ -10,6 +10,8 @@
       border: getBorderRule,
       color: eventColor,
       backgroundColor: eventBackgroundColor,
+      transform: eventTransformValue,
+      zIndex: eventZIndexValue,
     }"
     @click="handleClickOnEvent"
     @mouseenter="showResizeElements = isEditable"
@@ -94,7 +96,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Time from '../../helpers/Time';
 import { configInterface } from '../../typings/config.interface';
 import { EVENT_COLORS } from '../../constants';
-import DragAndDrop from '../../helpers/DragAndDrop';
 const eventPositionHelper = new EventPosition();
 
 export default defineComponent({
@@ -117,13 +118,13 @@ export default defineComponent({
       type: Object as PropType<configInterface>,
       required: true,
     },
-    dragAndDrop: {
-      type: Object as PropType<DragAndDrop>,
+    dayInfo: {
+      type: Object as PropType<{ daysTotalN: number; thisDayIndex: number }>,
       required: true,
     },
   },
 
-  emits: ['event-was-clicked', 'event-was-resized'],
+  emits: ['event-was-clicked', 'event-was-resized', 'event-was-dragged'],
 
   data() {
     return {
@@ -135,6 +136,9 @@ export default defineComponent({
         location: faMapMarkerAlt,
       },
       showResizeElements: false,
+      eventTransformValue: 'initial',
+      eventZIndexValue: 'initial' as 'initial' | number,
+      dayElement: document.querySelector('.calendar-week__day'),
 
       // Resizing events
       resizingStartingPoint: undefined,
@@ -147,11 +151,14 @@ export default defineComponent({
       colors: EVENT_COLORS as { [key: string]: string },
       eventColor: '#fff',
       eventBackgroundColor: '',
+      isResizing: false,
 
       // Dragging events
       canDrag: false, // set to true on mousedown and false on mouseup
       clientYDragStart: null as null | number,
+      clientXDragStart: null as null | number,
       changeInHoursOnDrag: 0,
+      changeInDaysOnDrag: 0,
       timeStartDragStart: this.eventProp.time.start,
       timeEndDragStart: this.eventProp.time.end,
     };
@@ -280,14 +287,33 @@ export default defineComponent({
     },
 
     changeInHoursOnDrag(newValue) {
-      console.log('changeInHoursOnDrag');
-      console.log(newValue);
       this.event.time.start = this.time.addMinutesToDateTimeString(
         newValue * 60,
         this.timeStartDragStart
       );
       this.event.time.end = this.time.addMinutesToDateTimeString(
         newValue * 60,
+        this.timeEndDragStart
+      );
+    },
+
+    changeInDaysOnDrag(newValue) {
+      if (!this.dayElement) return;
+      // +1 to account for the zero indexing vs length
+      const upcomingDaysInWeek =
+        this.dayInfo.daysTotalN - (this.dayInfo.thisDayIndex + 1);
+      const previousDaysInWeek = 0 - this.dayInfo.thisDayIndex;
+      if (newValue > upcomingDaysInWeek || newValue < previousDaysInWeek)
+        return;
+
+      const pixelsToTransform = newValue * this.dayElement.clientWidth;
+      this.eventTransformValue = `translateX(${pixelsToTransform}px)`;
+      this.event.time.start = this.time.addDaysToDateTimeString(
+        newValue,
+        this.timeStartDragStart
+      );
+      this.event.time.end = this.time.addDaysToDateTimeString(
+        newValue,
         this.timeEndDragStart
       );
     },
@@ -393,6 +419,7 @@ export default defineComponent({
     },
 
     resizeEvent(direction: 'down' | 'up') {
+      this.isResizing = true;
       this.resizingDirection = direction;
       document.addEventListener('mousemove', this.onMouseMove);
       document.addEventListener('mouseup', this.onMouseUp);
@@ -403,6 +430,7 @@ export default defineComponent({
       document.removeEventListener('mouseup', this.onMouseUp);
       this.resetResizingValues();
       this.$emit('event-was-resized', this.event);
+      this.isResizing = false;
     },
 
     /**
@@ -446,32 +474,45 @@ export default defineComponent({
     },
 
     handleMouseDown(mouseEvent: MouseEvent) {
-      mouseEvent.preventDefault();
-      mouseEvent.stopPropagation();
-      // console.log('handleMouseDown')
-      // console.log(mouseEvent)
       this.canDrag = true;
+      this.eventZIndexValue = 10;
 
       this.clientYDragStart = mouseEvent.clientY;
+      this.clientXDragStart = mouseEvent.clientX;
       this.timeStartDragStart = this.event.time.start;
       this.timeEndDragStart = this.event.time.end;
       document.addEventListener('mousemove', this.handleDrag);
       document.addEventListener('mouseup', this.handleDragEnd);
     },
 
-    handleDragEnd(mouseEvent: MouseEvent) {
-      mouseEvent.preventDefault();
-      mouseEvent.stopPropagation();
-      // console.log('handleDragEnd')
+    handleDragEnd() {
       this.canDrag = false;
+      this.eventZIndexValue = 'initial';
       document.removeEventListener('mousemove', this.handleDrag);
       document.removeEventListener('mouseup', this.handleDragEnd);
+      const dayChanged =
+        this.changeInDaysOnDrag <= -1 || this.changeInDaysOnDrag > 0;
+      const timeChanged =
+        this.changeInHoursOnDrag <= -1 || this.changeInHoursOnDrag > 0;
+
+      if (dayChanged || timeChanged)
+        this.$emit('event-was-dragged', this.event);
     },
 
     handleDrag(mouseEvent: MouseEvent) {
-      // console.log('handleDrag')
+      // Do not run the drag & drop algorithms, when element is being resized
+      if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
+
+      this.handleVerticalDrag(mouseEvent);
+      this.handleHorizontalDrag(mouseEvent);
+    },
+
+    /**
+     * Handle dragging within days
+     * */
+    handleVerticalDrag(mouseEvent: MouseEvent) {
       const eventsContainer = document.querySelector('.calendar-week__events');
-      if (!this.canDrag || !this.clientYDragStart || !eventsContainer) return;
+      if (!eventsContainer || !this.clientYDragStart) return;
 
       const nOfPixelsDistance = mouseEvent.clientY - this.clientYDragStart;
       const eventsContainerHeight = eventsContainer.clientHeight;
@@ -484,7 +525,20 @@ export default defineComponent({
         changeInMinutes < 0
           ? Math.ceil(changeInMinutes / 60)
           : Math.floor(changeInMinutes / 60);
-      // console.log(this.changeInHoursOnDrag)
+    },
+
+    /**
+     * Handle dragging between days
+     * */
+    handleHorizontalDrag(mouseEvent: MouseEvent) {
+      if (!this.dayElement || !this.clientXDragStart) return;
+
+      const dayWidth = this.dayElement.clientWidth;
+      const changeInPixelsX = mouseEvent.clientX - this.clientXDragStart;
+      this.changeInDaysOnDrag =
+        changeInPixelsX < 0
+          ? Math.ceil(changeInPixelsX / dayWidth)
+          : Math.floor(changeInPixelsX / dayWidth);
     },
   },
 });

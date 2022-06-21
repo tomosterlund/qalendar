@@ -14,14 +14,15 @@
 
       <div class="calendar-week__events">
         <Day
-          v-for="day in days"
-          :key="day.dateTimeString + mode"
+          v-for="(day, dayIndex) in days"
+          :key="day.dateTimeString + mode + weekVersion"
           :day="day"
           :time="time"
           :config="config"
-          :drag-and-drop="dragAndDrop"
+          :day-info="{ daysTotalN: days.length, thisDayIndex: dayIndex }"
           @event-was-clicked="handleClickOnEvent"
           @event-was-resized="$emit('event-was-resized', $event)"
+          @event-was-dragged="handleEventWasDragged"
         />
       </div>
     </section>
@@ -57,7 +58,6 @@ import {
 import EventPosition from '../../helpers/EventPosition';
 import { fullDayEventsWeek } from '../../typings/interfaces/full-day-events-week.type';
 import { modeType } from '../../typings/types';
-import DragAndDrop from '../../helpers/DragAndDrop';
 const eventPosition = new EventPosition();
 
 export default defineComponent({
@@ -100,6 +100,7 @@ export default defineComponent({
   emits: [
     'event-was-clicked',
     'event-was-resized',
+    'event-was-dragged',
     'edit-event',
     'delete-event',
   ],
@@ -113,7 +114,7 @@ export default defineComponent({
       weekHeight: WEEK_HEIGHT + 'px',
       events: this.eventsProp,
       fullDayEvents: [] as fullDayEventsWeek,
-      dragAndDrop: new DragAndDrop(),
+      weekVersion: 0, // is simply a dummy value, for re-rendering child components on event-was-dragged
     };
   },
 
@@ -266,6 +267,29 @@ export default defineComponent({
       this.selectedEvent = event.clickedEvent;
     },
 
+    handleEventWasDragged(event: eventInterface) {
+      const cleanedUpEvent = event;
+      // Reset all properties of the event, that need be calculated anew
+      delete cleanedUpEvent.totalConcurrentEvents;
+      delete cleanedUpEvent.nOfPreviousConcurrentEvents;
+
+      const filteredEvents = this.events.filter((e) => e.id !== event.id);
+      this.events = [
+        cleanedUpEvent,
+        ...filteredEvents.map((e) => {
+          // Reset all properties of each event, that need be calculated anew
+          delete e.nOfPreviousConcurrentEvents;
+          delete e.totalConcurrentEvents;
+
+          return e;
+        }),
+      ];
+      this.setInitialEvents(this.mode);
+      this.weekVersion = this.weekVersion + 1;
+
+      this.$emit('event-was-dragged', event);
+    },
+
     scrollOnMount() {
       const weekWrapper = document.querySelector('.calendar-week__wrapper');
 
@@ -296,6 +320,7 @@ export default defineComponent({
     display: flex;
     width: 100%;
     height: v-bind(weekHeight);
+    overflow: hidden;
   }
 }
 </style>

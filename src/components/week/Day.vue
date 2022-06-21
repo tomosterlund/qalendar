@@ -7,8 +7,9 @@
       :day="day"
       :time="time"
       :config="config"
-      :drag-and-drop="dragAndDrop"
+      :day-info="dayInfo"
       @event-was-clicked="$emit('event-was-clicked', $event)"
+      @event-was-dragged="$emit('event-was-dragged', $event)"
       @event-was-resized="handleEventWasResized"
     />
   </div>
@@ -22,7 +23,6 @@ import EventConcurrency from '../../helpers/EventConcurrency';
 import { eventInterface } from '../../typings/interfaces/event.interface';
 import Time from '../../helpers/Time';
 import { configInterface } from '../../typings/config.interface';
-import DragAndDrop from '../../helpers/DragAndDrop';
 const eventConcurrencyHelper = new EventConcurrency();
 
 export default defineComponent({
@@ -43,13 +43,13 @@ export default defineComponent({
       type: Object as PropType<configInterface>,
       required: true,
     },
-    dragAndDrop: {
-      type: Object as PropType<DragAndDrop>,
+    dayInfo: {
+      type: Object as PropType<{ daysTotalN: number; thisDayIndex: number }>,
       required: true,
     },
   },
 
-  emits: ['event-was-clicked', 'event-was-resized'],
+  emits: ['event-was-clicked', 'event-was-resized', 'event-was-dragged'],
 
   data() {
     return {
@@ -81,7 +81,6 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 
   &:first-child {
     border-left: 1px dashed rgb(224, 224, 224);
