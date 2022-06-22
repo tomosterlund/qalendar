@@ -44,6 +44,8 @@
   },
   "devDependencies": {
     "@babel/types": "^7.17.10",
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
     "@rushstack/eslint-patch": "^1.1.0",
     "@types/jsdom": "^16.2.14",
     "@types/node": "^16.11.27",
