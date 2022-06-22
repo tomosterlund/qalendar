@@ -97,6 +97,7 @@ import Time from '../../helpers/Time';
 import { configInterface } from '../../typings/config.interface';
 import { EVENT_COLORS } from '../../constants';
 const eventPositionHelper = new EventPosition();
+import DragAndDrop from '../../helpers/DragAndDrop';
 
 export default defineComponent({
   name: 'DayEvent',
@@ -287,6 +288,12 @@ export default defineComponent({
     },
 
     changeInHoursOnDrag(newValue) {
+      const eventCanBeDraggedFurther = DragAndDrop.eventCanBeDraggedFurther(
+        this.event,
+        newValue <= -1 ? 'backwards' : 'forwards'
+      );
+      if (!eventCanBeDraggedFurther) return;
+
       const newStart = this.time.addMinutesToDateTimeString(
         newValue * 60,
         this.timeStartDragStart
@@ -373,7 +380,6 @@ export default defineComponent({
     },
 
     handleClickOnEvent(event: any) {
-      console.log('handleClickOnEvent');
       const eventElement = this.getEventElementFromChildElement(event);
 
       if (!eventElement) return;
