@@ -95,11 +95,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Time from '../../helpers/Time';
 import { configInterface } from '../../typings/config.interface';
-import {
-  DATE_TIME_STRING_FULL_DAY_PATTERN,
-  DATE_TIME_STRING_PATTERN,
-  EVENT_COLORS,
-} from '../../constants';
+import { EVENT_COLORS } from '../../constants';
 const eventPositionHelper = new EventPosition();
 
 export default defineComponent({
@@ -496,6 +492,9 @@ export default defineComponent({
     },
 
     handleMouseDown(mouseEvent: MouseEvent) {
+      // Do not allow drag & drop, if event is not editable
+      if (!this.event.isEditable) return;
+
       this.canDrag = true;
       this.eventZIndexValue = 10;
 
