@@ -26,15 +26,15 @@
       <Week
         v-if="['week', 'day'].includes(mode)"
         :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
-        :events-prop="events"
+        :events-prop="eventsDataProperty"
         :period="period"
         :config="config"
         :mode-prop="mode"
         :n-days="week.nDays"
         :time="time"
         @event-was-clicked="$emit('event-was-clicked', $event)"
-        @event-was-resized="$emit('event-was-resized', $event)"
-        @event-was-dragged="$emit('event-was-dragged', $event)"
+        @event-was-resized="handleEventWasUpdated($event, 'resized')"
+        @event-was-dragged="handleEventWasUpdated($event, 'dragged')"
         @edit-event="$emit('edit-event', $event)"
         @delete-event="$emit('delete-event', $event)"
       />
@@ -42,11 +42,12 @@
       <Month
         v-if="mode === 'month'"
         :key="period.start.getTime() + period.end.getTime() + eventRenderingKey"
-        :events-prop="events"
+        :events-prop="eventsDataProperty"
         :time="time"
         :config="config"
         :period="period"
         @event-was-clicked="$emit('event-was-clicked', $event)"
+        @event-was-dragged="handleEventWasUpdated($event, 'dragged')"
         @updated-period="handleUpdatedPeriod($event, true)"
         @edit-event="$emit('edit-event', $event)"
         @delete-event="$emit('delete-event', $event)"
@@ -123,6 +124,7 @@ export default defineComponent({
         this.config?.style?.fontFamily || "'Verdana', 'Open Sans', serif",
       calendarWidth: 0,
       eventRenderingKey: 0, // Works only as a dummy value, for re-rendering Month- and Week components, when events-watcher triggers
+      eventsDataProperty: this.events || [],
     };
   },
 
@@ -249,6 +251,17 @@ export default defineComponent({
         const lastWeek = month[month.length - 1];
         this.period.end = lastWeek[lastWeek.length - 1];
       }
+    },
+
+    handleEventWasUpdated(
+      calendarEvent: eventInterface,
+      eventType: 'dragged' | 'resized'
+    ) {
+      const newEvents = this.eventsDataProperty.filter(
+        (e) => e.id !== calendarEvent.id
+      );
+      this.eventsDataProperty = [calendarEvent, ...newEvents];
+      this.$emit(`event-was-${eventType}`, calendarEvent);
     },
   },
 });

@@ -76,7 +76,13 @@ export default defineComponent({
     },
   },
 
-  emits: ['edit-event', 'delete-event', 'event-was-clicked', 'updated-period'],
+  emits: [
+    'edit-event',
+    'delete-event',
+    'updated-period',
+    'event-was-clicked',
+    'event-was-dragged',
+  ],
 
   data() {
     return {
@@ -159,6 +165,7 @@ export default defineComponent({
     },
 
     handleEventWasDragged(calendarEvent: eventInterface) {
+      this.$emit('event-was-dragged', calendarEvent);
       const newEvents = [...this.events, ...this.fullDayEvents].filter(
         (e) => e.id !== calendarEvent.id
       );

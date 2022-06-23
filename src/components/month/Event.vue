@@ -2,13 +2,14 @@
   <div
     :id="elementId"
     class="calendar-month__event"
+    :class="{ 'is-draggable': elementDraggableAttribute }"
     :draggable="elementDraggableAttribute"
     @dragstart="handleDragStart"
     @click="handleClickOnEvent"
   >
     <span class="calendar-month__event-color"></span>
 
-    <span class="calendar-month__event-time">
+    <span v-if="eventTimeStart" class="calendar-month__event-time">
       {{ eventTimeStart }}
     </span>
 
@@ -22,7 +23,7 @@
 import { defineComponent, PropType } from 'vue';
 import Time from '../../helpers/Time';
 import { eventInterface } from '../../typings/interfaces/event.interface';
-import { EVENT_COLORS } from '../../constants';
+import { DATE_TIME_STRING_PATTERN, EVENT_COLORS } from '../../constants';
 import { configInterface } from '../../typings/config.interface';
 import { dayInterface } from '../../typings/interfaces/day.interface';
 
@@ -60,7 +61,9 @@ export default defineComponent({
 
   computed: {
     eventTimeStart() {
-      return this.time.getLocalizedTime(this.calendarEvent.time.start);
+      return DATE_TIME_STRING_PATTERN.test(this.calendarEvent.time.start)
+        ? this.time.getLocalizedTime(this.calendarEvent.time.start)
+        : null;
     },
 
     elementId() {
@@ -91,7 +94,9 @@ export default defineComponent({
         startMonth === endMonth &&
         startDate === endDate;
 
-      return this.calendarEvent.isEditable && eventIsSingleDay;
+      return this.calendarEvent.isEditable && eventIsSingleDay
+        ? true
+        : undefined;
     },
   },
 
@@ -158,6 +163,13 @@ export default defineComponent({
   margin-bottom: 4px;
   padding: 2px var(--event-inline-padding);
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+
+  &.is-draggable {
+    cursor: grab;
+  }
 
   &:active {
     z-index: 100;

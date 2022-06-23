@@ -442,4 +442,18 @@ describe("Time.ts", () => {
 
     expect(newDateTime).toBe('2029-12-31 23:59')
   });
+
+  it('Concludes that two date time strings have equal dates', () => {
+    const string1 = '2040-09-28 12:47'
+    const string2 = '2040-09-28 10:59'
+
+    expect(timeM.dateStringsHaveEqualDates(string1, string2)).toBe(true)
+  });
+
+  it('Concludes that two date time strings have different dates', () => {
+    const string1 = '1999-09-28 12:47'
+    const string2 = '2999-09-28 10:59'
+
+    expect(timeM.dateStringsHaveEqualDates(string1, string2)).toBe(false)
+  });
 });

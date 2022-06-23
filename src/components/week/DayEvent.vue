@@ -578,6 +578,13 @@ export default defineComponent({
   border-radius: 4px;
   cursor: pointer;
   box-sizing: content-box;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+
+  &.is-editable {
+    cursor: grab;
+  }
 
   .calendar-week__event-row {
     display: flex;

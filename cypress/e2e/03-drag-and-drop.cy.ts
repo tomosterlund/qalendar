@@ -1,6 +1,6 @@
-const EVENT_SELECTOR = '.calendar-week__event'
-
 describe('DragAndDrop.vue', () => {
+  const EVENT_SELECTOR = '.calendar-week__event'
+
   beforeEach(() => {
     cy.visit('#/cypress/drag-and-drop');
   });

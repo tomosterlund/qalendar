@@ -6,6 +6,7 @@ import QalendarView from "./QalendarView.vue";
 import CypressSmoke from './cypress/CypressSmoke.vue'
 import FiveDayWeek from './cypress/FiveDayWeek.vue'
 import DragAndDrop from './cypress/DragAndDrop.vue'
+import DragAndDropMonth from './cypress/DragAndDropMonth.vue'
 
 const routes = [
   { path: "/", component: QalendarView },
@@ -15,6 +16,7 @@ const routes = [
   { path: "/cypress/smoke", component: CypressSmoke },
   { path: "/cypress/five-day-week", component: FiveDayWeek },
   { path: "/cypress/drag-and-drop", component: DragAndDrop },
+  { path: "/cypress/drag-and-drop-month", component: DragAndDropMonth },
 ];
 
 const router = createRouter({
