@@ -125,5 +125,10 @@ export default defineComponent({
   margin-bottom: 0.25em;
   text-align: left;
   cursor: pointer;
+  user-select: none;
+
+  &:active {
+    cursor: not-allowed;
+  }
 }
 </style>

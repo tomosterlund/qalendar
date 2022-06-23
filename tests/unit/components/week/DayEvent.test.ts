@@ -7,6 +7,11 @@ import {mountComponent} from "../../../vitest-setup";
 const dayEvent = mountComponent(mount, DayEvent)
 
 describe("DayEvent.vue", () => {
+  const propsForAllTests = {
+    time: new Time("sunday", "en-US"),
+    dayInfo: { daysTotalN: 7, thisDayIndex: 1 }
+  }
+
   test("Displaying the texts fed as props", () => {
     let wrapper = dayEvent({
       props: {
@@ -19,8 +24,8 @@ describe("DayEvent.vue", () => {
           time: { start: "2022-05-20 09:00", end: "2022-05-20 10:00" },
           color: "blue",
         },
-        time: new Time("sunday", "en-US"),
         config: {},
+        ...propsForAllTests
       },
     });
     const titleElement = wrapper.find(".is-title");
@@ -42,7 +47,6 @@ describe("DayEvent.vue", () => {
           time: { start: "2022-05-20 09:00", end: "2022-05-20 10:00" },
           colorScheme: "ladies",
         },
-        time: new Time("sunday", "en-US"),
         config: {
           style: {
             colorSchemes: {
@@ -53,6 +57,7 @@ describe("DayEvent.vue", () => {
             },
           },
         },
+        ...propsForAllTests
       },
     });
 

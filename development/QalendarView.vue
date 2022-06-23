@@ -16,6 +16,7 @@
         @event-was-resized="reactToEvent"
         @edit-event="editEvent"
         @delete-event="deleteEvent"
+        @event-was-dragged="handleEventWasDragged"
       />
     </main>
 
@@ -68,7 +69,7 @@ export default defineComponent({
             },
           },
         },
-        // defaultMode: "day",
+        defaultMode: 'week',
         // isSilent: true,
       } as configInterface,
       events: seededEvents as eventInterface[],
@@ -100,6 +101,11 @@ export default defineComponent({
     deleteEvent(payload: string) {
       console.log('deleteEvent%s: ', payload);
     },
+
+    handleEventWasDragged(e) {
+      console.log('event was dragged')
+      console.log(e)
+    }
   },
 });
 </script>

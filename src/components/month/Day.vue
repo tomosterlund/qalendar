@@ -1,5 +1,13 @@
 <template>
-  <div class="calendar-month__weekday">
+  <div
+    :id="'day-' + day.dateTimeString.substring(0, 10)"
+    class="calendar-month__weekday"
+    :class="{ 'is-droppable': canBeDropped }"
+    @dragleave="handleDragLeave"
+    @dragover="handleDragOver"
+    @drop="handleDrop"
+    @dragend="handleDragEnd"
+  >
     <span v-if="isFirstWeek" class="calendar-month__day-name">
       {{ day.dayName }}
     </span>
@@ -41,6 +49,7 @@ import Time from '../../helpers/Time';
 import Event from './Event.vue';
 import { dayInterface } from '../../typings/interfaces/day.interface';
 import getLanguage from '../../language/index';
+import { eventInterface } from '../../typings/interfaces/event.interface';
 
 export default defineComponent({
   name: 'Day',
@@ -68,7 +77,19 @@ export default defineComponent({
     },
   },
 
-  emits: ['event-was-clicked', 'updated-period'],
+  emits: ['event-was-clicked', 'event-was-dragged', 'updated-period'],
+
+  data() {
+    return {
+      isActiveDroppable: false,
+    };
+  },
+
+  computed: {
+    canBeDropped() {
+      return this.isActiveDroppable;
+    },
+  },
 
   methods: {
     switchToWeekMode() {
@@ -81,6 +102,49 @@ export default defineComponent({
       const end = week[6];
 
       this.$emit('updated-period', { start, end, selectedDate });
+    },
+
+    handleDragLeave() {
+      this.isActiveDroppable = false;
+    },
+
+    handleDragEnd(mouseEvent: DragEvent) {
+      this.isActiveDroppable = false;
+      mouseEvent.stopPropagation();
+    },
+
+    handleDrop(dropEvent: DragEvent) {
+      this.isActiveDroppable = false;
+      dropEvent.stopPropagation();
+
+      if (!dropEvent || !dropEvent.dataTransfer) return;
+
+      const calendarEvent: eventInterface = JSON.parse(
+        dropEvent.dataTransfer.getData('json')
+      );
+      const eventDroppedOnSameDay = this.time.dateStringsHaveEqualDates(
+        calendarEvent.time.start,
+        this.day.dateTimeString.substring(0, 10)
+      );
+      if (eventDroppedOnSameDay) return;
+
+      // Exchange the yyyy-mm-dd part of the string
+      calendarEvent.time.start = calendarEvent.time.start.replace(
+        /^\d{4}-\d{2}-\d{2}/,
+        this.day.dateTimeString.substring(0, 10)
+      );
+      calendarEvent.time.end = calendarEvent.time.end.replace(
+        /^\d{4}-\d{2}-\d{2}/,
+        this.day.dateTimeString.substring(0, 10)
+      );
+      this.$emit('event-was-dragged', calendarEvent);
+    },
+
+    handleDragOver(e: DragEvent) {
+      this.isActiveDroppable = true;
+      e.preventDefault();
+
+      return false;
     },
   },
 });
@@ -96,6 +160,10 @@ export default defineComponent({
   border-right: var(--qalendar-border-gray-thin);
   border-bottom: var(--qalendar-border-gray-thin);
   overflow: hidden;
+
+  &.is-droppable {
+    background-color: var(--qalendar-light-gray);
+  }
 
   &:last-child {
     border-right: 0;

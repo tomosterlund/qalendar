@@ -2,11 +2,14 @@
   <div
     :id="elementId"
     class="calendar-month__event"
+    :class="{ 'is-draggable': elementDraggableAttribute }"
+    :draggable="elementDraggableAttribute"
+    @dragstart="handleDragStart"
     @click="handleClickOnEvent"
   >
     <span class="calendar-month__event-color"></span>
 
-    <span class="calendar-month__event-time">
+    <span v-if="eventTimeStart" class="calendar-month__event-time">
       {{ eventTimeStart }}
     </span>
 
@@ -20,7 +23,7 @@
 import { defineComponent, PropType } from 'vue';
 import Time from '../../helpers/Time';
 import { eventInterface } from '../../typings/interfaces/event.interface';
-import { EVENT_COLORS } from '../../constants';
+import { DATE_TIME_STRING_PATTERN, EVENT_COLORS } from '../../constants';
 import { configInterface } from '../../typings/config.interface';
 import { dayInterface } from '../../typings/interfaces/day.interface';
 
@@ -58,7 +61,9 @@ export default defineComponent({
 
   computed: {
     eventTimeStart() {
-      return this.time.getLocalizedTime(this.calendarEvent.time.start);
+      return DATE_TIME_STRING_PATTERN.test(this.calendarEvent.time.start)
+        ? this.time.getLocalizedTime(this.calendarEvent.time.start)
+        : null;
     },
 
     elementId() {
@@ -67,6 +72,31 @@ export default defineComponent({
         this.calendarEvent.id +
         this.day.dateTimeString.substring(0, 10)
       );
+    },
+
+    elementDraggableAttribute() {
+      const {
+        year: startYear,
+        month: startMonth,
+        date: startDate,
+      } = this.time.getAllVariablesFromDateTimeString(
+        this.calendarEvent.time.start
+      );
+      const {
+        year: endYear,
+        month: endMonth,
+        date: endDate,
+      } = this.time.getAllVariablesFromDateTimeString(
+        this.calendarEvent.time.end
+      );
+      const eventIsSingleDay =
+        startYear === endYear &&
+        startMonth === endMonth &&
+        startDate === endDate;
+
+      return this.calendarEvent.isEditable && eventIsSingleDay
+        ? true
+        : undefined;
     },
   },
 
@@ -104,6 +134,16 @@ export default defineComponent({
         eventElement,
       });
     },
+
+    handleDragStart(dragEvent: DragEvent) {
+      if (!dragEvent || !dragEvent.dataTransfer) return;
+
+      dragEvent.dataTransfer.effectAllowed = 'move';
+      dragEvent.dataTransfer.setData(
+        'json',
+        JSON.stringify(this.calendarEvent)
+      );
+    },
   },
 });
 </script>
@@ -112,15 +152,30 @@ export default defineComponent({
 @use '../../styles/mixins' as mixins;
 
 .calendar-month__event {
+  --event-inline-padding: 4px;
+
   display: flex;
   align-items: center;
   overflow: hidden;
   border-radius: 4px;
   font-size: var(--qalendar-font-2xs);
-  width: 100%;
+  width: calc(100% - #{calc(var(--event-inline-padding) * 2)});
   margin-bottom: 4px;
-  padding: 2px 4px;
+  padding: 2px var(--event-inline-padding);
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+
+  &.is-draggable {
+    cursor: grab;
+  }
+
+  &:active {
+    z-index: 100;
+    //border: 1px solid black;
+    //transform: scale(88%);
+  }
 
   @include mixins.hover {
     background-color: var(--qalendar-light-gray);

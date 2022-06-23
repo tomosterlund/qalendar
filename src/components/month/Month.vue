@@ -14,6 +14,7 @@
           :day="day"
           :time="time"
           @event-was-clicked="handleClickOnEvent"
+          @event-was-dragged="handleEventWasDragged"
           @updated-period="$emit('updated-period', $event)"
         />
       </div>
@@ -75,7 +76,13 @@ export default defineComponent({
     },
   },
 
-  emits: ['edit-event', 'delete-event', 'event-was-clicked', 'updated-period'],
+  emits: [
+    'edit-event',
+    'delete-event',
+    'updated-period',
+    'event-was-clicked',
+    'event-was-dragged',
+  ],
 
   data() {
     return {
@@ -88,11 +95,17 @@ export default defineComponent({
   },
 
   mounted() {
-    this.sortOutFullDayEvents();
-    this.setMonth();
+    this.initMonth();
   },
 
   methods: {
+    initMonth() {
+      this.month = [];
+
+      this.sortOutFullDayEvents();
+      this.setMonth();
+    },
+
     setMonth() {
       const { month, fullYear } = new EDate(this.period.selectedDate);
       const calendarMonth = this.time.getCalendarMonthSplitInWeeks(
@@ -149,6 +162,18 @@ export default defineComponent({
 
       this.selectedEventElement = event.eventElement;
       this.selectedEvent = event.clickedEvent;
+    },
+
+    handleEventWasDragged(calendarEvent: eventInterface) {
+      this.$emit('event-was-dragged', calendarEvent);
+      const newEvents = [...this.events, ...this.fullDayEvents].filter(
+        (e) => e.id !== calendarEvent.id
+      );
+      newEvents.push(calendarEvent);
+      this.events = [];
+      this.fullDayEvents = [];
+      this.events = newEvents;
+      this.initMonth();
     },
   },
 });

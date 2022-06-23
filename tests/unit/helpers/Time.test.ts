@@ -406,4 +406,54 @@ describe("Time.ts", () => {
     expect(timeM.dateIsInWeek(date2, week2)).toBe(true);
     expect(timeM.dateIsInWeek(new Date(2018, 11, 30), week2)).toBe(false);
   });
+
+  it('adds an hour to dateTimeString', () => {
+    const minutesToAdd = 60
+    const oldDateTime = '2022-06-21 07:39'
+
+    const newDateTime = timeM.addMinutesToDateTimeString(minutesToAdd, oldDateTime)
+
+    expect(newDateTime).toBe('2022-06-21 08:39')
+  });
+
+  it('adds 4 hours and 43 minutes to dateTimeString', () => {
+    const minutesToAdd = 283
+    const oldDateTime = '2022-12-31 23:59'
+
+    const newDateTime = timeM.addMinutesToDateTimeString(minutesToAdd, oldDateTime)
+
+    expect(newDateTime).toBe('2023-01-01 04:42')
+  });
+
+  it('adds 5 days to dateTimeString', () => {
+    const daysToAdd = 5
+    const oldDateTime = '2022-12-31 23:59'
+
+    const newDateTime = timeM.addDaysToDateTimeString(daysToAdd, oldDateTime)
+
+    expect(newDateTime).toBe('2023-01-05 23:59')
+  });
+
+  it('subtracts 1 day from dateTimeString', () => {
+    const daysToAdd = -1
+    const oldDateTime = '2030-01-01 23:59'
+
+    const newDateTime = timeM.addDaysToDateTimeString(daysToAdd, oldDateTime)
+
+    expect(newDateTime).toBe('2029-12-31 23:59')
+  });
+
+  it('Concludes that two date time strings have equal dates', () => {
+    const string1 = '2040-09-28 12:47'
+    const string2 = '2040-09-28 10:59'
+
+    expect(timeM.dateStringsHaveEqualDates(string1, string2)).toBe(true)
+  });
+
+  it('Concludes that two date time strings have different dates', () => {
+    const string1 = '1999-09-28 12:47'
+    const string2 = '2999-09-28 10:59'
+
+    expect(timeM.dateStringsHaveEqualDates(string1, string2)).toBe(false)
+  });
 });

@@ -7,7 +7,9 @@
       :day="day"
       :time="time"
       :config="config"
+      :day-info="dayInfo"
       @event-was-clicked="$emit('event-was-clicked', $event)"
+      @event-was-dragged="$emit('event-was-dragged', $event)"
       @event-was-resized="handleEventWasResized"
     />
   </div>
@@ -41,9 +43,13 @@ export default defineComponent({
       type: Object as PropType<configInterface>,
       required: true,
     },
+    dayInfo: {
+      type: Object as PropType<{ daysTotalN: number; thisDayIndex: number }>,
+      required: true,
+    },
   },
 
-  emits: ['event-was-clicked', 'event-was-resized'],
+  emits: ['event-was-clicked', 'event-was-resized', 'event-was-dragged'],
 
   data() {
     return {
@@ -75,7 +81,6 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 
   &:first-child {
     border-left: 1px dashed rgb(224, 224, 224);
