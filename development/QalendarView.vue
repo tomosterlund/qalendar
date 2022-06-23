@@ -68,7 +68,7 @@ export default defineComponent({
             },
           },
         },
-        // defaultMode: "day",
+        defaultMode: 'month',
         // isSilent: true,
       } as configInterface,
       events: seededEvents as eventInterface[],

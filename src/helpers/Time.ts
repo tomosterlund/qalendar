@@ -317,4 +317,11 @@ export default class Time {
   addDaysToDateTimeString(days: number, dateTimeString: string) {
     return this.addMinutesToDateTimeString((days * 1440), dateTimeString)
   }
+
+  dateStringsHaveEqualDates(dateTimeString1: string, dateTimeString2: string) {
+    const { year: year1, month: month1, date: date1 } = this.getAllVariablesFromDateTimeString(dateTimeString1)
+    const { year: year2, month: month2, date: date2 } = this.getAllVariablesFromDateTimeString(dateTimeString2)
+
+    return (year1 === year2) && (month1 === month2) && (date1 === date2)
+  }
 }

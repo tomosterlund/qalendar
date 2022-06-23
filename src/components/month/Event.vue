@@ -2,6 +2,8 @@
   <div
     :id="elementId"
     class="calendar-month__event"
+    :draggable="elementDraggableAttribute"
+    @dragstart="handleDragStart"
     @click="handleClickOnEvent"
   >
     <span class="calendar-month__event-color"></span>
@@ -68,6 +70,29 @@ export default defineComponent({
         this.day.dateTimeString.substring(0, 10)
       );
     },
+
+    elementDraggableAttribute() {
+      const {
+        year: startYear,
+        month: startMonth,
+        date: startDate,
+      } = this.time.getAllVariablesFromDateTimeString(
+        this.calendarEvent.time.start
+      );
+      const {
+        year: endYear,
+        month: endMonth,
+        date: endDate,
+      } = this.time.getAllVariablesFromDateTimeString(
+        this.calendarEvent.time.end
+      );
+      const eventIsSingleDay =
+        startYear === endYear &&
+        startMonth === endMonth &&
+        startDate === endDate;
+
+      return this.calendarEvent.isEditable && eventIsSingleDay;
+    },
   },
 
   mounted() {
@@ -104,6 +129,16 @@ export default defineComponent({
         eventElement,
       });
     },
+
+    handleDragStart(dragEvent: DragEvent) {
+      if (!dragEvent || !dragEvent.dataTransfer) return;
+
+      dragEvent.dataTransfer.effectAllowed = 'move';
+      dragEvent.dataTransfer.setData(
+        'json',
+        JSON.stringify(this.calendarEvent)
+      );
+    },
   },
 });
 </script>
@@ -112,15 +147,23 @@ export default defineComponent({
 @use '../../styles/mixins' as mixins;
 
 .calendar-month__event {
+  --event-inline-padding: 4px;
+
   display: flex;
   align-items: center;
   overflow: hidden;
   border-radius: 4px;
   font-size: var(--qalendar-font-2xs);
-  width: 100%;
+  width: calc(100% - #{calc(var(--event-inline-padding) * 2)});
   margin-bottom: 4px;
-  padding: 2px 4px;
+  padding: 2px var(--event-inline-padding);
   cursor: pointer;
+
+  &:active {
+    z-index: 100;
+    //border: 1px solid black;
+    //transform: scale(88%);
+  }
 
   @include mixins.hover {
     background-color: var(--qalendar-light-gray);
