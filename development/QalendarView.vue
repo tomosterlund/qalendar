@@ -12,7 +12,7 @@
         :events="events"
         :is-loading="isLoading"
         @event-was-clicked="reactToEvent"
-        @updated-period="reactToEvent"
+        @updated-period="updatedPeriod"
         @event-was-resized="reactToEvent"
         @edit-event="editEvent"
         @delete-event="deleteEvent"
@@ -86,6 +86,11 @@ export default defineComponent({
   methods: {
     reactToEvent(payload: any) {
       console.log(payload);
+    },
+    
+    updatedPeriod(e) {
+      console.log('updated period')
+      console.log(e)
     },
 
     triggerLoadAnimations() {

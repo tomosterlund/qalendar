@@ -19,4 +19,6 @@ describe('Qalendar.vue', () => {
 
     expect(() => wrapper.get('.top-bar-loader')).toThrow()
   })
+
+  test.todo('emit event "updated-period" when toggling modes')
 })

@@ -190,7 +190,7 @@ export default defineComponent({
     handleChangeMode(payload: modeType) {
       if (payload === 'day') {
         this.period.start = this.period.selectedDate;
-        this.period.end = this.period.selectedDate;
+        this.period.end = this.time.setDateToEndOfDay(this.period.selectedDate);
       }
 
       if (payload === 'week') {
@@ -198,7 +198,7 @@ export default defineComponent({
           this.period.selectedDate
         );
         this.period.start = week[0];
-        this.period.end = week[6];
+        this.period.end = this.time.setDateToEndOfDay(week[6]);
       }
 
       if (payload === 'month') {
@@ -209,10 +209,13 @@ export default defineComponent({
 
         this.period.start = month[0][0];
         const lastWeek = month[month.length - 1];
-        this.period.end = lastWeek[lastWeek.length - 1];
+        this.period.end = this.time.setDateToEndOfDay(
+          lastWeek[lastWeek.length - 1]
+        );
       }
 
       this.mode = payload;
+      this.$emit('updated-period', this.period);
     },
 
     onCalendarResize() {

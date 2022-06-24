@@ -293,15 +293,7 @@ export default defineComponent({
             0,
             0
           ),
-          end: new Date(
-            end.getFullYear(),
-            end.getMonth(),
-            end.getDate(),
-            23,
-            59,
-            59,
-            999
-          ),
+          end: this.time.setDateToEndOfDay(end),
           selectedDate: this.datePickerCurrentDate,
         });
       } else {

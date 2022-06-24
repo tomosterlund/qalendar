@@ -185,18 +185,27 @@ For full day events, or events spanning multiple days. The required format is `Y
 Qalendar emits the following events that can be listened to:
 
 |     Event name      |                             Purpose                             |
-| :-----------------: | :-------------------------------------------------------------: |
+|:-------------------:|:---------------------------------------------------------------:|
 | `event-was-clicked` |                                                                 |
-|  `updated-period`   | emits the value with the new period selected in the date picker |
+| `event-was-dragged` |       emits the updated event, after an event was dragged       |
 | `event-was-resized` |       emits the updated event, after an event was resized       |
+|  `updated-period`   | emits the value with the new period selected in the date picker |
 |    `edit-event`     |   is triggered, when a user clicks the edit-icon of an event    |
 |   `delete-event`    |  is triggered, when a user clicks the delete-icon of an event   |
 
+### Drag and drop
+
+Updating events by dragging them across the UI is available in all calendar modes (day, week, month). However, three criteria need to be met, in order for a calendar event to be draggable:
+
+* The event needs the property `isEditable` to be set to `true`
+* The event needs to be a single day event. For example, an event with `time: { start: '2022-06-24', end: '2022-06-27' }` cannot be dragged
+* The user device needs to allow for pointer events, meaning touch events (smartphone, iPad) won't trigger a drag & drop.
+
 ### A word on language
 
-As stated in the configuration section, `config.locale` can be any locale understood by the browser. This is made possible, since all occurrences of time or date in the calendar are localized through the native JavaScript APIs. However, since a few words ("month", "week" etc.) need to be hard coded, some words may not be translated in the selected locale. For all vocabulary where translations are missing, translations for "en-US" will be used as a fallback.
+As stated in the configuration section, `config.locale` can be any locale understood by the browser. If no locale is set explicitly, Qalendar will use the user's default browser locale. This is made possible, since all occurrences of time or date in the calendar are localized through the native JavaScript APIs. However, since a few words ("month", "week" etc.) need to be hard coded, some words may not be translated in the selected locale. For all vocabulary where translations are missing, translations for "en-US" will be used as a fallback.
 
-If you're using Qalendar, and translations for your specific locale are missing, consider opening a [pull request](https://github.com/tomosterlund/qalendar), editing the two files in ./src/language.
+If you're using Qalendar, and translations for your specific locale are missing, consider opening a [pull request](https://github.com/tomosterlund/qalendar), editing the two files in `./src/language`.
 
 ### A more elaborate example
 

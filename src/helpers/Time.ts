@@ -324,4 +324,16 @@ export default class Time {
 
     return (year1 === year2) && (month1 === month2) && (date1 === date2)
   }
+
+  setDateToEndOfDay(date: Date) {
+    return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      23,
+      59,
+      59,
+      999
+    )
+  }
 }
