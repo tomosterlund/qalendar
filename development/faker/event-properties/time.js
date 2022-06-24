@@ -13,10 +13,20 @@ const createDateTimeString = (dateObject) => {
   return `${year}-${month}-${date} ${hour}:${minutes}`;
 };
 
+const createDateString = (dateObject) => {
+  const d = new Date(dateObject);
+  const year = d.getFullYear();
+  const oneIndexedMonth = d.getMonth() + 1;
+  const month = oneIndexedMonth < 10 ? `0${oneIndexedMonth}` : oneIndexedMonth;
+  const date = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
+
+  return `${year}-${month}-${date}`;
+}
+
 /**
  * The arguments here, are provided by the user via the command line arguments --year and --month
  * */
-const getEventsForMonth = (monthArg = null) => {
+const getListOfTimePropertiesForEvents = (monthArg = null) => {
   const timesArray = [];
 
   const d =
@@ -45,8 +55,8 @@ const getEventsForMonth = (monthArg = null) => {
     date++;
   }
 
+  // Create NUMBER_OF_EVENTS + 1000 time-objects, to prevent cluttering in the time space
   while (timesArray.length < NUMBER_OF_EVENTS + 1000) {
-    // Create NUMER_OF_EVENTS + 100 time-objects, to prevent cluttering in the time space
     const startDate = new Date(
       year,
       month,
@@ -55,18 +65,30 @@ const getEventsForMonth = (monthArg = null) => {
       getRandomElementInArray(minutes)
     );
 
-    let minutesToAdd = getRandomElementInArray(minutesForAdding);
-    if (minutesToAdd === 0) minutesToAdd = 60;
+    // For every Nth event, create a full day-event
+    if (timesArray.length % 45 === 0) {
+      let daysToAdd = getRandomElementInArray([0, 0, 0, 1, 1, 1, 5, 7, 7, 7, 15, 30, 60])
+      const endDate = new Date(startDate.getTime() + daysToAdd * 86400000);
 
-    const endDate = new Date(startDate.getTime() + minutesToAdd * 60000);
+      timesArray.push({
+        start: createDateString(startDate),
+        end: createDateString(endDate),
+      });
+    // But normally, create a timed event
+    } else {
+      let minutesToAdd = getRandomElementInArray(minutesForAdding);
+      if (minutesToAdd === 0) minutesToAdd = 60;
 
-    timesArray.push({
-      start: createDateTimeString(startDate),
-      end: createDateTimeString(endDate),
-    });
+      const endDate = new Date(startDate.getTime() + minutesToAdd * 60000);
+
+      timesArray.push({
+        start: createDateTimeString(startDate),
+        end: createDateTimeString(endDate),
+      });
+    }
   }
 
   return timesArray;
 };
 
-module.exports = getEventsForMonth;
+module.exports = getListOfTimePropertiesForEvents;

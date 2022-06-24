@@ -171,10 +171,14 @@ export default defineComponent({
     cursor: grab;
   }
 
+  &:not(.is-draggable) {
+    &:active {
+      cursor: not-allowed;
+    }
+  }
+
   &:active {
     z-index: 100;
-    //border: 1px solid black;
-    //transform: scale(88%);
   }
 
   @include mixins.hover {

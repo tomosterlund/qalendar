@@ -1,4 +1,4 @@
-const getEventsForMonth = require("../event-properties/time");
+const getListOfTimePropertiesForEvents = require("../event-properties/time");
 const { NUMBER_OF_EVENTS } = require("../faker-config");
 const getRandomElementInArray = require("./get-random-element-in-array");
 const eventTitles = require("../event-properties/event-titles");
@@ -9,7 +9,7 @@ const locations = require("../event-properties/locations");
 
 const createEvents = (monthArg = null) => {
   const events = [];
-  const times = getEventsForMonth(monthArg);
+  const times = getListOfTimePropertiesForEvents(monthArg);
 
   while (events.length < NUMBER_OF_EVENTS) {
     const time = getRandomElementInArray(times);

@@ -155,16 +155,19 @@ export default defineComponent({
         }
       }
 
+      const weekEndDate =
+        this.nDays === 5
+          ? new Date(
+              this.period.end.getFullYear(),
+              this.period.end.getMonth(),
+              this.period.end.getDate() - 2
+            )
+          : this.period.end;
+
       this.fullDayEvents = fullDayEvents.length
         ? eventPosition.positionFullDayEventsInWeek(
             this.period.start,
-            this.nDays === 5
-              ? new Date(
-                  this.period.end.getFullYear(),
-                  this.period.end.getMonth(),
-                  this.period.end.getDate() - 2
-                )
-              : this.period.end,
+            weekEndDate,
             fullDayEvents
           )
         : [];
