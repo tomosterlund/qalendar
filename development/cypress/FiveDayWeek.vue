@@ -31,8 +31,16 @@ export default defineComponent({
         },
       } as configInterface,
 
-      events: fiveDayWeekEvents,
+      events: [],
     }
+  },
+
+  mounted() {
+    // IMPORTANT: Needs to be set through a timeout, to make sure that the test
+    // tries adding events through a prop after the component was already rendered
+    setTimeout(() => {
+      this.events = fiveDayWeekEvents;
+    }, 200);
   }
 })
 </script>

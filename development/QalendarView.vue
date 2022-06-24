@@ -72,7 +72,7 @@ export default defineComponent({
         defaultMode: 'week',
         // isSilent: true,
       } as configInterface,
-      events: seededEvents as eventInterface[],
+      events: [] as eventInterface[],
 
       layout: 'none',
       isLoading: false,
@@ -81,6 +81,9 @@ export default defineComponent({
 
   mounted() {
     // this.triggerLoadAnimations()
+    setTimeout(() => {
+      this.events = seededEvents;
+    }, 200)
   },
 
   methods: {

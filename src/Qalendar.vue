@@ -135,6 +135,7 @@ export default defineComponent({
         // The check on strict equality as primitive values is needed,
         // since we do not want to trigger a rerender on event-was-resized
         if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+          this.eventsDataProperty = newVal;
           this.eventRenderingKey = this.eventRenderingKey + 1;
         }
 
