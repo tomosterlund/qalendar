@@ -100,6 +100,7 @@ export default defineComponent({
     'event-was-resized',
     'event-was-dragged',
     'updated-period',
+    'updated-mode',
     'edit-event',
     'delete-event',
   ],
@@ -216,7 +217,7 @@ export default defineComponent({
       }
 
       this.mode = payload;
-      this.$emit('updated-period', this.period);
+      this.$emit('updated-mode', { mode: payload, period: this.period });
     },
 
     onCalendarResize() {

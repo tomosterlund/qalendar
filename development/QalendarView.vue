@@ -13,6 +13,7 @@
         :is-loading="isLoading"
         @event-was-clicked="reactToEvent"
         @updated-period="updatedPeriod"
+        @updated-mode="updatedPeriod"
         @event-was-resized="reactToEvent"
         @edit-event="editEvent"
         @delete-event="deleteEvent"
