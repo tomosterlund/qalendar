@@ -34,13 +34,12 @@
       "require": "./dist/qalendar.umd.js"
     }
   },
-  "types": "./dist/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.0",
     "@fortawesome/free-regular-svg-icons": "^6.0.0",
     "@fortawesome/free-solid-svg-icons": "^5.1.0",
-    "@fortawesome/vue-fontawesome": "^3.0.0-5",
-    "vue": "^3.0.0"
+    "@fortawesome/vue-fontawesome": "^3.0.0-5"
   },
   "devDependencies": {
     "@babel/types": "7.18.4",
@@ -67,6 +66,7 @@
     "vite": "2.9.12",
     "vitepress": "0.22.4",
     "vitest": "0.16.0",
+    "vue": "^3.0.0",
     "vue-router": "4.0.16",
     "vue-tsc": "0.38.1"
   }
