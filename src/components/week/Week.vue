@@ -10,7 +10,10 @@
 
   <div class="calendar-week__wrapper">
     <section class="calendar-week">
-      <DayTimeline :key="period.start + period.end + mode" :time="time" />
+      <DayTimeline
+        :key="period.start.getTime() + period.end.getTime() + mode"
+        :time="time"
+      />
 
       <div class="calendar-week__events">
         <Day
