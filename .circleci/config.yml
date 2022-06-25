@@ -9,7 +9,7 @@ orbs:
 jobs:
   test_london:
     docker:
-      - image: cimg/node:17.2.0
+      - image: cimg/node:17.9.1
     steps:
       - checkout
       - run:
@@ -22,7 +22,7 @@ jobs:
       TZ: "Europe/London"
   test_mountain_view:
     docker:
-      - image: cimg/node:17.2.0
+      - image: cimg/node:17.9.1
     steps:
       - checkout
       - run:
@@ -35,7 +35,7 @@ jobs:
       TZ: "US/Pacific"
   test_tokyo:
     docker:
-      - image: cimg/node:17.2.0
+      - image: cimg/node:17.9.1
     steps:
       - checkout
       - run:
@@ -48,7 +48,7 @@ jobs:
       TZ: "Asia/Tokyo"
   run_build:
     docker:
-      - image: cimg/node:17.2.0
+      - image: cimg/node:17.9.1
     steps:
       - checkout
       - run:
