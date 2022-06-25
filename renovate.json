@@ -9,6 +9,7 @@
       "groupName": "devDependencies (non-major)"
     }
   ],
+  "schedule": ["before 5am on monday"],
   "ignoreDeps": [
     "@fortawesome/fontawesome-svg-core",
     "@fortawesome/free-regular-svg-icons",
