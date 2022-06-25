@@ -2,6 +2,13 @@
   "extends": [
     "config:base"
   ],
+  "packageRules": [
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "devDependencies (non-major)"
+    }
+  ],
   "ignoreDeps": [
     "@fortawesome/fontawesome-svg-core",
     "@fortawesome/free-regular-svg-icons",
@@ -9,11 +16,5 @@
     "@fortawesome/vue-fontawesome",
     "vue"
   ],
-  "packageRules": [
-    {
-      "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["patch", "minor"],
-      "groupName": "devDependencies (non-major)"
-    }
-  ]
+  "ignorePaths": ["**/.circleci/**", "docker-compose.yml"]
 }

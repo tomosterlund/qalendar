@@ -78,7 +78,7 @@ import getLanguage from '../../language';
 import { modeType } from '../../typings/types';
 
 export default defineComponent({
-  name: 'Header',
+  name: 'AppHeader',
 
   components: {
     DatePicker,

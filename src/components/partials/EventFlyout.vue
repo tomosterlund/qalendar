@@ -167,10 +167,10 @@ export default defineComponent({
       }
 
       // 3. Handle timed events
-      let dateString = this.getDateFromDateString(
+      const dateString = this.getDateFromDateString(
         this.calendarEvent.time.start
       );
-      let timeString =
+      const timeString =
         this.time.getLocalizedTime(this.calendarEvent.time.start) +
         ' - ' +
         this.time.getLocalizedTime(this.calendarEvent.time.end);
