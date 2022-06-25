@@ -6,16 +6,16 @@
 
     <div class="calendar-header__period">
       <div class="calendar-header__chevron-arrows">
-        <font-awesome-icon
+        <FontAwesomeIcon
           class="calendar-header__chevron-arrow calendar-header__chevron-arrow-left"
           :icon="icons.chevronLeft"
-          @click="goToPeriod('previous')"
+          @click="goToPeriod($event, 'previous')"
         />
 
-        <font-awesome-icon
+        <FontAwesomeIcon
           class="calendar-header__chevron-arrow calendar-header__chevron-arrow-right"
           :icon="icons.chevronRight"
-          @click="goToPeriod('next')"
+          @click="goToPeriod($event, 'next')"
         />
       </div>
 
@@ -167,7 +167,7 @@ export default defineComponent({
       this.$emit('updated-period', value);
     },
 
-    goToPeriod(direction: 'previous' | 'next') {
+    goToPeriod(event: MouseEvent, direction: 'previous' | 'next') {
       // @ts-ignore
       this.$refs.periodSelect.goToPeriod(direction);
     },
