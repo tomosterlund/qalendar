@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "ignoreDeps": [
+    "@fortawesome/fontawesome-svg-core",
+    "@fortawesome/free-regular-svg-icons",
+    "@fortawesome/free-solid-svg-icons",
+    "@fortawesome/vue-fontawesome",
+    "vue"
+  ],
+  "packageRules": [
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "devDependencies (non-major)"
+    }
+  ]
+}
