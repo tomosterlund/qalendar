@@ -13,7 +13,7 @@
         <div v-if="isLoading" class="top-bar-loader" />
       </Transition>
 
-      <Header
+      <AppHeader
         :key="wasInitialized + mode"
         :config="config"
         :mode="mode"
@@ -61,7 +61,7 @@ import { defineComponent, PropType } from 'vue';
 import { eventInterface } from './typings/interfaces/event.interface';
 import { configInterface } from './typings/config.interface';
 import Time from './helpers/Time';
-import Header from './components/header/Header.vue';
+import AppHeader from './components/header/Header.vue';
 import Week from './components/week/Week.vue';
 import { modeType } from './typings/types';
 import Month from './components/month/Month.vue';
@@ -72,7 +72,7 @@ export default defineComponent({
 
   components: {
     Month,
-    Header,
+    AppHeader,
     Week,
   },
 
