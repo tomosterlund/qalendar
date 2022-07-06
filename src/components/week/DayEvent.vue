@@ -59,7 +59,9 @@
           :icon="icons.description"
           class="calendar-week__event-icon"
         />
-        <span>{{ event.description }}</span>
+        <!-- eslint-disable vue/no-v-html -->
+        <p v-html="event.description"></p>
+        <!--eslint-enable-->
       </div>
 
       <div
@@ -590,6 +592,11 @@ export default defineComponent({
     display: flex;
     align-items: flex-start;
     margin-bottom: 0.25em;
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
   }
 
   .calendar-week__event-info-wrapper {

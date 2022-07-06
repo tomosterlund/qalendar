@@ -68,7 +68,9 @@
             :icon="icons.description"
             class="calendar-week__event-icon"
           />
-          {{ calendarEvent.description }}
+          <!-- eslint-disable vue/no-v-html -->
+          <p v-html="calendarEvent.description"></p>
+          <!--eslint-enable-->
         </div>
       </div>
     </div>
@@ -361,6 +363,11 @@ export default defineComponent({
     grid-gap: var(--qalendar-spacing);
     margin-bottom: 0.25em;
     font-weight: 400;
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
   }
 
   &__row {
