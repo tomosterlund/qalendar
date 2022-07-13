@@ -106,7 +106,7 @@ data() {
 
 ### Custom colors for events
 
-All events can be given the `color` property with any of the given values `'blue' | 'green' | 'yellow' | 'red'`. However, you can also pass further color schemes in the `config` object, which the events can then utilize, such as:
+All events can be given the `color` property with any of the given object properties of `EVENT_COLORS` in [this file](https://github.com/tomosterlund/qalendar/blob/master/src/constants.ts). However, you can also pass further color schemes in the `config` object, which the events can then utilize, such as:
 
 ```js
 data() {
