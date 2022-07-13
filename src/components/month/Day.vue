@@ -160,6 +160,7 @@ export default defineComponent({
   border-right: var(--qalendar-border-gray-thin);
   border-bottom: var(--qalendar-border-gray-thin);
   overflow: hidden;
+  transition: background-color 0.2s ease-in-out;
 
   &.is-droppable {
     background-color: var(--qalendar-light-gray);
