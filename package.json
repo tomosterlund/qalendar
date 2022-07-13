@@ -42,7 +42,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.0-5"
   },
   "devDependencies": {
-    "@babel/types": "7.18.7",
+    "@babel/types": "7.18.8",
     "@commitlint/cli": "17.0.3",
     "@commitlint/config-conventional": "17.0.3",
     "@rushstack/eslint-patch": "1.1.4",
@@ -56,19 +56,19 @@
     "cypress": "10.3.0",
     "eslint": "8.19.0",
     "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-vue": "9.1.1",
+    "eslint-plugin-vue": "9.2.0",
     "husky": "8.0.1",
     "jsdom": "20.0.0",
     "prettier": "2.7.1",
     "sass": "1.53.0",
     "start-server-and-test": "1.14.0",
     "typescript": "4.7.4",
-    "vite": "2.9.13",
+    "vite": "2.9.14",
     "vitepress": "0.22.4",
-    "vitest": "0.17.0",
+    "vitest": "0.18.0",
     "vue": "^3.0.0",
-    "vue-router": "4.1.1",
-    "vue-tsc": "0.38.2"
+    "vue-router": "4.1.2",
+    "vue-tsc": "0.38.5"
   },
   "keywords": [
     "calendar",
