@@ -48,7 +48,7 @@
     "@rushstack/eslint-patch": "1.1.4",
     "@types/jsdom": "16.2.14",
     "@types/node": "16.11.43",
-    "@vitejs/plugin-vue": "2.3.3",
+    "@vitejs/plugin-vue": "3.0.1",
     "@vue/eslint-config-prettier": "7.0.0",
     "@vue/eslint-config-typescript": "11.0.0",
     "@vue/test-utils": "2.0.2",
