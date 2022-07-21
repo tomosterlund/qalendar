@@ -15,6 +15,8 @@
     "@fortawesome/free-regular-svg-icons",
     "@fortawesome/free-solid-svg-icons",
     "@fortawesome/vue-fontawesome",
+    "vite",
+    "@vitejs/plugin-vue",
     "vue"
   ],
   "ignorePaths": ["**/.circleci/**", "docker-compose.yml"]
