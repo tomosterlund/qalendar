@@ -79,10 +79,11 @@
               day.getMonth() !== datePickerCurrentDate.getMonth(),
             'has-day': day,
             'is-today': time.dateIsToday(day),
+            'is-disabled': checkIfDateIsDisabled(day),
           }"
-          @click="setWeek(day)"
+          @click="!checkIfDateIsDisabled(day) ? setWeek(day) : null"
         >
-          {{ day ? new Date(day).getDate() : '' }}
+          {{ day ? day.getDate() : '' }}
         </span>
       </div>
 
@@ -116,6 +117,11 @@ import Time, {
 import { periodInterface } from '../../typings/interfaces/period.interface';
 import { modeType } from '../../typings/types';
 
+interface disableDates {
+  before: Date;
+  after: Date;
+}
+
 export default defineComponent({
   name: 'DatePicker',
 
@@ -134,12 +140,6 @@ export default defineComponent({
       type: Object as PropType<periodInterface>,
       default: null,
     },
-
-    /** For usage of the component as a standalone component, outside Qalendar */
-    locale: {
-      type: String,
-      default: '',
-    },
     firstDayOfWeek: {
       type: String as PropType<'sunday' | 'monday'>,
       default: '',
@@ -148,6 +148,17 @@ export default defineComponent({
       type: Date,
       default: new Date(),
     },
+
+    /** For usage of the component as a stand-alone component, outside Qalendar */
+    locale: {
+      type: String,
+      default: '',
+    },
+    disableDates: {
+      type: Object as PropType<disableDates>,
+      default: null,
+    },
+    /** End of props for stand-alone component  */
   },
 
   emits: ['updated'],
@@ -405,6 +416,13 @@ export default defineComponent({
       this.setMonthDaysInWeekPicker(date.getMonth(), date.getFullYear());
       this.setWeek(date, true);
     },
+
+    checkIfDateIsDisabled(date: Date) {
+      if (!this.disableDates) return false;
+      if (date.getTime() < this.disableDates.before.getTime()) return true;
+
+      return date.getTime() > this.disableDates.after.getTime();
+    },
   },
 });
 </script>
@@ -557,6 +575,11 @@ export default defineComponent({
 
       &.is-not-in-month {
         color: darkgray;
+      }
+
+      &.is-disabled {
+        color: darkgray;
+        cursor: not-allowed;
       }
     }
   }

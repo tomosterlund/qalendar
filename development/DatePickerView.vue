@@ -2,7 +2,8 @@
   <div class="date-picker-parent">
     <DatePicker
       locale="de-DE"
-      first-day-of-week="sunday"
+      first-day-of-week="monday"
+      :disable-dates="disableDates"
       @updated="updateDate"
     />
   </div>
@@ -16,6 +17,15 @@ export default defineComponent({
   name: 'DatePickerApp',
 
   components: { DatePicker },
+
+  data() {
+    return {
+      disableDates: {
+        before: new Date(2022, 6, 18),
+        after: new Date(2022, 6, 24),
+      }
+    };
+  },
 
   methods: {
     updateDate(payload: { year: number; month: number; date: number }) {
