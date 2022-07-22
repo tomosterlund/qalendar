@@ -4,4 +4,5 @@
 npm run lint
 git add .
 vitest run
+npm run test:e2e:ci
 npm run build
