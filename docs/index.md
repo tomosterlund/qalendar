@@ -159,18 +159,20 @@ data() {
 
 A calendar event can have the following properties:
 
-|   Property    |       type / accepted values       | Required |                                                                |
-|:-------------:|:----------------------------------:|:--------:|:--------------------------------------------------------------:|
-|     `id`      |           string, number           |   yes    |                                                                |
-|    `title`    |               string               |   yes    |                                                                |
-|    `time`     |     eventTime (see type below)     |   yes    |                                                                |
-|    `topic`    |               string               |    no    |                                                                |
-| `description` |            string/html             |    no    | HTML content can be anything that can be descendant of a p-tag |
-|  `location`   |               string               |    no    |                                                                |
-|    `with`     |               string               |    no    |                                                                |
-|    `color`    | 'blue', 'yellow', 'green' or 'red' |    no    |                                                                |
-| `colorScheme` |               string               |    no    |                       overwrites 'color'                       |
-| `isEditable`  |              boolean               |    no    |         Yields icons for editing and deleting an event         |
+|    Property     |                  type / accepted values                  | Required |                                                                |
+|:---------------:|:--------------------------------------------------------:|:--------:|:--------------------------------------------------------------:|
+|      `id`       |                      string, number                      |   yes    |                                                                |
+|     `title`     |                          string                          |   yes    |                                                                |
+|     `time`      |                eventTime (see type below)                |   yes    |                                                                |
+|     `topic`     |                          string                          |    no    |                                                                |
+|  `description`  |                       string/html                        |    no    | HTML content can be anything that can be descendant of a p-tag |
+|   `location`    |                          string                          |    no    |                                                                |
+|     `with`      |                          string                          |    no    |                                                                |
+|     `color`     |            'blue', 'yellow', 'green' or 'red'            |    no    |                                                                |
+|  `colorScheme`  |                          string                          |    no    |                       overwrites 'color'                       |
+|  `isEditable`   |                         boolean                          |    no    |         Yields icons for editing and deleting an event         |
+|  `disableDnD`   | array of strings - accepts values 'month', 'week', 'day' |    no    |    Disable drag & drop for an event in the specified modes     |
+| `disableResize` |     array of strings - accepts values 'week', 'day'      |    no    |      Disable resizing for an event in the specified modes      |
 
 ```ts
 type eventTime = { start: string; end: string };
@@ -300,7 +302,13 @@ The date picker from the Qalendar-header, can also be used as a stand-alone comp
 
 ```vue
 <template>
-  <DatePicker locale="en-US" firstDayOfWeek="sunday" @updated="handleUpdate" />
+  <DatePicker
+    locale="en-US"
+    firstDayOfWeek="sunday"
+    :disable-dates="disableDates"
+    :default-date="new Date(2022, 5, 1)"
+    @updated="handleUpdate"
+  />
 </template>
 
 <script>
@@ -308,6 +316,16 @@ import { DatePicker } from "qalendar";
 
 export default {
   components: { DatePicker },
+
+  data() {
+    return {
+      // Disables the user from selecting dates other than in June 2022
+      disableDates: {
+        before: new Date(2022, 5, 1),
+        after: new Date(2022, 5, 31),
+      },
+    };
+  },
 
   methods: {
     handleUpdate(payload) {
@@ -318,7 +336,12 @@ export default {
 </script>
 ```
 
-<DatePicker locale="en-US" first-day-of-week="sunday"  />
+<DatePicker
+  locale="en-US"
+  first-day-of-week="sunday"
+  :disable-dates="{ before: new Date(2022, 5, 1), after: new Date(2022, 5, 31) }"
+  :default-date="new Date(2022, 5, 1)"
+/>
 
 The DatePicker component emits one event, `updated`, the payload of which can be spread into three variables: `year`, `month` and `date`, see example above.
 
@@ -329,6 +352,14 @@ The DatePicker component emits one event, `updated`, the payload of which can be
 |      `locale`       |         string         |   yes    |
 | `first-day-of-week` |  `sunday` or `monday`  |   yes    |
 |   `default-date`    |          Date          |    no    |
+|   `disable-dates`   |    disableDatesType    |    no    |
+
+```ts
+type disableDatesType = {
+  before: Date,
+  after: Date,
+}
+```
 
 <script setup>
 import Qalendar from '../src/Qalendar.vue';

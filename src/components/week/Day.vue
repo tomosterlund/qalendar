@@ -8,6 +8,7 @@
       :time="time"
       :config="config"
       :day-info="dayInfo"
+      :mode="mode"
       @event-was-clicked="$emit('event-was-clicked', $event)"
       @event-was-dragged="$emit('event-was-dragged', $event)"
       @event-was-resized="handleEventWasResized"
@@ -23,6 +24,7 @@ import EventConcurrency from '../../helpers/EventConcurrency';
 import { eventInterface } from '../../typings/interfaces/event.interface';
 import Time from '../../helpers/Time';
 import { configInterface } from '../../typings/config.interface';
+import { modeType } from '../../typings/types';
 const eventConcurrencyHelper = new EventConcurrency();
 
 export default defineComponent({
@@ -45,6 +47,10 @@ export default defineComponent({
     },
     dayInfo: {
       type: Object as PropType<{ daysTotalN: number; thisDayIndex: number }>,
+      required: true,
+    },
+    mode: {
+      type: String as PropType<modeType>,
       required: true,
     },
   },

@@ -94,7 +94,13 @@ export default defineComponent({
         startMonth === endMonth &&
         startDate === endDate;
 
-      return this.calendarEvent.isEditable && eventIsSingleDay
+      const dragAndDropIsDisabled =
+        this.calendarEvent.disableDnD &&
+        this.calendarEvent.disableDnD.includes('month');
+
+      return this.calendarEvent.isEditable &&
+        eventIsSingleDay &&
+        !dragAndDropIsDisabled
         ? true
         : undefined;
     },

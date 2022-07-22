@@ -23,6 +23,7 @@
           :time="time"
           :config="config"
           :day-info="{ daysTotalN: days.length, thisDayIndex: dayIndex }"
+          :mode="mode"
           @event-was-clicked="handleClickOnEvent"
           @event-was-resized="$emit('event-was-resized', $event)"
           @event-was-dragged="handleEventWasDragged"

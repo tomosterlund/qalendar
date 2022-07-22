@@ -79,10 +79,11 @@
               day.getMonth() !== datePickerCurrentDate.getMonth(),
             'has-day': day,
             'is-today': time.dateIsToday(day),
+            'is-disabled': checkIfDateIsDisabled(day),
           }"
-          @click="setWeek(day)"
+          @click="!checkIfDateIsDisabled(day) ? setWeek(day) : null"
         >
-          {{ day ? new Date(day).getDate() : '' }}
+          {{ day ? day.getDate() : '' }}
         </span>
       </div>
 
@@ -116,6 +117,11 @@ import Time, {
 import { periodInterface } from '../../typings/interfaces/period.interface';
 import { modeType } from '../../typings/types';
 
+interface disableDates {
+  before: Date;
+  after: Date;
+}
+
 export default defineComponent({
   name: 'DatePicker',
 
@@ -134,12 +140,6 @@ export default defineComponent({
       type: Object as PropType<periodInterface>,
       default: null,
     },
-
-    /** For usage of the component as a standalone component, outside Qalendar */
-    locale: {
-      type: String,
-      default: '',
-    },
     firstDayOfWeek: {
       type: String as PropType<'sunday' | 'monday'>,
       default: '',
@@ -148,6 +148,17 @@ export default defineComponent({
       type: Date,
       default: new Date(),
     },
+
+    /** For usage of the component as a stand-alone component, outside Qalendar */
+    locale: {
+      type: String,
+      default: '',
+    },
+    disableDates: {
+      type: Object as PropType<disableDates>,
+      default: null,
+    },
+    /** End of props for stand-alone component  */
   },
 
   emits: ['updated'],
@@ -173,7 +184,8 @@ export default defineComponent({
        * This should not change as the user browses in the date picker, only when the user
        * PICKS a date in the date picker
        * */
-      datePickerCurrentDate: this.periodProp?.selectedDate || new Date(),
+      datePickerCurrentDate:
+        this.periodProp?.selectedDate || this.defaultDate || new Date(),
       selectedDate: this.periodProp?.selectedDate || new Date(),
       datePickerMode: 'month' as 'month' | 'year',
       weekDays: [] as calendarWeekType, // Used only for printing week day names,
@@ -211,7 +223,7 @@ export default defineComponent({
   },
 
   mounted() {
-    this.hydrateDatePicker();
+    this.hydrateDatePicker(true);
   },
 
   methods: {
@@ -235,7 +247,8 @@ export default defineComponent({
     },
 
     setWeek(date: Date, isOnMountHook = false) {
-      this.datePickerCurrentDate = date;
+      if (!isOnMountHook) this.datePickerCurrentDate = date;
+
       const currentWeek = this.time.getCalendarWeekDateObjects(date);
       this.weekDays = currentWeek;
       const start = currentWeek[0];
@@ -400,10 +413,19 @@ export default defineComponent({
         setTimeout(() => (this.showDatePicker = false), 100);
     },
 
-    hydrateDatePicker() {
-      const date = this.selectedDate;
+    hydrateDatePicker(isOnMountHook = false) {
+      const date = isOnMountHook
+        ? this.datePickerCurrentDate
+        : this.selectedDate;
       this.setMonthDaysInWeekPicker(date.getMonth(), date.getFullYear());
-      this.setWeek(date, true);
+      this.setWeek(date, isOnMountHook);
+    },
+
+    checkIfDateIsDisabled(date: Date) {
+      if (!this.disableDates) return false;
+      if (date.getTime() < this.disableDates.before.getTime()) return true;
+
+      return date.getTime() > this.disableDates.after.getTime();
     },
   },
 });
@@ -557,6 +579,11 @@ export default defineComponent({
 
       &.is-not-in-month {
         color: darkgray;
+      }
+
+      &.is-disabled {
+        color: darkgray;
+        cursor: not-allowed;
       }
     }
   }
