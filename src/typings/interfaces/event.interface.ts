@@ -14,7 +14,7 @@ export interface eventInterface {
   color?: "blue" | "yellow" | "green" | "red"; // Says 'color', but represents CSS-Property background-color
   isEditable?: boolean; // If true, the event has delete- and edit icons in Event-Flyout. Can also be dragged and dropped.
   disableDnD?: modeType[]; // Disable Drag and Drop for this event, in the modes specified
-  disableResize?: 'day' | 'week' []; // Disable Resize for this event, in the modes specified
+  disableResize?: modeType[]; // Disable Resize for this event, in the modes specified
 
   // These are properties that should never be fed into the editor
   // Instead, they are assigned to events, in order to for example position/style them correctly

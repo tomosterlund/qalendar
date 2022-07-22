@@ -17,7 +17,7 @@
       zIndex: eventZIndexValue,
     }"
     @click="handleClickOnEvent"
-    @mouseenter="showResizeElements = isEditable"
+    @mouseenter="showResizeElements = isEditable && !hasDisabledResize"
     @mouseleave="showResizeElements = false"
     @mousedown="handleMouseDown"
   >
@@ -228,9 +228,16 @@ export default defineComponent({
     },
 
     hasDisabledDragAndDrop() {
-      return (
+      return !!(
         this.eventProp.disableDnD &&
         this.eventProp.disableDnD.includes(this.mode)
+      );
+    },
+
+    hasDisabledResize() {
+      return !!(
+        this.eventProp.disableResize &&
+        this.eventProp.disableResize.includes(this.mode)
       );
     },
   },

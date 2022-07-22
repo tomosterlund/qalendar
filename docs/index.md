@@ -159,18 +159,20 @@ data() {
 
 A calendar event can have the following properties:
 
-|   Property    |       type / accepted values       | Required |                                                                |
-|:-------------:|:----------------------------------:|:--------:|:--------------------------------------------------------------:|
-|     `id`      |           string, number           |   yes    |                                                                |
-|    `title`    |               string               |   yes    |                                                                |
-|    `time`     |     eventTime (see type below)     |   yes    |                                                                |
-|    `topic`    |               string               |    no    |                                                                |
-| `description` |            string/html             |    no    | HTML content can be anything that can be descendant of a p-tag |
-|  `location`   |               string               |    no    |                                                                |
-|    `with`     |               string               |    no    |                                                                |
-|    `color`    | 'blue', 'yellow', 'green' or 'red' |    no    |                                                                |
-| `colorScheme` |               string               |    no    |                       overwrites 'color'                       |
-| `isEditable`  |              boolean               |    no    |         Yields icons for editing and deleting an event         |
+|    Property     |                  type / accepted values                  | Required |                                                                |
+|:---------------:|:--------------------------------------------------------:|:--------:|:--------------------------------------------------------------:|
+|      `id`       |                      string, number                      |   yes    |                                                                |
+|     `title`     |                          string                          |   yes    |                                                                |
+|     `time`      |                eventTime (see type below)                |   yes    |                                                                |
+|     `topic`     |                          string                          |    no    |                                                                |
+|  `description`  |                       string/html                        |    no    | HTML content can be anything that can be descendant of a p-tag |
+|   `location`    |                          string                          |    no    |                                                                |
+|     `with`      |                          string                          |    no    |                                                                |
+|     `color`     |            'blue', 'yellow', 'green' or 'red'            |    no    |                                                                |
+|  `colorScheme`  |                          string                          |    no    |                       overwrites 'color'                       |
+|  `isEditable`   |                         boolean                          |    no    |         Yields icons for editing and deleting an event         |
+|  `disableDnD`   | array of strings - accepts values 'month', 'week', 'day' |    no    |    Disable drag & drop for an event in the specified modes     |
+| `disableResize` |     array of strings - accepts values 'week', 'day'      |    no    |      Disable resizing for an event in the specified modes      |
 
 ```ts
 type eventTime = { start: string; end: string };
