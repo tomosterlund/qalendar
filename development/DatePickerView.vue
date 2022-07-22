@@ -4,6 +4,7 @@
       locale="de-DE"
       first-day-of-week="monday"
       :disable-dates="disableDates"
+      :default-date="new Date(2022, 4, 1)"
       @updated="updateDate"
     />
   </div>
@@ -21,8 +22,8 @@ export default defineComponent({
   data() {
     return {
       disableDates: {
-        before: new Date(2022, 6, 1),
-        after: new Date(2022, 6, 31),
+        before: new Date(2022, 4, 1),
+        after: new Date(2022, 4, 31),
       }
     };
   },

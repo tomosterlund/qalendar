@@ -184,7 +184,8 @@ export default defineComponent({
        * This should not change as the user browses in the date picker, only when the user
        * PICKS a date in the date picker
        * */
-      datePickerCurrentDate: this.periodProp?.selectedDate || new Date(),
+      datePickerCurrentDate:
+        this.periodProp?.selectedDate || this.defaultDate || new Date(),
       selectedDate: this.periodProp?.selectedDate || new Date(),
       datePickerMode: 'month' as 'month' | 'year',
       weekDays: [] as calendarWeekType, // Used only for printing week day names,
@@ -222,7 +223,7 @@ export default defineComponent({
   },
 
   mounted() {
-    this.hydrateDatePicker();
+    this.hydrateDatePicker(true);
   },
 
   methods: {
@@ -246,7 +247,8 @@ export default defineComponent({
     },
 
     setWeek(date: Date, isOnMountHook = false) {
-      this.datePickerCurrentDate = date;
+      if (!isOnMountHook) this.datePickerCurrentDate = date;
+
       const currentWeek = this.time.getCalendarWeekDateObjects(date);
       this.weekDays = currentWeek;
       const start = currentWeek[0];
@@ -411,10 +413,12 @@ export default defineComponent({
         setTimeout(() => (this.showDatePicker = false), 100);
     },
 
-    hydrateDatePicker() {
-      const date = this.selectedDate;
+    hydrateDatePicker(isOnMountHook = false) {
+      const date = isOnMountHook
+        ? this.datePickerCurrentDate
+        : this.selectedDate;
       this.setMonthDaysInWeekPicker(date.getMonth(), date.getFullYear());
-      this.setWeek(date, true);
+      this.setWeek(date, isOnMountHook);
     },
 
     checkIfDateIsDisabled(date: Date) {
