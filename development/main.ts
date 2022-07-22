@@ -7,6 +7,8 @@ import CypressSmoke from './cypress/CypressSmoke.vue'
 import FiveDayWeek from './cypress/FiveDayWeek.vue'
 import DragAndDrop from './cypress/DragAndDrop.vue'
 import DragAndDropMonth from './cypress/DragAndDropMonth.vue'
+import ConfigureDatePicker from './cypress/ConfigureDatePicker.vue'
+import DisableDragAndDropForEvent from './cypress/DisableDragAndDropForEvent.vue'
 
 const routes = [
   { path: "/", component: QalendarView },
@@ -17,6 +19,8 @@ const routes = [
   { path: "/cypress/five-day-week", component: FiveDayWeek },
   { path: "/cypress/drag-and-drop", component: DragAndDrop },
   { path: "/cypress/drag-and-drop-month", component: DragAndDropMonth },
+  { path: "/cypress/configure-date-picker", component: ConfigureDatePicker },
+  { path: "/cypress/disable-dnd", component: DisableDragAndDropForEvent },
 ];
 
 const router = createRouter({

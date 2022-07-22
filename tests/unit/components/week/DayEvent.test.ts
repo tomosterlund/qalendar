@@ -9,7 +9,8 @@ const dayEvent = mountComponent(mount, DayEvent)
 describe("DayEvent.vue", () => {
   const propsForAllTests = {
     time: new Time("sunday", "en-US"),
-    dayInfo: { daysTotalN: 7, thisDayIndex: 1 }
+    dayInfo: { daysTotalN: 7, thisDayIndex: 1 },
+    mode: 'week',
   }
 
   test("Displaying the texts fed as props", () => {

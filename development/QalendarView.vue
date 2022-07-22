@@ -27,6 +27,7 @@
       @selected-n-days="config.week.nDays = $event"
     />
   </div>
+
 </template>
 
 <script lang="ts">

@@ -21,8 +21,8 @@ export default defineComponent({
   data() {
     return {
       disableDates: {
-        before: new Date(2022, 6, 18),
-        after: new Date(2022, 6, 24),
+        before: new Date(2022, 6, 1),
+        after: new Date(2022, 6, 31),
       }
     };
   },

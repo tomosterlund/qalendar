@@ -10,6 +10,7 @@ describe("Day.vue", () => {
     dayInfo: { daysTotalN: 7, thisDayIndex: 1 },
     config: {},
     time: new Time("sunday", "en-US"),
+    mode: 'week',
   }
 
   let wrapper = day({

@@ -1,7 +1,10 @@
 <template>
   <div
     class="calendar-week__event"
-    :class="`${isEditable ? 'is-editable' : 'is-not-editable'}`"
+    :class="{
+      'is-editable': isEditable,
+      'has-disabled-dnd': hasDisabledDragAndDrop,
+    }"
     :style="{
       top: getPositionInDay(event.time.start),
       height: getLengthOfEvent(event.time.start, event.time.end),
@@ -100,6 +103,7 @@ import { configInterface } from '../../typings/config.interface';
 import { EVENT_COLORS } from '../../constants';
 const eventPositionHelper = new EventPosition();
 import DragAndDrop from '../../helpers/DragAndDrop';
+import { modeType } from '../../typings/types';
 
 export default defineComponent({
   name: 'DayEvent',
@@ -123,6 +127,10 @@ export default defineComponent({
     },
     dayInfo: {
       type: Object as PropType<{ daysTotalN: number; thisDayIndex: number }>,
+      required: true,
+    },
+    mode: {
+      type: String as PropType<modeType>,
       required: true,
     },
   },
@@ -217,6 +225,13 @@ export default defineComponent({
       const endDateMS = new Date(0, 0, 0, endHour, endMinutes).getTime();
 
       return endDateMS - startDateMS >= 1800000;
+    },
+
+    hasDisabledDragAndDrop() {
+      return (
+        this.eventProp.disableDnD &&
+        this.eventProp.disableDnD.includes(this.mode)
+      );
     },
   },
 
@@ -501,7 +516,7 @@ export default defineComponent({
 
     handleMouseDown(mouseEvent: MouseEvent) {
       // Do not allow drag & drop, if event is not editable
-      if (!this.event.isEditable) return;
+      if (!this.event.isEditable || this.hasDisabledDragAndDrop) return;
 
       this.canDrag = true;
       this.eventZIndexValue = 10;
@@ -586,6 +601,10 @@ export default defineComponent({
 
   &.is-editable {
     cursor: grab;
+  }
+
+  &.has-disabled-dnd {
+    cursor: initial;
   }
 
   .calendar-week__event-row {
