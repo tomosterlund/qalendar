@@ -5,6 +5,7 @@ orbs:
   # import Cypress orb by specifying an exact version x.y.z
   # or the latest version 1.x.x using "@1" syntax
   cypress: cypress-io/cypress@2.0.0
+  node: circleci/node@5.0.0
 
 jobs:
   test_london:
@@ -57,6 +58,14 @@ jobs:
       - run:
           name: Build
           command: npm run build
+  release:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages # Install and automatically cache packages
+      # Run optional required steps before releasing
+      # - run: npm run build-script
+      - run: npx semantic-release
 
 workflows:
   test_unit:
@@ -71,3 +80,5 @@ workflows:
   run_build:
     jobs:
       - run_build
+      - release:
+                requires: ['test_unit', 'test_e2e']
