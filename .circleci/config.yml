@@ -21,9 +21,6 @@ jobs:
           command: npx vitest run --silent
     environment:
       TZ: "Europe/London"
-    filters:
-      branches:
-        ignore: master
   test_mountain_view:
     docker:
       - image: cimg/node:17.2.0
@@ -37,9 +34,6 @@ jobs:
           command: npx vitest run --silent
     environment:
       TZ: "US/Pacific"
-    filters:
-      branches:
-        ignore: master
   test_tokyo:
     docker:
       - image: cimg/node:17.2.0
@@ -53,9 +47,6 @@ jobs:
           command: npx vitest run --silent
     environment:
       TZ: "Asia/Tokyo"
-    filters:
-      branches:
-        ignore: master
   run_build:
     docker:
       - image: cimg/node:17.2.0
@@ -67,9 +58,6 @@ jobs:
       - run:
           name: Build
           command: npm run build
-    filters:
-      branches:
-        ignore: master
   release:
     executor: node/default
     steps:
@@ -103,13 +91,28 @@ workflows:
       - test_london
       - test_mountain_view
       - test_tokyo
+    triggers:
+      - schedule:
+          filters:
+            ignore:
+              - master
   test_e2e:
     jobs:
       - cypress/run:
           start: npm run dev
+    triggers:
+      - schedule:
+          filters:
+            ignore:
+              - master
   run_build:
     jobs:
       - run_build
+    triggers:
+      - schedule:
+          filters:
+            ignore:
+              - master
   test_and_release:
     jobs:
       - release
