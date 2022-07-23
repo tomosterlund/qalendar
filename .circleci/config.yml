@@ -21,6 +21,10 @@ jobs:
           command: npx vitest run --silent
     environment:
       TZ: "Europe/London"
+    filters:
+      branches:
+        ignore:
+          - master
   test_mountain_view:
     docker:
       - image: cimg/node:17.2.0
@@ -34,6 +38,10 @@ jobs:
           command: npx vitest run --silent
     environment:
       TZ: "US/Pacific"
+    filters:
+      branches:
+        ignore:
+          - master
   test_tokyo:
     docker:
       - image: cimg/node:17.2.0
@@ -47,6 +55,10 @@ jobs:
           command: npx vitest run --silent
     environment:
       TZ: "Asia/Tokyo"
+    filters:
+      branches:
+        ignore:
+          - master
   run_build:
     docker:
       - image: cimg/node:17.2.0
@@ -58,13 +70,19 @@ jobs:
       - run:
           name: Build
           command: npm run build
+    filters:
+      branches:
+        ignore:
+          - master
   release:
     executor: node/default
     steps:
         - checkout
         - node/install-packages # Install and automatically cache packages
-        # Run optional required steps before releasing
-        # - run: npm run build-script
+        - release:
+            environment:
+              GITHUB_TOKEN: $GH_TOKEN
+              NPM_TOKEN: $NPM_TOKEN
         - run: npx semantic-release
       # - name: Checkout
       #   uses: actions/checkout@v3
