@@ -63,9 +63,25 @@ jobs:
     steps:
       - checkout
       - node/install-packages # Install and automatically cache packages
-      # Run optional required steps before releasing
-      # - run: npm run build-script
-      - run: npx semantic-release
+
+      // GitHub Actions workflow, needs to translate to CircleCI
+      // Furthermore, it must be ensured that this only runs when main is pushed.
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: $GH_TOKEN
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Release
+        env:
+          GITHUB_TOKEN: $GH_TOKEN
+          NPM_TOKEN: $NPM_TOKEN
+        run: npx semantic-release
 
 workflows:
   test_unit:
@@ -80,5 +96,7 @@ workflows:
   run_build:
     jobs:
       - run_build
+  test_and_release:
+    jobs:
       - release:
-                requires: ['test_unit', 'test_e2e']
+         requires: ['test_unit', 'test_e2e']
