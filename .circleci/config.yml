@@ -98,5 +98,4 @@ workflows:
       - run_build
   test_and_release:
     jobs:
-      - release:
-         requires: ['test_london', 'test_mountain_view', 'test_tokyo', 'cypress/run', 'run_build']
+      - release
