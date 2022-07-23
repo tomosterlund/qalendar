@@ -99,4 +99,4 @@ workflows:
   test_and_release:
     jobs:
       - release:
-         requires: ['test_unit', 'test_e2e', 'run_build']
+         requires: ['test_london', 'test_mountain_view', 'test_tokyo', 'cypress/run', 'run_build']
