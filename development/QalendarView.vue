@@ -54,7 +54,7 @@ export default defineComponent({
       config: {
         week: {
           startsOn: 'monday',
-          nDays: 7,
+          nDays: 5,
         },
         locale: 'de-DE',
         style: {
@@ -72,6 +72,10 @@ export default defineComponent({
         },
         defaultMode: 'week',
         // isSilent: true,
+        dayIntervals: {
+          height: 40,
+          length: 30,
+        }
       } as configInterface,
       events: [] as eventInterface[],
 

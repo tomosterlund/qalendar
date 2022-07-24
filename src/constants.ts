@@ -1,5 +1,3 @@
-export const WEEK_HEIGHT = 1200;
-
 export const EVENT_COLORS = {
   yellow: "rgb(244, 180, 0)",
   blue: "rgba(38, 132, 255, 0.9)",

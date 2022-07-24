@@ -29,6 +29,12 @@ describe("Day.vue", () => {
         ],
       },
       config: {},
+      dayIntervals: {
+        length: 15,
+        height: 15,
+      },
+      mode: 'week',
+      dayInfo: { daysTotalN: 7, thisDayIndex: 1 },
     },
   });
 

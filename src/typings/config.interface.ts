@@ -33,6 +33,13 @@ export interface colorSchemes {
   [key: string]: colorScheme;
 }
 
+export type intervalLengthType = 15 | 30 | 60;
+
+export type dayIntervalsType = {
+  length: intervalLengthType;
+  height: number;
+}
+
 export interface configInterface {
   locale?: string;
   week?: {
@@ -46,4 +53,9 @@ export interface configInterface {
   };
   defaultMode?: modeType;
   isSilent?: boolean;
+
+  // Lets the implementer define:
+  // a) length in time, of clickable intervals in a day
+  // b) the height of each individual interval
+  dayIntervals: dayIntervalsType;
 }

@@ -13,6 +13,8 @@
       @event-was-dragged="$emit('event-was-dragged', $event)"
       @event-was-resized="handleEventWasResized"
     />
+
+    <div v-if="dayIntervals"></div>
   </div>
 </template>
 
@@ -23,7 +25,10 @@ import DayEvent from './DayEvent.vue';
 import EventConcurrency from '../../helpers/EventConcurrency';
 import { eventInterface } from '../../typings/interfaces/event.interface';
 import Time from '../../helpers/Time';
-import { configInterface } from '../../typings/config.interface';
+import {
+  configInterface,
+  dayIntervalsType,
+} from '../../typings/config.interface';
 import { modeType } from '../../typings/types';
 const eventConcurrencyHelper = new EventConcurrency();
 
@@ -51,6 +56,10 @@ export default defineComponent({
     },
     mode: {
       type: String as PropType<modeType>,
+      required: true,
+    },
+    dayIntervals: {
+      type: Object as PropType<dayIntervalsType>,
       required: true,
     },
   },
@@ -94,6 +103,9 @@ export default defineComponent({
 
   &:not(:last-child) {
     border-right: 1px dashed rgb(224, 224, 224);
+  }
+
+  .calendar-week__day-interval {
   }
 }
 </style>
