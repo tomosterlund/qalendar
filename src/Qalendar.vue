@@ -37,6 +37,7 @@
         @event-was-dragged="handleEventWasUpdated($event, 'dragged')"
         @edit-event="$emit('edit-event', $event)"
         @delete-event="$emit('delete-event', $event)"
+        @interval-was-clicked="$emit('interval-was-clicked', $event)"
       />
 
       <Month
@@ -103,6 +104,7 @@ export default defineComponent({
     'updated-mode',
     'edit-event',
     'delete-event',
+    'interval-was-clicked',
   ],
 
   data() {

@@ -18,6 +18,7 @@
         @edit-event="editEvent"
         @delete-event="deleteEvent"
         @event-was-dragged="handleEventWasDragged"
+        @interval-was-clicked="handleIntervalWasClicked"
       />
     </main>
 
@@ -55,6 +56,7 @@ export default defineComponent({
         week: {
           startsOn: 'monday',
           nDays: 5,
+          // scrollToHour: 6,
         },
         locale: 'de-DE',
         style: {
@@ -71,10 +73,11 @@ export default defineComponent({
           },
         },
         defaultMode: 'week',
-        // isSilent: true,
+        isSilent: true,
         dayIntervals: {
-          height: 40,
-          length: 30,
+          height: 50,
+          length: 12,
+          displayClickableInterval: true,
         }
       } as configInterface,
       events: [] as eventInterface[],
@@ -117,6 +120,11 @@ export default defineComponent({
 
     handleEventWasDragged(e) {
       console.log('event was dragged')
+      console.log(e)
+    },
+
+    handleIntervalWasClicked(e) {
+      console.log('interval was clicked')
       console.log(e)
     }
   },
