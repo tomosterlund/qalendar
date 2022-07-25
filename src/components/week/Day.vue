@@ -20,6 +20,7 @@
         :key="interval.intervalStart"
         class="calendar-week__day-interval"
         :class="{ 'has-border': interval.hasBorder }"
+        :style="intervalStyles"
         @click="handleClickOnInterval(interval)"
       >
         {{ time.getLocalizedTime(interval.intervalStart) }}
@@ -90,6 +91,14 @@ export default defineComponent({
         this.day.dateTimeString
       ).getIntervals(),
     };
+  },
+
+  computed: {
+    intervalStyles() {
+      return this.config.dayIntervals?.intervalStyles
+        ? this.config.dayIntervals.intervalStyles
+        : {};
+    },
   },
 
   mounted() {

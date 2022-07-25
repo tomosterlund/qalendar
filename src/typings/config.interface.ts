@@ -43,6 +43,7 @@ export type dayIntervalsType = {
   length?: intervalLengthType;
   height?: number;
   displayClickableInterval?: boolean;
+  intervalStyles: { [key: string]: any };
 }
 
 export interface configInterface {

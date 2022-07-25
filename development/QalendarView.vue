@@ -76,8 +76,13 @@ export default defineComponent({
         isSilent: true,
         dayIntervals: {
           height: 50,
-          length: 12,
+          length: 15,
           displayClickableInterval: true,
+          // intervalStyles: {
+          //   color: '#fff',
+          //   backgroundColor: 'rgba(10, 10, 10, 0.9)',
+          //   borderBottom: '1px dotted #fff',
+          // },
         }
       } as configInterface,
       events: [] as eventInterface[],
