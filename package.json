@@ -46,7 +46,7 @@
     "@commitlint/cli": "17.0.3",
     "@commitlint/config-conventional": "17.0.3",
     "@rushstack/eslint-patch": "1.1.4",
-    "@types/jsdom": "16.2.15",
+    "@types/jsdom": "20.0.0",
     "@types/node": "16.11.46",
     "@vitejs/plugin-vue": "2.3.3",
     "@vue/eslint-config-prettier": "7.0.0",
