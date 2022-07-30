@@ -16,7 +16,7 @@ export const languageKeys = {
     "en-US": "Day",
     "de-DE": "Tag",
     "sv-SE": "Dag",
-    "zh-CN": "标签",
+    "zh-CN": "日",
   },
 
   /** Other keys */
