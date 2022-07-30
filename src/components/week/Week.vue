@@ -13,6 +13,8 @@
       <DayTimeline
         :key="period.start.getTime() + period.end.getTime() + mode"
         :time="time"
+        :day-intervals="dayIntervals"
+        :week-height="weekHeight"
       />
 
       <div class="calendar-week__events">
@@ -24,9 +26,11 @@
           :config="config"
           :day-info="{ daysTotalN: days.length, thisDayIndex: dayIndex }"
           :mode="mode"
+          :day-intervals="dayIntervals"
           @event-was-clicked="handleClickOnEvent"
           @event-was-resized="$emit('event-was-resized', $event)"
           @event-was-dragged="handleEventWasDragged"
+          @interval-was-clicked="$emit('interval-was-clicked', $event)"
         />
       </div>
     </section>
@@ -45,7 +49,10 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { configInterface } from '../../typings/config.interface';
+import {
+  configInterface,
+  dayIntervalsType,
+} from '../../typings/config.interface';
 import DayTimeline from './DayTimeline.vue';
 import { periodInterface } from '../../typings/interfaces/period.interface';
 import { dayInterface } from '../../typings/interfaces/day.interface';
@@ -57,7 +64,6 @@ import Time from '../../helpers/Time';
 import {
   DATE_TIME_STRING_FULL_DAY_PATTERN,
   DATE_TIME_STRING_PATTERN,
-  WEEK_HEIGHT,
 } from '../../constants';
 import EventPosition from '../../helpers/EventPosition';
 import { fullDayEventsWeek } from '../../typings/interfaces/full-day-events-week.type';
@@ -107,6 +113,7 @@ export default defineComponent({
     'event-was-dragged',
     'edit-event',
     'delete-event',
+    'interval-was-clicked',
   ],
 
   data() {
@@ -115,10 +122,14 @@ export default defineComponent({
       mode: this.modeProp as modeType,
       selectedEvent: null as eventInterface | null,
       selectedEventElement: null as any | null,
-      weekHeight: WEEK_HEIGHT + 'px',
       events: this.eventsProp,
       fullDayEvents: [] as fullDayEventsWeek,
       weekVersion: 0, // is simply a dummy value, for re-rendering child components on event-was-dragged
+      dayIntervals: {
+        length: 60,
+        height: 66,
+      } as dayIntervalsType | any,
+      weekHeight: '1584px', // Correlates to the initial values of dayIntervals.length and dayIntervals.height
     };
   },
 
@@ -139,6 +150,7 @@ export default defineComponent({
   },
 
   mounted() {
+    this.setDayIntervals();
     this.filterOutFullDayEvents();
     this.setInitialEvents(this.modeProp);
     this.scrollOnMount();
@@ -301,12 +313,42 @@ export default defineComponent({
       const weekWrapper = document.querySelector('.calendar-week__wrapper');
 
       if (weekWrapper) {
-        const scrollToHourFromConfig = this.config?.week?.scrollToHour;
-        const scrollToHour = scrollToHourFromConfig
-          ? scrollToHourFromConfig * 50
-          : 400; // 400 for 08:00
-        weekWrapper.scroll(0, scrollToHour - 10); // -10 to display the hour in DayTimeline
+        const weekHeight = +this.weekHeight.split('p')[0];
+        const oneHourInPixel = weekHeight / 24;
+        const hourToScrollTo = this.config.week?.scrollToHour || 8;
+        const desiredNumberOfPixelsToScroll = oneHourInPixel * hourToScrollTo;
+        weekWrapper.scroll(0, desiredNumberOfPixelsToScroll - 10); // -10 to display the hour in DayTimeline
       }
+    },
+
+    setDayIntervals() {
+      if (this.config.dayIntervals) {
+        for (const [key, value] of Object.entries(this.config.dayIntervals)) {
+          this.dayIntervals[key] = value;
+        }
+      }
+
+      this.setWeekHeightBasedOnIntervals();
+    },
+
+    setWeekHeightBasedOnIntervals() {
+      // 1. Catch faulty configurations
+      if (![15, 30, 60].includes(this.dayIntervals.length)) {
+        this.dayIntervals.length = 60;
+        this.dayIntervals.height = 66;
+        console.warn(
+          'The dayIntervals configuration is faulty. It has been reset to default values.'
+        );
+      }
+
+      // 2. Set a multiplier, for getting length of an hour based on the interval length
+      let intervalMultiplier = 1;
+      if (this.dayIntervals.length === 15) intervalMultiplier = 4;
+      if (this.dayIntervals.length === 30) intervalMultiplier = 2;
+
+      // 3. Set height of the week based on the number and length of intervals
+      this.weekHeight =
+        this.dayIntervals.height * intervalMultiplier * 24 + 'px';
     },
   },
 });
