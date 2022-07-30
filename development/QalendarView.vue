@@ -56,7 +56,7 @@ export default defineComponent({
         week: {
           startsOn: 'monday',
           nDays: 5,
-          // scrollToHour: 6,
+          scrollToHour: 8,
         },
         locale: 'de-DE',
         style: {

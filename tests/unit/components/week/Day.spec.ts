@@ -32,6 +32,7 @@ describe("Day.vue", () => {
       dayIntervals: {
         length: 15,
         height: 15,
+        displayClickableInterval: true,
       },
       mode: 'week',
       dayInfo: { daysTotalN: 7, thisDayIndex: 1 },
@@ -42,4 +43,19 @@ describe("Day.vue", () => {
     const events = wrapper.findAll(".calendar-week__event");
     expect(events).toHaveLength(3);
   });
+
+  test('Rendering the clickable events', () => {
+    const intervals = wrapper.findAll(".calendar-week__day-interval");
+    // 98 = (15 minute intervals * 4 for an hour) * 24 hours for a day
+    expect(intervals).toHaveLength(96);
+  })
+
+  test('Rendering the clickable events', async () => {
+    expect(wrapper.emitted()).not.toHaveProperty('interval-was-clicked');
+    const firstInterval = wrapper.find(".calendar-week__day-interval");
+    await firstInterval.trigger("click");
+    expect(wrapper.emitted().click).toHaveLength(1);
+    expect(wrapper.emitted()).toHaveProperty('interval-was-clicked');
+    expect(wrapper.emitted('interval-was-clicked')).toEqual([[{ "intervalStart": "2022-05-22 00:00", "intervalEnd": "2022-05-22 00:15" }]]);
+  })
 });
