@@ -1,6 +1,6 @@
 <template>
   <div
-    class="calendar-week__event"
+    class="calendar-week__event is-event"
     :class="{
       'is-editable': isEditable,
       'has-disabled-dnd': hasDisabledDragAndDrop,

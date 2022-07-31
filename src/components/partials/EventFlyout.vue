@@ -293,16 +293,22 @@ export default defineComponent({
     },
 
     listenForClickOutside() {
-      document.addEventListener('click', (e: any) =>
-        this.closeFlyoutOnClickOutside(e)
-      );
+      document.addEventListener('click', this.closeFlyoutOnClickOutside);
     },
 
     closeFlyoutOnClickOutside(e: any) {
-      const flyout = document.querySelector('.event-flyout');
-      if (!flyout || !this.isVisible) return;
+      try {
+        const flyout = document.querySelector('.event-flyout');
+        if (!flyout || !this.isVisible) return;
 
-      if (this.isVisible && !flyout.contains(e.target)) this.closeFlyout();
+        const isClickOutside = !flyout.contains(e.target);
+        const isClickOnEvent = !!e.target.closest('.is-event');
+
+        if (this.isVisible && isClickOutside && !isClickOnEvent)
+          this.closeFlyout();
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 });
