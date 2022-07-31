@@ -6,8 +6,7 @@ name: End-to-end tests
 on: [push]
 
 jobs:
-  cypress-run:
-    name: Cypress run
+  chrome:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout ✅
@@ -16,3 +15,15 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
+  firefox:
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node12.16.1-chrome80-ff73
+      options: --user 1001
+    steps:
+      - name: Checkout ✅
+        uses: actions/checkout@v3
+      - name: E2E on Firefox 🧪
+        uses: cypress-io/github-action@v4
+        with:
+          browser: firefox
