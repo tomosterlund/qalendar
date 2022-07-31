@@ -1,0 +1,22 @@
+name: Tests
+# on:
+#   push:
+#     branches:
+#       - master
+on: [push]
+
+jobs:
+  test_london:
+    name: Test London
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set Timezone
+        uses: szenius/set-timezone@v1.0
+        with:
+          timezone: "Europe/London"
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
