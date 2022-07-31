@@ -22,4 +22,19 @@ describe('FiveDayWeek.vue', () => {
     cy.get('.is-edit-icon').click()
     cy.get('.event-flyout').should('not.be.visible')
   });
+
+  it('Shuts the event flyout on click outside, but not on click inside', () => {
+    // 1. Assert that the event flyout is visible
+    cy.get('.event-flyout').should('not.be.visible')
+    cy.get('.calendar-week__event').first().click()
+    cy.get('.event-flyout').should('be.visible')
+
+    // 2. Click somewhere inside the event flyout, and assert that it is still open
+    cy.get('.event-flyout__info-wrapper').click()
+    cy.get('.event-flyout').should('be.visible')
+
+    // 3. Click somewhere outside the event flyout, and assert that it is now not visible anymore
+    cy.get('.calendar-header').click()
+    cy.get('.event-flyout').should('not.be.visible')
+  })
 })
