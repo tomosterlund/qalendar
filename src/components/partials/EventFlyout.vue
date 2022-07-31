@@ -220,14 +220,24 @@ export default defineComponent({
     calendarEventProp: {
       deep: true,
       handler(value) {
-        this.isVisible = !!value;
-        this.calendarEvent = value;
-
+        // Set the values with a timeout.
+        // Otherwise, the click listener for closing the flyout will believe that the flyout is already open
+        // When it is in fact just being opened
         setTimeout(() => {
+          this.calendarEvent = value;
+          this.isVisible = !!value;
           this.setFlyoutPosition();
-        }, 1);
+        }, 10);
       },
     },
+  },
+
+  mounted() {
+    this.listenForClickOutside();
+  },
+
+  beforeUnmount() {
+    document.removeEventListener('click', this.closeFlyoutOnClickOutside);
   },
 
   methods: {
@@ -280,6 +290,19 @@ export default defineComponent({
           day: 'numeric',
         }
       );
+    },
+
+    listenForClickOutside() {
+      document.addEventListener('click', (e: any) =>
+        this.closeFlyoutOnClickOutside(e)
+      );
+    },
+
+    closeFlyoutOnClickOutside(e: any) {
+      const flyout = document.querySelector('.event-flyout');
+      if (!flyout || !this.isVisible) return;
+
+      if (this.isVisible && !flyout.contains(e.target)) this.closeFlyout();
     },
   },
 });
