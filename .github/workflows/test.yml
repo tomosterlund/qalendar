@@ -24,3 +24,41 @@ jobs:
         run: npm i
       - name: Run Vitest
         run: npx vitest run --silent
+
+  test_mountain_view:
+    name: Test London
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set Timezone
+        uses: szenius/set-timezone@v1.0
+        with:
+          timezone: "US/Pacific"
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+      - name: Install dependencies
+        run: npm i
+      - name: Run Vitest
+        run: npx vitest run --silent
+
+  test_tokyo:
+    name: Test London
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set Timezone
+        uses: szenius/set-timezone@v1.0
+        with:
+          timezone: "Asia/Tokyo"
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+      - name: Install dependencies
+        run: npm i
+      - name: Run Vitest
+        run: npx vitest run --silent
