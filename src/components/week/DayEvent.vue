@@ -54,6 +54,14 @@
         <span>{{ event.with }}</span>
       </div>
 
+      <div v-if="event.topic" class="calendar-week__event-row is-topic">
+        <font-awesome-icon
+          :icon="icons.topic"
+          class="calendar-week__event-icon"
+        />
+        <span>{{ event.topic }}</span>
+      </div>
+
       <div
         v-if="event.description"
         class="calendar-week__event-row is-description"
@@ -96,6 +104,7 @@ import {
   faComment,
   faUser,
   faMapMarkerAlt,
+  faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Time from '../../helpers/Time';
@@ -145,6 +154,7 @@ export default defineComponent({
         user: faUser,
         description: faComment,
         location: faMapMarkerAlt,
+        topic: faQuestionCircle,
       },
       showResizeElements: false,
       eventTransformValue: 'initial',
