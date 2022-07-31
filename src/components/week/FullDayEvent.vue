@@ -2,7 +2,7 @@
   <div
     v-if="scheduleEvent"
     :id="`${eventElementIdPrefix}${scheduleEvent.id}`"
-    class="week-timeline__event"
+    class="week-timeline__event is-event"
     :style="{
       width: eventWidth,
       color: eventColor,

@@ -1,7 +1,7 @@
 <template>
   <div
     :id="elementId"
-    class="calendar-month__event"
+    class="calendar-month__event is-event"
     :class="{ 'is-draggable': elementDraggableAttribute }"
     :draggable="elementDraggableAttribute"
     @dragstart="handleDragStart"

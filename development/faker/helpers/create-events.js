@@ -6,6 +6,7 @@ const names = require("../event-properties/names");
 const colors = require("../event-properties/color");
 const descriptions = require("../event-properties/descriptions");
 const locations = require("../event-properties/locations");
+const topics = require("../event-properties/topics");
 
 const createEvents = (monthArg = null) => {
   const events = [];
@@ -32,6 +33,8 @@ const createEvents = (monthArg = null) => {
       event.description = getRandomElementInArray(descriptions);
     if (Math.random() < 0.5)
       event.location = getRandomElementInArray(locations);
+    if (Math.random() < 0.4)
+      event.topic = getRandomElementInArray(topics);
 
     events.push(event);
   }
