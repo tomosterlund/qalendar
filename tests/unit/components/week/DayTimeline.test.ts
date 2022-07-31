@@ -8,6 +8,7 @@ describe("DayTimeline.vue", () => {
   let wrapper = mount(DayTimeline, {
     props: {
       time: new Time("sunday", "en-US"),
+      weekHeight: '1600px',
     },
   });
 

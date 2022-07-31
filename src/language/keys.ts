@@ -16,7 +16,7 @@ export const languageKeys = {
     "en-US": "Day",
     "de-DE": "Tag",
     "sv-SE": "Dag",
-    "zh-CN": "标签",
+    "zh-CN": "日",
   },
 
   /** Other keys */
@@ -24,6 +24,6 @@ export const languageKeys = {
     "en-US": "+ more events",
     "de-DE": "+ weitere Ereignisse",
     "sv-SE": "+ fler händelser",
-    "zh-CN": "其他活动",
+    "zh-CN": "列出其他结果",
   },
 };

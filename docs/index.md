@@ -95,7 +95,7 @@ data() {
                 fontFamily: 'Nunito', sans-serif,
             },
             // if not set, the mode defaults to 'week'. The three available options are 'month', 'week' and 'day'
-            // Please note, that smaller devices can only utilize the day mode
+            // Please note, that only day mode is available for the calendar in mobile-sized wrappers (~700px wide or less, depending on your root font-size)
             defaultMode: 'day',
             // The silent flag can be added, to disable the development warnings. This will also bring a slight performance boost
             isSilent: true,
@@ -186,15 +186,16 @@ For full day events, or events spanning multiple days. The required format is `Y
 
 Qalendar emits the following events that can be listened to:
 
-|     Event name      |                                  Purpose                                   |
-|:-------------------:|:--------------------------------------------------------------------------:|
-| `event-was-clicked` |                                                                            |
-| `event-was-dragged` |            emits the updated event, after an event was dragged             |
-| `event-was-resized` |            emits the updated event, after an event was resized             |
-|  `updated-period`   |      emits the value with the new period selected in the date picker       |
-|   `updated-mode`    | emits the new selected mode and the period, when the user changes the mode |
-|    `edit-event`     |         is triggered, when a user clicks the edit-icon of an event         |
-|   `delete-event`    |        is triggered, when a user clicks the delete-icon of an event        |
+|       Event name       |                                  Purpose                                   |
+|:----------------------:|:--------------------------------------------------------------------------:|
+|  `event-was-clicked`   |                                                                            |
+|  `event-was-dragged`   |            emits the updated event, after an event was dragged             |
+|  `event-was-resized`   |            emits the updated event, after an event was resized             |
+| `interval-was-clicked` |                  [see section on intervals](./#intervals)                  |
+|    `updated-period`    |      emits the value with the new period selected in the date picker       |
+|     `updated-mode`     | emits the new selected mode and the period, when the user changes the mode |
+|      `edit-event`      |         is triggered, when a user clicks the edit-icon of an event         |
+|     `delete-event`     |        is triggered, when a user clicks the delete-icon of an event        |
 
 ### Drag and drop
 
@@ -293,6 +294,30 @@ export default {
 };
 </script>
 ```
+
+### Intervals
+
+The Qalendar component also allows the implementer to define intervals to be displayed in the modes `day` and `week`. This can be configured in the `config` prop, under `dayIntervals`, such as:
+
+```js
+data() {
+  return {
+    config: {
+      dayIntervals: {
+        length: 15, // Length in minutes of each interval. Accepts values 15, 30 and 60 (the latter is the default)
+        height: 50, // The height of each interval
+        displayClickableInterval: true, // Needs to be set explicitly to true, if you want to display clickable intervals
+        intervalStyles: {backgroundColor: black, color: white},
+      },
+    },
+  };
+}
+```
+
+`dayIntervals.length` & `dayIntervals.height` can be used for changing the height of the entire calendar day. Therefore, the option `displayClickableInterval` exists, and can be set to false for anyone who wants to decide the height of a day, but does not wish to display any custom intervals.
+
+When a clickable interval is clicked, the calendar emits the event `interval-was-clicked`, containing date-time strings for the start and end of the clicked interval. This can be useful, for letting the user add an event, based on where in a day the user clicks.
+
 
 ## Date picker
 

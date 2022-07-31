@@ -33,12 +33,25 @@ export interface colorSchemes {
   [key: string]: colorScheme;
 }
 
+export type intervalLengthType = 15 | 30 | 60;
+
+// Lets the implementer define:
+// a) length in minutes, of the day intervals
+// b) the height of each individual interval
+// c) whether the intervals should appear graphically as clickable elements or not
+export type dayIntervalsType = {
+  length?: intervalLengthType;
+  height?: number;
+  displayClickableInterval?: boolean;
+  intervalStyles?: { [key: string]: any };
+}
+
 export interface configInterface {
   locale?: string;
   week?: {
     nDays?: 5 | 7;
     startsOn?: "sunday" | "monday";
-    scrollToHour?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+    scrollToHour?: number;
   };
   style?: {
     fontFamily?: string;
@@ -46,4 +59,5 @@ export interface configInterface {
   };
   defaultMode?: modeType;
   isSilent?: boolean;
+  dayIntervals?: dayIntervalsType;
 }
