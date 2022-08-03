@@ -15,7 +15,6 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
-          start: npm run start
   firefox:
     runs-on: ubuntu-latest
     container:
@@ -28,4 +27,3 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           browser: firefox
-          start: npm run start
