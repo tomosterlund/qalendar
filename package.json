@@ -73,6 +73,9 @@
     "vue-tsc": "0.39.3",
     "semantic-release": "^19.0.3"
   },
+  "optionalDependencies": {
+    "fsevents": "2.1.2"
+  },
   "keywords": [
     "calendar",
     "datepicker",
