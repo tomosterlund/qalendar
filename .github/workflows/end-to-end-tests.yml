@@ -15,6 +15,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
+          config: cypress.config.json
   firefox:
     runs-on: ubuntu-latest
     container:
@@ -27,3 +28,4 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           browser: firefox
+          config: cypress.config.json
