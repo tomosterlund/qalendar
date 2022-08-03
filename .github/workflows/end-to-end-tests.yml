@@ -15,8 +15,8 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           browser: chrome
-          build: npm run build
-          start: npm start
+          config: pageLoadTimeout=100000,baseUrl=http://localhost:3000
+          wait-on: 'http://localhost:3000'
   firefox:
     runs-on: ubuntu-latest
     container:
@@ -29,5 +29,5 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           browser: firefox
-          build: npm run build
-          start: npm start
+          config: pageLoadTimeout=100000,baseUrl=http://localhost:3000
+          wait-on: 'http://localhost:3000'
