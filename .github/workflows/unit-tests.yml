@@ -1,9 +1,5 @@
 name: Unit tests
-# on:
-#   push:
-#     branches:
-#       - master
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   test_london:
