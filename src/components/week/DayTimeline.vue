@@ -52,7 +52,7 @@ export default defineComponent({
   top: 0;
   left: 0;
   width: calc(100% + 10px);
-  height: v-bind(weekheight);
+  height: v-bind(weekHeight);
   transform: translateX(-10px);
   display: flex;
   flex-flow: column;

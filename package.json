@@ -34,7 +34,7 @@
     "test:e2e:ci": "cypress run -- --e2e",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
-    "lint:scss": "stylelint src/styles/**/*.{scss,sass} src/components/**/*.vue --fix",
+    "lint:scss": "stylelint src/styles/**/*.{scss,sass} src/components/**/*.vue",
 	"format": "prettier .  --write",
     "seed": "node ./development/faker/seed.js",
     "docs:dev": "vitepress dev docs",

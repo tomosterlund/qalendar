@@ -368,7 +368,7 @@ export default defineComponent({
   &__events {
     display: flex;
     width: 100%;
-    height: v-bind(weekheight);
+    height: v-bind(weekHeight);
     overflow: hidden;
   }
 }

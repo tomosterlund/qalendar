@@ -322,7 +322,7 @@ export default defineComponent({
   z-index: 50;
   background-color: #fff;
   max-height: 100%;
-  width: v-bind(flyoutwidth);
+  width: v-bind(flyoutWidth);
   max-width: 98%;
   border: var(--qalendar-border-gray-thin);
   border-radius: 8px;

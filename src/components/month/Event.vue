@@ -190,7 +190,7 @@ export default defineComponent({
   }
 
   .calendar-month__event-color {
-    background-color: v-bind(eventbackgroundcolor);
+    background-color: v-bind(eventBackgroundColor);
     width: 6px;
     height: 6px;
     border-radius: 50%;
