@@ -179,101 +179,101 @@ export default defineComponent({
 @use '../../styles/mixins.scss' as mixins;
 
 .calendar-header {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: space-between;
-	padding: var(--qalendar-spacing-half);
-	border-radius: var(--qalendar-border-radius);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--qalendar-spacing-half);
+  border-radius: var(--qalendar-border-radius);
 
-	@include mixins.screen-size-m {
-		justify-content: space-between;
-		grid-gap: var(--qalendar-spacing);
-	}
+  @include mixins.screen-size-m {
+    justify-content: space-between;
+    grid-gap: var(--qalendar-spacing);
+  }
 
-	&__period {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: var(--qalendar-spacing);
-	}
+  &__period {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--qalendar-spacing);
+  }
 
-	&__period-name {
-		font-size: var(--qalendar-font-l);
-		text-align: center;
+  &__period-name {
+    font-size: var(--qalendar-font-l);
+    text-align: center;
 
-		@include mixins.screen-size-m {
-			margin-bottom: 0;
-			text-align: left;
-		}
-	}
+    @include mixins.screen-size-m {
+      margin-bottom: 0;
+      text-align: left;
+    }
+  }
 
-	&__multiselects {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: var(--qalendar-spacing);
-	}
+  &__multiselects {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--qalendar-spacing);
+  }
 
-	&__chevron-arrows {
-		display: flex;
-		align-items: center;
-		grid-gap: 20px;
+  &__chevron-arrows {
+    display: flex;
+    align-items: center;
+    grid-gap: 20px;
 
-		.calendar-header__chevron-arrow {
-			cursor: pointer;
-			transition: color 0.2s ease;
-			font-size: var(--qalendar-font-m);
+    .calendar-header__chevron-arrow {
+      cursor: pointer;
+      transition: color 0.2s ease;
+      font-size: var(--qalendar-font-m);
 
-			@include mixins.hover {
-				color: var(--qalendar-gray-quite-dark);
-			}
-		}
-	}
+      @include mixins.hover {
+        color: var(--qalendar-gray-quite-dark);
+      }
+    }
+  }
 
-	&__mode-picker {
-		/** TODO: refactor into mixin, used for mode-picker and DatePicker.vue */
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: fit-content;
-		height: 36px;
-		border-radius: 4px;
-		font-size: var(--qalendar-font-m);
-		cursor: pointer;
-		border: var(--qalendar-border-gray-thin);
+  &__mode-picker {
+    /** TODO: refactor into mixin, used for mode-picker and DatePicker.vue */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    height: 36px;
+    border-radius: 4px;
+    font-size: var(--qalendar-font-m);
+    cursor: pointer;
+    border: var(--qalendar-border-gray-thin);
 
-		.calendar-header__mode-value {
-			padding: 0 var(--qalendar-spacing);
-			width: 100%;
-			height: 100%;
-			display: flex;
-			align-items: center;
-			user-select: none;
-		}
+    .calendar-header__mode-value {
+      padding: 0 var(--qalendar-spacing);
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      user-select: none;
+    }
 
-		.qalendar-is-small & {
-			display: none;
-		}
+    .qalendar-is-small & {
+      display: none;
+    }
 
-		.calendar-header__mode-options {
-			position: absolute;
-			z-index: 51;
-			top: 100%;
-			left: 50%;
-			transform: translateX(-50%);
-			border: var(--qalendar-border-gray-thin);
-			background-color: #fff;
+    .calendar-header__mode-options {
+      position: absolute;
+      z-index: 51;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: var(--qalendar-border-gray-thin);
+      background-color: #fff;
 
-			.calendar-header__mode-option {
-				padding: var(--qalendar-spacing-half) var(--qalendar-spacing);
+      .calendar-header__mode-option {
+        padding: var(--qalendar-spacing-half) var(--qalendar-spacing);
 
-				@include mixins.hover {
-					background-color: var(--qalendar-light-gray);
-				}
-			}
-		}
-	}
+        @include mixins.hover {
+          background-color: var(--qalendar-light-gray);
+        }
+      }
+    }
+  }
 }
 </style>

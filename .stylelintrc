@@ -5,7 +5,7 @@
 	  "customSyntax": "postcss-scss"
 	},
 	{
-	 "files": ["src/components/**/*.vue", "pages/**/*.vue"],
+	 "files": ["src/components/**/*.vue"],
 	 "customSyntax": "postcss-html"
 	}
   ],
@@ -13,5 +13,13 @@
 	"stylelint-config-standard",
 	"stylelint-config-standard-scss",
 	"stylelint-config-recommended-vue"
-  ]
+  ],
+  "rules": {
+	"string-quotes": "single",
+	"max-line-length": null,
+	"function-no-unknown": null,
+	"selector-class-pattern": null,
+	"at-rule-no-unknown": null,
+	"custom-property-no-missing-var-function": null
+  }
 }

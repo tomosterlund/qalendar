@@ -14,7 +14,7 @@
     {{ scheduleEvent.title }}
   </div>
 
-  <div v-else class="week-timeline__event"></div>
+  <div v-else class="week-timeline__event" />
 </template>
 
 <script lang="ts">
@@ -111,25 +111,25 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .week-timeline__event {
-	position: relative;
+  position: relative;
 
-	// If the variable changes, so does the hard coded value of the 100% - (padding * 2), in computed property above
-	--event-padding: 3px;
+  // If the variable changes, so does the hard coded value of the 100% - (padding * 2), in computed property above
+  --event-padding: 3px;
 
-	display: flex;
-	align-items: center;
-	height: 0.9rem;
-	width: calc(100% - #{var(--event-padding)});
-	font-size: var(--qalendar-font-2xs);
-	border-radius: 4px;
-	padding: var(--event-padding);
-	margin-bottom: 0.25em;
-	text-align: left;
-	cursor: pointer;
-	user-select: none;
+  display: flex;
+  align-items: center;
+  height: 0.9rem;
+  width: calc(100% - #{var(--event-padding)});
+  font-size: var(--qalendar-font-2xs);
+  border-radius: 4px;
+  padding: var(--event-padding);
+  margin-bottom: 0.25em;
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
 
-	&:active {
-		cursor: not-allowed;
-	}
+  &:active {
+    cursor: not-allowed;
+  }
 }
 </style>

@@ -69,7 +69,7 @@
             class="calendar-week__event-icon"
           />
           <!-- eslint-disable vue/no-v-html -->
-          <p v-html="calendarEvent.description"></p>
+          <p v-html="calendarEvent.description" />
           <!--eslint-enable-->
         </div>
       </div>
@@ -318,113 +318,112 @@ export default defineComponent({
 @use '../../styles/mixins' as mixins;
 
 .event-flyout {
-	position: fixed;
-	z-index: 50;
-	background-color: #fff;
-	max-height: 100%;
-	width: v-bind(flyoutwidth);
-	max-width: 98%;
-	border: var(--qalendar-border-gray-thin);
-	border-radius: 8px;
-	box-shadow: 0 12px 24px rgb(0 0 0 / 9%), 0 6px 12px rgb(0 0 0 / 18%);
-	overflow: hidden;
-	transition: all 0.2s ease;
-	transition-property: opacity, transform;
-	transform: translateY(-40px);
-	opacity: 0;
-	pointer-events: none;
+  position: fixed;
+  z-index: 50;
+  background-color: #fff;
+  max-height: 100%;
+  width: v-bind(flyoutwidth);
+  max-width: 98%;
+  border: var(--qalendar-border-gray-thin);
+  border-radius: 8px;
+  box-shadow: 0 12px 24px rgb(0 0 0 / 9%), 0 6px 12px rgb(0 0 0 / 18%);
+  overflow: hidden;
+  transition: all 0.2s ease;
+  transition-property: opacity, transform;
+  transform: translateY(-40px);
+  opacity: 0;
+  pointer-events: none;
 
-	&.is-visible {
-		opacity: 1;
-		transform: translateY(0);
-		pointer-events: initial;
-	}
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: initial;
+  }
 
-	&__relative-wrapper {
-		position: relative;
-	}
+  &__relative-wrapper {
+    position: relative;
+  }
 
-	&__menu {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+  &__menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-		.event-flyout__menu-editable,
-		.event-flyout__menu-close {
-			padding:
-				var(--qalendar-spacing) var(--qalendar-spacing) 0
-				var(--qalendar-spacing);
-			display: flex;
-			grid-gap: 20px;
-		}
+    .event-flyout__menu-editable,
+    .event-flyout__menu-close {
+      padding: var(--qalendar-spacing) var(--qalendar-spacing) 0
+        var(--qalendar-spacing);
+      display: flex;
+      grid-gap: 20px;
+    }
 
-		.event-flyout__menu-close {
-			.is-not-editable & {
-				position: absolute;
-				top: 0;
-				right: 0;
-			}
-		}
-	}
+    .event-flyout__menu-close {
+      .is-not-editable & {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    }
+  }
 
-	&__menu-item {
-		font-size: var(--qalendar-font-l);
-		color: gray;
+  &__menu-item {
+    font-size: var(--qalendar-font-l);
+    color: gray;
 
-		&:hover {
-			color: var(--qalendar-theme-color);
-			cursor: pointer;
-		}
-	}
+    &:hover {
+      color: var(--qalendar-theme-color);
+      cursor: pointer;
+    }
+  }
 
-	.is-trash-icon {
-		&:hover {
-			color: red;
-		}
-	}
+  .is-trash-icon {
+    &:hover {
+      color: red;
+    }
+  }
 
-	&__info-wrapper {
-		padding: var(--qalendar-spacing);
-	}
+  &__info-wrapper {
+    padding: var(--qalendar-spacing);
+  }
 
-	&__row {
-		display: flex;
-		grid-gap: var(--qalendar-spacing);
-		margin-bottom: 0.25em;
-		font-weight: 400;
+  &__row {
+    display: flex;
+    grid-gap: var(--qalendar-spacing);
+    margin-bottom: 0.25em;
+    font-weight: 400;
 
-		p {
-			margin: 0;
-			padding: 0;
-		}
+    p {
+      margin: 0;
+      padding: 0;
+    }
 
-		svg {
-			margin-top: 0.1rem;
-			color: #5f6368;
-			width: 14px;
-		}
-	}
+    svg {
+      margin-top: 0.1rem;
+      color: #5f6368;
+      width: 14px;
+    }
+  }
 
-	&__color-icon {
-		--icon-height: 16px;
+  &__color-icon {
+    --icon-height: 16px;
 
-		border-radius: 50%;
-		height: var(--icon-height);
-		width: var(--icon-height);
-	}
+    border-radius: 50%;
+    height: var(--icon-height);
+    width: var(--icon-height);
+  }
 
-	.is-title {
-		font-size: var(--qalendar-font-l);
-		align-items: center;
+  .is-title {
+    font-size: var(--qalendar-font-l);
+    align-items: center;
 
-		.is-not-editable & {
-			max-width: 90%;
-		}
-	}
+    .is-not-editable & {
+      max-width: 90%;
+    }
+  }
 
-	.is-time {
-		font-size: var(--qalendar-font-s);
-		margin-bottom: 0.75em;
-	}
+  .is-time {
+    font-size: var(--qalendar-font-s);
+    margin-bottom: 0.75em;
+  }
 }
 </style>

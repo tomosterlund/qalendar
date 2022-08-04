@@ -28,7 +28,9 @@
         @mousedown="resizeEvent('up')"
       />
 
-      <div class="calendar-week__event-row is-title">{{ event.title }}</div>
+      <div class="calendar-week__event-row is-title">
+        {{ event.title }}
+      </div>
 
       <div class="calendar-week__event-row is-time">
         <font-awesome-icon
@@ -71,7 +73,7 @@
           class="calendar-week__event-icon"
         />
         <!-- eslint-disable vue/no-v-html -->
-        <p v-html="event.description"></p>
+        <p v-html="event.description" />
         <!--eslint-enable-->
       </div>
 
@@ -607,68 +609,68 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .calendar-week__event {
-	position: absolute;
-	width: 100%;
-	border-radius: 4px;
-	cursor: pointer;
-	box-sizing: content-box;
-	user-select: none;
+  position: absolute;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  box-sizing: content-box;
+  user-select: none;
 
-	&.is-editable {
-		cursor: grab;
-	}
+  &.is-editable {
+    cursor: grab;
+  }
 
-	&.has-disabled-dnd {
-		cursor: initial;
-	}
+  &.has-disabled-dnd {
+    cursor: initial;
+  }
 
-	.calendar-week__event-row {
-		display: flex;
-		align-items: flex-start;
-		margin-bottom: 0.25em;
+  .calendar-week__event-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.25em;
 
-		p {
-			margin: 0;
-			padding: 0;
-		}
-	}
+    p {
+      margin: 0;
+      padding: 0;
+    }
+  }
 
-	.calendar-week__event-info-wrapper {
-		position: relative;
-		padding: var(--qalendar-spacing-half);
-		font-size: var(--qalendar-font-xs);
-		height: 100%;
-		box-sizing: border-box;
-		overflow: hidden;
-		user-select: none;
-	}
+  .calendar-week__event-info-wrapper {
+    position: relative;
+    padding: var(--qalendar-spacing-half);
+    font-size: var(--qalendar-font-xs);
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    user-select: none;
+  }
 
-	.calendar-week__event-blend-out {
-		position: absolute;
-		bottom: 0;
-		height: 20px;
-		width: 100%;
-		transform: translateX(calc(var(--qalendar-spacing-half) * -1));
-	}
+  .calendar-week__event-blend-out {
+    position: absolute;
+    bottom: 0;
+    height: 20px;
+    width: 100%;
+    transform: translateX(calc(var(--qalendar-spacing-half) * -1));
+  }
 
-	.calendar-week__event-icon {
-		margin: 2px 4px 0 0;
-		font-size: var(--qalendar-font-xs);
-	}
+  .calendar-week__event-icon {
+    margin: 2px 4px 0 0;
+    font-size: var(--qalendar-font-xs);
+  }
 
-	.calendar-week__event-resize {
-		position: absolute;
-		width: 100%;
-		cursor: ns-resize;
-		height: 5px;
-	}
+  .calendar-week__event-resize {
+    position: absolute;
+    width: 100%;
+    cursor: ns-resize;
+    height: 5px;
+  }
 
-	.calendar-week__event-resize-up {
-		top: 0;
-	}
+  .calendar-week__event-resize-up {
+    top: 0;
+  }
 
-	.calendar-week__event-resize-down {
-		bottom: 0;
-	}
+  .calendar-week__event-resize-down {
+    bottom: 0;
+  }
 }
 </style>

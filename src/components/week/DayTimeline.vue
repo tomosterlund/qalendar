@@ -1,8 +1,6 @@
 <template>
   <div class="day-timeline">
-    <div v-for="hour in timelineHours"
-         :key="hour"
-         class="day-timeline__hour">
+    <div v-for="hour in timelineHours" :key="hour" class="day-timeline__hour">
       <span class="day-timeline__hour-text">
         {{ getLocaleTimeString(hour) }}
       </span>
@@ -50,42 +48,41 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .day-timeline {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: calc(100% + 10px);
-	height: v-bind(weekheight);
-	transform: translateX(-10px);
-	display: flex;
-	flex-flow: column;
-	justify-content: space-evenly;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% + 10px);
+  height: v-bind(weekheight);
+  transform: translateX(-10px);
+  display: flex;
+  flex-flow: column;
+  justify-content: space-evenly;
 
-	&__hour {
-		padding-left: 4px;
-		display: flex;
-		flex-flow: column;
-		justify-content: flex-start;
-		height: 100%;
-		font-size: clamp(10px, 0.625rem, 14px);
-		color: var(--qalendar-gray-quite-dark);
+  &__hour {
+    padding-left: 4px;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    height: 100%;
+    font-size: clamp(10px, 0.625rem, 14px);
+    color: var(--qalendar-gray-quite-dark);
 
-		&__hour-text {
-			transform:
-				translate(
-					-40px,
-					-6px
-				); /** Sets the hour to be above the line for full hour */
-		}
+    &__hour-text {
+      transform: translate(
+        -40px,
+        -6px
+      ); /** Sets the hour to be above the line for full hour */
+    }
 
-		&:first-child {
-			.day-timeline__hour-text {
-				display: none;
-			}
-		}
+    &:first-child {
+      .day-timeline__hour-text {
+        display: none;
+      }
+    }
 
-		&:not(:last-child) {
-			border-bottom: var(--qalendar-border-gray-thin);
-		}
-	}
+    &:not(:last-child) {
+      border-bottom: var(--qalendar-border-gray-thin);
+    }
+  }
 }
 </style>
