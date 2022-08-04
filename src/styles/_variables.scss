@@ -1,17 +1,17 @@
 .calendar-root,
 .date-picker-root {
   /** Color */
-  --qalendar-blue: rgb(38, 132, 255);
-  --qalendar-blue-transparent: rgba(38, 132, 255, 0.9);
-  --qalendar-gray-quite-dark: rgb(110, 110, 110);
-  --qalendar-gray: rgb(180, 180, 180);
-  --qalendar-green: rgb(51, 182, 121);
+  --qalendar-blue: rgb(38 132 255);
+  --qalendar-blue-transparent: rgba(38 132 255 / 90%);
+  --qalendar-gray-quite-dark: rgb(110 110 110);
+  --qalendar-gray: rgb(180 180 180);
+  --qalendar-green: rgb(51 182 121);
   --qalendar-theme-color: var(--qalendar-blue);
-  --qalendar-light-gray: rgba(240, 236, 236, 0.76);
+  --qalendar-light-gray: rgba(240 236 236 / 76%);
 
   /** Borders */
-  --qalendar-border-gray-thin: 1px solid rgb(224, 224, 224);
-  --qalendar-border-dashed-gray-thin: 1px dashed rgb(224, 224, 224);
+  --qalendar-border-gray-thin: 1px solid rgb(224 224 224);
+  --qalendar-border-dashed-gray-thin: 1px dashed rgb(224 224 224);
   --qalendar-border-blue-thin: 1px solid var(--qalendar-theme-color);
   --qalendar-border-radius: 8px;
 
@@ -21,8 +21,7 @@
   --qalendar-spacing-double: 20px;
 
   /** Miscellaneous */
-  --qalendar-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.06),
-    0 1px 4px rgba(0, 0, 0, 0.18);
+  --qalendar-box-shadow: 0 4px 4px rgba(0 0 0 / 6%), 0 1px 4px rgba(0 0 0 / 18%);
   --qalendar-text-transition: color 0.2s ease;
   --qalendar-week-padding-left: 56px; // is used for creating space in calendar-week, for the DayTimeline.vue component
 
