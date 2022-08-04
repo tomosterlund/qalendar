@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run lint
+npm run lint:js
+npm run lint:scss
 git add .
 vitest run
 npm run test:e2e:ci
