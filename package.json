@@ -79,5 +79,6 @@
     "vue",
     "vue 3",
     "vue-component"
-  ]
+  ],
+  "license": "MIT"
 }
