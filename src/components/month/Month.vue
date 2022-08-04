@@ -181,20 +181,20 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .calendar-month {
-  flex: 1;
-  width: 100%;
-  overflow-y: auto;
+	flex: 1;
+	width: 100%;
+	overflow-y: auto;
 
-  .calendar-month__weeks {
-    height: 100%;
-    display: flex;
-    flex-flow: column;
-    justify-content: space-between;
-  }
+	.calendar-month__weeks {
+		height: 100%;
+		display: flex;
+		flex-flow: column;
+		justify-content: space-between;
+	}
 
-  .calendar-month__week {
-    display: flex;
-    flex: 1;
-  }
+	.calendar-month__week {
+		display: flex;
+		flex: 1;
+	}
 }
 </style>

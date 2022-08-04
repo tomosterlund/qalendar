@@ -436,186 +436,186 @@ export default defineComponent({
 @use '../../styles/variables.scss';
 
 .date-picker {
-  position: relative;
-  width: fit-content;
+	position: relative;
+	width: fit-content;
 
-  @include mixins.screen-size-m {
-    min-width: 300px;
-  }
+	@include mixins.screen-size-m {
+		min-width: 300px;
+	}
 
-  &:not(.is-in-qalendar) {
-    margin: 0 auto;
+	&:not(.is-in-qalendar) {
+		margin: 0 auto;
 
-    @include mixins.screen-size-m {
-      min-width: initial;
-    }
-  }
+		@include mixins.screen-size-m {
+			min-width: initial;
+		}
+	}
 
-  &__value-display {
-    height: 36px;
-    border-radius: 4px;
-    padding: 0 var(--qalendar-spacing);
-    font-size: var(--qalendar-font-m);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--qalendar-spacing-half);
-    user-select: none;
+	&__value-display {
+		height: 36px;
+		border-radius: 4px;
+		padding: 0 var(--qalendar-spacing);
+		font-size: var(--qalendar-font-m);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--qalendar-spacing-half);
+		user-select: none;
 
-    @include mixins.screen-size-m {
-      border: var(--qalendar-border-gray-thin);
-    }
+		@include mixins.screen-size-m {
+			border: var(--qalendar-border-gray-thin);
+		}
 
-    .date-picker__value-display-text {
-      display: none;
+		.date-picker__value-display-text {
+			display: none;
 
-      @include mixins.screen-size-m {
-        display: initial;
-      }
-    }
+			@include mixins.screen-size-m {
+				display: initial;
+			}
+		}
 
-    svg {
-      font-size: var(--qalendar-font-l);
+		svg {
+			font-size: var(--qalendar-font-l);
 
-      @include mixins.screen-size-m {
-        font-size: initial;
-      }
-    }
-  }
+			@include mixins.screen-size-m {
+				font-size: initial;
+			}
+		}
+	}
 
-  &__week-picker {
-    padding: var(--qalendar-spacing-half);
-    z-index: 51;
-    background-color: #fff;
-    border: var(--qalendar-border-gray-thin);
-    border-radius: 4px;
-    min-width: 250px;
-    box-shadow: 0 2px 4px rgba(240, 236, 236, 0.76);
+	&__week-picker {
+		padding: var(--qalendar-spacing-half);
+		z-index: 51;
+		background-color: #fff;
+		border: var(--qalendar-border-gray-thin);
+		border-radius: 4px;
+		min-width: 250px;
+		box-shadow: 0 2px 4px rgb(240 236 236 / 76%);
 
-    &.is-in-qalendar {
-      top: calc(100% - 1px);
-      position: absolute;
-      right: 0;
+		&.is-in-qalendar {
+			top: calc(100% - 1px);
+			position: absolute;
+			right: 0;
 
-      .mode-is-month,
-      .mode-is-week & {
-        // week-picker can only be centered, if it is not the most far-right element in header
-        // which is the case in month- and week mode, but not in day mode
-        @include mixins.screen-size-m {
-          left: 50%;
-          transform: translateX(-50%);
-        }
-      }
-    }
-  }
+			.mode-is-month,
+			.mode-is-week & {
+				// week-picker can only be centered, if it is not the most far-right element in header
+				// which is the case in month- and week mode, but not in day mode
+				@include mixins.screen-size-m {
+					left: 50%;
+					transform: translateX(-50%);
+				}
+			}
+		}
+	}
 
-  &__week-picker-navigation {
-    font-weight: 900;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--qalendar-spacing-half);
-    margin-bottom: 0.25em;
-    user-select: none;
+	&__week-picker-navigation {
+		font-weight: 900;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--qalendar-spacing-half);
+		margin-bottom: 0.25em;
+		user-select: none;
 
-    .is-icon {
-      transition: var(--qalendar-text-transition);
-      color: #131313;
+		.is-icon {
+			transition: var(--qalendar-text-transition);
+			color: #131313;
 
-      @include mixins.hover {
-        color: var(--qalendar-blue);
-        cursor: pointer;
-      }
-    }
-  }
+			@include mixins.hover {
+				color: var(--qalendar-blue);
+				cursor: pointer;
+			}
+		}
+	}
 
-  &__toggle-mode {
-    transition: var(--qalendar-text-transition);
+	&__toggle-mode {
+		transition: var(--qalendar-text-transition);
 
-    @include mixins.hover {
-      color: var(--qalendar-blue);
-      cursor: pointer;
-    }
-  }
+		@include mixins.hover {
+			color: var(--qalendar-blue);
+			cursor: pointer;
+		}
+	}
 
-  .week {
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    margin: 4px 0;
+	.week {
+		width: 100%;
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+		margin: 4px 0;
 
-    &.is-active {
-      border: 1px dashed var(--qalendar-theme-color);
-      border-radius: 4px;
-    }
+		&.is-active {
+			border: 1px dashed var(--qalendar-theme-color);
+			border-radius: 4px;
+		}
 
-    span {
-      display: flex;
-      min-height: 32px;
-      min-width: 32px;
-      justify-content: center;
-      align-items: center;
-      flex: 1 1 100%;
-      cursor: pointer;
-      border-radius: 50%;
-      font-size: var(--qalendar-font-xs);
+		span {
+			display: flex;
+			min-height: 32px;
+			min-width: 32px;
+			justify-content: center;
+			align-items: center;
+			flex: 1 1 100%;
+			cursor: pointer;
+			border-radius: 50%;
+			font-size: var(--qalendar-font-xs);
 
-      &.is-weekend {
-        color: gray;
-      }
+			&.is-weekend {
+				color: gray;
+			}
 
-      &.has-day {
-        @include mixins.hover {
-          background-color: var(--qalendar-light-gray);
-        }
-      }
+			&.has-day {
+				@include mixins.hover {
+					background-color: var(--qalendar-light-gray);
+				}
+			}
 
-      &.is-today {
-        background-color: var(--qalendar-blue);
-        color: #fff;
-      }
+			&.is-today {
+				background-color: var(--qalendar-blue);
+				color: #fff;
+			}
 
-      &.is-not-in-month {
-        color: darkgray;
-      }
+			&.is-not-in-month {
+				color: darkgray;
+			}
 
-      &.is-disabled {
-        color: darkgray;
-        cursor: not-allowed;
-      }
-    }
-  }
+			&.is-disabled {
+				color: darkgray;
+				cursor: not-allowed;
+			}
+		}
+	}
 
-  &__day-names {
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: var(--qalendar-font-s);
-  }
+	&__day-names {
+		text-transform: uppercase;
+		font-weight: 700;
+		font-size: var(--qalendar-font-s);
+	}
 
-  .months {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--qalendar-spacing-half);
-    max-width: 20rem;
+	.months {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--qalendar-spacing-half);
+		max-width: 20rem;
 
-    span {
-      padding: 4px;
-      border: var(--qalendar-border-gray-thin);
-      border-radius: 2px;
-      flex: 1 0 33%;
-      text-align: center;
-      cursor: pointer;
-      font-size: var(--qalendar-font-xs);
-      transition: all 0.2s ease;
+		span {
+			padding: 4px;
+			border: var(--qalendar-border-gray-thin);
+			border-radius: 2px;
+			flex: 1 0 33%;
+			text-align: center;
+			cursor: pointer;
+			font-size: var(--qalendar-font-xs);
+			transition: all 0.2s ease;
 
-      @include mixins.hover {
-        background-color: var(--qalendar-theme-color);
-        color: #fff;
-        border: var(--qalendar-border-blue-thin);
-      }
-    }
-  }
+			@include mixins.hover {
+				background-color: var(--qalendar-theme-color);
+				color: #fff;
+				border: var(--qalendar-border-blue-thin);
+			}
+		}
+	}
 }
 </style>

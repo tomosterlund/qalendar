@@ -1,44 +1,44 @@
 .calendar-root,
 .date-picker-root {
-  /** Color */
-  --qalendar-blue: rgb(38 132 255);
-  --qalendar-blue-transparent: rgba(38 132 255 / 90%);
-  --qalendar-gray-quite-dark: rgb(110 110 110);
-  --qalendar-gray: rgb(180 180 180);
-  --qalendar-green: rgb(51 182 121);
-  --qalendar-theme-color: var(--qalendar-blue);
-  --qalendar-light-gray: rgba(240 236 236 / 76%);
+	/** Color */
+	--qalendar-blue: rgb(38 132 255);
+	--qalendar-blue-transparent: rgba(38 132 255 / 90%);
+	--qalendar-gray-quite-dark: rgb(110 110 110);
+	--qalendar-gray: rgb(180 180 180);
+	--qalendar-green: rgb(51 182 121);
+	--qalendar-theme-color: var(--qalendar-blue);
+	--qalendar-light-gray: rgba(240 236 236 / 76%);
 
-  /** Borders */
-  --qalendar-border-gray-thin: 1px solid rgb(224 224 224);
-  --qalendar-border-dashed-gray-thin: 1px dashed rgb(224 224 224);
-  --qalendar-border-blue-thin: 1px solid var(--qalendar-theme-color);
-  --qalendar-border-radius: 8px;
+	/** Borders */
+	--qalendar-border-gray-thin: 1px solid rgb(224 224 224);
+	--qalendar-border-dashed-gray-thin: 1px dashed rgb(224 224 224);
+	--qalendar-border-blue-thin: 1px solid var(--qalendar-theme-color);
+	--qalendar-border-radius: 8px;
 
-  /** Spacing */
-  --qalendar-spacing: 10px;
-  --qalendar-spacing-half: 5px;
-  --qalendar-spacing-double: 20px;
+	/** Spacing */
+	--qalendar-spacing: 10px;
+	--qalendar-spacing-half: 5px;
+	--qalendar-spacing-double: 20px;
 
-  /** Miscellaneous */
-  --qalendar-box-shadow: 0 4px 4px rgba(0 0 0 / 6%), 0 1px 4px rgba(0 0 0 / 18%);
-  --qalendar-text-transition: color 0.2s ease;
-  --qalendar-week-padding-left: 56px; // is used for creating space in calendar-week, for the DayTimeline.vue component
+	/** Miscellaneous */
+	--qalendar-box-shadow: 0 4px 4px rgba(0 0 0 / 6%), 0 1px 4px rgba(0 0 0 / 18%);
+	--qalendar-text-transition: color 0.2s ease;
+	--qalendar-week-padding-left: 56px; // is used for creating space in calendar-week, for the DayTimeline.vue component
 
-  /** Font */
-  --qalendar-font-3xs: 0.625rem;
-  --qalendar-font-2xs: 0.688rem;
-  --qalendar-font-xs: 0.75rem;
-  --qalendar-font-s: 0.875rem;
-  --qalendar-font-m: 1rem;
-  --qalendar-font-l: 1.25rem;
-  --qalendar-font-xl: 1.5rem;
+	/** Font */
+	--qalendar-font-3xs: 0.625rem;
+	--qalendar-font-2xs: 0.688rem;
+	--qalendar-font-xs: 0.75rem;
+	--qalendar-font-s: 0.875rem;
+	--qalendar-font-m: 1rem;
+	--qalendar-font-l: 1.25rem;
+	--qalendar-font-xl: 1.5rem;
 }
 
 @media (min-width: 62rem) {
-  .calendar-root {
-    --qalendar-spacing: 20px;
-    --qalendar-spacing-half: 10px;
-    --qalendar-spacing-double: 40px;
-  }
+	.calendar-root {
+		--qalendar-spacing: 20px;
+		--qalendar-spacing-half: 10px;
+		--qalendar-spacing-double: 40px;
+	}
 }

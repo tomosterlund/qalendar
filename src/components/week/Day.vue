@@ -127,32 +127,29 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .calendar-week__day {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 
-  .calendar-week__day-interval {
-    flex: 1;
-    font-size: var(--qalendar-font-xs);
-    color: var(--qalendar-gray);
-    padding: 2px;
+	.calendar-week__day-interval {
+		flex: 1;
+		font-size: var(--qalendar-font-xs);
+		color: var(--qalendar-gray);
+		padding: 2px;
 
-    &.has-border {
-      border-bottom: var(--qalendar-border-dashed-gray-thin);
-    }
-  }
+		&.has-border {
+			border-bottom: var(--qalendar-border-dashed-gray-thin);
+		}
+	}
 
-  &:first-child {
-    border-left: 1px dashed rgb(224, 224, 224);
-  }
+	&:first-child {
+		border-left: 1px dashed rgb(224 224 224);
+	}
 
-  &:not(:last-child) {
-    border-right: 1px dashed rgb(224, 224, 224);
-  }
-
-  .calendar-week__day-interval {
-  }
+	&:not(:last-child) {
+		border-right: 1px dashed rgb(224 224 224);
+	}
 }
 </style>

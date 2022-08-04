@@ -158,59 +158,57 @@ export default defineComponent({
 @use '../../styles/mixins' as mixins;
 
 .calendar-month__event {
-  --event-inline-padding: 4px;
+	--event-inline-padding: 4px;
 
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  border-radius: 4px;
-  font-size: var(--qalendar-font-2xs);
-  width: calc(100% - #{calc(var(--event-inline-padding) * 2)});
-  margin-bottom: 4px;
-  padding: 2px var(--event-inline-padding);
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	border-radius: 4px;
+	font-size: var(--qalendar-font-2xs);
+	width: calc(100% - #{calc(var(--event-inline-padding) * 2)});
+	margin-bottom: 4px;
+	padding: 2px var(--event-inline-padding);
+	cursor: pointer;
+	user-select: none;
 
-  &.is-draggable {
-    cursor: grab;
-  }
+	&.is-draggable {
+		cursor: grab;
+	}
 
-  &:not(.is-draggable) {
-    &:active {
-      cursor: not-allowed;
-    }
-  }
+	&:active {
+		z-index: 100;
+	}
 
-  &:active {
-    z-index: 100;
-  }
+	&:not(.is-draggable) {
+		&:active {
+			cursor: not-allowed;
+		}
+	}
 
-  @include mixins.hover {
-    background-color: var(--qalendar-light-gray);
-  }
+	@include mixins.hover {
+		background-color: var(--qalendar-light-gray);
+	}
 
-  .calendar-month__event-color {
-    background-color: v-bind(eventBackgroundColor);
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    margin-right: 4px;
-  }
+	.calendar-month__event-color {
+		background-color: v-bind(eventbackgroundcolor);
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		margin-right: 4px;
+	}
 
-  .calendar-month__event-time {
-    margin-right: 6px;
-  }
+	.calendar-month__event-time {
+		margin-right: 6px;
+	}
 
-  .calendar-month__event-time,
-  .calendar-month__event-title,
-  .calendar-month__event-color {
-    flex-shrink: 0;
-  }
+	.calendar-month__event-time,
+	.calendar-month__event-title,
+	.calendar-month__event-color {
+		flex-shrink: 0;
+	}
 
-  .calendar-month__event-title {
-    //font-weight: 600;
-  }
+	.calendar-month__event-title {
+		// font-weight: 600;
+	}
 }
 </style>

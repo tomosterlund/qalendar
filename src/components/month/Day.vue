@@ -152,48 +152,48 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .calendar-month__weekday {
-  height: 100%;
-  flex: 1;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  border-right: var(--qalendar-border-gray-thin);
-  border-bottom: var(--qalendar-border-gray-thin);
-  overflow: hidden;
-  transition: background-color 0.2s ease-in-out;
+	height: 100%;
+	flex: 1;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	border-right: var(--qalendar-border-gray-thin);
+	border-bottom: var(--qalendar-border-gray-thin);
+	overflow: hidden;
+	transition: background-color 0.2s ease-in-out;
 
-  &.is-droppable {
-    background-color: var(--qalendar-light-gray);
-  }
+	&.is-droppable {
+		background-color: var(--qalendar-light-gray);
+	}
 
-  &:last-child {
-    border-right: 0;
-  }
+	&:last-child {
+		border-right: 0;
+	}
 
-  .calendar-month__week:first-child & {
-    border-top: var(--qalendar-border-gray-thin);
-  }
+	.calendar-month__week:first-child & {
+		border-top: var(--qalendar-border-gray-thin);
+	}
 
-  .calendar-month__day-name,
-  .calendar-month__day-date {
-    font-size: var(--qalendar-font-xs);
-    color: var(--qalendar-gray-quite-dark);
+	.calendar-month__day-name,
+	.calendar-month__day-date {
+		font-size: var(--qalendar-font-xs);
+		color: var(--qalendar-gray-quite-dark);
 
-    &:first-child {
-      margin-top: 6px;
-    }
-  }
+		&:first-child {
+			margin-top: 6px;
+		}
+	}
 
-  .calendar-month__event-wrapper {
-    width: 100%;
-  }
+	.calendar-month__event-wrapper {
+		width: 100%;
+	}
 
-  .calendar-month__weekday-more {
-    font-size: var(--qalendar-font-2xs);
-    width: 100%;
-    padding-left: 4px;
-    color: var(--qalendar-gray-quite-dark);
-    cursor: pointer;
-  }
+	.calendar-month__weekday-more {
+		font-size: var(--qalendar-font-2xs);
+		width: 100%;
+		padding-left: 4px;
+		color: var(--qalendar-gray-quite-dark);
+		cursor: pointer;
+	}
 }
 </style>
