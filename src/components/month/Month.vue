@@ -47,6 +47,7 @@ import {
   DATE_TIME_STRING_PATTERN,
 } from '../../constants';
 import EventPosition from '../../helpers/EventPosition';
+import PerfectScrollbar from 'perfect-scrollbar';
 const EventPositionHelper = new EventPosition();
 
 export default defineComponent({
@@ -91,14 +92,27 @@ export default defineComponent({
       selectedEventElement: null as any | null,
       events: this.eventsProp,
       fullDayEvents: [] as eventInterface[],
+      scrollbar: null as any,
     };
   },
 
   mounted() {
     this.initMonth();
+    this.initScrollbar();
   },
 
   methods: {
+    initScrollbar(elapsedMs = 0) {
+      const el = document.querySelector('.calendar-month');
+
+      if (elapsedMs > 3000) return;
+      if (!el) this.initScrollbar(elapsedMs + 50);
+      else {
+        this.scrollbar = new PerfectScrollbar(el);
+        this.scrollbar.update();
+      }
+    },
+
     initMonth() {
       this.month = [];
 
@@ -181,6 +195,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .calendar-month {
+  position: relative;
   flex: 1;
   width: 100%;
   overflow-y: auto;
