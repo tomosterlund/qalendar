@@ -101,7 +101,7 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: 'day',
+        defaultMode: 'week',
         // disableModes: ['month'],
         isSilent: true,
         dayIntervals: {
@@ -135,8 +135,8 @@ export default defineComponent({
     setTimeout(() => {
       this.events = seededEvents.map((e) => {
         // @ts-ignore
-        e.isCustom = true;
-        e.isEditable = false;
+        // e.isCustom = true;
+        // e.isEditable = false;
 
         return e
       });
