@@ -74,16 +74,16 @@ export default defineComponent({
         },
         defaultMode: 'week',
         isSilent: true,
-        dayIntervals: {
-          height: 50,
-          length: 15,
-          displayClickableInterval: true,
-          // intervalStyles: {
-          //   color: '#fff',
-          //   backgroundColor: 'rgba(10, 10, 10, 0.9)',
-          //   borderBottom: '1px dotted #fff',
-          // },
-        }
+        // dayIntervals: {
+        //   height: 50,
+        //   length: 15,
+        //   displayClickableInterval: true,
+        //   intervalStyles: {
+        //     color: '#fff',
+        //     backgroundColor: 'rgba(10, 10, 10, 0.9)',
+        //     borderBottom: '1px dotted #fff',
+        //   },
+        // }
       } as configInterface,
       events: [] as eventInterface[],
 
