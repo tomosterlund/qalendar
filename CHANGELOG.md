@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.2](https://github.com/tomosterlund/qalendar/compare/v1.5.1...v1.5.2) (2022-08-07)
+
+
+### Bug Fixes
+
+* add editorconfig ([#61](https://github.com/tomosterlund/qalendar/issues/61)) ([1e421e5](https://github.com/tomosterlund/qalendar/commit/1e421e52110d30ae3e895d1dad7541d6532d0eeb))
+
 ## [1.5.1](https://github.com/tomosterlund/qalendar/compare/v1.5.0...v1.5.1) (2022-08-04)
 
 
