@@ -60,4 +60,8 @@ export interface configInterface {
   defaultMode?: modeType;
   isSilent?: boolean;
   dayIntervals?: dayIntervalsType;
+  eventDialog?: {
+    isDisabled?: boolean;
+    isCustom?: boolean;
+  }
 }

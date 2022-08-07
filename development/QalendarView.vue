@@ -19,7 +19,36 @@
         @delete-event="deleteEvent"
         @event-was-dragged="handleEventWasDragged"
         @interval-was-clicked="handleIntervalWasClicked"
-      />
+      >
+        <template v-slot:event="eventProps" #event>
+          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%' }">
+            {{ eventProps.eventData.title }}
+
+            <div>
+              <input type="checkbox" />
+
+              <label for="checkbox">
+                Select time slot
+              </label>
+            </div>
+          </div>
+        </template>
+
+        <template v-slot:eventDialog="props" #eventDialog>
+          <div
+            v-if="props.eventDialogData && props.eventDialogData.title"
+            :style="{ border: '4px dotted cornflowerblue', padding: '16px' }"
+          >
+            <span>Edit event</span>
+
+            <input type="text" v-model="eventDialogForm.title" :style="{ width: '90%', padding: '8px' }" >
+
+            <button @click="props.closeEventDialog">
+              Finished!
+            </button>
+          </div>
+        </template>
+      </Qalendar>
     </main>
 
     <DevToolbar
@@ -75,27 +104,41 @@ export default defineComponent({
         defaultMode: 'week',
         isSilent: true,
         dayIntervals: {
-          height: 50,
-          length: 15,
-          displayClickableInterval: true,
+          // height: 50,
+          // length: 15,
+          // displayClickableInterval: true,
           // intervalStyles: {
           //   color: '#fff',
           //   backgroundColor: 'rgba(10, 10, 10, 0.9)',
           //   borderBottom: '1px dotted #fff',
           // },
+        },
+        eventDialog: {
+          isDisabled: false,
+          isCustom: true,
         }
       } as configInterface,
       events: [] as eventInterface[],
 
       layout: 'none',
       isLoading: false,
+      eventDialogForm: {
+        title: '',
+        id: '',
+      }
     };
   },
 
   mounted() {
     // this.triggerLoadAnimations()
     setTimeout(() => {
-      this.events = seededEvents;
+      this.events = seededEvents.map((e) => {
+        // @ts-ignore
+        e.isCustom = true;
+        e.isEditable = false;
+
+        return e
+      });
     }, 200)
   },
 

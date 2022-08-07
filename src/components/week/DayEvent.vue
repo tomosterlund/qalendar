@@ -1,20 +1,16 @@
 <template>
   <div
+    v-if="!eventProp.isCustom"
     class="calendar-week__event is-event"
     :class="{
       'is-editable': isEditable,
       'has-disabled-dnd': hasDisabledDragAndDrop,
     }"
     :style="{
-      top: getPositionInDay(event.time.start),
-      height: getLengthOfEvent(event.time.start, event.time.end),
-      left: getLeftRule + '%',
-      width: getWidthRule + '%',
+      ...requiredStyles,
       border: getBorderRule,
       color: eventColor,
       backgroundColor: eventBackgroundColor,
-      transform: eventTransformValue,
-      zIndex: eventZIndexValue,
     }"
     @click="handleClickOnEvent"
     @mouseenter="showResizeElements = isEditable && !hasDisabledResize"
@@ -92,6 +88,24 @@
         @mousedown="resizeEvent('down')"
       />
     </div>
+  </div>
+
+  <div
+    v-else
+    :style="{
+      ...requiredStyles,
+      border: getBorderRule,
+      color: eventColor,
+    }"
+    class="calendar-week__event is-event"
+    :class="{
+      'is-editable': isEditable,
+      'has-disabled-dnd': hasDisabledDragAndDrop,
+    }"
+    @click="handleClickOnEvent"
+    @mousedown="handleMouseDown"
+  >
+    <slot name="event" :event-data="event"> </slot>
   </div>
 </template>
 
@@ -249,6 +263,20 @@ export default defineComponent({
         this.eventProp.disableResize &&
         this.eventProp.disableResize.includes(this.mode)
       );
+    },
+
+    requiredStyles() {
+      return {
+        top: this.getPositionInDay(this.event.time.start),
+        height: this.getLengthOfEvent(
+          this.event.time.start,
+          this.event.time.end
+        ),
+        left: this.getLeftRule + '%',
+        width: this.getWidthRule + '%',
+        transform: this.eventTransformValue,
+        zIndex: this.eventZIndexValue,
+      };
     },
   },
 

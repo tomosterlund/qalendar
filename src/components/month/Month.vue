@@ -21,6 +21,7 @@
     </div>
 
     <EventFlyout
+      v-if="!config.eventDialog || !config.eventDialog.isDisabled"
       :calendar-event-prop="selectedEvent"
       :event-element="selectedEventElement"
       :time="time"

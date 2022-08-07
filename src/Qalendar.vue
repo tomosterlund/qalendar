@@ -38,7 +38,19 @@
         @edit-event="$emit('edit-event', $event)"
         @delete-event="$emit('delete-event', $event)"
         @interval-was-clicked="$emit('interval-was-clicked', $event)"
-      />
+      >
+        <template #event="p">
+          <slot :event-data="p.eventData" name="event"></slot>
+        </template>
+
+        <template #eventDialog="p">
+          <slot
+            name="eventDialog"
+            :event-dialog-data="p.eventDialogData"
+            :close-event-dialog="p.closeEventDialog"
+          ></slot>
+        </template>
+      </Week>
 
       <Month
         v-if="mode === 'month'"
