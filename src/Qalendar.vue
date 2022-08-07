@@ -64,7 +64,15 @@
         @updated-period="handleUpdatedPeriod($event, true)"
         @edit-event="$emit('edit-event', $event)"
         @delete-event="$emit('delete-event', $event)"
-      />
+      >
+        <template #eventDialog="p">
+          <slot
+            name="eventDialog"
+            :event-dialog-data="p.eventDialogData"
+            :close-event-dialog="p.closeEventDialog"
+          ></slot>
+        </template>
+      </Month>
     </div>
   </div>
 </template>

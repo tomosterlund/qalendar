@@ -68,4 +68,22 @@ describe("Header.vue", () => {
     if (!changeModeEvent) throw new Error("no event");
     expect(changeModeEvent[0]).toEqual(["week"]);
   });
+
+  test('Disabling week & month mode, thus hiding the mode select', () => {
+    wrapper = mount(Header, {
+      props: {
+        time: new Time("monday", "en-US"),
+        period: {
+          selectedDate: new Date(),
+          start: new Date(),
+          end: new Date(),
+        },
+        config: {
+          disableModes: ['week', 'month'],
+        }
+      },
+    });
+
+    expect(() => wrapper.get('.calendar-header__mode-picker')).toThrow();
+  })
 });

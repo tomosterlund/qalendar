@@ -20,34 +20,34 @@
         @event-was-dragged="handleEventWasDragged"
         @interval-was-clicked="handleIntervalWasClicked"
       >
-        <template v-slot:event="eventProps" #event>
-          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%' }">
-            {{ eventProps.eventData.title }}
+<!--        <template v-slot:event="eventProps" #event>-->
+<!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
+<!--            {{ eventProps.eventData.title }}-->
 
-            <div>
-              <input type="checkbox" />
+<!--            <div>-->
+<!--              <input type="checkbox" />-->
 
-              <label for="checkbox">
-                Select time slot
-              </label>
-            </div>
-          </div>
-        </template>
+<!--              <label for="checkbox">-->
+<!--                Select time slot-->
+<!--              </label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </template>-->
 
-        <template v-slot:eventDialog="props" #eventDialog>
-          <div
-            v-if="props.eventDialogData && props.eventDialogData.title"
-            :style="{ border: '4px dotted cornflowerblue', padding: '16px' }"
-          >
-            <span>Edit event</span>
+<!--        <template v-slot:eventDialog="props" #eventDialog>-->
+<!--          <div-->
+<!--            v-if="props.eventDialogData && props.eventDialogData.title"-->
+<!--            :style="{ padding: '16px' }"-->
+<!--          >-->
+<!--            <div :style="{marginBottom: '8px'}">Edit event</div>-->
 
-            <input type="text" v-model="eventDialogForm.title" :style="{ width: '90%', padding: '8px' }" >
+<!--            <input type="text" v-model="eventDialogForm.title" :style="{ width: '90%', padding: '8px', marginBottom: '8px' }" >-->
 
-            <button @click="props.closeEventDialog">
-              Finished!
-            </button>
-          </div>
-        </template>
+<!--            <button @click="props.closeEventDialog">-->
+<!--              Finished!-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </template>-->
       </Qalendar>
     </main>
 
@@ -101,7 +101,8 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: 'week',
+        defaultMode: 'day',
+        // disableModes: ['month'],
         isSilent: true,
         dayIntervals: {
           // height: 50,
@@ -113,10 +114,10 @@ export default defineComponent({
           //   borderBottom: '1px dotted #fff',
           // },
         },
-        eventDialog: {
-          isDisabled: false,
-          isCustom: true,
-        }
+        // eventDialog: {
+        //   isDisabled: false,
+        //   isCustom: true,
+        // }
       } as configInterface,
       events: [] as eventInterface[],
 
