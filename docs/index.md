@@ -1,3 +1,4 @@
+
 # Qalendar
 
 Qalendar is an event calendar for Vue 3. It is written in Typescript, in order to provide the best possible usability for JS- as well as TS-based applications.
@@ -310,6 +311,18 @@ The Qalendar component also allows you to take full control over the looks and c
   </Qalendar>
 </template>
 ```
+
+For an event to use the custom markup added through the event slot, it needs to have the property `isCustom` set to `true`. Such as:
+
+```js
+const event = {
+  id: '1',
+  time: { start: '2022-08-08 12:00', end: '2022-08-08 13:00' },
+  isCustom: true,
+}
+```
+
+This allows you to even mix usage of custom events, and Qalendar-native events.
 
 ### Custom event dialog
 

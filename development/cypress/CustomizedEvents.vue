@@ -71,9 +71,9 @@ export default defineComponent({
     // IMPORTANT: Needs to be set through a timeout, to make sure that the test
     // tries adding events through a prop after the component was already rendered
     setTimeout(() => {
-      this.events = fiveDayWeekEvents.map(e => {
+      this.events = fiveDayWeekEvents.map((e, i) => {
         // @ts-ignore
-        e.isCustom = true;
+        if (i % 2 === 0) e.isCustom = true;
 
         return e
       }).filter(e => e.time.start.match(DATE_TIME_STRING_PATTERN));
