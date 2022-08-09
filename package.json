@@ -46,6 +46,8 @@
     "@commitlint/cli": "17.0.3",
     "@commitlint/config-conventional": "17.0.3",
     "@rushstack/eslint-patch": "1.1.4",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
     "@types/jsdom": "20.0.0",
     "@types/node": "16.11.47",
     "@vitejs/plugin-vue": "2.3.3",
@@ -53,8 +55,6 @@
     "@vue/eslint-config-typescript": "11.0.0",
     "@vue/test-utils": "2.0.2",
     "@vue/tsconfig": "0.1.3",
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1",
     "cypress": "10.4.0",
     "eslint": "8.21.0",
     "eslint-config-prettier": "8.5.0",
@@ -63,6 +63,7 @@
     "jsdom": "20.0.0",
     "prettier": "2.7.1",
     "sass": "1.54.2",
+    "semantic-release": "^19.0.3",
     "start-server-and-test": "1.14.0",
     "typescript": "4.7.4",
     "vite": "2.9.14",
@@ -70,8 +71,7 @@
     "vitest": "0.20.3",
     "vue": "^3.0.0",
     "vue-router": "4.1.3",
-    "vue-tsc": "0.39.4",
-    "semantic-release": "^19.0.3"
+    "vue-tsc": "0.39.4"
   },
   "keywords": [
     "calendar",
