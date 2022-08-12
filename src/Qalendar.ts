@@ -1,3 +1,6 @@
+/**
+ * To be compiled into a d.ts file.
+ * */
 import Vue, { VNode } from 'vue';
 import type {eventInterface} from './typings/interfaces/event.interface';
 import type {configInterface} from './typings/config.interface';
