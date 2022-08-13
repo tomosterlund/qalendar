@@ -31,11 +31,16 @@
           @event-was-resized="$emit('event-was-resized', $event)"
           @event-was-dragged="handleEventWasDragged"
           @interval-was-clicked="$emit('interval-was-clicked', $event)"
-        />
+        >
+          <template #event="p">
+            <slot :event-data="p.eventData" name="event"></slot>
+          </template>
+        </Day>
       </div>
     </section>
 
     <EventFlyout
+      v-if="!config.eventDialog || !config.eventDialog.isDisabled"
       :calendar-event-prop="selectedEvent"
       :event-element="selectedEventElement"
       :time="time"
@@ -43,7 +48,15 @@
       @hide="selectedEvent = null"
       @edit-event="$emit('edit-event', $event)"
       @delete-event="$emit('delete-event', $event)"
-    />
+    >
+      <template #default="p">
+        <slot
+          name="eventDialog"
+          :event-dialog-data="p.eventDialogData"
+          :close-event-dialog="p.closeEventDialog"
+        ></slot>
+      </template>
+    </EventFlyout>
   </div>
 </template>
 
@@ -68,7 +81,6 @@ import {
 import EventPosition from '../../helpers/EventPosition';
 import { fullDayEventsWeek } from '../../typings/interfaces/full-day-events-week.type';
 import { modeType } from '../../typings/types';
-import PerfectScrollbar from 'perfect-scrollbar';
 const eventPosition = new EventPosition();
 
 export default defineComponent({
@@ -131,7 +143,6 @@ export default defineComponent({
         height: 66,
       } as dayIntervalsType | any,
       weekHeight: '1584px', // Correlates to the initial values of dayIntervals.length and dayIntervals.height
-      scrollbar: null as any,
     };
   },
 
@@ -156,21 +167,9 @@ export default defineComponent({
     this.filterOutFullDayEvents();
     this.setInitialEvents(this.modeProp);
     this.scrollOnMount();
-    this.initScrollbar();
   },
 
   methods: {
-    initScrollbar(elapsedMs = 0) {
-      const el = document.querySelector('.calendar-week__wrapper');
-
-      if (elapsedMs > 3000) return;
-      if (!el) this.initScrollbar(elapsedMs + 50);
-      else {
-        this.scrollbar = new PerfectScrollbar(el);
-        this.scrollbar.update();
-      }
-    },
-
     filterOutFullDayEvents() {
       const fullDayEvents = [];
       const allOtherEvents = [];
@@ -370,7 +369,6 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .calendar-week__wrapper {
-  position: relative;
   padding-left: var(--qalendar-week-padding-left);
   overflow-y: auto;
 }

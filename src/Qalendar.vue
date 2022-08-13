@@ -38,7 +38,19 @@
         @edit-event="$emit('edit-event', $event)"
         @delete-event="$emit('delete-event', $event)"
         @interval-was-clicked="$emit('interval-was-clicked', $event)"
-      />
+      >
+        <template #event="p">
+          <slot :event-data="p.eventData" name="event"></slot>
+        </template>
+
+        <template #eventDialog="p">
+          <slot
+            name="eventDialog"
+            :event-dialog-data="p.eventDialogData"
+            :close-event-dialog="p.closeEventDialog"
+          ></slot>
+        </template>
+      </Week>
 
       <Month
         v-if="mode === 'month'"
@@ -52,7 +64,15 @@
         @updated-period="handleUpdatedPeriod($event, true)"
         @edit-event="$emit('edit-event', $event)"
         @delete-event="$emit('delete-event', $event)"
-      />
+      >
+        <template #eventDialog="p">
+          <slot
+            name="eventDialog"
+            :event-dialog-data="p.eventDialogData"
+            :close-event-dialog="p.closeEventDialog"
+          ></slot>
+        </template>
+      </Month>
     </div>
   </div>
 </template>
@@ -276,7 +296,6 @@ export default defineComponent({
 
 <style lang="scss">
 @import './styles/variables.scss';
-@import '../node_modules/perfect-scrollbar/css/perfect-scrollbar.css';
 
 .calendar-root-wrapper {
   width: 100%;

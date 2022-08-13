@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {DatePicker} from '../../src';
+import DatePicker from '../../src/components/header/DatePicker.vue'
 
 export default defineComponent({
   name: 'ConfigureDatePicker',

@@ -1,6 +1,6 @@
 {
   "name": "qalendar",
-  "version": "1.5.2",
+  "version": "1.5.1",
   "homepage": "https://tomosterlund.github.io/qalendar/",
   "repository": {
     "type": "git",
@@ -39,8 +39,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.0",
     "@fortawesome/free-regular-svg-icons": "^6.0.0",
     "@fortawesome/free-solid-svg-icons": "^5.1.0",
-    "@fortawesome/vue-fontawesome": "^3.0.0-5",
-    "perfect-scrollbar": "^1.5.5"
+    "@fortawesome/vue-fontawesome": "^3.0.0-5"
   },
   "devDependencies": {
     "@babel/types": "7.18.10",

@@ -27,7 +27,7 @@
         @updated="handlePeriodChange"
       />
 
-      <div class="calendar-header__mode-picker">
+      <div v-if="!onlyDayModeIsEnabled" class="calendar-header__mode-picker">
         <div class="calendar-header__mode-value" @click="showModePicker = true">
           {{ modeName }}
         </div>
@@ -38,6 +38,9 @@
           @mouseleave="showModePicker = false"
         >
           <div
+            v-if="
+              !config.disableModes || !config.disableModes.includes('month')
+            "
             class="calendar-header__mode-option is-month-mode"
             @click="$emit('change-mode', 'month')"
           >
@@ -45,6 +48,7 @@
           </div>
 
           <div
+            v-if="!config.disableModes || !config.disableModes.includes('week')"
             class="calendar-header__mode-option is-week-mode"
             @click="$emit('change-mode', 'week')"
           >
@@ -157,6 +161,13 @@ export default defineComponent({
         this.languageKeys[this.mode],
         this.time?.CALENDAR_LOCALE
       );
+    },
+
+    onlyDayModeIsEnabled() {
+      const weekIsDisabled = this.config.disableModes?.includes('week');
+      const monthIsDisabled = this.config.disableModes?.includes('month');
+
+      return this.config.disableModes && weekIsDisabled && monthIsDisabled;
     },
   },
 
