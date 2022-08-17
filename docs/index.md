@@ -1,3 +1,4 @@
+
 # Qalendar
 
 Qalendar is an event calendar for Vue 3. It is written in Typescript, in order to provide the best possible usability for JS- as well as TS-based applications.
@@ -70,8 +71,6 @@ export default {
 
 As in the code example above, you need to import the styles for the component. Since Qalendar is aiming to be a responsive multi-purpose component, it avoids use of fixed height and width where possible. Therefore, for most use-cases you would probably want to place it in a wrapper with a fixed `height`, and possibly a `max-width`.
 
-## Configuration
-
 Qalendar takes a `config` prop, which contains all the most crucial options for configuring its behavior. `config` is passed as an object, which could look like this:
 
 ### Basic configuration
@@ -100,45 +99,6 @@ data() {
             // The silent flag can be added, to disable the development warnings. This will also bring a slight performance boost
             isSilent: true,
         }
-    }
-}
-```
-
-### Custom colors for events
-
-All events can be given the `color` property with any of the given object properties of `EVENT_COLORS` in [this file](https://github.com/tomosterlund/qalendar/blob/master/src/constants.ts). However, you can also pass further color schemes in the `config` object, which the events can then utilize, such as:
-
-```js
-data() {
-    return {
-        config: {
-            style: {
-                colorSchemes: {
-                    meetings: {
-                        color: '#fff',
-                        backgroundColor: '#131313',
-                    },
-                    sports: {
-                        color: '#fff',
-                        backgroundColor: '#ff4081',
-                    }
-                }
-            },
-        },
-        events: [
-            {
-                title: 'Beep',
-                time: { start: '2022-05-16 08:00', end: '2022-05-16 09:00' },
-                colorScheme: 'meetings',
-                id: '1',
-            },
-            {
-                title: 'Boop',
-                time: { start: '2022-05-16 08:00', end: '2022-05-16 09:00' },
-                colorScheme: 'sports',
-                id: '2',
-            },
-        ]
     }
 }
 ```
@@ -295,6 +255,103 @@ export default {
 </script>
 ```
 
+## Customization
+
+### Custom colors for events
+
+All events can be given the `color` property with any of the given object properties of `EVENT_COLORS` in [this file](https://github.com/tomosterlund/qalendar/blob/master/src/constants.ts). However, you can also pass further color schemes in the `config` object, which the events can then utilize, such as:
+
+```js
+data() {
+    return {
+        config: {
+            style: {
+                colorSchemes: {
+                    meetings: {
+                        color: '#fff',
+                        backgroundColor: '#131313',
+                    },
+                    sports: {
+                        color: '#fff',
+                        backgroundColor: '#ff4081',
+                    }
+                }
+            },
+        },
+        events: [
+            {
+                title: 'Beep',
+                time: { start: '2022-05-16 08:00', end: '2022-05-16 09:00' },
+                colorScheme: 'meetings',
+                id: '1',
+            },
+            {
+                title: 'Boop',
+                time: { start: '2022-05-16 08:00', end: '2022-05-16 09:00' },
+                colorScheme: 'sports',
+                id: '2',
+            },
+        ]
+    }
+}
+```
+
+### Custom events
+
+The Qalendar component also allows you to take full control over the looks and content of an event. The data of your event, can then be accessed via scoped, named slots in the following manner:
+
+```vue
+<template>
+  <Qalendar :events="events">
+    <template #event="eventProps">
+      <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
+        <span>{{ eventProps.eventData.title }}</span>
+      </div>
+    </template>
+  </Qalendar>
+</template>
+```
+
+For an event to use the custom markup added through the event slot, it needs to have the property `isCustom` set to `true`. Such as:
+
+```js
+const event = {
+  id: '1',
+  time: { start: '2022-08-08 12:00', end: '2022-08-08 13:00' },
+  isCustom: true,
+}
+```
+
+This allows you to even mix usage of custom events, and Qalendar-native events.
+
+### Custom event dialog
+
+The dialog which is opened when an event is clicked can also be customized. To enable this, you first need set the configuration option `eventDialog.isCustom` to true, and then add a scoped slot, as in the example below. Please note, that the `v-if` is crucial in order to prevent errors. Until your user clicks an event, `props.eventDialogData` will be `null`.
+
+For programmatically closing your custom dialog, you can trigger `props.closeEventDialog` as shown in the example below.
+
+```vue
+<template>
+  <Qalendar :events="events">
+    <template #eventDialog="props">
+      <div v-if="props.eventDialogData && props.eventDialogData.title">
+        <div :style="{marginBottom: '8px'}">Edit event</div>
+
+        <input class="flyout-input" type="text" :style="{ width: '90%', padding: '8px', marginBottom: '8px' }" >
+
+        <button class="close-flyout" @click="props.closeEventDialog">
+          Finished!
+        </button>
+      </div>
+    </template>
+  </Qalendar>
+</template>
+```
+
+::: tip
+Together with the data extracted from the event `event-was-clicked`, you can use a custom event dialog for letting your user edit the event directly in the calendar. Just save the id of an event that was clicked, and display some input fields in the dialog, targeting the properties of the event that was just clicked.
+:::
+
 ### Intervals
 
 The Qalendar component also allows the implementer to define intervals to be displayed in the modes `day` and `week`. This can be configured in the `config` prop, under `dayIntervals`, such as:
@@ -318,6 +375,15 @@ data() {
 
 When a clickable interval is clicked, the calendar emits the event `interval-was-clicked`, containing date-time strings for the start and end of the clicked interval. This can be useful, for letting the user add an event, based on where in a day the user clicks.
 
+### Disabling features
+
+Some features of the calendar can be disabled/hidden through configuration.
+
+| Property in config object  |                         Type                          |                   Purpose                    |
+|:--------------------------:|:-----------------------------------------------------:|:--------------------------------------------:|
+|       `disableModes`       | array, which can contain the values `week` or `month` |   Disable the calendar modes week or month   |
+|  `eventDialog.isDisabled`  |                        boolean                        | Prevent the event dialog from showing at all |
+|   `eventDialog.isCustom`   |                        boolean                        |   Enable customization of the event dialog   |
 
 ## Date picker
 

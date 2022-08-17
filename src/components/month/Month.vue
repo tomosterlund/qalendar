@@ -21,6 +21,7 @@
     </div>
 
     <EventFlyout
+      v-if="!config.eventDialog || !config.eventDialog.isDisabled"
       :calendar-event-prop="selectedEvent"
       :event-element="selectedEventElement"
       :time="time"
@@ -28,7 +29,15 @@
       @hide="selectedEvent = null"
       @edit-event="$emit('edit-event', $event)"
       @delete-event="$emit('delete-event', $event)"
-    />
+    >
+      <template #default="p">
+        <slot
+          name="eventDialog"
+          :event-dialog-data="p.eventDialogData"
+          :close-event-dialog="p.closeEventDialog"
+        ></slot>
+      </template>
+    </EventFlyout>
   </div>
 </template>
 

@@ -4,7 +4,10 @@
     :class="{ 'is-visible': isVisible, 'is-not-editable': !isEditable }"
     :style="eventFlyoutInlineStyles"
   >
-    <div class="event-flyout__relative-wrapper">
+    <div
+      v-if="!config.eventDialog || !config.eventDialog.isCustom"
+      class="event-flyout__relative-wrapper"
+    >
       <div class="event-flyout__menu">
         <span v-if="isEditable" class="event-flyout__menu-editable">
           <font-awesome-icon
@@ -74,6 +77,12 @@
         </div>
       </div>
     </div>
+
+    <slot
+      v-else
+      :event-dialog-data="calendarEvent"
+      :close-event-dialog="closeFlyout"
+    ></slot>
   </div>
 </template>
 
