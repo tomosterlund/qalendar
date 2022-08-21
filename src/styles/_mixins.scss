@@ -1,13 +1,13 @@
 @mixin screen-size-m {
-  @media (min-width: 37.5rem) {
-    @content;
-  }
+	@media (min-width: 37.5rem) {
+		@content;
+	}
 }
 
 @mixin hover {
-  @media (hover: hover) {
-    &:hover {
-      @content;
-    }
-  }
+	@media (hover: hover) {
+		&:hover {
+			@content;
+		}
+	}
 }

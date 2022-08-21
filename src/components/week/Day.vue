@@ -149,14 +149,11 @@ export default defineComponent({
   }
 
   &:first-child {
-    border-left: 1px dashed rgb(224, 224, 224);
+    border-left: 1px dashed rgb(224 224 224);
   }
 
   &:not(:last-child) {
-    border-right: 1px dashed rgb(224, 224, 224);
-  }
-
-  .calendar-week__day-interval {
+    border-right: 1px dashed rgb(224 224 224);
   }
 }
 </style>

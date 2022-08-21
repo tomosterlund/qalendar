@@ -24,7 +24,9 @@
         @mousedown="resizeEvent('up')"
       />
 
-      <div class="calendar-week__event-row is-title">{{ event.title }}</div>
+      <div class="calendar-week__event-row is-title">
+        {{ event.title }}
+      </div>
 
       <div class="calendar-week__event-row is-time">
         <font-awesome-icon
@@ -67,7 +69,7 @@
           class="calendar-week__event-icon"
         />
         <!-- eslint-disable vue/no-v-html -->
-        <p v-html="event.description"></p>
+        <p v-html="event.description" />
         <!--eslint-enable-->
       </div>
 
@@ -641,8 +643,6 @@ export default defineComponent({
   cursor: pointer;
   box-sizing: content-box;
   user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
 
   &.is-editable {
     cursor: grab;

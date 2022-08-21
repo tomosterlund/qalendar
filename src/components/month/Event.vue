@@ -7,7 +7,7 @@
     @dragstart="handleDragStart"
     @click="handleClickOnEvent"
   >
-    <span class="calendar-month__event-color"></span>
+    <span class="calendar-month__event-color" />
 
     <span v-if="eventTimeStart" class="calendar-month__event-time">
       {{ eventTimeStart }}
@@ -170,21 +170,19 @@ export default defineComponent({
   padding: 2px var(--event-inline-padding);
   cursor: pointer;
   user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
 
   &.is-draggable {
     cursor: grab;
+  }
+
+  &:active {
+    z-index: 100;
   }
 
   &:not(.is-draggable) {
     &:active {
       cursor: not-allowed;
     }
-  }
-
-  &:active {
-    z-index: 100;
   }
 
   @include mixins.hover {
@@ -210,7 +208,7 @@ export default defineComponent({
   }
 
   .calendar-month__event-title {
-    //font-weight: 600;
+    // font-weight: 600;
   }
 }
 </style>

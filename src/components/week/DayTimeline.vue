@@ -67,6 +67,10 @@ export default defineComponent({
     font-size: clamp(10px, 0.625rem, 14px);
     color: var(--qalendar-gray-quite-dark);
 
+    &-text {
+      transform: translate(-40px, -6px); /** Sets the hour to be above the line for full hour */
+    }
+
     &:first-child {
       .day-timeline__hour-text {
         display: none;
@@ -76,13 +80,6 @@ export default defineComponent({
     &:not(:last-child) {
       border-bottom: var(--qalendar-border-gray-thin);
     }
-  }
-
-  &__hour-text {
-    transform: translate(
-      -40px,
-      -6px
-    ); /** Sets the hour to be above the line for full hour */
   }
 }
 </style>

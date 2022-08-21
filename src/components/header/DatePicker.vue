@@ -9,7 +9,7 @@
       class="date-picker__value-display"
       @click="togglePeriodSelector"
     >
-      <font-awesome-icon :icon="icons.calendarIcon"></font-awesome-icon>
+      <font-awesome-icon :icon="icons.calendarIcon" />
       <span class="date-picker__value-display-text">{{ periodText }}</span>
     </div>
 
@@ -24,7 +24,7 @@
           class="is-icon is-chevron-left"
           :icon="icons.chevronLeft"
           @click="toggleDatePickerPeriod('previous')"
-        ></font-awesome-icon>
+        />
         <span class="date-picker__toggle-mode" @click="toggleDatePickerMode">
           <template v-if="datePickerMode === 'month'">
             {{
@@ -47,7 +47,7 @@
           class="is-icon is-chevron-right"
           :icon="icons.chevronRight"
           @click="toggleDatePickerPeriod('next')"
-        ></font-awesome-icon>
+        />
       </div>
 
       <div
@@ -491,7 +491,7 @@ export default defineComponent({
     border: var(--qalendar-border-gray-thin);
     border-radius: 4px;
     min-width: 250px;
-    box-shadow: 0 2px 4px rgba(240, 236, 236, 0.76);
+    box-shadow: 0 2px 4px rgb(240 236 236 / 76%);
 
     &.is-in-qalendar {
       top: calc(100% - 1px);

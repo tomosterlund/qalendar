@@ -137,10 +137,10 @@ export default defineComponent({
   &__events {
     width: 100%;
     flex: 1;
-    border-right: 1px dashed rgb(224, 224, 224);
+    border-right: 1px dashed rgb(224 224 224);
 
     .week-timeline__day:first-child & {
-      border-left: 1px dashed rgb(224, 224, 224);
+      border-left: 1px dashed rgb(224 224 224);
     }
   }
 }

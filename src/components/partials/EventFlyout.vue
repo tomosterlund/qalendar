@@ -72,7 +72,7 @@
             class="calendar-week__event-icon"
           />
           <!-- eslint-disable vue/no-v-html -->
-          <p v-html="calendarEvent.description"></p>
+          <p v-html="calendarEvent.description" />
           <!--eslint-enable-->
         </div>
       </div>
@@ -335,9 +335,8 @@ export default defineComponent({
   max-width: 98%;
   border: var(--qalendar-border-gray-thin);
   border-radius: 8px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.09), 0 6px 12px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 12px 24px rgb(0 0 0 / 9%), 0 6px 12px rgb(0 0 0 / 18%);
   overflow: hidden;
-
   transition: all 0.2s ease;
   transition-property: opacity, transform;
   transform: translateY(-40px);
@@ -346,7 +345,7 @@ export default defineComponent({
 
   &.is-visible {
     opacity: 1;
-    transform: translateY(0px);
+    transform: translateY(0);
     pointer-events: initial;
   }
 
@@ -406,9 +405,7 @@ export default defineComponent({
       margin: 0;
       padding: 0;
     }
-  }
 
-  &__row {
     svg {
       margin-top: 0.1rem;
       color: #5f6368;
