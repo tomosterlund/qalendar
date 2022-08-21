@@ -35,7 +35,7 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "lint:scss": "stylelint src/styles/**/*.{scss,sass} src/components/**/*.vue",
-	"format": "prettier .  --write",
+    "format": "prettier .  --write",
     "seed": "node ./development/faker/seed.js",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
@@ -57,7 +57,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.0",
     "@fortawesome/free-regular-svg-icons": "^6.0.0",
     "@fortawesome/free-solid-svg-icons": "^5.1.0",
-    "@fortawesome/vue-fontawesome": "^3.0.0-5"
+    "@fortawesome/vue-fontawesome": "^3.0.0-5",
+    "perfect-scrollbar": "^1.5.5"
   },
   "devDependencies": {
     "@babel/types": "7.18.10",

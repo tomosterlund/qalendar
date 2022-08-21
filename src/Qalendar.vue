@@ -296,6 +296,7 @@ export default defineComponent({
 
 <style lang="scss">
 @import './styles/variables.scss';
+@import '../node_modules/perfect-scrollbar/css/perfect-scrollbar.css';
 
 .calendar-root-wrapper {
   width: 100%;
