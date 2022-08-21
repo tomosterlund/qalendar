@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/tomosterlund/qalendar/compare/v1.6.0...v1.6.1) (2022-08-21)
+
+
+### Bug Fixes
+
+* add perfect scrollbar to prevent layout shifts ([#64](https://github.com/tomosterlund/qalendar/issues/64)) ([14be398](https://github.com/tomosterlund/qalendar/commit/14be398772729dd624e1abc4267993faa959dc06))
+
 # [1.6.0](https://github.com/tomosterlund/qalendar/compare/v1.5.2...v1.6.0) (2022-08-13)
 
 
