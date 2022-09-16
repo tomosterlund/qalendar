@@ -14,12 +14,14 @@ export default class DragAndDrop {
   static eventCanBeDraggedFurther(event: eventInterface, direction: 'backwards' | 'forwards') {
     if (direction === 'forwards') {
       const { hour: endHour } = time.getAllVariablesFromDateTimeString(event.time.end)
+      const { minutes: endMinutes } = time.getAllVariablesFromDateTimeString(event.time.end)
 
-      return endHour < 23
+      return endHour < 23 || (endHour === 23 && endMinutes < 45)
     }
 
     const { hour: startHour } = time.getAllVariablesFromDateTimeString(event.time.start)
+    const { minutes: startMinutes } = time.getAllVariablesFromDateTimeString(event.time.start)
 
-    return startHour > 0
+    return startHour > 0 || (startHour === 0 && startMinutes >= 15)
   }
 }

@@ -194,7 +194,7 @@ export default defineComponent({
       canDrag: false, // set to true on mousedown and false on mouseup
       clientYDragStart: null as null | number,
       clientXDragStart: null as null | number,
-      changeInHoursOnDrag: 0,
+      changeInQuartersOnDrag: 0,
       changeInDaysOnDrag: 0,
       timeStartDragStart: this.eventProp.time.start,
       timeEndDragStart: this.eventProp.time.end,
@@ -351,7 +351,7 @@ export default defineComponent({
         this.event.time.end = newEndOfTimeDateTimeString;
     },
 
-    changeInHoursOnDrag(newValue) {
+    changeInQuartersOnDrag(newValue) {
       const eventCanBeDraggedFurther = DragAndDrop.eventCanBeDraggedFurther(
         this.event,
         newValue <= -1 ? 'backwards' : 'forwards'
@@ -359,11 +359,11 @@ export default defineComponent({
       if (!eventCanBeDraggedFurther) return;
 
       const newStart = this.time.addMinutesToDateTimeString(
-        newValue * 60,
+        newValue * 15,
         this.timeStartDragStart
       );
       const newEnd = this.time.addMinutesToDateTimeString(
-        newValue * 60,
+        newValue * 15,
         this.timeEndDragStart
       );
       // Only change the portion of a string that affects time
@@ -612,10 +612,10 @@ export default defineComponent({
       const changeInTimePoints =
         (this.timePointsInDay / 100) * percentageOfDayChanged;
       const changeInMinutes = this.getMinutesFromTimePoints(changeInTimePoints);
-      this.changeInHoursOnDrag =
+      this.changeInQuartersOnDrag =
         changeInMinutes < 0
-          ? Math.ceil(changeInMinutes / 60)
-          : Math.floor(changeInMinutes / 60);
+          ? Math.ceil(changeInMinutes / 15)
+          : Math.floor(changeInMinutes / 15);
     },
 
     /**
