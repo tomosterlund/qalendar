@@ -584,7 +584,7 @@ export default defineComponent({
       const dayChanged =
         this.changeInDaysOnDrag <= -1 || this.changeInDaysOnDrag > 0;
       const timeChanged =
-        this.changeInHoursOnDrag <= -1 || this.changeInHoursOnDrag > 0;
+        this.changeInQuartersOnDrag <= -1 || this.changeInQuartersOnDrag > 0;
 
       if (dayChanged || timeChanged)
         this.$emit('event-was-dragged', this.event);

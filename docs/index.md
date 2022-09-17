@@ -326,7 +326,7 @@ This allows you to even mix usage of custom events, and Qalendar-native events.
 
 ### Custom event dialog
 
-The dialog which is opened when an event is clicked can also be customized. To enable this, you first need set the configuration option `eventDialog.isCustom` to true, and then add a scoped slot, as in the example below. Please note, that the `v-if` is crucial in order to prevent errors. Until your user clicks an event, `props.eventDialogData` will be `null`.
+The dialog which is opened when an event is clicked can also be customized. To enable this, you first need to set the configuration option `eventDialog.isCustom` to true, and then add a scoped slot, as in the example below. Please note, that the `v-if` is crucial in order to prevent errors. Until your user clicks an event, `props.eventDialogData` will be `null`.
 
 For programmatically closing your custom dialog, you can trigger `props.closeEventDialog` as shown in the example below.
 

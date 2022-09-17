@@ -15,8 +15,11 @@ export default class DragAndDrop {
     if (direction === 'forwards') {
       const { hour: endHour } = time.getAllVariablesFromDateTimeString(event.time.end)
       const { minutes: endMinutes } = time.getAllVariablesFromDateTimeString(event.time.end)
+      const { hour: startHour } = time.getAllVariablesFromDateTimeString(event.time.start)
+      const { minutes: startMinutes } = time.getAllVariablesFromDateTimeString(event.time.start)
 
-      return endHour < 23 || (endHour === 23 && endMinutes < 45)
+      return (endHour < 23 || (endHour === 23 && endMinutes < 45))
+       && (startHour < 23 || startHour === 23 && startMinutes < 45)
     }
 
     const { hour: startHour } = time.getAllVariablesFromDateTimeString(event.time.start)
