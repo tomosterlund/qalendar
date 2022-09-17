@@ -1,7 +1,6 @@
 name: Unit tests
 on:
   pull_request:
-    types: [opened, reopened, edited]
   push:
     branches:
       - master
