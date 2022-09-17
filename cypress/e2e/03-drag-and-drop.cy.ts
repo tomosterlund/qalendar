@@ -50,7 +50,7 @@ describe('DragAndDrop.vue', () => {
 
       cy.get(EVENT_SELECTOR).click()
       cy.get('.event-flyout__row.is-time').then($el => {
-        expect($el).to.have.text('June 10, 2022 ⋅ 11:00 PM - 12:20 AM')
+        expect($el).to.have.text('June 10, 2022 ⋅ 11:45 PM - 1:05 AM')
       })
     })
   });
