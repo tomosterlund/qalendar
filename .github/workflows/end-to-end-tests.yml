@@ -1,5 +1,10 @@
 name: End-to-end tests
-on: [pull_request]
+on:
+  pull_request:
+    types: [opened, reopened]
+  push:
+    branches:
+      - master
 
 jobs:
   chrome:
