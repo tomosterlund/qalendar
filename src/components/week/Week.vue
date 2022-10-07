@@ -339,11 +339,13 @@ export default defineComponent({
       const weekWrapper = document.querySelector('.calendar-week__wrapper');
 
       if (weekWrapper) {
-        const weekHeight = +this.weekHeight.split('p')[0];
-        const oneHourInPixel = weekHeight / 24;
-        const hourToScrollTo = this.config.week?.scrollToHour || 8;
-        const desiredNumberOfPixelsToScroll = oneHourInPixel * hourToScrollTo;
-        weekWrapper.scroll(0, desiredNumberOfPixelsToScroll - 10); // -10 to display the hour in DayTimeline
+        this.$nextTick(() => {
+          const weekHeight = +this.weekHeight.split('p')[0];
+          const oneHourInPixel = weekHeight / 24;
+          const hourToScrollTo = this.config.week?.scrollToHour || 8;
+          const desiredNumberOfPixelsToScroll = oneHourInPixel * hourToScrollTo;
+          weekWrapper.scroll(0, desiredNumberOfPixelsToScroll - 10); // -10 to display the hour in DayTimeline
+        })
       }
     },
 
