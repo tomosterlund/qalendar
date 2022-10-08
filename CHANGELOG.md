@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/tomosterlund/qalendar/compare/v1.7.0...v1.8.0) (2022-10-08)
+
+
+### Features
+
+* add scrollToHour option ([#73](https://github.com/tomosterlund/qalendar/issues/73)) ([ef22ef3](https://github.com/tomosterlund/qalendar/commit/ef22ef39c34a043627b8b431e03eab6bedcd9630))
+
 # [1.7.0](https://github.com/tomosterlund/qalendar/compare/v1.6.1...v1.7.0) (2022-09-17)
 
 
