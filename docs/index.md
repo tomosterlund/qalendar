@@ -85,6 +85,8 @@ data() {
                 startsOn: 'monday',
                 // Takes the values 5 or 7.
                 nDays: 7,
+                // Scroll to a certain hour on mounting a week. Takes any value from 0 to 23.
+                scrollToHour: 5,
             },
             // Takes any valid locale that the browser understands. However, not all locales have been thorougly tested in Qalendar
             // If no locale is set, the preferred browser locale will be used
