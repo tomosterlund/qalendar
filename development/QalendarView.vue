@@ -147,7 +147,7 @@ export default defineComponent({
     reactToEvent(payload: any) {
       console.log(payload);
     },
-    
+
     updatedPeriod(e) {
       console.log('updated period')
       console.log(e)

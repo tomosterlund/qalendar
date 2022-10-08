@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/tomosterlund/qalendar/compare/v1.6.1...v1.7.0) (2022-09-17)
+
+
+### Features
+
+* more precise dragging ([#70](https://github.com/tomosterlund/qalendar/issues/70)) ([759ecda](https://github.com/tomosterlund/qalendar/commit/759ecda83f965d059802067f6ded5ec39ff30b1c)), closes [#68](https://github.com/tomosterlund/qalendar/issues/68) [#69](https://github.com/tomosterlund/qalendar/issues/69)
+
 ## [1.6.1](https://github.com/tomosterlund/qalendar/compare/v1.6.0...v1.6.1) (2022-08-21)
 
 
