@@ -86,7 +86,7 @@
     "sass": "1.54.9",
     "semantic-release": "19.0.5",
     "start-server-and-test": "1.14.0",
-    "stylelint": "14.11.0",
+    "stylelint": "14.14.0",
     "stylelint-config-recommended-vue": "1.4.0",
     "stylelint-config-standard": "29.0.0",
     "stylelint-config-standard-scss": "5.0.0",
