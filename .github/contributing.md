@@ -47,3 +47,21 @@ node src/development/faker/seed.js --year=2022
 will yield events in all months of 2022.
 
 Please note that all previously seeded events are deleted upon running the CLI.
+
+### Committing
+
+This repo uses [commitlint](https://commitlint.js.org/#/) in order to enforce a consistent commit message format. Please use the following format in your commit messages:
+
+```
+type: subject
+```
+
+Where `type` is one of the following:
+`feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`, `build:`, `ci:` or `chore:`
+
+The subject should then be a short description of your changes. The full commit message could then for example look like:
+
+- ```feat: add language support for Swahili```  
+- ```fix: add library perfect-scrollbar to prevent layout shifts```  
+- ```fix: spacing problem in AppHeader component```
+- ```chore: update vue-tsc dependency```
