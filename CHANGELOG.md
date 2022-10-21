@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/tomosterlund/qalendar/compare/v1.8.0...v1.9.0) (2022-10-21)
+
+
+### Features
+
+* pt-BR language ([#78](https://github.com/tomosterlund/qalendar/issues/78)) ([2d04415](https://github.com/tomosterlund/qalendar/commit/2d04415382b8bd46d24303dd2c8b109853b1fa30))
+
 # [1.8.0](https://github.com/tomosterlund/qalendar/compare/v1.7.0...v1.8.0) (2022-10-08)
 
 
