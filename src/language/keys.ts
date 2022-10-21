@@ -6,6 +6,7 @@ export const languageKeys = {
     "de-DE": "Woche",
     "sv-SE": "Vecka",
     "zh-CN": "周",
+    "pt-BR": "Semana",
   },
   month: {
     "it-IT": "Mese",
@@ -13,6 +14,7 @@ export const languageKeys = {
     "de-DE": "Monat",
     "sv-SE": "Månad",
     "zh-CN": "月",
+    "pt-BR": "Mês",
   },
   day: {
     "it-IT": "Giorno",
@@ -20,6 +22,7 @@ export const languageKeys = {
     "de-DE": "Tag",
     "sv-SE": "Dag",
     "zh-CN": "日",
+    "pt-BR": "Dia",
   },
 
   /** Other keys */
@@ -29,5 +32,6 @@ export const languageKeys = {
     "de-DE": "+ weitere Ereignisse",
     "sv-SE": "+ fler händelser",
     "zh-CN": "列出其他结果",
+    "pt-BR": "+ mais eventos",
   },
 };
