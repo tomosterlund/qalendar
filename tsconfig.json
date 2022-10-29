@@ -15,6 +15,6 @@
     "types": ["vite/client", "cypress"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "cypress/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "cypress/**/*.cy.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -90,7 +90,14 @@ export default class EventFlyoutPosition {
       };
     }
 
-    // Fallback - will lead to the flyout being centered horizontally and vertically over the calendar
-    return { top: null, left: null };
+    // Fallback for smaller screens - scenario 1
+    // Flyout is glued to the bottom of the calendar and horizontally centered
+    if (spaceBottom < flyoutDimensions.height) {
+      return { top: calendarDomRect.bottom - flyoutDimensions.height, left: null };
+    }
+
+    // Fallback for smaller screens - scenario 2
+    // Flyout is placed vertically based on the top of the event, and centered horizontally
+    return { top: eventElementDOMRect.top, left: null };
   }
 }

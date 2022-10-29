@@ -190,12 +190,12 @@ export default defineComponent({
     },
 
     eventFlyoutInlineStyles() {
-      if ([typeof this.top, typeof this.left].some((x) => x !== 'number')) {
+      if (typeof this.top === 'number' && !this.left) {
         return {
-          top: '50%',
+          top: this.top + 'px',
           left: '50%',
-          position: 'absolute' as const, // casting, since tsc otherwise thinks we're casting 'string' to 'PositionProperty'
-          transform: 'translate(-50%, -50%)',
+          position: 'fixed' as const,
+          transform: 'translateX(-50%)',
         };
       }
 
@@ -235,7 +235,7 @@ export default defineComponent({
         setTimeout(() => {
           this.calendarEvent = value;
           this.isVisible = !!value;
-          this.setFlyoutPosition();
+          this.$nextTick(() => this.setFlyoutPosition());
         }, 10);
       },
     },
@@ -265,8 +265,8 @@ export default defineComponent({
         calendar ? calendar.getBoundingClientRect() : null
       );
 
-      this.top = flyoutPosition?.top || null;
-      this.left = flyoutPosition?.left || null;
+      this.top = typeof flyoutPosition?.top === 'number' ? flyoutPosition.top : null;
+      this.left = typeof flyoutPosition?.left === 'number' ? flyoutPosition.left : null;
     },
 
     editEvent() {

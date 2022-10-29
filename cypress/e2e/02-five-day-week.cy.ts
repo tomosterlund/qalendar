@@ -34,7 +34,7 @@ describe('FiveDayWeek.vue', () => {
     cy.get('.event-flyout').should('be.visible')
 
     // 3. Click somewhere outside the event flyout, and assert that it is now not visible anymore
-    cy.get('.calendar-header').click()
+    cy.get('.calendar-header__mode-picker').click()
     cy.get('.event-flyout').should('not.be.visible')
   })
 })
