@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/tomosterlund/qalendar/compare/v1.9.0...v1.9.1) (2022-10-29)
+
+
+### Bug Fixes
+
+* improve event flyout position on small screens ([#80](https://github.com/tomosterlund/qalendar/issues/80)) ([9bec763](https://github.com/tomosterlund/qalendar/commit/9bec763249bb913290385871113cb171a314a37b))
+
 # [1.9.0](https://github.com/tomosterlund/qalendar/compare/v1.8.0...v1.9.0) (2022-10-21)
 
 
