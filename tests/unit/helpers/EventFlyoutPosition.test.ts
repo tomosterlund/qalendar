@@ -248,7 +248,7 @@ describe("EventFlyoutPositionHelper.ts", () => {
     expect(position.left).toBe(641);
   });
 
-  test("Getting null values for small calendar widths, which are then used to position flyout centered over the calendar", () => {
+  test("Getting dimensions for flyout on small screens, where there is enough space to the bottom to place flyout based on the top of event", () => {
     const eventDOMRect = {
       x: 66,
       y: 495,
@@ -279,7 +279,42 @@ describe("EventFlyoutPositionHelper.ts", () => {
 
     if (!position) throw new Error("No position");
 
-    expect(position.top).toBeNull();
+    expect(position.top).toBe(495);
+    expect(position.left).toBeNull();
+  });
+
+  test("Getting dimensions for flyout on small screens, where there is not enough space to the bottom to place flyout based on the top of event", () => {
+    const eventDOMRect = {
+      x: 66,
+      y: 495,
+      width: 509,
+      height: 75,
+      top: 495,
+      right: 575,
+      bottom: 570,
+      left: 66,
+    };
+    const flyoutDimensions = { height: 300, width: 400 };
+    const calendarDomRect = {
+      x: 8,
+      y: 26,
+      width: 568,
+      height: 702,
+      top: 26,
+      right: 576,
+      bottom: 728,
+      left: 8,
+    };
+
+    const position = eventFlyoutPosition.calculateFlyoutPosition(
+      eventDOMRect,
+      flyoutDimensions,
+      calendarDomRect
+    );
+
+    if (!position) throw new Error("No position");
+
+    expect(position.top).toBe(calendarDomRect.bottom - flyoutDimensions.height);
     expect(position.left).toBeNull();
   });
 });
