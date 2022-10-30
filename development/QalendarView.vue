@@ -102,8 +102,8 @@ export default defineComponent({
           },
         },
         dayBoundaries: {
-          start: 6,
-          end: 18,
+          start: 7,
+          end: 17,
         },
         defaultMode: 'week',
         // disableModes: ['month'],
