@@ -226,10 +226,17 @@ export default defineComponent({
             'start'
           );
           const events = this.events.filter((event: eventInterface) => {
-            return (
-              event.time.start.substring(0, 11) ===
-              dateTimeString.substring(0, 11)
-            );
+            const eventIsInDay = event.time.start.substring(0, 11) === dateTimeString.substring(0, 11);
+            let eventIsInDayBoundaries = true;
+
+            if (this.time.HOURS_PER_DAY !== 24) {
+              const { hour: dayStartHour } = this.time.getHourAndMinutesFromTimePoints(this.time.DAY_START)
+              const { hour: dayEndHour } = this.time.getHourAndMinutesFromTimePoints(this.time.DAY_END)
+              const { hour: eventStartHour } = this.time.getAllVariablesFromDateTimeString(event.time.start)
+              eventIsInDayBoundaries = eventStartHour >= dayStartHour && eventStartHour < dayEndHour;
+            }
+
+            return eventIsInDay && eventIsInDayBoundaries;
           });
 
           return { dayName, dateTimeString, events };
@@ -336,12 +343,15 @@ export default defineComponent({
     },
 
     scrollOnMount() {
+      // The scrollToHour option is not compatible with setting custom day boundaries
+      if (this.time.HOURS_PER_DAY !== 24) return;
+
       const weekWrapper = document.querySelector('.calendar-week__wrapper');
 
       if (weekWrapper) {
         this.$nextTick(() => {
           const weekHeight = +this.weekHeight.split('p')[0];
-          const oneHourInPixel = weekHeight / 24;
+          const oneHourInPixel = weekHeight / this.time.HOURS_PER_DAY;
           const hourToScrollTo = this.config.week?.scrollToHour || 8;
           const desiredNumberOfPixelsToScroll = oneHourInPixel * hourToScrollTo;
           weekWrapper.scroll(0, desiredNumberOfPixelsToScroll - 10); // -10 to display the hour in DayTimeline
@@ -376,7 +386,7 @@ export default defineComponent({
 
       // 3. Set height of the week based on the number and length of intervals
       this.weekHeight =
-        this.dayIntervals.height * intervalMultiplier * 24 + 'px';
+        this.dayIntervals.height * intervalMultiplier * this.time.HOURS_PER_DAY + 'px';
     },
   },
 });

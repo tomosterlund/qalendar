@@ -29,10 +29,11 @@ export default defineComponent({
 
   data() {
     return {
-      timelineHours: [
+      availableHours: [
         0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300,
         1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300,
       ] as dayStartOrEnd[],
+      timelineHours: [] as dayStartOrEnd[],
     };
   },
 
@@ -43,6 +44,12 @@ export default defineComponent({
       return this.time.getLocalizedHour(new Date(2100, 1, 1, hour));
     },
   },
+
+  mounted() {
+    this.timelineHours = this.availableHours.filter(hour => {
+      return hour >= this.time.DAY_START && hour < this.time.DAY_END;
+    })
+  }
 });
 </script>
 

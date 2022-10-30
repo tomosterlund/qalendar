@@ -84,7 +84,7 @@ export default defineComponent({
       config: {
         week: {
           startsOn: 'monday',
-          nDays: 5,
+          // nDays: 5,
           scrollToHour: 8,
         },
         locale: 'de-DE',
@@ -101,13 +101,17 @@ export default defineComponent({
             },
           },
         },
+        dayBoundaries: {
+          start: 6,
+          end: 18,
+        },
         defaultMode: 'week',
         // disableModes: ['month'],
         isSilent: true,
         dayIntervals: {
-          // height: 50,
-          // length: 15,
-          // displayClickableInterval: true,
+          height: 35,
+          length: 30,
+          displayClickableInterval: true,
           // intervalStyles: {
           //   color: '#fff',
           //   backgroundColor: 'rgba(10, 10, 10, 0.9)',

@@ -10,21 +10,24 @@ export type interval = {
  * */
 export default class DayIntervals extends Time {
   private readonly INTERVAL_MINUTES: 15 | 30 | 60
-  private readonly DATE_TIME_STRING: string
+  private readonly DAY_START_DATE_TIME_STRING: string
+  HOURS_PER_DAY: number = 24
 
   constructor(
     intervalMinutes: 15 | 30 | 60,
-    dateTimeString: string
+    dayStartDateTimeString: string,
+    hoursPerDay: number = 24,
   ) {
     super()
     this.INTERVAL_MINUTES = intervalMinutes
-    this.DATE_TIME_STRING = dateTimeString
+    this.DAY_START_DATE_TIME_STRING = dayStartDateTimeString
+    this.HOURS_PER_DAY = hoursPerDay
   }
 
   getIntervals(): interval[] {
     const intervals = []
-    const numberOfIntervalsInDay = 24 * (60 / this.INTERVAL_MINUTES)
-    let iteratorDateTimeString = this.DATE_TIME_STRING
+    const numberOfIntervalsInDay = this.HOURS_PER_DAY * (60 / this.INTERVAL_MINUTES)
+    let iteratorDateTimeString = this.DAY_START_DATE_TIME_STRING
 
     while (intervals.length < numberOfIntervalsInDay) {
       const intervalEnd = this.addMinutesToDateTimeString(this.INTERVAL_MINUTES, iteratorDateTimeString)
