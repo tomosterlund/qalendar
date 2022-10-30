@@ -1,4 +1,4 @@
-describe('CustomizedEvents.vue', () => {
+describe('CustomizedDayBoundaries.vue', () => {
   beforeEach(() => {
     cy.visit('#/cypress/customized-day-boundaries');
   });

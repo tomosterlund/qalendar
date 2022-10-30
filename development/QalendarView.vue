@@ -109,7 +109,7 @@ export default defineComponent({
         // disableModes: ['month'],
         isSilent: true,
         dayIntervals: {
-          height: 35,
+          height: 50,
           length: 30,
           displayClickableInterval: true,
           // intervalStyles: {
@@ -194,7 +194,7 @@ export default defineComponent({
     width: 1400px;
     max-width: 100%;
     height: 900px;
-    max-height: 100%;
+    max-height: calc(100vh - 20px);
   }
 }
 
