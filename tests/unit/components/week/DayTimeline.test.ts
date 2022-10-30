@@ -2,14 +2,15 @@ import { mount } from "@vue/test-utils";
 import DayTimeline from "../../../../src/components/week/DayTimeline.vue";
 import { describe, expect, test } from "vitest";
 import Time from "../../../../src/helpers/Time";
-import { eventInterface } from "../../../../src/typings/interfaces/event.interface";
 
 describe("DayTimeline.vue", () => {
+  const propsForAll = {
+    time: new Time("sunday", "en-US"),
+    weekHeight: '1600px',
+  }
+
   let wrapper = mount(DayTimeline, {
-    props: {
-      time: new Time("sunday", "en-US"),
-      weekHeight: '1600px',
-    },
+    props: propsForAll,
   });
 
   test("Rendering all 24 hours", () => {
