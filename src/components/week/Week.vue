@@ -10,12 +10,12 @@
 
   <div class="calendar-week__wrapper">
     <section class="calendar-week">
-      <div v-if="config && config.showCurrentTime" class="current-time-line" :style="{ top: `${currentTimePercentage}%` }">
-        <div class="current-time-line__circle"></div>
+      <div v-if="hasCustomCurrentTimeSlot" class="custom-current-time" :style="{ top: `${currentTimePercentage}%` }">
+        <slot name="customCurrentTime"></slot>
       </div>
 
-      <div v-else class="custom-current-time" :style="{ top: `${currentTimePercentage}%` }">
-        <slot name="customCurrentTime"></slot>
+      <div v-else-if="config && config.showCurrentTime" class="current-time-line" :style="{ top: `${currentTimePercentage}%` }">
+        <div class="current-time-line__circle"></div>
       </div>
 
       <DayTimeline
@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, Comment, Text, Slot, VNode } from 'vue';
 import {
   configInterface,
   dayIntervalsType,
@@ -157,6 +157,30 @@ export default defineComponent({
     };
   },
 
+  computed: {
+    /**
+     * Solution from https://github.com/vuejs/core/issues/4733#issuecomment-1024816095
+     * */
+    hasCustomCurrentTimeSlot() {
+      const hasSlotContent = (slot: Slot|undefined) => {
+        if (!slot) return false;
+
+        return slot().some((vnode: VNode) => {
+          if (vnode.type === Comment) return false;
+
+          if (Array.isArray(vnode.children) && !vnode.children.length) return false;
+
+          return (
+            vnode.type !== Text
+            || (typeof vnode.children === 'string' && vnode.children.trim() !== '')
+          );
+        });
+      }
+
+      return hasSlotContent(this.$slots.customCurrentTime);
+    },
+  },
+
   watch: {
     period: {
       deep: true,
@@ -179,7 +203,7 @@ export default defineComponent({
     this.setInitialEvents(this.modeProp);
     this.scrollOnMount();
     this.initScrollbar();
-    this.setCurrentTime();
+    if (this.config?.showCurrentTime || this.hasCustomCurrentTimeSlot) this.setCurrentTime();
   },
 
   methods: {
@@ -390,8 +414,12 @@ export default defineComponent({
     },
 
     setCurrentTime() {
-      const nowString = this.time.getDateTimeStringFromDate(new Date())
-      this.currentTimePercentage = this.time.getPercentageOfDayFromDateTimeString(nowString, this.time.DAY_START, this.time.DAY_END)
+      const setTime = () => {
+        const nowString = this.time.getDateTimeStringFromDate(new Date())
+        this.currentTimePercentage = this.time.getPercentageOfDayFromDateTimeString(nowString, this.time.DAY_START, this.time.DAY_END)
+      }
+      setTime()
+      setInterval(() => setTime(), 60000);
     },
   },
 });
@@ -430,8 +458,7 @@ export default defineComponent({
       &::before {
         content: '';
         position: absolute;
-        top: -5px;
-        left: -5px;
+        transform: translate(-45%, -45%);
         width: 10px;
         height: 10px;
         border-radius: 50%;

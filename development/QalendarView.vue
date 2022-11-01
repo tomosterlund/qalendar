@@ -107,13 +107,13 @@ export default defineComponent({
           },
         },
         defaultMode: 'week',
-        // showCurrentTime: true,
+        showCurrentTime: true,
         // disableModes: ['month'],
         isSilent: true,
         dayIntervals: {
-          // height: 50,
-          // length: 15,
-          // displayClickableInterval: true,
+          height: 100,
+          length: 15,
+          displayClickableInterval: true,
           // intervalStyles: {
           //   color: '#fff',
           //   backgroundColor: 'rgba(10, 10, 10, 0.9)',
