@@ -10,6 +10,14 @@
 
   <div class="calendar-week__wrapper">
     <section class="calendar-week">
+      <div v-if="config && config.showCurrentTime" class="current-time-line" :style="{ top: `${currentTimePercentage}%` }">
+        <div class="current-time-line__circle"></div>
+      </div>
+
+      <div v-else class="custom-current-time" :style="{ top: `${currentTimePercentage}%` }">
+        <slot name="customCurrentTime"></slot>
+      </div>
+
       <DayTimeline
         :key="period.start.getTime() + period.end.getTime() + mode"
         :time="time"
@@ -145,6 +153,7 @@ export default defineComponent({
       } as dayIntervalsType | any,
       weekHeight: '1584px', // Correlates to the initial values of dayIntervals.length and dayIntervals.height
       scrollbar: null as any,
+      currentTimePercentage: 0,
     };
   },
 
@@ -170,6 +179,7 @@ export default defineComponent({
     this.setInitialEvents(this.modeProp);
     this.scrollOnMount();
     this.initScrollbar();
+    this.setCurrentTime();
   },
 
   methods: {
@@ -378,6 +388,11 @@ export default defineComponent({
       this.weekHeight =
         this.dayIntervals.height * intervalMultiplier * 24 + 'px';
     },
+
+    setCurrentTime() {
+      const nowString = this.time.getDateTimeStringFromDate(new Date())
+      this.currentTimePercentage = this.time.getPercentageOfDayFromDateTimeString(nowString, this.time.DAY_START, this.time.DAY_END)
+    },
   },
 });
 </script>
@@ -399,6 +414,37 @@ export default defineComponent({
     width: 100%;
     height: v-bind(weekHeight);
     overflow: hidden;
+  }
+
+  .current-time-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    z-index: 10000;
+    background-color: red;
+
+    &__circle {
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: red;
+      }
+    }
+  }
+
+  .custom-current-time {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 1;
   }
 }
 </style>
