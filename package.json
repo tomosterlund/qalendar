@@ -68,7 +68,7 @@
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/git": "10.0.1",
     "@types/jsdom": "20.0.0",
-    "@types/node": "16.18.2",
+    "@types/node": "18.11.9",
     "@vitejs/plugin-vue": "2.3.3",
     "@vue/eslint-config-prettier": "7.0.0",
     "@vue/eslint-config-typescript": "11.0.2",
