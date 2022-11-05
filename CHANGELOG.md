@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/tomosterlund/qalendar/compare/v1.9.1...v1.10.0) (2022-11-05)
+
+
+### Features
+
+* line for current time ([#85](https://github.com/tomosterlund/qalendar/issues/85)) ([3e00aab](https://github.com/tomosterlund/qalendar/commit/3e00aab1b3a6bf3b9bf7ad1229bef01ae7e6df98))
+
 ## [1.9.1](https://github.com/tomosterlund/qalendar/compare/v1.9.0...v1.9.1) (2022-10-29)
 
 

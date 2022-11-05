@@ -100,6 +100,7 @@ data() {
             defaultMode: 'day',
             // The silent flag can be added, to disable the development warnings. This will also bring a slight performance boost
             isSilent: true,
+            showCurrentTime: true, // Display a line indicating the current time 
         }
     }
 }
@@ -376,6 +377,17 @@ data() {
 `dayIntervals.length` & `dayIntervals.height` can be used for changing the height of the entire calendar day. Therefore, the option `displayClickableInterval` exists, and can be set to false for anyone who wants to decide the height of a day, but does not wish to display any custom intervals.
 
 When a clickable interval is clicked, the calendar emits the event `interval-was-clicked`, containing date-time strings for the start and end of the clicked interval. This can be useful, for letting the user add an event, based on where in a day the user clicks.
+
+### Custom current-time line
+As shown above under basic configuration, there is a `showCurrentTime` option for displaying a red line, marking what time of the day it is. If you, however, want to customize the looks of this line, use the `customCurrentTime` slot as shown below, **instead** of `showCurrentTime`. Qalendar takes care of the positioning, you just need to style the line as you wish.
+
+```vue
+<template #customCurrentTime>
+  <div :style="{ height: '3px', backgroundColor: 'cornflowerblue', position: 'relative' }">
+    <div :style="{ position: 'absolute', left: '-7px', top: '-6px', height: '15px', width: '15px', backgroundColor: 'cornflowerblue', borderRadius: '50%' }"></div>
+  </div>
+</template>
+```
 
 ### Disabling features
 

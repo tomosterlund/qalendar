@@ -73,4 +73,26 @@ describe('Week.vue', () => {
     const days = wrapper.findAll('.calendar-week__day')
     expect(days).toHaveLength(5)
   })
+
+  test('Not showing the currentTimeLine', () => {
+    expect(() => wrapper.get('.current-time-line')).toThrow()
+  })
+
+  test('Showing the currentTimeLine', async () => {
+    wrapper = week({
+      props: {
+        config: { showCurrentTime: true },
+        time: new Time('sunday', 'en-US'),
+        period: {
+          selectedDate: new Date(),
+          start: new Date(),
+          end: new Date()
+        },
+        nDays: 5,
+      }
+    })
+
+    await wrapper.vm.setDays()
+    expect(wrapper.get('.current-time-line'))
+  })
 })

@@ -65,4 +65,5 @@ export interface configInterface {
     isDisabled?: boolean;
     isCustom?: boolean;
   }
+  showCurrentTime?: boolean;
 }
