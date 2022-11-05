@@ -6,51 +6,16 @@ import {eventInterface} from '../typings/interfaces/event.interface';
 import Time from './Time';
 import {fullDayEventsWeek} from '../typings/interfaces/full-day-events-week.type';
 import {dayInterface} from '../typings/interfaces/day.interface';
-// IMPORTANT: this instance of Time, should not be used for anything sensitive to "locale" or "firstDayOfWeekIs"
-const TimeHelper = new Time()
 
-export default class EventPosition {
-  protected turnMinutesIntoPercentageOfHour(minutes: number): string {
-    const oneMinutePercentage = 100 / 60;
-
-    const minutePoints = oneMinutePercentage * minutes;
-
-    if (minutePoints < 10) return "0" + minutePoints;
-
-    return minutePoints.toString();
-  }
-
-  /**
-   * Every hour between 'dayStart' and 'dayEnd' is 100, in this function referred to as 100 points
-   * If an event starts 30 minutes after 'dayStart', it should have 50 pointsIntoDay
-   * If a day consists of 4 hours (400 points), we then have to count
-   * (50 / 400) * 100 = 12.5 => event starts after 12.5 percent of the day
-   *
-   * Result is supposed to be a number between 0 and 100, and is used for setting the CSS- top- and height-attributes for events
-   * */
-  getPercentageOfDayFromDateTimeString(
-    dateTimeString: string,
-    dayStart: number,
-    dayEnd: number
-  ) {
-    const pointsInDay = dayEnd - dayStart;
-    const hour = dateTimeString.substring(11, 13);
-    const minutes = dateTimeString.substring(14, 16);
-    const minutesPoints = this.turnMinutesIntoPercentageOfHour(+minutes);
-    const eventPoints = +(hour + minutesPoints);
-    const eventPointsIntoDay = eventPoints - dayStart;
-
-    return (eventPointsIntoDay / pointsInDay) * 100;
-  }
-
+export default class EventPosition extends Time {
   /**
    * Yields a full calendar week, with all full-day events positioned in it
    * */
   positionFullDayEventsInWeek(weekStart: Date, weekEnd: Date, events: eventInterface[]) {
     // 1. add timeJS.start and timeJS.end to all objects
     const eventsWithJSDates = events.map((scheduleEvent: eventInterface) => {
-      const { year: startYear, month: startMonth, date: startDate } = TimeHelper.getAllVariablesFromDateTimeString(scheduleEvent.time.start)
-      const { year: endYear, month: endMonth, date: endDate } = TimeHelper.getAllVariablesFromDateTimeString(scheduleEvent.time.end)
+      const { year: startYear, month: startMonth, date: startDate } = this.getAllVariablesFromDateTimeString(scheduleEvent.time.start)
+      const { year: endYear, month: endMonth, date: endDate } = this.getAllVariablesFromDateTimeString(scheduleEvent.time.end)
       scheduleEvent.timeJS = {
         start: new Date(startYear, startMonth, startDate),
         end: new Date(endYear, endMonth, endDate),
@@ -66,18 +31,18 @@ export default class EventPosition {
 
     // 2. create a week array, where each day is represented as an object with different levels, level1, level2, level3, level4 etc.
     // An event starts on a certain level, the first day when it occurs, and then blocks that level for the rest of its duration
-    const allDatesOfWeek = TimeHelper.getDatesBetweenTwoDates(weekStart, weekEnd)
+    const allDatesOfWeek = this.getDatesBetweenTwoDates(weekStart, weekEnd)
     const week: fullDayEventsWeek = allDatesOfWeek.map(d => ({ date: d }))
 
     for (const scheduleEvent of eventsWithJSDates) {
       for (const [dayIndex, day] of week.entries()) {
-        const thisDayDateString = TimeHelper.getDateStringFromDate(day.date)
+        const thisDayDateString = this.getDateStringFromDate(day.date)
 
         if (
           // @ts-ignore
-          TimeHelper.getDateStringFromDate(scheduleEvent.timeJS.start) <= thisDayDateString
+          this.getDateStringFromDate(scheduleEvent.timeJS.start) <= thisDayDateString
           // @ts-ignore
-          && TimeHelper.getDateStringFromDate(scheduleEvent.timeJS.end) >= thisDayDateString
+          && this.getDateStringFromDate(scheduleEvent.timeJS.end) >= thisDayDateString
         ) {
           // 2A. Get the first free level of the day
           let levelToStartOn = 1
@@ -87,7 +52,7 @@ export default class EventPosition {
 
           // 2B. set the event on this day
           // @ts-ignore
-          let eventNDays = (Math.ceil((scheduleEvent.timeJS.end.getTime() - day.date.getTime()) / TimeHelper.MS_PER_DAY) + 1) // Get difference in days, plus the first day itself
+          let eventNDays = (Math.ceil((scheduleEvent.timeJS.end.getTime() - day.date.getTime()) / this.MS_PER_DAY) + 1) // Get difference in days, plus the first day itself
           const remainingDaysOfWeek = (week.length - dayIndex)
           if (eventNDays > remainingDaysOfWeek) eventNDays = remainingDaysOfWeek
 
@@ -140,17 +105,17 @@ export default class EventPosition {
 
       return 0
     })
-    
+
     for (const fullDayEvent of fullDayEvents) {
-      const { year: startYear, month: startMonth, date: startDate } = TimeHelper.getAllVariablesFromDateTimeString(fullDayEvent.time.start)
-      const { year: endYear, month: endMonth, date: endDate } = TimeHelper.getAllVariablesFromDateTimeString(fullDayEvent.time.end)
-      const allDatesOfEvent = TimeHelper.getDatesBetweenTwoDates(
+      const { year: startYear, month: startMonth, date: startDate } = this.getAllVariablesFromDateTimeString(fullDayEvent.time.start)
+      const { year: endYear, month: endMonth, date: endDate } = this.getAllVariablesFromDateTimeString(fullDayEvent.time.end)
+      const allDatesOfEvent = this.getDatesBetweenTwoDates(
         new Date(startYear, startMonth, startDate),
         new Date(endYear, endMonth, endDate),
       )
 
       for (const date of allDatesOfEvent) {
-        const dateString = TimeHelper.getDateStringFromDate(date)
+        const dateString = this.getDateStringFromDate(date)
         const dateInMap = monthMap.get(dateString)
 
         if (dateInMap) monthMap.set(dateString, {

@@ -101,6 +101,7 @@ data() {
             defaultMode: 'day',
             // The silent flag can be added, to disable the development warnings. This will also bring a slight performance boost
             isSilent: true,
+            showCurrentTime: true, // Display a line indicating the current time 
         }
     }
 }
@@ -380,7 +381,7 @@ When a clickable interval is clicked, the calendar emits the event `interval-was
 
 ### Day boundaries
 
-The Qalendar component also allows the implementer to define custom day boundaries for modes `day` and `week`. For example, if you do not want the calendar to display all 24 hours, but merely a selection of hours between 6AM and 6PM. You could use the `dayBoundaries` configuration option, such as:
+The Qalendar component also allows the implementer to define custom day boundaries for modes `day` and `week`. For example, if you do not want the calendar to display all 24 hours, but merely a selection of hours between 6AM and 6PM, you could use the `dayBoundaries` configuration option, such as:
 
 ```js
 data() {
@@ -400,6 +401,17 @@ The `dayBoundaries.start` and `dayBoundaries.end` options take any integer betwe
 ::: tip
 If you only display a few hours of a day, you might want to consider using the `dayIntervals` option, which allows you to adjust the height of each hour.
 :::
+
+### Custom current-time line
+As shown above under basic configuration, there is a `showCurrentTime` option for displaying a red line, marking what time of the day it is. If you, however, want to customize the looks of this line, use the `customCurrentTime` slot as shown below, **instead** of `showCurrentTime`. Qalendar takes care of the positioning, you just need to style the line as you wish.
+
+```vue
+<template #customCurrentTime>
+  <div :style="{ height: '3px', backgroundColor: 'cornflowerblue', position: 'relative' }">
+    <div :style="{ position: 'absolute', left: '-7px', top: '-6px', height: '15px', width: '15px', backgroundColor: 'cornflowerblue', borderRadius: '50%' }"></div>
+  </div>
+</template>
+```
 
 ### Disabling features
 

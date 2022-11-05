@@ -20,6 +20,11 @@
         @event-was-dragged="handleEventWasDragged"
         @interval-was-clicked="handleIntervalWasClicked"
       >
+        <template #customCurrentTime>
+          <div :style="{ height: '3px', backgroundColor: 'cornflowerblue', position: 'relative' }">
+            <div :style="{ position: 'absolute', left: '-7px', top: '-6px', height: '15px', width: '15px', backgroundColor: 'cornflowerblue', borderRadius: '50%' }"></div>
+          </div>
+        </template>
 <!--        <template v-slot:event="eventProps" #event>-->
 <!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
 <!--            {{ eventProps.eventData.title }}-->
@@ -106,6 +111,7 @@ export default defineComponent({
           end: 17,
         },
         defaultMode: 'week',
+        showCurrentTime: true,
         // disableModes: ['month'],
         isSilent: true,
         dayIntervals: {

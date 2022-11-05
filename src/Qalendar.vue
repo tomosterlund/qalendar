@@ -50,6 +50,10 @@
             :close-event-dialog="p.closeEventDialog"
           ></slot>
         </template>
+
+        <template #customCurrentTime>
+          <slot name="customCurrentTime"></slot>
+        </template>
       </Week>
 
       <Month
