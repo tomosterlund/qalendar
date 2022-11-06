@@ -1,5 +1,8 @@
 <template>
-  <div class="calendar-week__day">
+  <div
+    class="calendar-week__day"
+    @click.self="$emit('day-was-clicked', day.dateTimeString.substring(0, 10))"
+  >
     <DayEvent
       v-for="(event, eventIndex) in events"
       :key="eventIndex"
@@ -85,6 +88,7 @@ export default defineComponent({
     'event-was-resized',
     'event-was-dragged',
     'interval-was-clicked',
+    'day-was-clicked',
   ],
 
   data() {

@@ -38,6 +38,7 @@
         @edit-event="$emit('edit-event', $event)"
         @delete-event="$emit('delete-event', $event)"
         @interval-was-clicked="$emit('interval-was-clicked', $event)"
+        @day-was-clicked="$emit('day-was-clicked', $event)"
       >
         <template #event="p">
           <slot :event-data="p.eventData" name="event"></slot>
@@ -64,6 +65,7 @@
         :config="config"
         :period="period"
         @event-was-clicked="$emit('event-was-clicked', $event)"
+        @day-was-clicked="$emit('day-was-clicked', $event)"
         @event-was-dragged="handleEventWasUpdated($event, 'dragged')"
         @updated-period="handleUpdatedPeriod($event, true)"
         @edit-event="$emit('edit-event', $event)"
@@ -129,6 +131,7 @@ export default defineComponent({
     'edit-event',
     'delete-event',
     'interval-was-clicked',
+    'day-was-clicked',
   ],
 
   data() {

@@ -6,6 +6,7 @@
     :config="config"
     :mode="mode"
     @event-was-clicked="handleClickOnEvent"
+    @day-was-clicked="$emit('day-was-clicked', $event)"
   />
 
   <div class="calendar-week__wrapper">
@@ -39,6 +40,7 @@
           @event-was-resized="$emit('event-was-resized', $event)"
           @event-was-dragged="handleEventWasDragged"
           @interval-was-clicked="$emit('interval-was-clicked', $event)"
+          @day-was-clicked="$emit('day-was-clicked', $event)"
         >
           <template #event="p">
             <slot :event-data="p.eventData" name="event"></slot>
@@ -136,6 +138,7 @@ export default defineComponent({
     'edit-event',
     'delete-event',
     'interval-was-clicked',
+    'day-was-clicked',
   ],
 
   data() {

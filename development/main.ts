@@ -10,6 +10,7 @@ import DragAndDropMonth from './cypress/DragAndDropMonth.vue'
 import ConfigureDatePicker from './cypress/ConfigureDatePicker.vue'
 import DisableDragAndDropForEvent from './cypress/DisableDragAndDropForEvent.vue'
 import CustomizedEvents from './cypress/CustomizedEvents.vue'
+import EmittedEvents from './cypress/EmittedEvents.vue'
 
 const routes = [
   { path: "/", component: QalendarView },
@@ -23,6 +24,7 @@ const routes = [
   { path: "/cypress/configure-date-picker", component: ConfigureDatePicker },
   { path: "/cypress/disable-dnd", component: DisableDragAndDropForEvent },
   { path: "/cypress/customized-events", component: CustomizedEvents },
+  { path: "/cypress/emitted-events", component: EmittedEvents },
 ];
 
 const router = createRouter({

@@ -15,6 +15,7 @@
           :time="time"
           @event-was-clicked="handleClickOnEvent"
           @event-was-dragged="handleEventWasDragged"
+          @day-was-clicked="$emit('day-was-clicked', $event)"
           @updated-period="$emit('updated-period', $event)"
         />
       </div>
@@ -92,6 +93,7 @@ export default defineComponent({
     'updated-period',
     'event-was-clicked',
     'event-was-dragged',
+    'day-was-clicked',
   ],
 
   data() {
