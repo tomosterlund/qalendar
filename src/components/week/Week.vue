@@ -372,15 +372,15 @@ export default defineComponent({
     scrollOnMount() {
       const weekWrapper = document.querySelector('.calendar-week__wrapper');
 
-      if (weekWrapper) {
-        this.$nextTick(() => {
-          const weekHeight = +this.weekHeight.split('p')[0];
-          const oneHourInPixel = weekHeight / 24;
-          const hourToScrollTo = this.config.week?.scrollToHour || 8;
-          const desiredNumberOfPixelsToScroll = oneHourInPixel * hourToScrollTo;
-          weekWrapper.scroll(0, desiredNumberOfPixelsToScroll - 10); // -10 to display the hour in DayTimeline
-        })
-      }
+      if (!weekWrapper) return;
+
+      this.$nextTick(() => {
+        const weekHeight = +this.weekHeight.split('p')[0];
+        const oneHourInPixel = weekHeight / 24;
+        const hourToScrollTo = typeof this.config.week?.scrollToHour === 'number' ? this.config.week.scrollToHour : 8;
+        const desiredNumberOfPixelsToScroll = oneHourInPixel * hourToScrollTo;
+        weekWrapper.scroll(0, desiredNumberOfPixelsToScroll - 10); // -10 to display the hour in DayTimeline
+      })
     },
 
     setDayIntervals() {
