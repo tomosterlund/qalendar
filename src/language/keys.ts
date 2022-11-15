@@ -36,5 +36,6 @@ export const languageKeys = {
     "sv-SE": "+ fler händelser",
     "zh-CN": "列出其他结果",
     "pt-BR": "+ mais eventos",
+    "fr-FR": "+ d'autres événements",
   },
 };
