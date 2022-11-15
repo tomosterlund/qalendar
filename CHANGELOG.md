@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/tomosterlund/qalendar/compare/v1.10.0...v1.10.1) (2022-11-15)
+
+
+### Bug Fixes
+
+* missing type check on config.week.scrollToHour ([#93](https://github.com/tomosterlund/qalendar/issues/93)) ([93865cb](https://github.com/tomosterlund/qalendar/commit/93865cb4d6399f37c6421e64fd3c7c7bc4b5c607))
+
 # [1.10.0](https://github.com/tomosterlund/qalendar/compare/v1.9.1...v1.10.0) (2022-11-05)
 
 
