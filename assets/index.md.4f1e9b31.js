@@ -697,8 +697,8 @@ ${this.SUFFIX}`)}static checkConfig(t){t.locale&&!/^[a-z]{2}-[A-Z]{2}$/.test(t.l
   <span class="token keyword">return</span> <span class="token punctuation">{</span>
     <span class="token literal-property property">config</span><span class="token operator">:</span> <span class="token punctuation">{</span>
       <span class="token literal-property property">dayBoundaries</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-        <span class="token literal-property property">start</span><span class="token operator">:</span> <span class="token string">&quot;6&quot;</span><span class="token punctuation">,</span>
-        <span class="token literal-property property">end</span><span class="token operator">:</span> <span class="token string">&quot;18&quot;</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">start</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">end</span><span class="token operator">:</span> <span class="token number">18</span><span class="token punctuation">,</span>
       <span class="token punctuation">}</span><span class="token punctuation">,</span>
     <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">}</span><span class="token punctuation">;</span>
