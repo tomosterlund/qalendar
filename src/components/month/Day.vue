@@ -3,16 +3,21 @@
     :id="'day-' + day.dateTimeString.substring(0, 10)"
     class="calendar-month__weekday"
     :class="{ 'is-droppable': canBeDropped }"
+    @click.self="emitDayWasClicked"
     @dragleave="handleDragLeave"
     @dragover="handleDragOver"
     @drop="handleDrop"
     @dragend="handleDragEnd"
   >
-    <span v-if="isFirstWeek" class="calendar-month__day-name">
+    <span
+      v-if="isFirstWeek"
+      class="calendar-month__day-name"
+      @click="emitDayWasClicked"
+    >
       {{ day.dayName }}
     </span>
 
-    <span class="calendar-month__day-date">
+    <span class="calendar-month__day-date" @click="emitDayWasClicked">
       {{ day.dateTimeString.substring(8, 10) }}
     </span>
 
@@ -77,7 +82,12 @@ export default defineComponent({
     },
   },
 
-  emits: ['event-was-clicked', 'event-was-dragged', 'updated-period'],
+  emits: [
+    'event-was-clicked',
+    'event-was-dragged',
+    'updated-period',
+    'day-was-clicked',
+  ],
 
   data() {
     return {
@@ -145,6 +155,10 @@ export default defineComponent({
       e.preventDefault();
 
       return false;
+    },
+
+    emitDayWasClicked() {
+      this.$emit('day-was-clicked', this.day.dateTimeString.substring(0, 10));
     },
   },
 });

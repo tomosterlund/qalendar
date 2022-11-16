@@ -6,6 +6,7 @@
     :config="config"
     :mode="mode"
     @event-was-clicked="handleClickOnEvent"
+    @day-was-clicked="$emit('day-was-clicked', $event)"
   />
 
   <div class="calendar-week__wrapper">
@@ -58,6 +59,7 @@
           @event-was-resized="$emit('event-was-resized', $event)"
           @event-was-dragged="handleEventWasDragged"
           @interval-was-clicked="$emit('interval-was-clicked', $event)"
+          @day-was-clicked="$emit('day-was-clicked', $event)"
         >
           <template #event="p">
             <slot :event-data="p.eventData" name="event"></slot>
@@ -136,6 +138,7 @@ export default defineComponent({
     'edit-event',
     'delete-event',
     'interval-was-clicked',
+    'day-was-clicked',
   ],
 
   data() {
@@ -385,15 +388,15 @@ export default defineComponent({
 
       const weekWrapper = document.querySelector('.calendar-week__wrapper');
 
-      if (weekWrapper) {
-        this.$nextTick(() => {
-          const weekHeight = +this.weekHeight.split('p')[0];
-          const oneHourInPixel = weekHeight / this.time.HOURS_PER_DAY;
-          const hourToScrollTo = this.config.week?.scrollToHour || 8;
-          const desiredNumberOfPixelsToScroll = oneHourInPixel * hourToScrollTo;
-          weekWrapper.scroll(0, desiredNumberOfPixelsToScroll - 10); // -10 to display the hour in DayTimeline
-        })
-      }
+      if (!weekWrapper) return;
+
+      this.$nextTick(() => {
+        const weekHeight = +this.weekHeight.split('p')[0];
+        const oneHourInPixel = weekHeight / this.time.HOURS_PER_DAY;
+        const hourToScrollTo = typeof this.config.week?.scrollToHour === 'number' ? this.config.week.scrollToHour : 8;
+        const desiredNumberOfPixelsToScroll = oneHourInPixel * hourToScrollTo;
+        weekWrapper.scroll(0, desiredNumberOfPixelsToScroll - 10); // -10 to display the hour in DayTimeline
+      })
     },
 
     setDayIntervals() {
@@ -420,8 +423,6 @@ export default defineComponent({
       let intervalMultiplier = 1;
       if (this.dayIntervals.length === 15) intervalMultiplier = 4;
       if (this.dayIntervals.length === 30) intervalMultiplier = 2;
-
-      // console.log(this.time.HOURS_PER_DAY)
 
       // 3. Set height of the week based on the number and length of intervals
       this.weekHeight =

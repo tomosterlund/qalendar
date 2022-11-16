@@ -11,6 +11,7 @@ import ConfigureDatePicker from './cypress/ConfigureDatePicker.vue'
 import DisableDragAndDropForEvent from './cypress/DisableDragAndDropForEvent.vue'
 import CustomizedEvents from './cypress/CustomizedEvents.vue'
 import CustomizedDayBoundaries from './cypress/CustomizedDayBoundaries.vue'
+import EmittedEvents from './cypress/EmittedEvents.vue'
 
 const routes = [
   { path: "/", component: QalendarView },
@@ -25,6 +26,7 @@ const routes = [
   { path: "/cypress/disable-dnd", component: DisableDragAndDropForEvent },
   { path: "/cypress/customized-events", component: CustomizedEvents },
   { path: "/cypress/customized-day-boundaries", component: CustomizedDayBoundaries },
+  { path: "/cypress/emitted-events", component: EmittedEvents },
 ];
 
 const router = createRouter({

@@ -17,6 +17,7 @@
         @event-was-resized="reactToEvent"
         @edit-event="editEvent"
         @delete-event="deleteEvent"
+        @day-was-clicked="reactToEvent"
         @event-was-dragged="handleEventWasDragged"
         @interval-was-clicked="handleIntervalWasClicked"
       >
