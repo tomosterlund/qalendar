@@ -354,7 +354,9 @@ export default defineComponent({
     changeInQuartersOnDrag(newValue) {
       const eventCanBeDraggedFurther = DragAndDrop.eventCanBeDraggedFurther(
         this.event,
-        newValue <= -1 ? 'backwards' : 'forwards'
+        newValue <= -1 ? 'backwards' : 'forwards',
+        this.time.DAY_START,
+        this.time.DAY_END,
       );
       if (!eventCanBeDraggedFurther) return;
 

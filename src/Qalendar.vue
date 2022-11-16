@@ -148,7 +148,11 @@ export default defineComponent({
       mode: this.config?.defaultMode || ('week' as modeType),
       time: new Time(
         this.config?.week?.startsOn,
-        this.config?.locale || null
+        this.config?.locale || null,
+        {
+          start: this.setTimePointsFromDayBoundary(this.config?.dayBoundaries?.start || 0),
+          end: this.setTimePointsFromDayBoundary(this.config?.dayBoundaries?.end || 24),
+        },
       ) as Time | any,
       fontFamily:
         this.config?.style?.fontFamily || "'Verdana', 'Open Sans', serif",
@@ -297,6 +301,15 @@ export default defineComponent({
       this.eventsDataProperty = [calendarEvent, ...newEvents];
       this.$emit(`event-was-${eventType}`, calendarEvent);
     },
+
+    setTimePointsFromDayBoundary(boundary: number) {
+      // Only allow integers between 0 and 24
+      if (boundary < 0 || boundary > 24 || boundary % 1 !== 0) throw new Error('Invalid day boundary');
+
+      if (boundary === 0) return boundary;
+
+      return boundary * 100;
+    }
   },
 });
 </script>

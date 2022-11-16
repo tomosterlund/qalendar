@@ -65,5 +65,9 @@ export interface configInterface {
     isDisabled?: boolean;
     isCustom?: boolean;
   }
+  dayBoundaries?: {
+    start: number; // integer between 0 and 24
+    end: number; // integer between 0 and 24
+  }
   showCurrentTime?: boolean;
 }

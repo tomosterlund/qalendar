@@ -12,13 +12,15 @@ export default class Time {
   ALL_HOURS: dayStartOrEnd[];
   DAY_START: number;
   DAY_END: number;
+  HOURS_PER_DAY: number = 24;
   MS_PER_DAY: number
 
   constructor(
-    firstDayOfWeekIs: "sunday" | "monday" = "monday",
-    locale: string | null = null
+    firstDayOfWeek: "sunday" | "monday" = "monday",
+    locale: string | null = null,
+    dayBoundaries: { start: dayStartOrEnd; end: dayStartOrEnd } = { start: 0, end: 2400 }
   ) {
-    this.FIRST_DAY_OF_WEEK = firstDayOfWeekIs;
+    this.FIRST_DAY_OF_WEEK = firstDayOfWeek;
     this.CALENDAR_LOCALE = locale
       ? locale
       : Helpers.getBrowserNavigatorLocale();
@@ -26,8 +28,17 @@ export default class Time {
       0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300,
       1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400,
     ];
-    this.DAY_START = 0;
-    this.DAY_END = 2400;
+    this.DAY_START = dayBoundaries.start;
+    this.DAY_END = dayBoundaries.end;
+    this.HOURS_PER_DAY = (() => {
+      const convertTimePointToHours = (timePoint: number) => {
+        if (timePoint === 0) return 0;
+
+        return timePoint / 100;
+      }
+
+      return convertTimePointToHours(this.DAY_END) - convertTimePointToHours(this.DAY_START);
+    })()
     this.MS_PER_DAY = 86400000;
   }
 
@@ -368,5 +379,15 @@ export default class Time {
     const eventPointsIntoDay = eventPoints - dayStart;
 
     return (eventPointsIntoDay / pointsInDay) * 100;
+  }
+
+  setSegmentOfDateTimeString(dateTimeString: string, segments: { hour: number|string }) {
+    if (segments.hour < 0 || segments.hour > 23) throw new Error('Invalid hour')
+
+    segments.hour = String(segments.hour < 10 ? "0" + segments.hour : segments.hour)
+
+    dateTimeString = dateTimeString.replace(/\d{2}:/, segments.hour + ":")
+
+    return dateTimeString
   }
 }

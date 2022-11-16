@@ -86,6 +86,7 @@ data() {
                 // Takes the values 5 or 7.
                 nDays: 7,
                 // Scroll to a certain hour on mounting a week. Takes any value from 0 to 23.
+                // This option is not compatible with the 'dayBoundaries'-option, and will simply be ignored if custom day boundaries are set.
                 scrollToHour: 5,
             },
             // Takes any valid locale that the browser understands. However, not all locales have been thorougly tested in Qalendar
@@ -378,6 +379,29 @@ data() {
 `dayIntervals.length` & `dayIntervals.height` can be used for changing the height of the entire calendar day. Therefore, the option `displayClickableInterval` exists, and can be set to false for anyone who wants to decide the height of a day, but does not wish to display any custom intervals.
 
 When a clickable interval is clicked, the calendar emits the event `interval-was-clicked`, containing date-time strings for the start and end of the clicked interval. This can be useful, for letting the user add an event, based on where in a day the user clicks.
+
+### Day boundaries
+
+The Qalendar component also allows the implementer to define custom day boundaries for modes `day` and `week`. For example, if you do not want the calendar to display all 24 hours, but merely a selection of hours between 6AM and 6PM, you could use the `dayBoundaries` configuration option, such as:
+
+```js
+data() {
+  return {
+    config: {
+      dayBoundaries: {
+        start: "6",
+        end: "18",
+      },
+    },
+  };
+}
+```
+
+The `dayBoundaries.start` and `dayBoundaries.end` options take any integer between 0 and 24.
+
+::: tip
+If you only display a few hours of a day, you might want to consider using the `dayIntervals` option, which allows you to adjust the height of each hour.
+:::
 
 ### Custom current-time line
 As shown above under basic configuration, there is a `showCurrentTime` option for displaying a red line, marking what time of the day it is. If you, however, want to customize the looks of this line, use the `customCurrentTime` slot as shown below, **instead** of `showCurrentTime`. Qalendar takes care of the positioning, you just need to style the line as you wish.

@@ -456,4 +456,19 @@ describe("Time.ts", () => {
 
     expect(timeM.dateStringsHaveEqualDates(string1, string2)).toBe(false)
   });
+
+  it('Sets the hour segment of a dateTimeString to 08:00', () => {
+    const string1 = '2040-09-28 00:00'
+    expect(timeM.setSegmentOfDateTimeString(string1, {hour: 8})).toBe('2040-09-28 08:00')
+  })
+
+  it('Sets the hour segment of a dateTimeString to 23:00', () => {
+    const string1 = '2040-09-28 00:00'
+    expect(timeM.setSegmentOfDateTimeString(string1, {hour: 23})).toBe('2040-09-28 23:00')
+  });
+
+  it('Throws an error, when trying to set the hour segment of a dateTimeString to 24:00', () => {
+    const string1 = '2040-09-28 00:00'
+    expect(() => timeM.setSegmentOfDateTimeString(string1, {hour: 24})).toThrow()
+  })
 });

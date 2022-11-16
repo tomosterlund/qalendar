@@ -10,21 +10,33 @@ export default class DragAndDrop {
    *
    * @param {object} event
    * @param {string} direction - reveals if event is being dragged forwards or backwards in time
+   * @param {number} dayStart
+   * @param {number} dayEnd
    * */
-  static eventCanBeDraggedFurther(event: eventInterface, direction: 'backwards' | 'forwards') {
+  static eventCanBeDraggedFurther(
+    event: eventInterface,
+    direction: 'backwards' | 'forwards',
+    dayStart: number,
+    dayEnd: number,
+  ) {
+    // Convert time points to hours
+    if (dayStart !== 0) dayStart = dayStart / 100
+    dayEnd = dayEnd / 100
+
     if (direction === 'forwards') {
+      const lastHourBeforeEndOfDay = dayEnd - 1;
       const { hour: endHour } = time.getAllVariablesFromDateTimeString(event.time.end)
       const { minutes: endMinutes } = time.getAllVariablesFromDateTimeString(event.time.end)
       const { hour: startHour } = time.getAllVariablesFromDateTimeString(event.time.start)
       const { minutes: startMinutes } = time.getAllVariablesFromDateTimeString(event.time.start)
 
-      return (endHour < 23 || (endHour === 23 && endMinutes < 45))
-       && (startHour < 23 || startHour === 23 && startMinutes < 45)
+      return (endHour < lastHourBeforeEndOfDay || (endHour === lastHourBeforeEndOfDay && endMinutes < 45))
+       && (startHour < lastHourBeforeEndOfDay || startHour === lastHourBeforeEndOfDay && startMinutes < 45)
     }
 
     const { hour: startHour } = time.getAllVariablesFromDateTimeString(event.time.start)
     const { minutes: startMinutes } = time.getAllVariablesFromDateTimeString(event.time.start)
 
-    return startHour > 0 || (startHour === 0 && startMinutes >= 15)
+    return startHour > dayStart || (startHour === dayStart && startMinutes >= 15)
   }
 }

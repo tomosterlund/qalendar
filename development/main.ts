@@ -10,6 +10,7 @@ import DragAndDropMonth from './cypress/DragAndDropMonth.vue'
 import ConfigureDatePicker from './cypress/ConfigureDatePicker.vue'
 import DisableDragAndDropForEvent from './cypress/DisableDragAndDropForEvent.vue'
 import CustomizedEvents from './cypress/CustomizedEvents.vue'
+import CustomizedDayBoundaries from './cypress/CustomizedDayBoundaries.vue'
 import EmittedEvents from './cypress/EmittedEvents.vue'
 
 const routes = [
@@ -24,6 +25,7 @@ const routes = [
   { path: "/cypress/configure-date-picker", component: ConfigureDatePicker },
   { path: "/cypress/disable-dnd", component: DisableDragAndDropForEvent },
   { path: "/cypress/customized-events", component: CustomizedEvents },
+  { path: "/cypress/customized-day-boundaries", component: CustomizedDayBoundaries },
   { path: "/cypress/emitted-events", component: EmittedEvents },
 ];
 
