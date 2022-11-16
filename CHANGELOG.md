@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/tomosterlund/qalendar/compare/v1.10.1...v1.11.0) (2022-11-16)
+
+
+### Features
+
+* add day-was-clicked event for all modes ([#96](https://github.com/tomosterlund/qalendar/issues/96)) ([97748e8](https://github.com/tomosterlund/qalendar/commit/97748e8c0fc8509fd3234e94adae39b9e5c3e12d))
+
 ## [1.10.1](https://github.com/tomosterlund/qalendar/compare/v1.10.0...v1.10.1) (2022-11-15)
 
 
