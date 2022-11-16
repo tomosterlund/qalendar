@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/tomosterlund/qalendar/compare/v1.11.0...v1.12.0) (2022-11-16)
+
+
+### Features
+
+* configurable day boundaries ([#81](https://github.com/tomosterlund/qalendar/issues/81)) ([6b7e1b2](https://github.com/tomosterlund/qalendar/commit/6b7e1b250616df2190686ca86aaecf2fe84e3257))
+
 # [1.11.0](https://github.com/tomosterlund/qalendar/compare/v1.10.1...v1.11.0) (2022-11-16)
 
 
