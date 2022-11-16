@@ -58,4 +58,12 @@ describe("Day.vue", () => {
     expect(wrapper.emitted()).toHaveProperty('interval-was-clicked');
     expect(wrapper.emitted('interval-was-clicked')).toEqual([[{ "intervalStart": "2022-05-22 00:00", "intervalEnd": "2022-05-22 00:15" }]]);
   })
+
+  test('Emitting event day-was-clicked', async () => {
+    expect(wrapper.emitted()).not.toHaveProperty('day-was-clicked');
+    const day = wrapper.find(".calendar-week__day");
+    await day.trigger("click");
+    expect(wrapper.emitted()).toHaveProperty('day-was-clicked');
+    expect(wrapper.emitted('day-was-clicked'));
+  })
 });

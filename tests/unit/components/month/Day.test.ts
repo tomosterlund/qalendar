@@ -50,6 +50,19 @@ describe("Day.vue", () => {
     expect(dateDisplay.text()).toBe("23");
   });
 
+  test("Emitting event day-was-clicked when the body of a day is clicked", async () => {
+    const dayBody = wrapper.find(".calendar-month__weekday");
+    await dayBody.trigger("click");
+    expect(wrapper.emitted("day-was-clicked")).toBeTruthy();
+  })
+
+  // Comment in, if @click.self starts working in Vue test utils
+  // test("Not emitting day-was-clicked, when a child element of the day is clicked", async () => {
+  //   const dayEvent = wrapper.find(".calendar-month__day-date");
+  //   await dayEvent.trigger("click");
+  //   expect(wrapper.emitted("day-was-clicked")).toBeFalsy();
+  // })
+
   test("Displaying the day name, if the isFirstWeek-prop === true", () => {
     wrapper = day({
       props: {

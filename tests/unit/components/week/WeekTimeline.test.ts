@@ -52,4 +52,12 @@ describe("WeekTimeline.vue", () => {
     const days = wrapper.findAll(".week-timeline__day-name");
     expect(days[0].text()).toContain("SU");
   });
+
+  test("Emitting day-was-clicked event", async () => {
+    expect(wrapper.emitted()).not.toHaveProperty('day-was-clicked');
+    const firstDay = wrapper.find(".week-timeline__day");
+    await firstDay.trigger("click");
+    expect(wrapper.emitted().click).toHaveLength(1);
+    expect(wrapper.emitted()).toHaveProperty('day-was-clicked');
+  })
 });
