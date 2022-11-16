@@ -31,12 +31,13 @@ export default class Time {
     this.DAY_START = dayBoundaries.start;
     this.DAY_END = dayBoundaries.end;
     this.HOURS_PER_DAY = (() => {
-      let start = String(this.DAY_START);
-      if (start !== '0') start = start.replace(/0/g, '');
+      const convertTimePointToHours = (timePoint: number) => {
+        if (timePoint === 0) return 0;
 
-      let end = String(this.DAY_END).replace(/0/g, '');
+        return timePoint / 100;
+      }
 
-      return Number(end) - Number(start);
+      return convertTimePointToHours(this.DAY_END) - convertTimePointToHours(this.DAY_START);
     })()
     this.MS_PER_DAY = 86400000;
   }
