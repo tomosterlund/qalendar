@@ -155,6 +155,7 @@ Qalendar emits the following events that can be listened to:
 |  `event-was-dragged`   |            emits the updated event, after an event was dragged             |
 |  `event-was-resized`   |            emits the updated event, after an event was resized             |
 | `interval-was-clicked` |                  [see section on intervals](./#intervals)                  |
+|   `day-was-clicked`    |             Emits a the date that a user clicked `2022-11-16`              |
 |    `updated-period`    |      emits the value with the new period selected in the date picker       |
 |     `updated-mode`     | emits the new selected mode and the period, when the user changes the mode |
 |      `edit-event`      |         is triggered, when a user clicks the edit-icon of an event         |
