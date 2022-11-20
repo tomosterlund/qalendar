@@ -268,9 +268,7 @@ export default defineComponent({
 
       this.calendarWidth = calendarRoot.clientWidth;
 
-      if (this.calendarWidth < dayModeBreakpoint) this.mode = 'day';
-      if (this.calendarWidth >= dayModeBreakpoint)
-        this.mode = this.config?.defaultMode || 'week';
+      if (this.calendarWidth < dayModeBreakpoint && this.mode !== 'day') this.mode = 'day';
     },
 
     setPeriodOnMount() {

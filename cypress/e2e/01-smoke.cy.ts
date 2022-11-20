@@ -51,4 +51,22 @@ describe('Rendering the component', () => {
       expect(periodNameElement.text()).to.not.equal(periodName)
     })
   });
+
+  it('Keeps selected mode on resizing', () => {
+    // Start in week mode
+    cy.get('.mode-is-week')
+
+    // Change to another mode
+    cy
+      // @ts-ignore
+      .changeMode('month')
+
+    cy.get('.mode-is-month')
+
+    // Resize the window
+    cy.viewport(1000, 500).wait(1000)
+
+    // Expect to still be in the same mode
+    cy.get('.mode-is-month')
+  })
 })
