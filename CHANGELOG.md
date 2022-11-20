@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.1](https://github.com/tomosterlund/qalendar/compare/v1.12.0...v1.12.1) (2022-11-20)
+
+
+### Bug Fixes
+
+* prevent qalendar from resetting to default mode when being resized ([#98](https://github.com/tomosterlund/qalendar/issues/98)) ([e27af87](https://github.com/tomosterlund/qalendar/commit/e27af8702ab89612160b0b7686751f0133acb83e))
+
 # [1.12.0](https://github.com/tomosterlund/qalendar/compare/v1.11.0...v1.12.0) (2022-11-16)
 
 
