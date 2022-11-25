@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/tomosterlund/qalendar/compare/v1.12.1...v1.13.0) (2022-11-25)
+
+
+### Features
+
+* add french language support ([#91](https://github.com/tomosterlund/qalendar/issues/91)) ([680648c](https://github.com/tomosterlund/qalendar/commit/680648c8bb33afb49ec2027f21658e77dc8d5fd7))
+
 ## [1.12.1](https://github.com/tomosterlund/qalendar/compare/v1.12.0...v1.12.1) (2022-11-20)
 
 
