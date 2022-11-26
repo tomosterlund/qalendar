@@ -184,8 +184,22 @@ export default defineComponent({
     border-right: 0;
   }
 
+  .qalendar-is-small & {
+    height: auto;
+    min-height: 7rem;
+    border-right: 0;
+  }
+
   .calendar-month__week:first-child & {
     border-top: var(--qalendar-border-gray-thin);
+
+    .qalendar-is-small & {
+      border-top: 0;
+
+      &:first-child {
+        border-top: var(--qalendar-border-gray-thin);
+      }
+    }
   }
 
   .calendar-month__day-name,

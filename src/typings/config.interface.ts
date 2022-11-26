@@ -58,7 +58,7 @@ export interface configInterface {
     colorSchemes?: colorSchemes;
   };
   defaultMode?: modeType;
-  disableModes?: ('week'|'month')[];
+  disableModes?: ('week'|'month'|string)[];
   isSilent?: boolean;
   dayIntervals?: dayIntervalsType;
   eventDialog?: {

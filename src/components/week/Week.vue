@@ -117,10 +117,6 @@ export default defineComponent({
       type: Object as PropType<periodInterface>,
       required: true,
     },
-    nDays: {
-      type: Number as PropType<5 | 7>,
-      required: true,
-    },
     modeProp: {
       type: String as PropType<modeType>,
       default: 'week',
@@ -185,6 +181,10 @@ export default defineComponent({
 
       return hasSlotContent(this.$slots.customCurrentTime);
     },
+
+    nDays() {
+      return this.config?.week?.nDays || 7;
+    }
   },
 
   watch: {

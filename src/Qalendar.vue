@@ -6,7 +6,7 @@
         'mode-is-day': mode === 'day',
         'mode-is-week': mode === 'week',
         'mode-is-month': mode === 'month',
-        'qalendar-is-small': calendarWidth < 700,
+        'qalendar-is-small': isSmall,
       }"
     >
       <Transition name="loading">
@@ -19,6 +19,7 @@
         :mode="mode"
         :time="time"
         :period="period"
+        :is-small="isSmall"
         @change-mode="handleChangeMode"
         @updated-period="handleUpdatedPeriod"
       />
@@ -30,7 +31,6 @@
         :period="period"
         :config="config"
         :mode-prop="mode"
-        :n-days="week.nDays"
         :time="time"
         @event-was-clicked="$emit('event-was-clicked', $event)"
         @event-was-resized="handleEventWasUpdated($event, 'resized')"
@@ -142,9 +142,6 @@ export default defineComponent({
         end: new Date(),
         selectedDate: this.selectedDate ? this.selectedDate : new Date(),
       },
-      week: {
-        nDays: this.config?.week?.nDays || 7,
-      },
       mode: this.config?.defaultMode || ('week' as modeType),
       time: new Time(
         this.config?.week?.startsOn,
@@ -156,9 +153,9 @@ export default defineComponent({
       ) as Time | any,
       fontFamily:
         this.config?.style?.fontFamily || "'Verdana', 'Open Sans', serif",
-      calendarWidth: 0,
       eventRenderingKey: 0, // Works only as a dummy value, for re-rendering Month- and Week components, when events-watcher triggers
       eventsDataProperty: this.events || [],
+      isSmall: false,
     };
   },
 
@@ -262,13 +259,15 @@ export default defineComponent({
         .fontSize.split('p')[0];
       const breakPointFor1RemEquals16px = 700;
       const multiplier = 16 / documentFontSize;
-      const dayModeBreakpoint = breakPointFor1RemEquals16px / multiplier; // For 16px root font-size, break point is at 43.75rem
+      const smallCalendarBreakpoint = breakPointFor1RemEquals16px / multiplier; // For 16px root font-size, break point is at 43.75rem
 
       if (!calendarRoot) return;
 
-      this.calendarWidth = calendarRoot.clientWidth;
+      this.isSmall = calendarRoot.clientWidth < smallCalendarBreakpoint;
 
-      if (this.calendarWidth < dayModeBreakpoint && this.mode !== 'day') this.mode = 'day';
+      if (this.isSmall && !['day', 'month'].includes(this.mode)) {
+        this.mode = 'month';
+      }
     },
 
     setPeriodOnMount() {

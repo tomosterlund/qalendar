@@ -220,6 +220,10 @@ export default defineComponent({
   .calendar-month__week {
     display: flex;
     flex: 1;
+
+    .qalendar-is-small & {
+      display: block;
+    }
   }
 }
 </style>
