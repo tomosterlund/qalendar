@@ -40,7 +40,7 @@
     <div
       v-if="day.events.length >= 4"
       class="calendar-month__weekday-more"
-      @click="switchToWeekMode"
+      @click="getMoreEvents"
     >
       {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
     </div>
@@ -102,7 +102,7 @@ export default defineComponent({
   },
 
   methods: {
-    switchToWeekMode() {
+    getMoreEvents() {
       const { date, month, year } = this.time.getAllVariablesFromDateTimeString(
         this.day.dateTimeString
       );
@@ -184,8 +184,22 @@ export default defineComponent({
     border-right: 0;
   }
 
+  .qalendar-is-small & {
+    height: auto;
+    min-height: 7rem;
+    border-right: 0;
+  }
+
   .calendar-month__week:first-child & {
     border-top: var(--qalendar-border-gray-thin);
+
+    .qalendar-is-small & {
+      border-top: 0;
+
+      &:first-child {
+        border-top: var(--qalendar-border-gray-thin);
+      }
+    }
   }
 
   .calendar-month__day-name,

@@ -37,30 +37,18 @@
           class="calendar-header__mode-options"
           @mouseleave="showModePicker = false"
         >
-          <div
-            v-if="
-              !config.disableModes || !config.disableModes.includes('month')
+          <template v-for="mode in modeOptions" :key="mode">
+            <div
+              v-if="
+              !config.disableModes || !config.disableModes.includes(mode)
             "
-            class="calendar-header__mode-option is-month-mode"
-            @click="$emit('change-mode', 'month')"
-          >
-            {{ getLanguage(languageKeys.month, time.CALENDAR_LOCALE) }}
-          </div>
-
-          <div
-            v-if="!config.disableModes || !config.disableModes.includes('week')"
-            class="calendar-header__mode-option is-week-mode"
-            @click="$emit('change-mode', 'week')"
-          >
-            {{ getLanguage(languageKeys.week, time.CALENDAR_LOCALE) }}
-          </div>
-
-          <div
-            class="calendar-header__mode-option is-day-mode"
-            @click="$emit('change-mode', 'day')"
-          >
-            {{ getLanguage(languageKeys.day, time.CALENDAR_LOCALE) }}
-          </div>
+              class="calendar-header__mode-option"
+              :class="'is-' + mode + '-mode'"
+              @click="$emit('change-mode', mode)"
+            >
+              {{ getLanguage(languageKeys[mode], time.CALENDAR_LOCALE) }}
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -108,16 +96,17 @@ export default defineComponent({
       type: Object as PropType<periodInterface>,
       required: true,
     },
+    isSmall: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   emits: ['change-mode', 'updated-period'],
 
   data() {
     return {
-      modeOptions: [
-        { value: 'week', label: 'Week' },
-        { value: 'month', label: 'Month' },
-      ],
+      modeOptions: ['month', 'week', 'day'] as modeType[],
       icons: {
         chevronLeft: faChevronLeft,
         chevronRight: faChevronRight,
@@ -183,6 +172,16 @@ export default defineComponent({
       this.$refs.periodSelect.goToPeriod(direction);
     },
   },
+
+  watch: {
+    isSmall: {
+      handler(value) {
+        if (value) this.modeOptions = ['month', 'day'];
+        else this.modeOptions = ['month', 'week', 'day'];
+      },
+      immediate: true,
+    },
+  }
 });
 </script>
 
@@ -262,10 +261,6 @@ export default defineComponent({
       display: flex;
       align-items: center;
       user-select: none;
-    }
-
-    .qalendar-is-small & {
-      display: none;
     }
 
     .calendar-header__mode-options {
