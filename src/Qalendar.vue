@@ -208,12 +208,12 @@ export default defineComponent({
      * */
     handleUpdatedPeriod(
       value: { start: Date; end: Date; selectedDate: Date },
-      setModeWeek = false
+      leaveMonthMode = false
     ) {
       this.$emit('updated-period', { start: value.start, end: value.end });
       this.period = value;
 
-      if (setModeWeek) this.mode = 'week';
+      if (leaveMonthMode) this.mode = this.isSmall ? 'day' : 'week';
     },
 
     /**
@@ -266,7 +266,7 @@ export default defineComponent({
       this.isSmall = calendarRoot.clientWidth < smallCalendarBreakpoint;
 
       if (this.isSmall && !['day', 'month'].includes(this.mode)) {
-        this.mode = 'month';
+        this.mode = 'day';
       }
     },
 

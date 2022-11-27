@@ -40,7 +40,7 @@
     <div
       v-if="day.events.length >= 4"
       class="calendar-month__weekday-more"
-      @click="switchToWeekMode"
+      @click="getMoreEvents"
     >
       {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
     </div>
@@ -102,7 +102,7 @@ export default defineComponent({
   },
 
   methods: {
-    switchToWeekMode() {
+    getMoreEvents() {
       const { date, month, year } = this.time.getAllVariablesFromDateTimeString(
         this.day.dateTimeString
       );

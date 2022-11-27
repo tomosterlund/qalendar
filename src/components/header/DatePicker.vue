@@ -438,16 +438,17 @@ export default defineComponent({
 .date-picker {
   position: relative;
   width: fit-content;
+  min-width: 300px;
 
-  @include mixins.screen-size-m {
-    min-width: 300px;
+  .qalendar-is-small & {
+    min-width: initial;
   }
 
   &:not(.is-in-qalendar) {
-    margin: 0 auto;
+    min-width: initial;
 
-    @include mixins.screen-size-m {
-      min-width: initial;
+    .qalendar-is-small & {
+      margin: 0 auto;
     }
   }
 
@@ -462,24 +463,25 @@ export default defineComponent({
     justify-content: center;
     gap: var(--qalendar-spacing-half);
     user-select: none;
+    border: var(--qalendar-border-gray-thin);
 
-    @include mixins.screen-size-m {
-      border: var(--qalendar-border-gray-thin);
+    .qalendar-is-small & {
+      border: 0;
     }
 
     .date-picker__value-display-text {
-      display: none;
+      display: initial;
 
-      @include mixins.screen-size-m {
-        display: initial;
+      .qalendar-is-small & {
+        display: none;
       }
     }
 
     svg {
-      font-size: var(--qalendar-font-l);
+      font-size: initial;
 
-      @include mixins.screen-size-m {
-        font-size: initial;
+      .qalendar-is-small & {
+        font-size: var(--qalendar-font-l);
       }
     }
   }
@@ -502,9 +504,12 @@ export default defineComponent({
       .mode-is-week & {
         // week-picker can only be centered, if it is not the most far-right element in header
         // which is the case in month- and week mode, but not in day mode
-        @include mixins.screen-size-m {
-          left: 50%;
-          transform: translateX(-50%);
+        left: 50%;
+        transform: translateX(-50%);
+
+        .qalendar-is-small & {
+          left: initial;
+          transform: initial;
         }
       }
     }
