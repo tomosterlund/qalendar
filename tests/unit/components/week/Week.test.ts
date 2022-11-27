@@ -9,7 +9,11 @@ const week = mountComponent(mount, Week)
 describe('Week.vue', () => {
   let wrapper = week({
     props: {
-      config: {},
+      config: {
+        week: {
+          nDays: 7,
+        }
+      },
       time: new Time('sunday', 'en-US'),
       period: {
         selectedDate: new Date(2022, (6 - 1), 6),
@@ -24,7 +28,6 @@ describe('Week.vue', () => {
           isEditable: true,
         }
       ],
-      nDays: 7,
     }
   })
 
@@ -58,14 +61,17 @@ describe('Week.vue', () => {
   test('Creating a week with 5 days', async() => {
     wrapper = week({
       props: {
-        config: {},
+        config: {
+          week: {
+            nDays: 5,
+          }
+        },
         time: new Time('sunday', 'en-US'),
         period: {
           selectedDate: new Date(),
           start: new Date(),
           end: new Date()
         },
-        nDays: 5,
       }
     })
 
@@ -81,14 +87,16 @@ describe('Week.vue', () => {
   test('Showing the currentTimeLine', async () => {
     wrapper = week({
       props: {
-        config: { showCurrentTime: true },
+        config: {
+          showCurrentTime: true,
+          week: { nDays: 5, }
+        },
         time: new Time('sunday', 'en-US'),
         period: {
           selectedDate: new Date(),
           start: new Date(),
           end: new Date()
         },
-        nDays: 5,
       }
     })
 
