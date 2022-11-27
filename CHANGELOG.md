@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/tomosterlund/qalendar/compare/v1.13.0...v1.14.0) (2022-11-27)
+
+
+### Features
+
+* enable month mode in small calendar ([#100](https://github.com/tomosterlund/qalendar/issues/100)) ([a9a76de](https://github.com/tomosterlund/qalendar/commit/a9a76de4620cdf32a7c8526288e0788199a4edae))
+
 # [1.13.0](https://github.com/tomosterlund/qalendar/compare/v1.12.1...v1.13.0) (2022-11-25)
 
 
