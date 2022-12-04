@@ -50,6 +50,10 @@
     ".": {
       "import": "./dist/qalendar.es.js",
       "require": "./dist/qalendar.umd.js"
+    },
+    "./dist/style.css": {
+      "import": "./dist/style.css",
+      "require": "./dist/style.css"
     }
   },
   "types": "./dist/src/index.d.ts",
