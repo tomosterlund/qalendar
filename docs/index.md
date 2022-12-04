@@ -55,9 +55,7 @@ export default {
 </script>
 
 <style>
-    /** Please observe,
-    that your path to the node_modules directory might be different */
-    @import '../../node_modules/qalendar/dist/style.css';
+    @import "qalendar/dist/style.css";
 </style>
 ```
 
