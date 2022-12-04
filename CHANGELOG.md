@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.1](https://github.com/tomosterlund/qalendar/compare/v1.14.0...v1.14.1) (2022-12-04)
+
+
+### Bug Fixes
+
+* add css export to package.json ([#102](https://github.com/tomosterlund/qalendar/issues/102)) ([9f8dfa3](https://github.com/tomosterlund/qalendar/commit/9f8dfa356ad640eba934b215c7b27749fb490fda))
+
 # [1.14.0](https://github.com/tomosterlund/qalendar/compare/v1.13.0...v1.14.0) (2022-11-27)
 
 
