@@ -26,19 +26,25 @@
             <div :style="{ position: 'absolute', left: '-7px', top: '-6px', height: '15px', width: '15px', backgroundColor: 'cornflowerblue', borderRadius: '50%' }"></div>
           </div>
         </template>
-<!--        <template v-slot:event="eventProps" #event>-->
-<!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
-<!--            {{ eventProps.eventData.title }}-->
+        <template v-slot:event="eventProps" #event>
+          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
+            {{ eventProps.eventData.title }}
 
-<!--            <div>-->
-<!--              <input type="checkbox" />-->
+            <div>
+              <input type="checkbox" />
 
-<!--              <label for="checkbox">-->
-<!--                Select time slot-->
-<!--              </label>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </template>-->
+              <label for="checkbox">
+                Select time slot
+              </label>
+            </div>
+          </div>
+        </template>
+
+        <template #monthEvent="monthEventProps">
+          <div>
+            {{ monthEventProps.eventData.title }}
+          </div>
+        </template>
 
 <!--        <template v-slot:eventDialog="props" #eventDialog>-->
 <!--          <div-->
@@ -90,7 +96,7 @@ export default defineComponent({
       config: {
         week: {
           startsOn: 'monday',
-          nDays: 5,
+          // nDays: 5,
           scrollToHour: 8,
         },
         locale: 'de-DE',
@@ -111,7 +117,7 @@ export default defineComponent({
         //   start: 7,
         //   end: 17,
         // },
-        defaultMode: 'week',
+        defaultMode: 'month',
         showCurrentTime: true,
         // disableModes: ['month'],
         isSilent: true,
@@ -145,7 +151,7 @@ export default defineComponent({
     // this.triggerLoadAnimations()
     setTimeout(() => {
       this.events = seededEvents.map((e) => {
-        // @ts-ignore
+        //@ts-ignore
         // e.isCustom = true;
         // e.isEditable = false;
 

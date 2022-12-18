@@ -1,5 +1,18 @@
 <template>
   <div
+    v-if="calendarEvent.isCustom"
+    :id="elementId"
+    class="is-event"
+    :class="{ 'is-draggable': elementDraggableAttribute }"
+    :draggable="elementDraggableAttribute"
+    @dragstart="handleDragStart"
+    @click="handleClickOnEvent"
+  >
+    <slot name="monthEvent" :event-data="calendarEvent"></slot>
+  </div>
+
+  <div
+    v-else
     :id="elementId"
     class="calendar-month__event is-event"
     :class="{ 'is-draggable': elementDraggableAttribute }"

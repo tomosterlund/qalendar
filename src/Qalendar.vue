@@ -78,6 +78,10 @@
             :close-event-dialog="p.closeEventDialog"
           ></slot>
         </template>
+
+        <template #monthEvent="p">
+          <slot :event-data="p.eventData" name="monthEvent"></slot>
+        </template>
       </Month>
     </div>
   </div>

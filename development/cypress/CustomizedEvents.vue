@@ -20,6 +20,10 @@
           </div>
         </template>
 
+        <template #monthEvent="monthEventProps">
+          {{ monthEventProps.eventData.title }}
+        </template>
+
         <template #eventDialog="props">
           <div
               v-if="props.eventDialogData && props.eventDialogData.title"
