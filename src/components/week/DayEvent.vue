@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!eventProp.isCustom"
+    v-if="!eventProp.isCustom || disableCustomEvents"
     class="calendar-week__event is-event"
     :class="{
       'is-editable': isEditable,
@@ -202,6 +202,10 @@ export default defineComponent({
   },
 
   computed: {
+    disableCustomEvents() {
+      return this.config?.disableCustomEvents?.includes(this.mode)
+    },
+
     getEventTime() {
       return (
         this.time.getLocalizedTime(this.event.time.start) +

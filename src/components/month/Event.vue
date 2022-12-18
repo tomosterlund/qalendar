@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="calendarEvent.isCustom"
+    v-if="calendarEvent.isCustom && !disableCustomEvents"
     :id="elementId"
     class="is-event"
     :class="{ 'is-draggable': elementDraggableAttribute }"
@@ -73,6 +73,10 @@ export default defineComponent({
   },
 
   computed: {
+    disableCustomEvents() {
+      return this.config?.disableCustomEvents?.includes('month');
+    },
+
     eventTimeStart() {
       return DATE_TIME_STRING_PATTERN.test(this.calendarEvent.time.start)
         ? this.time.getLocalizedTime(this.calendarEvent.time.start)

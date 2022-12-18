@@ -121,6 +121,7 @@ export default defineComponent({
         showCurrentTime: true,
         // disableModes: ['month'],
         isSilent: true,
+        // disableCustomEvents: ['month', 'week'],
         dayIntervals: {
           height: 50,
           length: 30,
