@@ -83,7 +83,7 @@
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-vue": "9.8.0",
     "husky": "8.0.2",
-    "jsdom": "20.0.3",
+    "jsdom": "21.0.0",
     "postcss-html": "1.5.0",
     "postcss-scss": "4.0.6",
     "prettier": "2.7.1",
