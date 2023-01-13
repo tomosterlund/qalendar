@@ -331,9 +331,7 @@ const event = {
 }
 ```
 
-This allows you to even mix usage of custom events, and Qalendar-native events.
-
-Please note, that you have to add one slot for the custom event in week/day mode, and also a separate slot `monthEvent` for the custom event in month mode. This for the simple reason, that the markup for the event in month mode is different from the markup for the event in week/day mode. If you wish to disable usage of your customized events, and use the default events from this library, you can do so per calendar mode via the configuration option `disableCustomEvents`. This option takes an array with any valid names of a mode, i.e. `week`, `day` or `month`.
+Alternatively, you can set `isCustom` to an array of modes, such as `['month', 'week']`, to only use the custom markup in those modes.
 
 ### Custom event dialog
 
