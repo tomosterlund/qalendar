@@ -6,7 +6,7 @@
         :selected-date="new Date(2022, (6 - 1), 16)"
         :events="events"
       >
-        <template #event="eventProps">
+        <template #weekDayEvent="eventProps">
           <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
             <span class="is-title">{{ eventProps.eventData.title }}</span>
 

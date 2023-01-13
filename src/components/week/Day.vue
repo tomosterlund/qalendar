@@ -16,8 +16,8 @@
       @event-was-dragged="$emit('event-was-dragged', $event)"
       @event-was-resized="handleEventWasResized"
     >
-      <template #event="p">
-        <slot :event-data="p.eventData" name="event"></slot>
+      <template #weekDayEvent="p">
+        <slot :event-data="p.eventData" name="weekDayEvent"></slot>
       </template>
     </DayEvent>
 

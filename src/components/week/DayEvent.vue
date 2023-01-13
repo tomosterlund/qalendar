@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!eventProp.isCustom || disableCustomEvents"
+    v-if="!isCustomEvent"
     class="calendar-week__event is-event"
     :class="{
       'is-editable': isEditable,
@@ -107,7 +107,7 @@
     @click="handleClickOnEvent"
     @mousedown="handleMouseDown"
   >
-    <slot name="event" :event-data="event"> </slot>
+    <slot name="weekDayEvent" :event-data="event"> </slot>
   </div>
 </template>
 
@@ -202,8 +202,12 @@ export default defineComponent({
   },
 
   computed: {
-    disableCustomEvents() {
-      return this.config?.disableCustomEvents?.includes(this.mode)
+    isCustomEvent(): boolean {
+      if (Array.isArray(this.eventProp.isCustom)) {
+        return this.eventProp.isCustom.includes(this.mode);
+      }
+
+      return this.eventProp.isCustom || false;
     },
 
     getEventTime() {

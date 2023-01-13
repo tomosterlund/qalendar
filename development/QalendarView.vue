@@ -26,7 +26,7 @@
             <div :style="{ position: 'absolute', left: '-7px', top: '-6px', height: '15px', width: '15px', backgroundColor: 'cornflowerblue', borderRadius: '50%' }"></div>
           </div>
         </template>
-        <template v-slot:event="eventProps" #event>
+        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>
           <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
             {{ eventProps.eventData.title }}
 
@@ -41,7 +41,9 @@
         </template>
 
         <template #monthEvent="monthEventProps">
-          <div>
+          <div style="border: 1px dashed blue">
+            <input style="display: inline" type="checkbox" />
+
             {{ monthEventProps.eventData.title }}
           </div>
         </template>
@@ -151,10 +153,10 @@ export default defineComponent({
   mounted() {
     // this.triggerLoadAnimations()
     setTimeout(() => {
-      this.events = seededEvents.map((e) => {
+      this.events = seededEvents.map((e, i) => {
         //@ts-ignore
-        // e.isCustom = true;
-        // e.isEditable = false;
+        e.isCustom = ['month', 'week'];
+        e.isEditable = false;
 
         return e
       });

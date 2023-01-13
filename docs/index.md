@@ -306,7 +306,7 @@ The Qalendar component also allows you to take full control over the looks and c
 ```vue
 <template>
   <Qalendar :events="events">
-    <template #event="eventProps">
+    <template #weekDayEvent="eventProps">
       <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
         <span>{{ timeFormattingFunction(eventProps.eventData.time) }}</span>
 
@@ -321,7 +321,7 @@ The Qalendar component also allows you to take full control over the looks and c
 </template>
 ```
 
-For an event to use the custom markup added through the event slot, it needs to have the property `isCustom` set to `true`. Such as:
+Please observe, that there are two different slots; one slot is for day and week mode, and the other for month mode. For an event to use the custom markup added through the event slot, it needs to have the property `isCustom` set to `true`. Such as:
 
 ```js
 const event = {

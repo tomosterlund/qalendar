@@ -27,7 +27,6 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build && tsc --emitDeclarationOnly",
     "preview": "vite preview --port 5050",
-    "prepare": "npm run build",
     "test:unit": "vitest --environment jsdom",
     "test:docker": "docker-compose up --build",
     "test:e2e": "cypress open -- --e2e",
