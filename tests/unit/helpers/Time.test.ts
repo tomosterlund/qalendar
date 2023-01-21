@@ -239,7 +239,7 @@ describe("Time.ts", () => {
       else expectedValue = `${iterator - 12} PM`;
 
       expect(
-        timeEnglish.getHourLocaleStringFromHourDigits(hours[iterator])
+        unidecode(timeEnglish.getHourLocaleStringFromHourDigits(hours[iterator]))
       ).toEqual(expectedValue);
 
       iterator++;
