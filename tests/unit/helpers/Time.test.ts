@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import Time from "../../../src/helpers/Time";
-import {decode, encode} from 'html-entities';
+import unidecode from "unidecode";
 // Functionality which is sensitive to the class property FIRST_DAY_OF_WEEK
 // needs to be tested with both "timeM" and "timeS"
 const timeM = new Time("monday");
@@ -225,7 +225,7 @@ describe("Time.ts", () => {
     let iterator = 0;
     while (iterator < 12) {
       expect(
-        decode(timeEnglish.getHourLocaleStringFromHourDigits(hours[iterator]))
+        unidecode(timeEnglish.getHourLocaleStringFromHourDigits(hours[iterator]))
       ).toEqual(`${iterator === 0 ? "12" : iterator} AM`);
 
       iterator++;
@@ -361,13 +361,13 @@ describe("Time.ts", () => {
     const englishTime = new Time("sunday", "en-US");
     const fourAM = new Date(2022, 0, 1, 4);
     expect(
-      decode(englishTime.getLocalizedHour(fourAM))
+      unidecode(englishTime.getLocalizedHour(fourAM))
     ).toBe("04 AM");
 
     const swedishTime = new Time("monday", "sv-SE");
     const elevenPM = new Date(0, 0, 1, 23);
     expect(
-      decode(swedishTime.getLocalizedHour(elevenPM))
+      unidecode(swedishTime.getLocalizedHour(elevenPM))
     ).toBe("23");
   });
 
