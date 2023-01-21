@@ -17,7 +17,8 @@
     "@fortawesome/vue-fontawesome",
     "vite",
     "@vitejs/plugin-vue",
-    "vue"
+    "vue",
+    "cypress"
   ],
   "ignorePaths": ["**/.circleci/**", "docker-compose.yml"]
 }
