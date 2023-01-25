@@ -93,6 +93,7 @@ import Week from './components/week/Week.vue';
 import { modeType } from './typings/types';
 import Month from './components/month/Month.vue';
 import Errors from './helpers/Errors';
+import {DATE_TIME_STRING_FULL_DAY_PATTERN} from './constants';
 
 export default defineComponent({
   name: 'Qalendar',
@@ -166,7 +167,7 @@ export default defineComponent({
         // The check on strict equality as primitive values is needed,
         // since we do not want to trigger a rerender on event-was-resized
         if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
-          this.eventsDataProperty = newVal;
+          this.eventsDataProperty = this.processEvents(newVal);
           this.eventRenderingKey = this.eventRenderingKey + 1;
         }
 
@@ -199,6 +200,94 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * Iterate over all events, creating several single day events out of every multi-day event
+     * */
+    processEvents(events: eventInterface[]) {
+      return events.reduce((processedEvents: eventInterface[], event) => {
+        const allEvents = processedEvents
+
+        if (event.time.start.substring(0, 10) === event.time.end.substring(0, 10)
+          || DATE_TIME_STRING_FULL_DAY_PATTERN.test(event.time.start)
+        ) {
+          allEvents.push(event);
+        }
+
+        // 1. If the start- and end dates are not equal, create a multiple day event
+        else {
+          const {
+            year: firstDayYear,
+            month: firstDayMonth,
+            date: firstDayDate,
+          } = this.time.getAllVariablesFromDateTimeString(event.time.start)
+
+          allEvents.push({
+            ...event,
+            time: {
+              start: event.time.start,
+              end: this.time.getDateTimeStringFromDate(
+                new Date(firstDayYear, firstDayMonth, firstDayDate, 23, 59, 59, 999),
+              )
+            },
+            originalEvent: event,
+          })
+
+          let startDateTimeString = event.time.start.substring(0, 10)
+          startDateTimeString = this.time.addDaysToDateTimeString(1, startDateTimeString)
+
+          // 2. While the start date is less than the end date, create a full day event for each day
+          // up until, but not including, the last day
+          while (startDateTimeString < event.time.end.substring(0, 10)) {
+            const { date, month, year }
+              = this.time.getAllVariablesFromDateTimeString(startDateTimeString)
+
+            const dayStart = this.time.getDateStringFromDate(
+              new Date(year, month, date, 0, 0, 0)
+            )
+
+            const dayEnd = this.time.getDateStringFromDate(
+              new Date(year, month, date, 23, 59, 59, 999)
+            )
+
+            allEvents.push({
+              ...event,
+              time: {
+                start: dayStart,
+                end: dayEnd,
+              },
+              originalEvent: event,
+            })
+
+            startDateTimeString = this.time.addDaysToDateTimeString(1, startDateTimeString)
+          }
+
+          // 3. Add the last day of the multiple day event
+          const {
+            year: lastDayYear,
+            month: lastDayMonth,
+            date: lastDayDate,
+            hour: lastDayHour,
+            minutes: lastDayMinute,
+          } = this.time.getAllVariablesFromDateTimeString(event.time.end)
+
+          allEvents.push({
+            ...event,
+            time: {
+              start: this.time.getDateTimeStringFromDate(
+                new Date(lastDayYear, lastDayMonth, lastDayDate, 0, 0, 0)
+              ),
+              end: this.time.getDateTimeStringFromDate(
+                new Date(lastDayYear, lastDayMonth, lastDayDate, lastDayHour, lastDayMinute)
+              ),
+            },
+            originalEvent: event,
+          })
+        }
+
+        return allEvents
+      }, [])
+    },
+
     setConfigOnMount() {
       this.wasInitialized = 1;
     },
