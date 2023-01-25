@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/tomosterlund/qalendar/compare/v1.15.0...v1.16.0) (2023-01-25)
+
+
+### Features
+
+* multiple-day timed events ([#112](https://github.com/tomosterlund/qalendar/issues/112)) ([68ca5d6](https://github.com/tomosterlund/qalendar/commit/68ca5d672815c5a5fd300206b09b9c85b17d0dcd))
+
 # [1.15.0](https://github.com/tomosterlund/qalendar/compare/v1.14.1...v1.15.0) (2023-01-25)
 
 
