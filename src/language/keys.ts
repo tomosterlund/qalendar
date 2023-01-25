@@ -8,6 +8,7 @@ export const languageKeys = {
     "zh-CN": "周",
     "pt-BR": "Semana",
     "fr-FR": "Semaine",
+    "th-TH": "สัปดาห์",
   },
   month: {
     "it-IT": "Mese",
@@ -17,6 +18,7 @@ export const languageKeys = {
     "zh-CN": "月",
     "pt-BR": "Mês",
     "fr-FR": "Mois",
+    "th-TH": "เดือน",
   },
   day: {
     "it-IT": "Giorno",
@@ -26,6 +28,7 @@ export const languageKeys = {
     "zh-CN": "日",
     "pt-BR": "Dia",
     "fr-FR": "Jour",
+    "th-TH": "วัน",
   },
 
   /** Other keys */
@@ -37,5 +40,6 @@ export const languageKeys = {
     "zh-CN": "列出其他结果",
     "pt-BR": "+ mais eventos",
     "fr-FR": "+ d'autres événements",
+    "th-TH": "+ เหตุการณ์เพิ่มเติม",
   },
 };
