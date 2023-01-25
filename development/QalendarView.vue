@@ -90,7 +90,7 @@ export default defineComponent({
       config: {
         week: {
           startsOn: 'monday',
-          nDays: 5,
+          nDays: 7,
           scrollToHour: 8,
         },
         locale: 'de-DE',
