@@ -9,7 +9,7 @@
   >
     <span class="calendar-month__event-color" />
 
-    <span v-if="eventTimeStart" class="calendar-month__event-time">
+    <span v-if="eventTimeStart && !calendarEvent.originalEvent" class="calendar-month__event-time">
       {{ eventTimeStart }}
     </span>
 

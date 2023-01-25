@@ -200,94 +200,6 @@ export default defineComponent({
   },
 
   methods: {
-    /**
-     * Iterate over all events, creating several single day events out of every multi-day event
-     * */
-    processEvents(events: eventInterface[]) {
-      return events.reduce((processedEvents: eventInterface[], event) => {
-        const allEvents = processedEvents
-
-        if (event.time.start.substring(0, 10) === event.time.end.substring(0, 10)
-          || DATE_TIME_STRING_FULL_DAY_PATTERN.test(event.time.start)
-        ) {
-          allEvents.push(event);
-        }
-
-        // 1. If the start- and end dates are not equal, create a multiple day event
-        else {
-          const {
-            year: firstDayYear,
-            month: firstDayMonth,
-            date: firstDayDate,
-          } = this.time.getAllVariablesFromDateTimeString(event.time.start)
-
-          allEvents.push({
-            ...event,
-            time: {
-              start: event.time.start,
-              end: this.time.getDateTimeStringFromDate(
-                new Date(firstDayYear, firstDayMonth, firstDayDate, 23, 59, 59, 999),
-              )
-            },
-            originalEvent: event,
-          })
-
-          let startDateTimeString = event.time.start.substring(0, 10)
-          startDateTimeString = this.time.addDaysToDateTimeString(1, startDateTimeString)
-
-          // 2. While the start date is less than the end date, create a full day event for each day
-          // up until, but not including, the last day
-          while (startDateTimeString < event.time.end.substring(0, 10)) {
-            const { date, month, year }
-              = this.time.getAllVariablesFromDateTimeString(startDateTimeString)
-
-            const dayStart = this.time.getDateStringFromDate(
-              new Date(year, month, date, 0, 0, 0)
-            )
-
-            const dayEnd = this.time.getDateStringFromDate(
-              new Date(year, month, date, 23, 59, 59, 999)
-            )
-
-            allEvents.push({
-              ...event,
-              time: {
-                start: dayStart,
-                end: dayEnd,
-              },
-              originalEvent: event,
-            })
-
-            startDateTimeString = this.time.addDaysToDateTimeString(1, startDateTimeString)
-          }
-
-          // 3. Add the last day of the multiple day event
-          const {
-            year: lastDayYear,
-            month: lastDayMonth,
-            date: lastDayDate,
-            hour: lastDayHour,
-            minutes: lastDayMinute,
-          } = this.time.getAllVariablesFromDateTimeString(event.time.end)
-
-          allEvents.push({
-            ...event,
-            time: {
-              start: this.time.getDateTimeStringFromDate(
-                new Date(lastDayYear, lastDayMonth, lastDayDate, 0, 0, 0)
-              ),
-              end: this.time.getDateTimeStringFromDate(
-                new Date(lastDayYear, lastDayMonth, lastDayDate, lastDayHour, lastDayMinute)
-              ),
-            },
-            originalEvent: event,
-          })
-        }
-
-        return allEvents
-      }, [])
-    },
-
     setConfigOnMount() {
       this.wasInitialized = 1;
     },
@@ -395,7 +307,102 @@ export default defineComponent({
       if (boundary === 0) return boundary;
 
       return boundary * 100;
-    }
+    },
+
+    processEvents(events: eventInterface[]) {
+      return events.reduce((processedEvents: eventInterface[], event) => {
+        const allEvents = processedEvents
+
+        // For all single day events { start: '2022-01-01 00:00', end: '2022-01-01 01:00' },
+        // or non-timed full day events { start: '2022-01-01', end: '2022-01-04' },
+        // just push them to the array
+        if (event.time.start.substring(0, 10) === event.time.end.substring(0, 10)
+          || DATE_TIME_STRING_FULL_DAY_PATTERN.test(event.time.start)
+        ) {
+          allEvents.push(event);
+        }
+
+        // For all multiple-day events, that are also timed { start: '2022-01-01 10:00', end: '2022-01-04 01:00' }
+        // do the following:
+        else {
+          // 1. Create the first day event as a normal timed event
+          const {
+            year: firstDayYear,
+            month: firstDayMonth,
+            date: firstDayDate,
+          } = this.time.getAllVariablesFromDateTimeString(event.time.start)
+
+          allEvents.push({
+            ...event,
+            time: {
+              start: event.time.start,
+              end: this.time.getDateTimeStringFromDate(
+                new Date(firstDayYear, firstDayMonth, firstDayDate, 23, 59, 59, 999),
+              )
+            },
+            originalEvent: event,
+            isEditable: false, // Multiple-day events cannot be dragged or resized
+          })
+
+
+          // 2. Create a multiple-day full-day event, that stretches from day 2 until day (end - 1)
+          const day2Start = this.time.addDaysToDateTimeString(1, event.time.start.substring(0, 10))
+          const endDateMinus1Day = this.time.addDaysToDateTimeString(-1, event.time.end.substring(0, 10))
+
+          if (endDateMinus1Day >= day2Start) {
+            const {
+              year: startYear,
+              month: startMonth,
+              date: startDate,
+            } = this.time.getAllVariablesFromDateTimeString(day2Start)
+
+            const {
+              year: endYear,
+              month: endMonth,
+              date: endDate,
+            } = this.time.getAllVariablesFromDateTimeString(endDateMinus1Day)
+
+            allEvents.push({
+              ...event,
+              time: {
+                start: this.time.getDateStringFromDate(
+                  new Date(startYear, startMonth, startDate),
+                ),
+                end: this.time.getDateStringFromDate(
+                  new Date(endYear, endMonth, endDate),
+                ),
+              },
+              originalEvent: event,
+            })
+          }
+
+          // 3. Add the last day of the multiple day event
+          const {
+            year: lastDayYear,
+            month: lastDayMonth,
+            date: lastDayDate,
+            hour: lastDayHour,
+            minutes: lastDayMinute,
+          } = this.time.getAllVariablesFromDateTimeString(event.time.end)
+
+          allEvents.push({
+            ...event,
+            time: {
+              start: this.time.getDateTimeStringFromDate(
+                new Date(lastDayYear, lastDayMonth, lastDayDate, 0, 0, 0)
+              ),
+              end: this.time.getDateTimeStringFromDate(
+                new Date(lastDayYear, lastDayMonth, lastDayDate, lastDayHour, lastDayMinute)
+              ),
+            },
+            originalEvent: event,
+            // Multiple-day events cannot be dragged or resized
+          })
+        }
+
+        return allEvents
+      }, [])
+    },
   },
 });
 </script>

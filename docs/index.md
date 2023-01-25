@@ -136,13 +136,18 @@ A calendar event can have the following properties:
 |  `disableDnD`   | array of strings - accepts values 'month', 'week', 'day' |    no    |    Disable drag & drop for an event in the specified modes     |
 | `disableResize` |     array of strings - accepts values 'week', 'day'      |    no    |      Disable resizing for an event in the specified modes      |
 
+#### Event times
 ```ts
 type eventTime = { start: string; end: string };
 ```
+Qalendar can handle 2 types of events:
 
-For timed events, the required format of `time.start` and `time.end` is `YYYY-MM-DD hh:mm`, for example `2022-06-16 16:00`.
+1. For **timed events**, the required format of `time.start` and `time.end` is `YYYY-MM-DD hh:mm`, for example `2022-06-16 16:00`. These can also span over multiple days, such as `{ start: "2023-01-01 06:55", end: "2023-02-10 07:40"}`
 
-For full day events, or events spanning multiple days. The required format is `YYYY-MM-DD`, such as `2022-06-16`.
+2. For **full day events**, or events spanning multiple days. The required format is `YYYY-MM-DD`, such as `2022-06-16`.
+
+Please note, however, that you cannot mix these two types of time formats for an event.
+
 
 ### Emitted events
 
