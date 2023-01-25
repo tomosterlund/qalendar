@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/tomosterlund/qalendar/compare/v1.14.1...v1.15.0) (2023-01-25)
+
+
+### Features
+
+* add thai lang ([#111](https://github.com/tomosterlund/qalendar/issues/111)) ([1b5c72b](https://github.com/tomosterlund/qalendar/commit/1b5c72b30ec880cda8945eedd077abf32281b97e))
+
 ## [1.14.1](https://github.com/tomosterlund/qalendar/compare/v1.14.0...v1.14.1) (2022-12-04)
 
 
