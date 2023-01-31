@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/tomosterlund/qalendar/compare/v1.16.0...v1.17.0) (2023-01-31)
+
+
+### Features
+
+* add dutch/nl lang ([#113](https://github.com/tomosterlund/qalendar/issues/113)) ([3e570b1](https://github.com/tomosterlund/qalendar/commit/3e570b125f50ea4c732f09f0bcedfbdb87ad1bc7))
+
 # [1.16.0](https://github.com/tomosterlund/qalendar/compare/v1.15.0...v1.16.0) (2023-01-25)
 
 
