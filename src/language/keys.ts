@@ -9,6 +9,7 @@ export const languageKeys = {
     "pt-BR": "Semana",
     "fr-FR": "Semaine",
     "th-TH": "สัปดาห์",
+    "nl-NL": "Week",
   },
   month: {
     "it-IT": "Mese",
@@ -19,6 +20,7 @@ export const languageKeys = {
     "pt-BR": "Mês",
     "fr-FR": "Mois",
     "th-TH": "เดือน",
+    "nl-NL": "Maand",
   },
   day: {
     "it-IT": "Giorno",
@@ -29,6 +31,7 @@ export const languageKeys = {
     "pt-BR": "Dia",
     "fr-FR": "Jour",
     "th-TH": "วัน",
+    "nl-NL": "Dag",
   },
 
   /** Other keys */
@@ -41,5 +44,6 @@ export const languageKeys = {
     "pt-BR": "+ mais eventos",
     "fr-FR": "+ d'autres événements",
     "th-TH": "+ เหตุการณ์เพิ่มเติม",
+    "nl-NL": "meer evenementen",
   },
 };
