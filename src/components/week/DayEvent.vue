@@ -15,7 +15,7 @@
     @click="handleClickOnEvent"
     @mouseenter="showResizeElements = isEditable && !hasDisabledResize"
     @mouseleave="showResizeElements = false"
-    @mousedown="handleMouseDown"
+    @mousedown="initDrag"
   >
     <div class="calendar-week__event-info-wrapper">
       <div
@@ -105,7 +105,8 @@
       'has-disabled-dnd': hasDisabledDragAndDrop,
     }"
     @click="handleClickOnEvent"
-    @mousedown="handleMouseDown"
+    @mousedown="initDrag"
+    @touchstart="initDrag"
   >
     <slot name="event" :event-data="event"> </slot>
   </div>
@@ -198,6 +199,13 @@ export default defineComponent({
       changeInDaysOnDrag: 0,
       timeStartDragStart: this.eventProp.time.start,
       timeEndDragStart: this.eventProp.time.end,
+
+      dragMoveListenerNameAndCallbacks: [
+        ['mousemove', this.handleDrag],
+        ['touchmove', this.handleDrag],
+        ['mouseup', this.handleDragEnd],
+        ['touchend', this.handleDragEnd],
+      ] as ReadonlyArray<[string, any]>,
     };
   },
 
@@ -563,26 +571,38 @@ export default defineComponent({
       return (this.eventBackgroundColor = this.colors.blue);
     },
 
-    handleMouseDown(mouseEvent: MouseEvent) {
+    initDrag(domEvent: MouseEvent | TouchEvent) {
       // Do not allow drag & drop, if event is not editable
       if (!this.event.isEditable || this.hasDisabledDragAndDrop) return;
 
+      if (domEvent instanceof MouseEvent) {
+        this.handleDragMove(domEvent.clientX, domEvent.clientY);
+      } else if (domEvent instanceof TouchEvent) {
+        this.handleDragMove(
+          domEvent.touches[0].clientX,
+          domEvent.touches[0].clientY
+        );
+      }
+    },
+
+    handleDragMove(clientX: number, clientY: number) {
       this.canDrag = true;
       this.eventZIndexValue = 10;
-
-      this.clientYDragStart = mouseEvent.clientY;
-      this.clientXDragStart = mouseEvent.clientX;
+      this.clientYDragStart = clientY;
+      this.clientXDragStart = clientX;
       this.timeStartDragStart = this.event.time.start;
       this.timeEndDragStart = this.event.time.end;
-      document.addEventListener('mousemove', this.handleDrag);
-      document.addEventListener('mouseup', this.handleDragEnd);
+      this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
+        document.addEventListener(name, callback);
+      });
     },
 
     handleDragEnd() {
       this.canDrag = false;
       this.eventZIndexValue = 'initial';
-      document.removeEventListener('mousemove', this.handleDrag);
-      document.removeEventListener('mouseup', this.handleDragEnd);
+      this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
+        document.removeEventListener(name, callback);
+      });
       const dayChanged =
         this.changeInDaysOnDrag <= -1 || this.changeInDaysOnDrag > 0;
       const timeChanged =
@@ -592,22 +612,27 @@ export default defineComponent({
         this.$emit('event-was-dragged', this.event);
     },
 
-    handleDrag(mouseEvent: MouseEvent) {
+    handleDrag(mouseEvent: MouseEvent | TouchEvent) {
       // Do not run the drag & drop algorithms, when element is being resized
       if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
 
-      this.handleVerticalDrag(mouseEvent);
-      this.handleHorizontalDrag(mouseEvent);
+      if (mouseEvent instanceof MouseEvent) {
+        this.handleVerticalDrag(mouseEvent.clientY);
+        this.handleHorizontalDrag(mouseEvent.clientX);
+      } else if (mouseEvent instanceof TouchEvent) {
+        this.handleVerticalDrag(mouseEvent.touches[0].clientY);
+        this.handleHorizontalDrag(mouseEvent.touches[0].clientX);
+      }
     },
 
     /**
      * Handle dragging within days
      * */
-    handleVerticalDrag(mouseEvent: MouseEvent) {
+    handleVerticalDrag(clientY: number) {
       const eventsContainer = document.querySelector('.calendar-week__events');
       if (!eventsContainer || !this.clientYDragStart) return;
 
-      const nOfPixelsDistance = mouseEvent.clientY - this.clientYDragStart;
+      const nOfPixelsDistance = clientY - this.clientYDragStart;
       const eventsContainerHeight = eventsContainer.clientHeight;
       const percentageOfDayChanged =
         (nOfPixelsDistance / eventsContainerHeight) * 100;
@@ -623,11 +648,11 @@ export default defineComponent({
     /**
      * Handle dragging between days
      * */
-    handleHorizontalDrag(mouseEvent: MouseEvent) {
+    handleHorizontalDrag(clientX: number) {
       if (!this.dayElement || !this.clientXDragStart) return;
 
       const dayWidth = this.dayElement.clientWidth;
-      const changeInPixelsX = mouseEvent.clientX - this.clientXDragStart;
+      const changeInPixelsX = clientX - this.clientXDragStart;
       this.changeInDaysOnDrag =
         changeInPixelsX < 0
           ? Math.ceil(changeInPixelsX / dayWidth)

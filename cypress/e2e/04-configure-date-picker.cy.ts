@@ -1,4 +1,4 @@
-describe('DragAndDrop.vue', () => {
+describe('Configure date picker', () => {
   beforeEach(() => {
     cy.visit('#/cypress/configure-date-picker');
   });

@@ -1,4 +1,4 @@
-describe('DragAndDrop.vue', () => {
+describe('DisableDnD.vue', () => {
   beforeEach(() => {
     cy.visit('#/cypress/disable-dnd');
   });

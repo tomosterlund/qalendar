@@ -218,7 +218,9 @@ export default defineComponent({
       if (elapsedMs > 3000) return;
       if (!el) this.initScrollbar(elapsedMs + 50);
       else {
-        this.scrollbar = new PerfectScrollbar(el);
+        this.scrollbar = new PerfectScrollbar(el, {
+          handlers: ['click-rail', 'drag-thumb', 'keyboard', 'wheel'], // Cannot use 'touch' here, since this will disturb the drag event
+        });
         this.scrollbar.update();
       }
     },
