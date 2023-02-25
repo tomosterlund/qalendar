@@ -16,6 +16,7 @@
     @mouseenter="showResizeElements = isEditable && !hasDisabledResize"
     @mouseleave="showResizeElements = false"
     @mousedown="initDrag"
+    @touchstart="initDrag"
   >
     <div class="calendar-week__event-info-wrapper">
       <div
@@ -36,7 +37,10 @@
         <span>{{ getEventTime }}</span>
       </div>
 
-      <div v-if="event.location" class="calendar-week__event-row is-location">
+      <div
+        v-if="event.location"
+        class="calendar-week__event-row is-location"
+      >
         <font-awesome-icon
           :icon="icons.location"
           class="calendar-week__event-icon"
@@ -44,7 +48,10 @@
         <span>{{ event.location }}</span>
       </div>
 
-      <div v-if="event.with" class="calendar-week__event-row is-with">
+      <div
+        v-if="event.with"
+        class="calendar-week__event-row is-with"
+      >
         <font-awesome-icon
           :icon="icons.user"
           class="calendar-week__event-icon"
@@ -52,7 +59,10 @@
         <span>{{ event.with }}</span>
       </div>
 
-      <div v-if="event.topic" class="calendar-week__event-row is-topic">
+      <div
+        v-if="event.topic"
+        class="calendar-week__event-row is-topic"
+      >
         <font-awesome-icon
           :icon="icons.topic"
           class="calendar-week__event-icon"
@@ -108,7 +118,10 @@
     @mousedown="initDrag"
     @touchstart="initDrag"
   >
-    <slot name="event" :event-data="event"> </slot>
+    <slot
+      name="event"
+      :event-data="event"
+    />
   </div>
 </template>
 
@@ -575,13 +588,10 @@ export default defineComponent({
       // Do not allow drag & drop, if event is not editable
       if (!this.event.isEditable || this.hasDisabledDragAndDrop) return;
 
-      if (domEvent instanceof MouseEvent) {
+      if (domEvent instanceof TouchEvent) {
+        this.handleDragMove(domEvent.touches[0].clientX, domEvent.touches[0].clientY);
+      } else {
         this.handleDragMove(domEvent.clientX, domEvent.clientY);
-      } else if (domEvent instanceof TouchEvent) {
-        this.handleDragMove(
-          domEvent.touches[0].clientX,
-          domEvent.touches[0].clientY
-        );
       }
     },
 
@@ -616,12 +626,12 @@ export default defineComponent({
       // Do not run the drag & drop algorithms, when element is being resized
       if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
 
-      if (mouseEvent instanceof MouseEvent) {
-        this.handleVerticalDrag(mouseEvent.clientY);
-        this.handleHorizontalDrag(mouseEvent.clientX);
-      } else if (mouseEvent instanceof TouchEvent) {
+      if (mouseEvent instanceof TouchEvent) {
         this.handleVerticalDrag(mouseEvent.touches[0].clientY);
         this.handleHorizontalDrag(mouseEvent.touches[0].clientX);
+      } else {
+        this.handleVerticalDrag(mouseEvent.clientY);
+        this.handleHorizontalDrag(mouseEvent.clientX);
       }
     },
 
