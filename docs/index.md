@@ -167,11 +167,14 @@ Qalendar emits the following events that can be listened to:
 
 ### Drag and drop
 
-Updating events by dragging them across the UI is available in all calendar modes (day, week, month). However, three criteria need to be met, in order for a calendar event to be draggable:
+Updating events by dragging them across the UI is available in all calendar modes (day, week, month). However, two criteria need to be met, in order for a calendar event to be draggable:
 
 * The event needs the property `isEditable` to be set to `true`
 * The event needs to be a single day event. For example, an event with `time: { start: '2022-06-24', end: '2022-06-27' }` cannot be dragged
-* The user device needs to allow for pointer events, meaning touch events (smartphone, iPad) won't trigger a drag & drop.
+
+::: tip
+Since qalendar@1.18.1 the drag and drop feature is also available on touch devices.
+:::
 
 ### A word on language
 
