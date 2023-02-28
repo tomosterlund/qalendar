@@ -60,6 +60,7 @@
           @event-was-dragged="handleEventWasDragged"
           @interval-was-clicked="$emit('interval-was-clicked', $event)"
           @day-was-clicked="$emit('day-was-clicked', $event)"
+          @drag-start="destroyScrollbarAndHideOverflow"
         >
           <template #event="p">
             <slot :event-data="p.eventData" name="event"></slot>
@@ -218,11 +219,18 @@ export default defineComponent({
       if (elapsedMs > 3000) return;
       if (!el) this.initScrollbar(elapsedMs + 50);
       else {
-        this.scrollbar = new PerfectScrollbar(el, {
-          handlers: ['click-rail', 'drag-thumb', 'keyboard', 'wheel'], // Cannot use 'touch' here, since this will disturb the drag event
-        });
+        this.scrollbar = new PerfectScrollbar(el);
         this.scrollbar.update();
       }
+    },
+
+    destroyScrollbarAndHideOverflow() {
+      const wrapper = document.querySelector('.calendar-week__wrapper');
+
+      if (!(wrapper instanceof HTMLElement)) return;
+
+      wrapper.style.overflowY = 'hidden';
+      this.scrollbar.destroy();
     },
 
     filterOutFullDayEvents() {
@@ -362,6 +370,7 @@ export default defineComponent({
     },
 
     handleEventWasDragged(event: eventInterface) {
+      this.initScrollbar();
       const cleanedUpEvent = event;
       // Reset all properties of the event, that need be calculated anew
       delete cleanedUpEvent.totalConcurrentEvents;

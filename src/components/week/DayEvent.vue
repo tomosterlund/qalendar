@@ -174,7 +174,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['event-was-clicked', 'event-was-resized', 'event-was-dragged'],
+  emits: ['event-was-clicked', 'event-was-resized', 'event-was-dragged', 'drag-start'],
 
   data() {
     return {
@@ -603,7 +603,7 @@ export default defineComponent({
       this.timeStartDragStart = this.event.time.start;
       this.timeEndDragStart = this.event.time.end;
       this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
-        document.addEventListener(name, callback);
+        document.addEventListener(name, callback, { passive: false });
       });
     },
 
@@ -623,6 +623,7 @@ export default defineComponent({
     },
 
     handleDrag(mouseEvent: MouseEvent | TouchEvent) {
+      this.$emit('drag-start');
       // Do not run the drag & drop algorithms, when element is being resized
       if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
 

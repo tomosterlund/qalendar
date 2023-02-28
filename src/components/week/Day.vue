@@ -15,6 +15,7 @@
       @event-was-clicked="$emit('event-was-clicked', $event)"
       @event-was-dragged="$emit('event-was-dragged', $event)"
       @event-was-resized="handleEventWasResized"
+      @drag-start="$emit('drag-start')"
     >
       <template #event="p">
         <slot :event-data="p.eventData" name="event"></slot>
@@ -89,6 +90,7 @@ export default defineComponent({
     'event-was-dragged',
     'interval-was-clicked',
     'day-was-clicked',
+    'drag-start',
   ],
 
   data() {
