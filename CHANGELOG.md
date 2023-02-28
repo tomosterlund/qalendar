@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.1](https://github.com/tomosterlund/qalendar/compare/v1.18.0...v1.18.1) (2023-02-28)
+
+
+### Bug Fixes
+
+* correct docs for drag & drop ([#120](https://github.com/tomosterlund/qalendar/issues/120)) ([14ca1c0](https://github.com/tomosterlund/qalendar/commit/14ca1c0d8cc280cd0363ae5d15703e02bcc867a7))
+
 # [1.18.0](https://github.com/tomosterlund/qalendar/compare/v1.17.0...v1.18.0) (2023-02-28)
 
 
