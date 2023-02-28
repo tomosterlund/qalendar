@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/tomosterlund/qalendar/compare/v1.17.0...v1.18.0) (2023-02-28)
+
+
+### Features
+
+* drag and drop mobile ([#119](https://github.com/tomosterlund/qalendar/issues/119)) ([176300e](https://github.com/tomosterlund/qalendar/commit/176300ece91afd35970a2c3133b6059a8cd9422b))
+
 # [1.17.0](https://github.com/tomosterlund/qalendar/compare/v1.16.0...v1.17.0) (2023-01-31)
 
 
