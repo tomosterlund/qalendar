@@ -16,7 +16,7 @@ describe('DragAndDrop.vue', () => {
       initialY = $calendarEvent.position().top
 
       cy.get(EVENT_SELECTOR)
-        .trigger('mousedown')
+        .trigger('mousedown', { which: 1 })
         .trigger('mousemove', { clientY: initialY + 300 })
         .trigger('mouseup')
 
@@ -82,3 +82,33 @@ describe('DragAndDrop.vue', () => {
     })
   });
 })
+
+describe('DragAndDrop on mobile', () => {
+  beforeEach(() => {
+    cy.viewport('iphone-6');
+    cy.visit('#/cypress/drag-and-drop');
+  });
+
+  const EVENT_SELECTOR = '.calendar-week__event'
+
+  it('Drags an editable event within a day', () => {
+    const initialTimeString = '9:20 AM - 10:20 AM';
+    cy.get('.is-time').then(($el) => {
+      expect($el).to.have.text(initialTimeString);
+    });
+    let initialY = 0;
+
+    cy.get(EVENT_SELECTOR).then(($calendarEvent) => {
+      initialY = $calendarEvent.position().top;
+
+      cy.get(EVENT_SELECTOR)
+      .trigger('touchstart')
+      .trigger('touchmove', { clientY: initialY + 300 })
+      .trigger('touchend');
+
+      cy.get('.is-time').then(($el) => {
+        expect($el).not.to.have.text(initialTimeString);
+      });
+    });
+  });
+});

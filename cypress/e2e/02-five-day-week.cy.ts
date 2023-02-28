@@ -13,15 +13,17 @@ describe('FiveDayWeek.vue', () => {
     cy.get('.event-flyout__row.is-title').contains('Meeting: John w. parents')
   });
 
-  it('Shuts the EventFlyout by clicking edit and delete icons', () => {
+  it('Shuts the EventFlyout by clicking the delete icon', () => {
     cy.get('.calendar-week__event').first().click()
     cy.get('.is-trash-icon').click()
     cy.get('.event-flyout').should('not.be.visible')
+  });
 
+  it('Shuts the EventFlyout by clicking the edit icon', () => {
     cy.get('.calendar-week__event').first().click()
     cy.get('.is-edit-icon').click()
     cy.get('.event-flyout').should('not.be.visible')
-  });
+  })
 
   it('Shuts the event flyout on click outside, but not on click inside', () => {
     // 1. Assert that the event flyout is visible

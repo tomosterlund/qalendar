@@ -15,7 +15,8 @@
     @click="handleClickOnEvent"
     @mouseenter="showResizeElements = isEditable && !hasDisabledResize"
     @mouseleave="showResizeElements = false"
-    @mousedown="handleMouseDown"
+    @mousedown="initDrag"
+    @touchstart="initDrag"
   >
     <div class="calendar-week__event-info-wrapper">
       <div
@@ -36,7 +37,10 @@
         <span>{{ getEventTime }}</span>
       </div>
 
-      <div v-if="event.location" class="calendar-week__event-row is-location">
+      <div
+        v-if="event.location"
+        class="calendar-week__event-row is-location"
+      >
         <font-awesome-icon
           :icon="icons.location"
           class="calendar-week__event-icon"
@@ -44,7 +48,10 @@
         <span>{{ event.location }}</span>
       </div>
 
-      <div v-if="event.with" class="calendar-week__event-row is-with">
+      <div
+        v-if="event.with"
+        class="calendar-week__event-row is-with"
+      >
         <font-awesome-icon
           :icon="icons.user"
           class="calendar-week__event-icon"
@@ -52,7 +59,10 @@
         <span>{{ event.with }}</span>
       </div>
 
-      <div v-if="event.topic" class="calendar-week__event-row is-topic">
+      <div
+        v-if="event.topic"
+        class="calendar-week__event-row is-topic"
+      >
         <font-awesome-icon
           :icon="icons.topic"
           class="calendar-week__event-icon"
@@ -105,9 +115,13 @@
       'has-disabled-dnd': hasDisabledDragAndDrop,
     }"
     @click="handleClickOnEvent"
-    @mousedown="handleMouseDown"
+    @mousedown="initDrag"
+    @touchstart="initDrag"
   >
-    <slot name="event" :event-data="event"> </slot>
+    <slot
+      name="event"
+      :event-data="event"
+    />
   </div>
 </template>
 
@@ -160,7 +174,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['event-was-clicked', 'event-was-resized', 'event-was-dragged'],
+  emits: ['event-was-clicked', 'event-was-resized', 'event-was-dragged', 'drag-start'],
 
   data() {
     return {
@@ -198,6 +212,13 @@ export default defineComponent({
       changeInDaysOnDrag: 0,
       timeStartDragStart: this.eventProp.time.start,
       timeEndDragStart: this.eventProp.time.end,
+
+      dragMoveListenerNameAndCallbacks: [
+        ['mousemove', this.handleDrag],
+        ['touchmove', this.handleDrag],
+        ['mouseup', this.handleDragEnd],
+        ['touchend', this.handleDragEnd],
+      ] as ReadonlyArray<[string, any]>,
     };
   },
 
@@ -563,26 +584,35 @@ export default defineComponent({
       return (this.eventBackgroundColor = this.colors.blue);
     },
 
-    handleMouseDown(mouseEvent: MouseEvent) {
+    initDrag(domEvent: MouseEvent | TouchEvent) {
       // Do not allow drag & drop, if event is not editable
       if (!this.event.isEditable || this.hasDisabledDragAndDrop) return;
 
+      if (domEvent instanceof TouchEvent) {
+        this.handleDragMove(domEvent.touches[0].clientX, domEvent.touches[0].clientY);
+      } else {
+        this.handleDragMove(domEvent.clientX, domEvent.clientY);
+      }
+    },
+
+    handleDragMove(clientX: number, clientY: number) {
       this.canDrag = true;
       this.eventZIndexValue = 10;
-
-      this.clientYDragStart = mouseEvent.clientY;
-      this.clientXDragStart = mouseEvent.clientX;
+      this.clientYDragStart = clientY;
+      this.clientXDragStart = clientX;
       this.timeStartDragStart = this.event.time.start;
       this.timeEndDragStart = this.event.time.end;
-      document.addEventListener('mousemove', this.handleDrag);
-      document.addEventListener('mouseup', this.handleDragEnd);
+      this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
+        document.addEventListener(name, callback, { passive: false });
+      });
     },
 
     handleDragEnd() {
       this.canDrag = false;
       this.eventZIndexValue = 'initial';
-      document.removeEventListener('mousemove', this.handleDrag);
-      document.removeEventListener('mouseup', this.handleDragEnd);
+      this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
+        document.removeEventListener(name, callback);
+      });
       const dayChanged =
         this.changeInDaysOnDrag <= -1 || this.changeInDaysOnDrag > 0;
       const timeChanged =
@@ -592,22 +622,28 @@ export default defineComponent({
         this.$emit('event-was-dragged', this.event);
     },
 
-    handleDrag(mouseEvent: MouseEvent) {
+    handleDrag(mouseEvent: MouseEvent | TouchEvent) {
+      this.$emit('drag-start');
       // Do not run the drag & drop algorithms, when element is being resized
       if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
 
-      this.handleVerticalDrag(mouseEvent);
-      this.handleHorizontalDrag(mouseEvent);
+      if (mouseEvent instanceof TouchEvent) {
+        this.handleVerticalDrag(mouseEvent.touches[0].clientY);
+        this.handleHorizontalDrag(mouseEvent.touches[0].clientX);
+      } else {
+        this.handleVerticalDrag(mouseEvent.clientY);
+        this.handleHorizontalDrag(mouseEvent.clientX);
+      }
     },
 
     /**
      * Handle dragging within days
      * */
-    handleVerticalDrag(mouseEvent: MouseEvent) {
+    handleVerticalDrag(clientY: number) {
       const eventsContainer = document.querySelector('.calendar-week__events');
       if (!eventsContainer || !this.clientYDragStart) return;
 
-      const nOfPixelsDistance = mouseEvent.clientY - this.clientYDragStart;
+      const nOfPixelsDistance = clientY - this.clientYDragStart;
       const eventsContainerHeight = eventsContainer.clientHeight;
       const percentageOfDayChanged =
         (nOfPixelsDistance / eventsContainerHeight) * 100;
@@ -623,11 +659,11 @@ export default defineComponent({
     /**
      * Handle dragging between days
      * */
-    handleHorizontalDrag(mouseEvent: MouseEvent) {
+    handleHorizontalDrag(clientX: number) {
       if (!this.dayElement || !this.clientXDragStart) return;
 
       const dayWidth = this.dayElement.clientWidth;
-      const changeInPixelsX = mouseEvent.clientX - this.clientXDragStart;
+      const changeInPixelsX = clientX - this.clientXDragStart;
       this.changeInDaysOnDrag =
         changeInPixelsX < 0
           ? Math.ceil(changeInPixelsX / dayWidth)
