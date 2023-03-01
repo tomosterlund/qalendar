@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/tomosterlund/qalendar/compare/v1.18.1...v2.0.0) (2023-03-01)
+
+
+### Features
+
+* month mode custom events ([#126](https://github.com/tomosterlund/qalendar/issues/126)) ([a55218c](https://github.com/tomosterlund/qalendar/commit/a55218c925160b5f69d855b7128927cab2e19c15))
+
+
+### BREAKING CHANGES
+
+* named slot "event" has been replaced by "weekDayEvent"
+
 ## [1.18.1](https://github.com/tomosterlund/qalendar/compare/v1.18.0...v1.18.1) (2023-02-28)
 
 
