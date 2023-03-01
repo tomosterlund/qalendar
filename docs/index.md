@@ -136,13 +136,18 @@ A calendar event can have the following properties:
 |  `disableDnD`   | array of strings - accepts values 'month', 'week', 'day' |    no    |    Disable drag & drop for an event in the specified modes     |
 | `disableResize` |     array of strings - accepts values 'week', 'day'      |    no    |      Disable resizing for an event in the specified modes      |
 
+#### Event times
 ```ts
 type eventTime = { start: string; end: string };
 ```
+Qalendar can handle 2 types of events:
 
-For timed events, the required format of `time.start` and `time.end` is `YYYY-MM-DD hh:mm`, for example `2022-06-16 16:00`.
+1. For **timed events**, the required format of `time.start` and `time.end` is `YYYY-MM-DD hh:mm`, for example `2022-06-16 16:00`. These can also span over multiple days, such as `{ start: "2023-01-01 06:55", end: "2023-02-10 07:40"}`
 
-For full day events, or events spanning multiple days. The required format is `YYYY-MM-DD`, such as `2022-06-16`.
+2. For **full day events**, or events spanning multiple days. The required format is `YYYY-MM-DD`, such as `2022-06-16`.
+
+Please note, however, that you cannot mix these two types of time formats for an event.
+
 
 ### Emitted events
 
@@ -162,11 +167,14 @@ Qalendar emits the following events that can be listened to:
 
 ### Drag and drop
 
-Updating events by dragging them across the UI is available in all calendar modes (day, week, month). However, three criteria need to be met, in order for a calendar event to be draggable:
+Updating events by dragging them across the UI is available in all calendar modes (day, week, month). However, two criteria need to be met, in order for a calendar event to be draggable:
 
 * The event needs the property `isEditable` to be set to `true`
 * The event needs to be a single day event. For example, an event with `time: { start: '2022-06-24', end: '2022-06-27' }` cannot be dragged
-* The user device needs to allow for pointer events, meaning touch events (smartphone, iPad) won't trigger a drag & drop.
+
+::: tip
+Since qalendar@1.18.1 the drag and drop feature is also available on touch devices.
+:::
 
 ### A word on language
 

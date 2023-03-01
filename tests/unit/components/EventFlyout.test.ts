@@ -3,6 +3,7 @@ import {describe, expect, test} from 'vitest';
 import {mountComponent} from '../../vitest-setup';
 import {mount} from '@vue/test-utils';
 import Time from '../../../src/helpers/Time';
+import unidecode from 'unidecode';
 const eventFlyout = mountComponent(mount, EventFlyout)
 
 describe('EventFlyout.vue', () => {
@@ -44,6 +45,13 @@ describe('EventFlyout.vue', () => {
     })
 
     const eventTime = wrapper.find('.is-time')
-    expect(eventTime.text()).toBe('December 1, 2022 ⋅ 9:00 AM - 10:00 AM')
+
+    expect(
+      unidecode(eventTime.text())
+    ).toContain('December 1, 2022')
+
+    expect(
+      unidecode(eventTime.text())
+    ).toContain('9:00 AM - 10:00 AM')
   })
 })

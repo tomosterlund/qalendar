@@ -97,6 +97,7 @@ import Week from './components/week/Week.vue';
 import { modeType } from './typings/types';
 import Month from './components/month/Month.vue';
 import Errors from './helpers/Errors';
+import { DATE_TIME_STRING_FULL_DAY_PATTERN } from './constants';
 
 export default defineComponent({
   name: 'Qalendar',
@@ -147,14 +148,14 @@ export default defineComponent({
         selectedDate: this.selectedDate ? this.selectedDate : new Date(),
       },
       mode: this.config?.defaultMode || ('week' as modeType),
-      time: new Time(
-        this.config?.week?.startsOn,
-        this.config?.locale || null,
-        {
-          start: this.setTimePointsFromDayBoundary(this.config?.dayBoundaries?.start || 0),
-          end: this.setTimePointsFromDayBoundary(this.config?.dayBoundaries?.end || 24),
-        },
-      ) as Time | any,
+      time: new Time(this.config?.week?.startsOn, this.config?.locale || null, {
+        start: this.setTimePointsFromDayBoundary(
+          this.config?.dayBoundaries?.start || 0
+        ),
+        end: this.setTimePointsFromDayBoundary(
+          this.config?.dayBoundaries?.end || 24
+        ),
+      }) as Time | any,
       fontFamily:
         this.config?.style?.fontFamily || "'Verdana', 'Open Sans', serif",
       eventRenderingKey: 0, // Works only as a dummy value, for re-rendering Month- and Week components, when events-watcher triggers
@@ -170,7 +171,7 @@ export default defineComponent({
         // The check on strict equality as primitive values is needed,
         // since we do not want to trigger a rerender on event-was-resized
         if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
-          this.eventsDataProperty = newVal;
+          this.eventsDataProperty = this.processEvents(newVal);
           this.eventRenderingKey = this.eventRenderingKey + 1;
         }
 
@@ -305,12 +306,129 @@ export default defineComponent({
 
     setTimePointsFromDayBoundary(boundary: number) {
       // Only allow integers between 0 and 24
-      if (boundary < 0 || boundary > 24 || boundary % 1 !== 0) throw new Error('Invalid day boundary');
+      if (boundary < 0 || boundary > 24 || boundary % 1 !== 0)
+        throw new Error('Invalid day boundary');
 
       if (boundary === 0) return boundary;
 
       return boundary * 100;
-    }
+    },
+
+    processEvents(events: eventInterface[]) {
+      return events.reduce((processedEvents: eventInterface[], event) => {
+        const allEvents = processedEvents;
+
+        // For all single day events { start: '2022-01-01 00:00', end: '2022-01-01 01:00' },
+        // or non-timed full day events { start: '2022-01-01', end: '2022-01-04' },
+        // just push them to the array
+        if (
+          event.time.start.substring(0, 10) ===
+            event.time.end.substring(0, 10) ||
+          DATE_TIME_STRING_FULL_DAY_PATTERN.test(event.time.start)
+        ) {
+          allEvents.push(event);
+        }
+
+        // For all multiple-day events, that are also timed { start: '2022-01-01 10:00', end: '2022-01-04 01:00' }
+        // do the following:
+        else {
+          // 1. Create the first day event as a normal timed event
+          const {
+            year: firstDayYear,
+            month: firstDayMonth,
+            date: firstDayDate,
+          } = this.time.getAllVariablesFromDateTimeString(event.time.start);
+
+          allEvents.push({
+            ...event,
+            time: {
+              start: event.time.start,
+              end: this.time.getDateTimeStringFromDate(
+                new Date(
+                  firstDayYear,
+                  firstDayMonth,
+                  firstDayDate,
+                  23,
+                  59,
+                  59,
+                  999
+                )
+              ),
+            },
+            originalEvent: event,
+            isEditable: false, // Multiple-day events cannot be dragged or resized
+          });
+
+          // 2. Create a multiple-day full-day event, that stretches from day 2 until day (end - 1)
+          const day2Start = this.time.addDaysToDateTimeString(
+            1,
+            event.time.start.substring(0, 10)
+          );
+          const endDateMinus1Day = this.time.addDaysToDateTimeString(
+            -1,
+            event.time.end.substring(0, 10)
+          );
+
+          if (endDateMinus1Day >= day2Start) {
+            const {
+              year: startYear,
+              month: startMonth,
+              date: startDate,
+            } = this.time.getAllVariablesFromDateTimeString(day2Start);
+
+            const {
+              year: endYear,
+              month: endMonth,
+              date: endDate,
+            } = this.time.getAllVariablesFromDateTimeString(endDateMinus1Day);
+
+            allEvents.push({
+              ...event,
+              time: {
+                start: this.time.getDateStringFromDate(
+                  new Date(startYear, startMonth, startDate)
+                ),
+                end: this.time.getDateStringFromDate(
+                  new Date(endYear, endMonth, endDate)
+                ),
+              },
+              originalEvent: event,
+            });
+          }
+
+          // 3. Add the last day of the multiple day event
+          const {
+            year: lastDayYear,
+            month: lastDayMonth,
+            date: lastDayDate,
+            hour: lastDayHour,
+            minutes: lastDayMinute,
+          } = this.time.getAllVariablesFromDateTimeString(event.time.end);
+
+          allEvents.push({
+            ...event,
+            time: {
+              start: this.time.getDateTimeStringFromDate(
+                new Date(lastDayYear, lastDayMonth, lastDayDate, 0, 0, 0)
+              ),
+              end: this.time.getDateTimeStringFromDate(
+                new Date(
+                  lastDayYear,
+                  lastDayMonth,
+                  lastDayDate,
+                  lastDayHour,
+                  lastDayMinute
+                )
+              ),
+            },
+            originalEvent: event,
+            // Multiple-day events cannot be dragged or resized
+          });
+        }
+
+        return allEvents;
+      }, []);
+    },
   },
 });
 </script>

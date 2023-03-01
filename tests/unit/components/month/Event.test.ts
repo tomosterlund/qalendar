@@ -3,6 +3,7 @@ import { describe, test, expect } from "vitest";
 import Event from "../../../../src/components/month/Event.vue";
 import Time from "../../../../src/helpers/Time";
 import {dayInterface} from '../../../../src/typings/interfaces/day.interface';
+import unidecode from 'unidecode';
 
 describe("Event.vue", () => {
   let wrapper = mount(Event, {
@@ -25,7 +26,9 @@ describe("Event.vue", () => {
 
   test("Displaying the time", () => {
     const time = wrapper.find(".calendar-month__event-time");
-    expect(time.text()).toBe("12:00 AM");
+    expect(
+      unidecode(time.text())
+    ).toBe("12:00 AM");
   });
 
   test('Emitting event "event-was-clicked"', async () => {

@@ -17,10 +17,11 @@ export interface eventInterface {
   disableResize?: modeType[]; // Disable Resize for this event, in the modes specified
   isCustom?: boolean | modeType[]; // If true, the event expects to be displayed using the event slot. It can also be specified as an array, of all modes, where the event should be displayed using the event slot.
 
-  // These are properties that should never be fed into the editor
+  // These are properties that should never be fed into the Calendar
   // Instead, they are assigned to events, in order to for example position/style them correctly
   zIndex?: number;
   nOfPreviousConcurrentEvents?: number;
   totalConcurrentEvents?: number;
   timeJS?: { start: Date, end: Date }
+  originalEvent?: Omit<eventInterface, 'originalEvent'>;
 }

@@ -22,13 +22,29 @@
         @interval-was-clicked="handleIntervalWasClicked"
       >
         <template #customCurrentTime>
-          <div :style="{ height: '3px', backgroundColor: 'cornflowerblue', position: 'relative' }">
-            <div :style="{ position: 'absolute', left: '-7px', top: '-6px', height: '15px', width: '15px', backgroundColor: 'cornflowerblue', borderRadius: '50%' }"></div>
+          <div
+            :style="{
+              height: '3px',
+              backgroundColor: 'cornflowerblue',
+              position: 'relative',
+            }"
+          >
+            <div
+              :style="{
+                position: 'absolute',
+                left: '-7px',
+                top: '-6px',
+                height: '15px',
+                width: '15px',
+                backgroundColor: 'cornflowerblue',
+                borderRadius: '50%',
+              }"
+            ></div>
           </div>
         </template>
         <template v-slot:weekDayEvent="eventProps" #weekDayEvent>
           <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
-            {{ eventProps.eventData.title }}
+                    {{ eventProps.eventData.title }}
 
             <div>
               <input type="checkbox" />
@@ -48,20 +64,22 @@
           </div>
         </template>
 
-<!--        <template v-slot:eventDialog="props" #eventDialog>-->
-<!--          <div-->
-<!--            v-if="props.eventDialogData && props.eventDialogData.title"-->
-<!--            :style="{ padding: '16px' }"-->
-<!--          >-->
-<!--            <div :style="{marginBottom: '8px'}">Edit event</div>-->
+        <template #eventDialog="props">
+          <div
+            v-if="props.eventDialogData && props.eventDialogData.title"
+            :style="{ padding: '16px' }"
+          >
+            <div :style="{ marginBottom: '8px' }">Edit event</div>
 
-<!--            <input type="text" v-model="eventDialogForm.title" :style="{ width: '90%', padding: '8px', marginBottom: '8px' }" >-->
+            <input
+              v-model="eventDialogForm.title"
+              type="text"
+              :style="{ width: '90%', padding: '8px', marginBottom: '8px' }"
+            />
 
-<!--            <button @click="props.closeEventDialog">-->
-<!--              Finished!-->
-<!--            </button>-->
-<!--          </div>-->
-<!--        </template>-->
+            <button @click="props.closeEventDialog">Finished!</button>
+          </div>
+        </template>
       </Qalendar>
     </main>
 
@@ -98,7 +116,7 @@ export default defineComponent({
       config: {
         week: {
           startsOn: 'monday',
-          // nDays: 5,
+          // nDays: 7,
           scrollToHour: 8,
         },
         locale: 'de-DE',
@@ -115,29 +133,18 @@ export default defineComponent({
             },
           },
         },
-        // dayBoundaries: {
-        //   start: 7,
-        //   end: 17,
-        // },
         defaultMode: 'month',
         showCurrentTime: true,
-        // disableModes: ['month'],
         isSilent: true,
         // disableCustomEvents: ['month', 'week'],
         dayIntervals: {
           height: 50,
           length: 30,
-          // displayClickableInterval: true,
-          // intervalStyles: {
-          //   color: '#fff',
-          //   backgroundColor: 'rgba(10, 10, 10, 0.9)',
-          //   borderBottom: '1px dotted #fff',
-          // },
         },
-        // eventDialog: {
-        //   isDisabled: false,
-        //   isCustom: true,
-        // }
+        eventDialog: {
+          isDisabled: false,
+          // isCustom: true,
+        },
       } as configInterface,
       events: [] as eventInterface[],
 
@@ -146,7 +153,7 @@ export default defineComponent({
       eventDialogForm: {
         title: '',
         id: '',
-      }
+      },
     };
   },
 
@@ -158,9 +165,9 @@ export default defineComponent({
         e.isCustom = ['month', 'week'];
         e.isEditable = false;
 
-        return e
+        return e;
       });
-    }, 200)
+    }, 200);
   },
 
   methods: {
@@ -169,8 +176,8 @@ export default defineComponent({
     },
 
     updatedPeriod(e) {
-      console.log('updated period')
-      console.log(e)
+      console.log('updated period');
+      console.log(e);
     },
 
     triggerLoadAnimations() {
@@ -188,14 +195,14 @@ export default defineComponent({
     },
 
     handleEventWasDragged(e) {
-      console.log('event was dragged')
-      console.log(e)
+      console.log('event was dragged');
+      console.log(e);
     },
 
     handleIntervalWasClicked(e) {
-      console.log('interval was clicked')
-      console.log(e)
-    }
+      console.log('interval was clicked');
+      console.log(e);
+    },
   },
 });
 </script>

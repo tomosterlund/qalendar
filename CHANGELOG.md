@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.1](https://github.com/tomosterlund/qalendar/compare/v1.18.0...v1.18.1) (2023-02-28)
+
+
+### Bug Fixes
+
+* correct docs for drag & drop ([#120](https://github.com/tomosterlund/qalendar/issues/120)) ([14ca1c0](https://github.com/tomosterlund/qalendar/commit/14ca1c0d8cc280cd0363ae5d15703e02bcc867a7))
+
+# [1.18.0](https://github.com/tomosterlund/qalendar/compare/v1.17.0...v1.18.0) (2023-02-28)
+
+
+### Features
+
+* drag and drop mobile ([#119](https://github.com/tomosterlund/qalendar/issues/119)) ([176300e](https://github.com/tomosterlund/qalendar/commit/176300ece91afd35970a2c3133b6059a8cd9422b))
+
+# [1.17.0](https://github.com/tomosterlund/qalendar/compare/v1.16.0...v1.17.0) (2023-01-31)
+
+
+### Features
+
+* add dutch/nl lang ([#113](https://github.com/tomosterlund/qalendar/issues/113)) ([3e570b1](https://github.com/tomosterlund/qalendar/commit/3e570b125f50ea4c732f09f0bcedfbdb87ad1bc7))
+
+# [1.16.0](https://github.com/tomosterlund/qalendar/compare/v1.15.0...v1.16.0) (2023-01-25)
+
+
+### Features
+
+* multiple-day timed events ([#112](https://github.com/tomosterlund/qalendar/issues/112)) ([68ca5d6](https://github.com/tomosterlund/qalendar/commit/68ca5d672815c5a5fd300206b09b9c85b17d0dcd))
+
+# [1.15.0](https://github.com/tomosterlund/qalendar/compare/v1.14.1...v1.15.0) (2023-01-25)
+
+
+### Features
+
+* add thai lang ([#111](https://github.com/tomosterlund/qalendar/issues/111)) ([1b5c72b](https://github.com/tomosterlund/qalendar/commit/1b5c72b30ec880cda8945eedd077abf32281b97e))
+
 ## [1.14.1](https://github.com/tomosterlund/qalendar/compare/v1.14.0...v1.14.1) (2022-12-04)
 
 

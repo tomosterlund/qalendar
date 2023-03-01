@@ -4,6 +4,7 @@ import { describe, expect, test } from "vitest";
 import Time from "../../../../src/helpers/Time";
 import { nextTick } from "vue";
 import {mountComponent} from "../../../vitest-setup";
+import unidecode from 'unidecode';
 const dayEvent = mountComponent(mount, DayEvent)
 
 describe("DayEvent.vue", () => {
@@ -33,7 +34,9 @@ describe("DayEvent.vue", () => {
     expect(titleElement.text()).toBe("Biology lab");
 
     const timeElement = wrapper.find(".is-time");
-    expect(timeElement.text()).toBe("9:00 AM - 10:00 AM");
+    expect(
+      unidecode(timeElement.text())
+    ).toBe("9:00 AM - 10:00 AM");
 
     const descriptionElement = wrapper.find(".is-description");
     expect(descriptionElement.text()).toBe("Read textbook p. 70-72");

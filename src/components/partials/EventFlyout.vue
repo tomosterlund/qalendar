@@ -164,7 +164,39 @@ export default defineComponent({
       // 1. Null handling
       if (!this.calendarEvent || !this.calendarEvent.time) return null;
 
-      // 2. Handle full day events
+      // 2. Handle multiple day events
+      // Important: This must always be evaluated before checking if the event is a full day event
+      // Because day 2 until (last day - 1) of a multiple day event, will technically be a full day event,
+      // but we still want to display the original start and end time
+      if (this.calendarEvent.originalEvent) {
+        const {
+          year: startYear,
+          month: startMonth,
+          date: startDate,
+          hour: startHour,
+          minutes: startMinutes,
+        } = this.time.getAllVariablesFromDateTimeString(this.calendarEvent.originalEvent.time.start)
+
+        const startLocalizedString = this.getDateFromDateString(
+          this.calendarEvent.originalEvent.time.start
+        ) + ' ' + this.time.getLocalizedTime(this.calendarEvent.originalEvent.time.start)
+
+        const {
+          year: endYear,
+          month: endMonth,
+          date: endDate,
+          hour: endHour,
+          minutes: endMinutes,
+        } = this.time.getAllVariablesFromDateTimeString(this.calendarEvent.originalEvent.time.end)
+
+        const endLocalizedString = this.getDateFromDateString(
+          this.calendarEvent.originalEvent.time.end
+        ) + ' ' + this.time.getLocalizedTime(this.calendarEvent.originalEvent.time.end)
+
+        return `${startLocalizedString} - ${endLocalizedString}`;
+      }
+
+      // 3. Handle full day events
       if (
         DATE_TIME_STRING_FULL_DAY_PATTERN.test(this.calendarEvent.time.start)
       ) {
@@ -177,7 +209,7 @@ export default defineComponent({
         return `${startDate} - ${endDate}`;
       }
 
-      // 3. Handle timed events
+      // 4. Handle timed events
       const dateString = this.getDateFromDateString(
         this.calendarEvent.time.start
       );

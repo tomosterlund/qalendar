@@ -13,6 +13,7 @@ import CustomizedEvents from './cypress/CustomizedEvents.vue'
 import CustomizedDayBoundaries from './cypress/CustomizedDayBoundaries.vue'
 import EmittedEvents from './cypress/EmittedEvents.vue'
 import SmallQalendar from './cypress/SmallQalendar.vue'
+import MultipleDayEvents from './cypress/MultipleDayEvents.vue'
 
 const routes = [
   { path: "/", component: QalendarView },
@@ -29,6 +30,7 @@ const routes = [
   { path: "/cypress/customized-day-boundaries", component: CustomizedDayBoundaries },
   { path: "/cypress/emitted-events", component: EmittedEvents },
   { path: "/cypress/small-qalendar", component: SmallQalendar },
+  { path: "/cypress/multiple-day-events", component: MultipleDayEvents },
 ];
 
 const router = createRouter({
