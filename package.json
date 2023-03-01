@@ -99,7 +99,7 @@
     "unidecode": "^0.1.8",
     "vite": "2.9.14",
     "vitepress": "0.22.4",
-    "vitest": "0.29.1",
+    "vitest": "0.29.2",
     "vue": "^3.0.0",
     "vue-router": "4.1.6",
     "vue-tsc": "0.40.13"
