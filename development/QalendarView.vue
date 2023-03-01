@@ -42,44 +42,44 @@
             ></div>
           </div>
         </template>
-        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>
-          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
-                    {{ eventProps.eventData.title }}
+<!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
+<!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
+<!--                    {{ eventProps.eventData.title }}-->
 
-            <div>
-              <input type="checkbox" />
+<!--            <div>-->
+<!--              <input type="checkbox" />-->
 
-              <label for="checkbox">
-                Select time slot
-              </label>
-            </div>
-          </div>
-        </template>
+<!--              <label for="checkbox">-->
+<!--                Select time slot-->
+<!--              </label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </template>-->
 
-        <template #monthEvent="monthEventProps">
-          <div style="border: 1px dashed blue">
-            <input style="display: inline" type="checkbox" />
+<!--        <template #monthEvent="monthEventProps">-->
+<!--          <div style="border: 1px dashed blue">-->
+<!--            <input style="display: inline" type="checkbox" />-->
 
-            {{ monthEventProps.eventData.title }}
-          </div>
-        </template>
+<!--            {{ monthEventProps.eventData.title }}-->
+<!--          </div>-->
+<!--        </template>-->
 
-        <template #eventDialog="props">
-          <div
-            v-if="props.eventDialogData && props.eventDialogData.title"
-            :style="{ padding: '16px' }"
-          >
-            <div :style="{ marginBottom: '8px' }">Edit event</div>
+<!--        <template #eventDialog="props">-->
+<!--          <div-->
+<!--            v-if="props.eventDialogData && props.eventDialogData.title"-->
+<!--            :style="{ padding: '16px' }"-->
+<!--          >-->
+<!--            <div :style="{ marginBottom: '8px' }">Edit event</div>-->
 
-            <input
-              v-model="eventDialogForm.title"
-              type="text"
-              :style="{ width: '90%', padding: '8px', marginBottom: '8px' }"
-            />
+<!--            <input-->
+<!--              v-model="eventDialogForm.title"-->
+<!--              type="text"-->
+<!--              :style="{ width: '90%', padding: '8px', marginBottom: '8px' }"-->
+<!--            />-->
 
-            <button @click="props.closeEventDialog">Finished!</button>
-          </div>
-        </template>
+<!--            <button @click="props.closeEventDialog">Finished!</button>-->
+<!--          </div>-->
+<!--        </template>-->
       </Qalendar>
     </main>
 
@@ -162,8 +162,8 @@ export default defineComponent({
     setTimeout(() => {
       this.events = seededEvents.map((e, i) => {
         //@ts-ignore
-        e.isCustom = ['month', 'week'];
-        e.isEditable = false;
+        // e.isCustom = ['month', 'week'];
+        e.isEditable = true;
 
         return e;
       });
@@ -176,8 +176,8 @@ export default defineComponent({
     },
 
     updatedPeriod(e) {
-      console.log('updated period');
-      console.log(e);
+      // console.log('updated period');
+      // console.log(e);
     },
 
     triggerLoadAnimations() {

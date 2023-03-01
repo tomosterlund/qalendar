@@ -631,9 +631,10 @@ export default defineComponent({
     },
 
     handleDrag(mouseEvent: MouseEvent | TouchEvent) {
-      this.$emit('drag-start');
       // Do not run the drag & drop algorithms, when element is being resized
       if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
+
+      this.$emit('drag-start');
 
       if (mouseEvent instanceof TouchEvent) {
         this.handleVerticalDrag(mouseEvent.touches[0].clientY);

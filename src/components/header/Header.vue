@@ -168,8 +168,7 @@ export default defineComponent({
     },
 
     goToPeriod(event: MouseEvent, direction: 'previous' | 'next') {
-      // @ts-ignore
-      this.$refs.periodSelect.goToPeriod(direction);
+      (this.$refs.periodSelect as typeof DatePicker).goToPeriod(direction);
     },
   },
 
