@@ -1,5 +1,18 @@
 <template>
   <div
+    v-if="isCustomEvent"
+    :id="elementId"
+    class="is-event"
+    :class="{ 'is-draggable': elementDraggableAttribute }"
+    :draggable="elementDraggableAttribute"
+    @dragstart="handleDragStart"
+    @click="handleClickOnEvent"
+  >
+    <slot name="monthEvent" :event-data="calendarEvent"></slot>
+  </div>
+
+  <div
+    v-else
     :id="elementId"
     class="calendar-month__event is-event"
     :class="{ 'is-draggable': elementDraggableAttribute }"
@@ -60,6 +73,14 @@ export default defineComponent({
   },
 
   computed: {
+    isCustomEvent(): boolean {
+      if (Array.isArray(this.calendarEvent.isCustom)) {
+        return this.calendarEvent.isCustom.includes('month');
+      }
+
+      return this.calendarEvent.isCustom || false;
+    },
+
     eventTimeStart() {
       return DATE_TIME_STRING_PATTERN.test(this.calendarEvent.time.start)
         ? this.time.getLocalizedTime(this.calendarEvent.time.start)

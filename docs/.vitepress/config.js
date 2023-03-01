@@ -5,9 +5,9 @@ export default {
   themeConfig: {
     nav: [
       { text: "Home", link: "/" },
+      { text: "v1 to v2", link: "/migration" },
       { text: "Roadmap", link: "https://github.com/tomosterlund/qalendar/projects/1" },
       { text: "Github", link: "https://github.com/tomosterlund/qalendar" },
-      { text: "npm", link: "https://www.npmjs.com/package/qalendar" },
     ],
   },
 };

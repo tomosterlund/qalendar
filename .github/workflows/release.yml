@@ -20,6 +20,8 @@ jobs:
           node-version: 'lts/*'
       - name: Install dependencies 🛠️
         run: npm ci --ignore-scripts
+      - name: Build 📦
+        run: npm run build
       - name: Release 🚀
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

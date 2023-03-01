@@ -15,7 +15,7 @@ export interface eventInterface {
   isEditable?: boolean; // If true, the event has delete- and edit icons in Event-Flyout. Can also be dragged and dropped.
   disableDnD?: modeType[]; // Disable Drag and Drop for this event, in the modes specified
   disableResize?: modeType[]; // Disable Resize for this event, in the modes specified
-  isCustom?: boolean; // If true, the event expects to be displayed using the event slot
+  isCustom?: boolean | modeType[]; // If true, the event expects to be displayed using the event slot. It can also be specified as an array, of all modes, where the event should be displayed using the event slot.
 
   // These are properties that should never be fed into the Calendar
   // Instead, they are assigned to events, in order to for example position/style them correctly

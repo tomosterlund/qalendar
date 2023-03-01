@@ -62,8 +62,8 @@
           @day-was-clicked="$emit('day-was-clicked', $event)"
           @drag-start="destroyScrollbarAndHideOverflow"
         >
-          <template #event="p">
-            <slot :event-data="p.eventData" name="event"></slot>
+          <template #weekDayEvent="p">
+            <slot :event-data="p.eventData" name="weekDayEvent"></slot>
           </template>
         </Day>
       </div>
@@ -94,6 +94,7 @@ import { fullDayEventsWeek } from '../../typings/interfaces/full-day-events-week
 import { modeType } from '../../typings/types';
 const eventPosition = new EventPosition();
 import PerfectScrollbar from 'perfect-scrollbar';
+import Helpers from '../../helpers/Helpers';
 
 export default defineComponent({
   name: 'Week',
@@ -161,26 +162,8 @@ export default defineComponent({
   },
 
   computed: {
-    /**
-     * Solution from https://github.com/vuejs/core/issues/4733#issuecomment-1024816095
-     * */
     hasCustomCurrentTimeSlot() {
-      const hasSlotContent = (slot: Slot|undefined) => {
-        if (!slot) return false;
-
-        return slot().some((vnode: VNode) => {
-          if (vnode.type === Comment) return false;
-
-          if (Array.isArray(vnode.children) && !vnode.children.length) return false;
-
-          return (
-            vnode.type !== Text
-            || (typeof vnode.children === 'string' && vnode.children.trim() !== '')
-          );
-        });
-      }
-
-      return hasSlotContent(this.$slots.customCurrentTime);
+      return Helpers.hasSlotContent(this.$slots.customCurrentTime)
     },
 
     nDays() {

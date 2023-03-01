@@ -377,33 +377,23 @@ export default defineComponent({
           this.datePickerCurrentDate
         );
         newDate = new Date(week[0]);
-        newDatePayload =
-          direction === 'next' ? newDate.getDate() + 7 : newDate.getDate() - 7;
+        newDatePayload = direction === 'next' ? newDate.getDate() + 7 : newDate.getDate() - 7;
+        newDate.setDate(newDatePayload);
       } else if (this.mode === 'month') {
         newDate = new Date(this.datePickerCurrentDate);
-        const nDaysNextMonth = new Date(
-          this.datePickerCurrentDate.getFullYear(),
-          this.datePickerCurrentDate.getMonth() + 2,
-          0
-        ).getDate();
-        const nDaysPreviousMonth = new Date(
-          this.datePickerCurrentDate.getFullYear(),
-          this.datePickerCurrentDate.getMonth(),
-          0
-        ).getDate();
-
-        newDatePayload =
+        newDate.setMonth(
           direction === 'next'
-            ? newDate.getDate() + nDaysNextMonth
-            : newDate.getDate() - nDaysPreviousMonth;
+            ? newDate.getMonth() + 1
+            : newDate.getMonth() - 1
+        );
+        newDate.setDate(1);
       } else {
         // day
         newDate = new Date(this.datePickerCurrentDate);
-        newDatePayload =
-          direction === 'next' ? newDate.getDate() + 1 : newDate.getDate() - 1;
+        newDatePayload = direction === 'next' ? newDate.getDate() + 1 : newDate.getDate() - 1;
+        newDate.setDate(newDatePayload);
       }
 
-      newDate.setDate(newDatePayload);
       this.setWeek(newDate);
     },
 

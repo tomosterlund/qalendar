@@ -17,8 +17,8 @@
       @event-was-resized="handleEventWasResized"
       @drag-start="$emit('drag-start')"
     >
-      <template #event="p">
-        <slot :event-data="p.eventData" name="event"></slot>
+      <template #weekDayEvent="p">
+        <slot :event-data="p.eventData" name="weekDayEvent"></slot>
       </template>
     </DayEvent>
 
