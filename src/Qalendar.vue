@@ -10,7 +10,10 @@
       }"
     >
       <Transition name="loading">
-        <div v-if="isLoading" class="top-bar-loader" />
+        <div
+          v-if="isLoading"
+          class="top-bar-loader"
+        />
       </Transition>
 
       <AppHeader
@@ -41,7 +44,10 @@
         @day-was-clicked="$emit('day-was-clicked', $event)"
       >
         <template #event="p">
-          <slot :event-data="p.eventData" name="event"></slot>
+          <slot
+            :event-data="p.eventData"
+            name="event"
+          />
         </template>
 
         <template #eventDialog="p">
@@ -49,11 +55,11 @@
             name="eventDialog"
             :event-dialog-data="p.eventDialogData"
             :close-event-dialog="p.closeEventDialog"
-          ></slot>
+          />
         </template>
 
         <template #customCurrentTime>
-          <slot name="customCurrentTime"></slot>
+          <slot name="customCurrentTime" />
         </template>
       </Week>
 
@@ -76,7 +82,7 @@
             name="eventDialog"
             :event-dialog-data="p.eventDialogData"
             :close-event-dialog="p.closeEventDialog"
-          ></slot>
+          />
         </template>
       </Month>
     </div>
