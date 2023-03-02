@@ -70,4 +70,10 @@ export interface configInterface {
     end: number; // integer between 0 and 24
   }
   showCurrentTime?: boolean;
+
+  //specific settings for month view
+  month:{
+    //Hide the days of the next month and previous month in calendar to enhance the appearance
+    showTrailingAndLeadingDates?:boolean
+  }
 }

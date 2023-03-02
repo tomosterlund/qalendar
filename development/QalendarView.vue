@@ -1,5 +1,8 @@
 <template>
-  <div class="app-container" :class="'layout-has-' + layout">
+  <div
+    class="app-container"
+    :class="'layout-has-' + layout"
+  >
     <DevSidebar v-if="layout === 'sidebar'" />
 
     <DevHeader v-if="layout === 'header'" />
@@ -39,7 +42,7 @@
                 backgroundColor: 'cornflowerblue',
                 borderRadius: '50%',
               }"
-            ></div>
+            />
           </div>
         </template>
         <!--        <template v-slot:event="eventProps" #event>-->
@@ -61,15 +64,19 @@
             v-if="props.eventDialogData && props.eventDialogData.title"
             :style="{ padding: '16px' }"
           >
-            <div :style="{ marginBottom: '8px' }">Edit event</div>
+            <div :style="{ marginBottom: '8px' }">
+              Edit event
+            </div>
 
             <input
               v-model="eventDialogForm.title"
               type="text"
               :style="{ width: '90%', padding: '8px', marginBottom: '8px' }"
-            />
+            >
 
-            <button @click="props.closeEventDialog">Finished!</button>
+            <button @click="props.closeEventDialog">
+              Finished!
+            </button>
           </div>
         </template>
       </Qalendar>

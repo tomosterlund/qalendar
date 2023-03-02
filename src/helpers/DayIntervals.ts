@@ -11,12 +11,12 @@ export type interval = {
 export default class DayIntervals extends Time {
   private readonly INTERVAL_MINUTES: 15 | 30 | 60
   private readonly DAY_START_DATE_TIME_STRING: string
-  HOURS_PER_DAY: number = 24
+  HOURS_PER_DAY = 24
 
   constructor(
     intervalMinutes: 15 | 30 | 60,
     dayStartDateTimeString: string,
-    hoursPerDay: number = 24,
+    hoursPerDay = 24,
   ) {
     super()
     this.INTERVAL_MINUTES = intervalMinutes

@@ -12,7 +12,7 @@ export default class Time {
   ALL_HOURS: dayStartOrEnd[];
   DAY_START: number;
   DAY_END: number;
-  HOURS_PER_DAY: number = 24;
+  HOURS_PER_DAY = 24;
   MS_PER_DAY: number
 
   constructor(
@@ -96,7 +96,7 @@ export default class Time {
       : new Date();
 
     // 1. Get the first date of the month, and push the full week of this date into the month list
-    let firstDateOfMonth = new Date(
+    const firstDateOfMonth = new Date(
       selectedDate.getFullYear(),
       selectedDate.getMonth(),
       1
@@ -389,5 +389,10 @@ export default class Time {
     dateTimeString = dateTimeString.replace(/\d{2}:/, segments.hour + ":")
 
     return dateTimeString
+  }
+
+  isTrailingOrLeadingDate(date:Date, month:number){
+    const { month:dateMonth } = new EDate(date);
+    return month!==dateMonth
   }
 }

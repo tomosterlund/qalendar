@@ -1,8 +1,12 @@
 <template>
   <div
+    v-if="!hideLeadingAndTrailingDate"
     :id="'day-' + day.dateTimeString.substring(0, 10)"
     class="calendar-month__weekday"
-    :class="{ 'is-droppable': canBeDropped }"
+    :class="{ 
+      'is-droppable': canBeDropped, 
+      'trailing-or-leading':day.isTrailingOrLeadingDate 
+    }"
     @click.self="emitDayWasClicked"
     @dragleave="handleDragLeave"
     @dragover="handleDragOver"
@@ -17,7 +21,10 @@
       {{ day.dayName }}
     </span>
 
-    <span class="calendar-month__day-date" @click="emitDayWasClicked">
+    <span
+      class="calendar-month__day-date"
+      @click="emitDayWasClicked"
+    >
       {{ day.dateTimeString.substring(8, 10) }}
     </span>
 
@@ -80,6 +87,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+   
   },
 
   emits: [
@@ -99,6 +107,9 @@ export default defineComponent({
     canBeDropped() {
       return this.isActiveDroppable;
     },
+    hideLeadingAndTrailingDate(){
+      return this.day.isTrailingOrLeadingDate===true && this.config.month.showTrailingAndLeadingDates===false
+    }
   },
 
   methods: {
