@@ -1,65 +1,66 @@
 <template>
   <div
+    v-if="!hideLeadingAndTrailingDate"
     :id="'day-' + day.dateTimeString.substring(0, 10)"
     class="calendar-month__weekday"
-    :class="{
-      'is-droppable': canBeDropped,
-      'trailing-or-leading': day.isTrailingOrLeadingDate
-    }"
+    :class="{ 'is-droppable': canBeDropped }"
     @click.self="emitDayWasClicked"
     @dragleave="handleDragLeave"
     @dragover="handleDragOver"
     @drop="handleDrop"
     @dragend="handleDragEnd"
   >
-    <template v-if="!hideLeadingAndTrailingDate">
-      <span
-        v-if="isFirstWeek"
-        class="calendar-month__day-name"
-        @click="emitDayWasClicked"
-      >
-        {{ day.dayName }}
-      </span>
+    <span
+      v-if="isFirstWeek"
+      class="calendar-month__day-name"
+      @click="emitDayWasClicked"
+    >
+      {{ day.dayName }}
+    </span>
 
-      <span
-        class="calendar-month__day-date"
-        @click="emitDayWasClicked"
-      >
-        {{ day.dateTimeString.substring(8, 10) }}
-      </span>
+    <span
+      class="calendar-month__day-date"
+      @click="emitDayWasClicked"
+    >
+      {{ day.dateTimeString.substring(8, 10) }}
+    </span>
 
-      <div
-        v-for="(calendarEvent, index) in day.events"
-        :key="index"
-        class="calendar-month__event-wrapper"
+    <div
+      v-for="(calendarEvent, index) in day.events"
+      :key="index"
+      class="calendar-month__event-wrapper"
+    >
+      <Event
+        v-if="index < 3"
+        :key="calendarEvent.id"
+        :calendar-event="calendarEvent"
+        :config="config"
+        :time="time"
+        :day="day"
+        @event-was-clicked="$emit('event-was-clicked', $event)"
       >
-        <Event
-          v-if="index < 3"
-          :key="calendarEvent.id"
-          :calendar-event="calendarEvent"
-          :config="config"
-          :time="time"
-          :day="day"
-          @event-was-clicked="$emit('event-was-clicked', $event)"
-        >
-          <template #monthEvent="p">
-            <slot
-              :event-data="p.eventData"
-              name="monthEvent"
-            />
-          </template>
-        </Event>
-      </div>
+        <template #monthEvent="p">
+          <slot
+            :event-data="p.eventData"
+            name="monthEvent"
+          />
+        </template>
+      </Event>
+    </div>
 
-      <div
-        v-if="day.events.length >= 4"
-        class="calendar-month__weekday-more"
-        @click="getMoreEvents"
-      >
-        {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
-      </div>
-    </template>
+    <div
+      v-if="day.events.length >= 4"
+      class="calendar-month__weekday-more"
+      @click="getMoreEvents"
+    >
+      {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
+    </div>
   </div>
+
+  <div
+    v-else
+    class="calendar-month__weekday trailing-or-leading"
+  />
 </template>
 
 <script lang="ts">
