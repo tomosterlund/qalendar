@@ -80,7 +80,10 @@
           </div>
         </template>
         <template #dayCell="{dayData}">
-          {{ dayData.events.length }} 
+          <div>
+            <div> {{ dayData.dateTimeString.substring(8, 10) }}</div>
+            <div> {{ dayData.events.length }} events</div>
+          </div>
         </template>
       </Qalendar>
     </main>
