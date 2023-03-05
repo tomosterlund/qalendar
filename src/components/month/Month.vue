@@ -24,6 +24,12 @@
               name="monthEvent"
             />
           </template>
+          <template #dayCell="{dayData}">
+            <slot
+              :day-data="dayData"
+              name="dayCell"
+            />
+          </template>
         </Day>
       </div>
     </div>
@@ -117,6 +123,7 @@ export default defineComponent({
   mounted() {
     this.initMonth();
     this.initScrollbar();
+    console.log(this.$slots);
   },
 
   methods: {

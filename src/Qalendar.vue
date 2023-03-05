@@ -86,7 +86,16 @@
         </template>
 
         <template #monthEvent="p">
-          <slot :event-data="p.eventData" name="monthEvent"></slot>
+          <slot
+            :event-data="p.eventData"
+            name="monthEvent"
+          />
+        </template>
+        <template #dayCell="{dayData}">
+          <slot
+            :day-data="dayData"
+            name="dayCell"
+          />
         </template>
       </Month>
     </div>
@@ -203,6 +212,7 @@ export default defineComponent({
     this.onCalendarResize(); // Trigger once on mount, in order to set the correct mode, if viewing on a small screen
     this.setPeriodOnMount();
     window.addEventListener('resize', this.onCalendarResize);
+    
   },
 
   beforeUnmount() {
