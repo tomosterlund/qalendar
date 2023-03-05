@@ -4,9 +4,6 @@
 
 For bug reports or feature requests, choose one of the templates provided at: https://github.com/tomosterlund/qalendar/issues/new/choose
 
-Before opening a feature request, please first check that you don't propose a feature that is already planned:
-https://tomosterlund.github.io/qalendar/planned-features.html
-
 ## Developing
 
 ### Getting up and running

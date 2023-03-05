@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!eventProp.isCustom"
+    v-if="!isCustomEvent"
     class="calendar-week__event is-event"
     :class="{
       'is-editable': isEditable,
@@ -119,7 +119,7 @@
     @touchstart="initDrag"
   >
     <slot
-      name="event"
+      name="weekDayEvent"
       :event-data="event"
     />
   </div>
@@ -223,6 +223,14 @@ export default defineComponent({
   },
 
   computed: {
+    isCustomEvent(): boolean {
+      if (Array.isArray(this.eventProp.isCustom)) {
+        return this.eventProp.isCustom.includes(this.mode);
+      }
+
+      return this.eventProp.isCustom || false;
+    },
+
     getEventTime() {
       return (
         this.time.getLocalizedTime(this.event.time.start) +
@@ -623,9 +631,10 @@ export default defineComponent({
     },
 
     handleDrag(mouseEvent: MouseEvent | TouchEvent) {
-      this.$emit('drag-start');
       // Do not run the drag & drop algorithms, when element is being resized
       if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
+
+      this.$emit('drag-start');
 
       if (mouseEvent instanceof TouchEvent) {
         this.handleVerticalDrag(mouseEvent.touches[0].clientY);

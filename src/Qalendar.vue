@@ -43,10 +43,10 @@
         @interval-was-clicked="$emit('interval-was-clicked', $event)"
         @day-was-clicked="$emit('day-was-clicked', $event)"
       >
-        <template #event="p">
+        <template #weekDayEvent="p">
           <slot
             :event-data="p.eventData"
-            name="event"
+            name="weekDayEvent"
           />
         </template>
 
@@ -83,6 +83,10 @@
             :event-dialog-data="p.eventDialogData"
             :close-event-dialog="p.closeEventDialog"
           />
+        </template>
+
+        <template #monthEvent="p">
+          <slot :event-data="p.eventData" name="monthEvent"></slot>
         </template>
       </Month>
     </div>

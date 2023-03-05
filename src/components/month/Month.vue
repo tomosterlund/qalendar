@@ -17,7 +17,11 @@
           @event-was-dragged="handleEventWasDragged"
           @day-was-clicked="$emit('day-was-clicked', $event)"
           @updated-period="$emit('updated-period', $event)"
-        />
+        >
+          <template #monthEvent="p">
+            <slot :event-data="p.eventData" name="monthEvent"></slot>
+          </template>
+        </Day>
       </div>
     </div>
 

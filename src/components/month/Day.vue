@@ -41,7 +41,11 @@
         :time="time"
         :day="day"
         @event-was-clicked="$emit('event-was-clicked', $event)"
-      />
+      >
+        <template #monthEvent="p">
+          <slot :event-data="p.eventData" name="monthEvent"></slot>
+        </template>
+      </Event>
     </div>
 
     <div
