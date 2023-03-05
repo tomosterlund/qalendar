@@ -24,18 +24,17 @@ describe("Month.vue", () => {
   test("given a month, display the correct number of weeks and days", async () => {
     wrapper.vm.setMonth();
     await nextTick();
-
     const expectedCalendarWeeksCount = 5;
     const calendarWeeks = wrapper.findAll(".calendar-month__week");
     expect(calendarWeeks).toHaveLength(5);
     const calendarWeekdays = wrapper.findAll(".calendar-month__weekday");
     expect(calendarWeekdays).toHaveLength(expectedCalendarWeeksCount *7);
   });
+
   test("given a month, the calendar should  display  the correct number of leading and trailing day", async () => {
     wrapper.vm.setMonth();
     await nextTick();
     const trailingAndLeadingDays = wrapper.findAll(".trailing-or-leading");
-    console.log(trailingAndLeadingDays);
     expect(trailingAndLeadingDays).toHaveLength(4);
   });
 });
