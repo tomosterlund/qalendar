@@ -141,7 +141,7 @@ export default defineComponent({
       const calendarMonth = this.time.getCalendarMonthSplitInWeeks(
         fullYear,
         month
-      );  
+      );
 
       const monthWithEvents = calendarMonth.map((week) => {
         return week.map((day) => {
@@ -154,7 +154,7 @@ export default defineComponent({
           });
 
           return {
-            isTrailingOrLeadingDate:this.time.isTrailingOrLeadingDate(day,month),
+            isTrailingOrLeadingDate: this.time.isTrailingOrLeadingDate(day, month),
             dayName: this.time.getLocalizedNameOfWeekday(day),
             dateTimeString: this.time.getDateTimeStringFromDate(day),
             events: events,

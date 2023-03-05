@@ -391,8 +391,8 @@ export default class Time {
     return dateTimeString
   }
 
-  isTrailingOrLeadingDate(date:Date, month:number){
-    const { month:dateMonth } = new EDate(date);
-    return month!==dateMonth
+  isTrailingOrLeadingDate(date: Date, month: number) {
+    const { month: dateMonth } = new EDate(date);
+    return month !== dateMonth
   }
 }

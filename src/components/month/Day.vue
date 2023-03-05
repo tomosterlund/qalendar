@@ -1,11 +1,10 @@
 <template>
   <div
-    v-if="!hideLeadingAndTrailingDate"
     :id="'day-' + day.dateTimeString.substring(0, 10)"
     class="calendar-month__weekday"
-    :class="{ 
-      'is-droppable': canBeDropped, 
-      'trailing-or-leading':day.isTrailingOrLeadingDate 
+    :class="{
+      'is-droppable': canBeDropped,
+      'trailing-or-leading': day.isTrailingOrLeadingDate
     }"
     @click.self="emitDayWasClicked"
     @dragleave="handleDragLeave"
@@ -13,48 +12,53 @@
     @drop="handleDrop"
     @dragend="handleDragEnd"
   >
-    <span
-      v-if="isFirstWeek"
-      class="calendar-month__day-name"
-      @click="emitDayWasClicked"
-    >
-      {{ day.dayName }}
-    </span>
-
-    <span
-      class="calendar-month__day-date"
-      @click="emitDayWasClicked"
-    >
-      {{ day.dateTimeString.substring(8, 10) }}
-    </span>
-
-    <div
-      v-for="(calendarEvent, index) in day.events"
-      :key="index"
-      class="calendar-month__event-wrapper"
-    >
-      <Event
-        v-if="index < 3"
-        :key="calendarEvent.id"
-        :calendar-event="calendarEvent"
-        :config="config"
-        :time="time"
-        :day="day"
-        @event-was-clicked="$emit('event-was-clicked', $event)"
+    <template v-if="!hideLeadingAndTrailingDate">
+      <span
+        v-if="isFirstWeek"
+        class="calendar-month__day-name"
+        @click="emitDayWasClicked"
       >
-        <template #monthEvent="p">
-          <slot :event-data="p.eventData" name="monthEvent"></slot>
-        </template>
-      </Event>
-    </div>
+        {{ day.dayName }}
+      </span>
 
-    <div
-      v-if="day.events.length >= 4"
-      class="calendar-month__weekday-more"
-      @click="getMoreEvents"
-    >
-      {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
-    </div>
+      <span
+        class="calendar-month__day-date"
+        @click="emitDayWasClicked"
+      >
+        {{ day.dateTimeString.substring(8, 10) }}
+      </span>
+
+      <div
+        v-for="(calendarEvent, index) in day.events"
+        :key="index"
+        class="calendar-month__event-wrapper"
+      >
+        <Event
+          v-if="index < 3"
+          :key="calendarEvent.id"
+          :calendar-event="calendarEvent"
+          :config="config"
+          :time="time"
+          :day="day"
+          @event-was-clicked="$emit('event-was-clicked', $event)"
+        >
+          <template #monthEvent="p">
+            <slot
+              :event-data="p.eventData"
+              name="monthEvent"
+            />
+          </template>
+        </Event>
+      </div>
+
+      <div
+        v-if="day.events.length >= 4"
+        class="calendar-month__weekday-more"
+        @click="getMoreEvents"
+      >
+        {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
+      </div>
+    </template>
   </div>
 </template>
 
@@ -91,7 +95,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-   
+
   },
 
   emits: [
@@ -111,8 +115,9 @@ export default defineComponent({
     canBeDropped() {
       return this.isActiveDroppable;
     },
-    hideLeadingAndTrailingDate(){
-      return this.day.isTrailingOrLeadingDate===true && this.config.month.showTrailingAndLeadingDates===false
+
+    hideLeadingAndTrailingDate() {
+      return this.day.isTrailingOrLeadingDate === true && this.config.month?.showTrailingAndLeadingDates === false
     }
   },
 
@@ -190,6 +195,14 @@ export default defineComponent({
   border-bottom: var(--qalendar-border-gray-thin);
   overflow: hidden;
   transition: background-color 0.2s ease-in-out;
+
+  &.trailing-or-leading {
+    border-right-color: transparent;
+
+    + .calendar-month__weekday:not(.trailing-or-leading) {
+      border-left: var(--qalendar-border-gray-thin);
+    }
+  }
 
   &.is-droppable {
     background-color: var(--qalendar-light-gray);

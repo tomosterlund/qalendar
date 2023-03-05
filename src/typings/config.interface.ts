@@ -72,7 +72,7 @@ export interface configInterface {
   showCurrentTime?: boolean;
 
   //specific settings for month view
-  month:{
+  month?:{
     //Hide the days of the next month and previous month in calendar to enhance the appearance
     showTrailingAndLeadingDates?:boolean
   }

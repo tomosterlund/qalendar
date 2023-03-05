@@ -132,7 +132,7 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: 'week',
+        defaultMode: 'month',
         showCurrentTime: true,
         isSilent: true,
         dayIntervals: {
@@ -143,6 +143,9 @@ export default defineComponent({
           isDisabled: false,
           // isCustom: true,
         },
+        month: {
+          showTrailingAndLeadingDates: false,
+        }
       } as configInterface,
       events: [] as eventInterface[],
 
