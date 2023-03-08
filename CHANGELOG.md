@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/tomosterlund/qalendar/compare/v2.1.0...v2.1.1) (2023-03-08)
+
+
+### Bug Fixes
+
+* prevent layout shifts in header ([#132](https://github.com/tomosterlund/qalendar/issues/132)) ([09b3864](https://github.com/tomosterlund/qalendar/commit/09b386460877df57d99c2b151cf7d1d10d6e1071))
+
 # [2.1.0](https://github.com/tomosterlund/qalendar/compare/v2.0.0...v2.1.0) (2023-03-08)
 
 
