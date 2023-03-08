@@ -58,10 +58,10 @@
   },
   "types": "./dist/src/index.d.ts",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.0",
-    "@fortawesome/free-regular-svg-icons": "^6.0.0",
-    "@fortawesome/free-solid-svg-icons": "^5.1.0",
-    "@fortawesome/vue-fontawesome": "^3.0.0-5",
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+    "@fortawesome/free-regular-svg-icons": "^6.3.0",
+    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "perfect-scrollbar": "^1.5.5"
   },
   "devDependencies": {
