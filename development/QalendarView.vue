@@ -1,5 +1,8 @@
 <template>
-  <div class="app-container" :class="'layout-has-' + layout">
+  <div
+    class="app-container"
+    :class="'layout-has-' + layout"
+  >
     <DevSidebar v-if="layout === 'sidebar'" />
 
     <DevHeader v-if="layout === 'header'" />
@@ -39,7 +42,7 @@
                 backgroundColor: 'cornflowerblue',
                 borderRadius: '50%',
               }"
-            ></div>
+            />
           </div>
         </template>
 <!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
@@ -56,30 +59,26 @@
 <!--          </div>-->
 <!--        </template>-->
 
-<!--        <template #monthEvent="monthEventProps">-->
-<!--          <div style="border: 1px dashed blue">-->
-<!--            <input style="display: inline" type="checkbox" />-->
+        <template #eventDialog="props">
+          <div
+            v-if="props.eventDialogData && props.eventDialogData.title"
+            :style="{ padding: '16px' }"
+          >
+            <div :style="{ marginBottom: '8px' }">
+              Edit event
+            </div>
 
-<!--            {{ monthEventProps.eventData.title }}-->
-<!--          </div>-->
-<!--        </template>-->
+            <input
+              v-model="eventDialogForm.title"
+              type="text"
+              :style="{ width: '90%', padding: '8px', marginBottom: '8px' }"
+            >
 
-<!--        <template #eventDialog="props">-->
-<!--          <div-->
-<!--            v-if="props.eventDialogData && props.eventDialogData.title"-->
-<!--            :style="{ padding: '16px' }"-->
-<!--          >-->
-<!--            <div :style="{ marginBottom: '8px' }">Edit event</div>-->
-
-<!--            <input-->
-<!--              v-model="eventDialogForm.title"-->
-<!--              type="text"-->
-<!--              :style="{ width: '90%', padding: '8px', marginBottom: '8px' }"-->
-<!--            />-->
-
-<!--            <button @click="props.closeEventDialog">Finished!</button>-->
-<!--          </div>-->
-<!--        </template>-->
+            <button @click="props.closeEventDialog">
+              Finished!
+            </button>
+          </div>
+        </template>
       </Qalendar>
     </main>
 
@@ -116,7 +115,7 @@ export default defineComponent({
       config: {
         week: {
           startsOn: 'monday',
-          // nDays: 7,
+          nDays: 7,
           scrollToHour: 8,
         },
         locale: 'de-DE',
@@ -136,7 +135,6 @@ export default defineComponent({
         defaultMode: 'month',
         showCurrentTime: true,
         isSilent: true,
-        // disableCustomEvents: ['month', 'week'],
         dayIntervals: {
           height: 50,
           length: 30,
@@ -145,6 +143,9 @@ export default defineComponent({
           isDisabled: false,
           // isCustom: true,
         },
+        month: {
+          showTrailingAndLeadingDates: false,
+        }
       } as configInterface,
       events: [] as eventInterface[],
 
@@ -160,10 +161,10 @@ export default defineComponent({
   mounted() {
     // this.triggerLoadAnimations()
     setTimeout(() => {
-      this.events = seededEvents.map((e, i) => {
-        //@ts-ignore
-        // e.isCustom = ['month', 'week'];
-        e.isEditable = true;
+      this.events = seededEvents.map((e) => {
+        // @ts-ignore
+        // e.isCustom = true;
+        // e.isEditable = false;
 
         return e;
       });
@@ -176,8 +177,8 @@ export default defineComponent({
     },
 
     updatedPeriod(e) {
-      // console.log('updated period');
-      // console.log(e);
+      console.log('updated period');
+      console.log(e);
     },
 
     triggerLoadAnimations() {

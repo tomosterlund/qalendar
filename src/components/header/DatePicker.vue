@@ -25,7 +25,10 @@
           :icon="icons.chevronLeft"
           @click="toggleDatePickerPeriod('previous')"
         />
-        <span class="date-picker__toggle-mode" @click="toggleDatePickerMode">
+        <span
+          class="date-picker__toggle-mode"
+          @click="toggleDatePickerMode"
+        >
           <template v-if="datePickerMode === 'month'">
             {{
               datePickerCurrentDate.toLocaleString(getLocale(), {
@@ -54,7 +57,10 @@
         v-if="datePickerMode === 'month'"
         class="date-picker__day-names week"
       >
-        <span v-for="day in weekDays" :key="day.getDate()">
+        <span
+          v-for="day in weekDays"
+          :key="day.getDate()"
+        >
           {{ time.getLocalizedNameOfWeekday(day, 'short') }}
         </span>
       </div>
@@ -87,7 +93,10 @@
         </span>
       </div>
 
-      <div v-show="datePickerMode === 'year'" class="months">
+      <div
+        v-show="datePickerMode === 'year'"
+        class="months"
+      >
         <span
           v-for="(date, monthIndex) in monthPickerDates"
           :key="monthIndex"

@@ -19,7 +19,10 @@
           @updated-period="$emit('updated-period', $event)"
         >
           <template #monthEvent="p">
-            <slot :event-data="p.eventData" name="monthEvent"></slot>
+            <slot
+              :event-data="p.eventData"
+              name="monthEvent"
+            />
           </template>
         </Day>
       </div>
@@ -40,7 +43,7 @@
           name="eventDialog"
           :event-dialog-data="p.eventDialogData"
           :close-event-dialog="p.closeEventDialog"
-        ></slot>
+        />
       </template>
     </EventFlyout>
   </div>
@@ -134,6 +137,8 @@ export default defineComponent({
       this.setMonth();
     },
 
+
+
     setMonth() {
       const { month, fullYear } = new EDate(this.period.selectedDate);
       const calendarMonth = this.time.getCalendarMonthSplitInWeeks(
@@ -152,6 +157,7 @@ export default defineComponent({
           });
 
           return {
+            isTrailingOrLeadingDate: this.time.isTrailingOrLeadingDate(day, month),
             dayName: this.time.getLocalizedNameOfWeekday(day),
             dateTimeString: this.time.getDateTimeStringFromDate(day),
             events: events,

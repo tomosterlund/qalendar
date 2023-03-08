@@ -21,14 +21,14 @@ Since Qalendar is making heavy use of the native JavaScript Date-Object, which h
 
 ### Seeding
 
-For seeding several months or even a year, you can use the following CLI: `node src/development/faker/seed.js`. Two arguments are available:
+For seeding several months or even a year, you can use the following CLI: `node ./development/faker/seed.js`. Two arguments are available:
 
 1. `--months`
 
 For example:
 
 ```
-node src/development/faker/seed.js --months="2022.01 2022.02 2022.03"
+node ./development/faker/seed.js --months="2022.01 2022.02 2022.03"
 ```
 
 will yield events in the first three months of 2022.
@@ -38,7 +38,7 @@ will yield events in the first three months of 2022.
 For example:
 
 ```
-node src/development/faker/seed.js --year=2022
+node ./development/faker/seed.js --year=2022
 ```
 
 will yield events in all months of 2022.

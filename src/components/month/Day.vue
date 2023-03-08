@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="!hideLeadingAndTrailingDate"
     :id="'day-' + day.dateTimeString.substring(0, 10)"
     class="calendar-month__weekday"
     :class="{ 'is-droppable': canBeDropped }"
@@ -17,7 +18,10 @@
       {{ day.dayName }}
     </span>
 
-    <span class="calendar-month__day-date" @click="emitDayWasClicked">
+    <span
+      class="calendar-month__day-date"
+      @click="emitDayWasClicked"
+    >
       {{ day.dateTimeString.substring(8, 10) }}
     </span>
 
@@ -36,7 +40,10 @@
         @event-was-clicked="$emit('event-was-clicked', $event)"
       >
         <template #monthEvent="p">
-          <slot :event-data="p.eventData" name="monthEvent"></slot>
+          <slot
+            :event-data="p.eventData"
+            name="monthEvent"
+          />
         </template>
       </Event>
     </div>
@@ -49,6 +56,11 @@
       {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
     </div>
   </div>
+
+  <div
+    v-else
+    class="calendar-month__weekday trailing-or-leading"
+  />
 </template>
 
 <script lang="ts">
@@ -84,6 +96,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+
   },
 
   emits: [
@@ -103,6 +116,10 @@ export default defineComponent({
     canBeDropped() {
       return this.isActiveDroppable;
     },
+
+    hideLeadingAndTrailingDate() {
+      return this.day.isTrailingOrLeadingDate === true && this.config.month?.showTrailingAndLeadingDates === false
+    }
   },
 
   methods: {
@@ -179,6 +196,14 @@ export default defineComponent({
   border-bottom: var(--qalendar-border-gray-thin);
   overflow: hidden;
   transition: background-color 0.2s ease-in-out;
+
+  &.trailing-or-leading {
+    border-right-color: transparent;
+
+    + .calendar-month__weekday:not(.trailing-or-leading) {
+      border-left: var(--qalendar-border-gray-thin);
+    }
+  }
 
   &.is-droppable {
     background-color: var(--qalendar-light-gray);

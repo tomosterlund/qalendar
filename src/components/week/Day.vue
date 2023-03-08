@@ -18,7 +18,10 @@
       @drag-start="$emit('drag-start')"
     >
       <template #weekDayEvent="p">
-        <slot :event-data="p.eventData" name="weekDayEvent"></slot>
+        <slot
+          :event-data="p.eventData"
+          name="weekDayEvent"
+        />
       </template>
     </DayEvent>
 

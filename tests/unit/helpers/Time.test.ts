@@ -476,4 +476,16 @@ describe("Time.ts", () => {
     const string1 = '2040-09-28 00:00'
     expect(() => timeM.setSegmentOfDateTimeString(string1, {hour: 24})).toThrow()
   })
+
+  it('Concludes that the month of "date" is not the same as the passed month', () => {
+    const date = new Date(2022, 6 - 1, 23)
+
+    expect(timeM.isTrailingOrLeadingDate(date, 4)).toBe(true);
+  });
+
+  it('Concludes that the month of "date" is the same as the passed month', () => {
+    const date = new Date(2022, 6 - 1, 23)
+
+    expect(timeM.isTrailingOrLeadingDate(date, 5)).toBe(false);
+  });
 });

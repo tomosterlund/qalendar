@@ -8,7 +8,10 @@
     @dragstart="handleDragStart"
     @click="handleClickOnEvent"
   >
-    <slot name="monthEvent" :event-data="calendarEvent"></slot>
+    <slot
+      name="monthEvent"
+      :event-data="calendarEvent"
+    />
   </div>
 
   <div
@@ -22,7 +25,10 @@
   >
     <span class="calendar-month__event-color" />
 
-    <span v-if="eventTimeStart && !calendarEvent.originalEvent" class="calendar-month__event-time">
+    <span
+      v-if="eventTimeStart && !calendarEvent.originalEvent"
+      class="calendar-month__event-time"
+    >
       {{ eventTimeStart }}
     </span>
 

@@ -25,17 +25,25 @@
           name="eventDialog"
           :event-dialog-data="p.eventDialogData"
           :close-event-dialog="p.closeEventDialog"
-        ></slot>
+        />
       </template>
     </EventFlyout>
 
     <section class="calendar-week">
-      <div v-if="hasCustomCurrentTimeSlot && showCurrentTime" class="custom-current-time" :style="{ top: `${currentTimePercentage}%` }">
-        <slot name="customCurrentTime"></slot>
+      <div
+        v-if="hasCustomCurrentTimeSlot && showCurrentTime"
+        class="custom-current-time"
+        :style="{ top: `${currentTimePercentage}%` }"
+      >
+        <slot name="customCurrentTime" />
       </div>
 
-      <div v-else-if="config && config.showCurrentTime && showCurrentTime" class="current-time-line" :style="{ top: `${currentTimePercentage}%` }">
-        <div class="current-time-line__circle"></div>
+      <div
+        v-else-if="config && config.showCurrentTime && showCurrentTime"
+        class="current-time-line"
+        :style="{ top: `${currentTimePercentage}%` }"
+      >
+        <div class="current-time-line__circle" />
       </div>
 
       <DayTimeline
@@ -63,7 +71,10 @@
           @drag-start="destroyScrollbarAndHideOverflow"
         >
           <template #weekDayEvent="p">
-            <slot :event-data="p.eventData" name="weekDayEvent"></slot>
+            <slot
+              :event-data="p.eventData"
+              name="weekDayEvent"
+            />
           </template>
         </Day>
       </div>

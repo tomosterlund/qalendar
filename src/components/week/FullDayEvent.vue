@@ -14,7 +14,10 @@
     {{ scheduleEvent.title }}
   </div>
 
-  <div v-else class="week-timeline__event" />
+  <div
+    v-else
+    class="week-timeline__event"
+  />
 </template>
 
 <script lang="ts">
