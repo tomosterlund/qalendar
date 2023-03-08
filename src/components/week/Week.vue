@@ -200,7 +200,7 @@ export default defineComponent({
 
   mounted() {
     this.setDayIntervals();
-    this.filterOutFullDayEvents();
+    this.separateFullDayEventsFromOtherEvents();
     this.setInitialEvents(this.modeProp);
     this.scrollOnMount();
     this.initScrollbar();
@@ -227,7 +227,7 @@ export default defineComponent({
       this.scrollbar.destroy();
     },
 
-    filterOutFullDayEvents() {
+    separateFullDayEventsFromOtherEvents() {
       const fullDayEvents = [];
       const allOtherEvents = [];
 

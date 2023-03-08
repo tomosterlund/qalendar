@@ -1,7 +1,7 @@
 <template>
   <div
     class="date-picker"
-    :class="{ 'date-picker-root': isStandAloneComponent }"
+    :class="isStandAloneComponent ? 'date-picker-root' : 'is-in-qalendar'"
     @mouseleave="hideDatePicker"
   >
     <div
@@ -437,7 +437,15 @@ export default defineComponent({
 .date-picker {
   position: relative;
   width: fit-content;
-  min-width: 300px;
+  min-width: 16rem;
+
+  .mode-is-month & {
+    min-width: 8rem;
+  }
+
+  .mode-is-day & {
+    min-width: 10rem;
+  }
 
   .qalendar-is-small & {
     min-width: initial;
