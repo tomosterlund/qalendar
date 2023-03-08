@@ -5,7 +5,7 @@ hero:
   name: Qalendar
   text: The Vue 3 material calendar component
   tagline: Simple, responsive and highly customizable
-  image: ./assets/qalendar.gif
+  image: ./qalendar.gif
   actions:
     - theme: brand
       text: Get Started
@@ -16,15 +16,15 @@ hero:
 
 features:
   - icon:
-      src: ./assets/customize.svg
+      src: /customize.svg
     title: Customize it to meet your needs
     details: Customize looks, language, and available views
   - icon:
-      src: ./assets/drag-drop.svg
+      src: /drag-drop.svg
     title: Drag & Drop
     details: Drag and drop events to change their date and time. Available on both desktop and mobile.
   - icon:
-      src: ./assets/language.svg
+      src: /language.svg
     title: Multi-language support
     details: Qalendar uses the browser native APIs for displaying localized dates and times. Other texts also exist in multiple languages.
 ---
