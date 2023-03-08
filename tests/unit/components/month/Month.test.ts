@@ -5,7 +5,7 @@ import Time from "../../../../src/helpers/Time";
 import { nextTick } from "vue";
 
 describe("Month.vue", () => {
-  const wrapper = mount(Month, {
+  let wrapper = mount(Month, {
     props: {
       eventsProp: [],
 
@@ -40,4 +40,29 @@ describe("Month.vue", () => {
     const trailingAndLeadingDays = wrapper.findAll(".trailing-or-leading");
     expect(trailingAndLeadingDays).toHaveLength(4);
   });
+
+  test("no leading or trailing day class should be found, since the config is set to showing all trailing and leading days", async () => {
+    wrapper = mount(Month, {
+      props: {
+        eventsProp: [],
+
+        time: new Time("monday", "de-DE"),
+        config: {
+          month: {
+            showTrailingAndLeadingDates: true,
+          }
+        },
+        period: {
+          start: new Date(2023, 3 - 1, 1),
+          end: new Date(2023, 3 - 1, 31),
+          selectedDate: new Date(2023, 3 - 1, 23),
+        },
+      },
+    });
+
+    wrapper.vm.setMonth();
+    await nextTick();
+    const trailingAndLeadingDays = wrapper.findAll(".trailing-or-leading");
+    expect(trailingAndLeadingDays).toHaveLength(0);
+  })
 });
