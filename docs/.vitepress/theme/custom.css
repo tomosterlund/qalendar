@@ -4,11 +4,11 @@
   --vp-c-brand-light: #747bff;
 }
 
-.VPDoc:not(.has-sidebar) .content[data-v-10119189] {
+.VPDoc:not(.has-sidebar) .content {
   max-width: 52rem;
 }
 
-.VPDoc:not(.has-sidebar) .content[data-v-10119189] .content-container {
+.VPDoc:not(.has-sidebar) .content .content-container {
   max-width: initial;
 }
 
