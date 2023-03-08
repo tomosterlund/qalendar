@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/tomosterlund/qalendar/compare/v2.0.0...v2.1.0) (2023-03-08)
+
+
+### Features
+
+* allow user to optionally hide leading and trailing days in month mode ([#129](https://github.com/tomosterlund/qalendar/issues/129)) ([ba4d5d0](https://github.com/tomosterlund/qalendar/commit/ba4d5d066791670cc792f44c538e16e5061690fd))
+
 # [2.0.0](https://github.com/tomosterlund/qalendar/compare/v1.18.1...v2.0.0) (2023-03-01)
 
 
