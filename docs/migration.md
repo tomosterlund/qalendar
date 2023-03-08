@@ -16,10 +16,6 @@ into `#weekDayEvent`. A basic example of how this can be
 implemented, can be seen
 in: https://github.com/tomosterlund/qalendar/blob/master/development/cypress/CustomizedEvents.vue
 
-Additionally, it is now possible to disable the use of custom events per calendar mode. For this,
-please add the configuration option `disableCustomEvents` which takes an array with 0 or more of the
-following values: `day`, `week`, `month`.
-
 ## Side note on build output
 
 For being able to support older applications and browsers as well, the build output was now changed
