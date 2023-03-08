@@ -1,6 +1,10 @@
 <template>
   <div class="day-timeline">
-    <div v-for="hour in timelineHours" :key="hour" class="day-timeline__hour">
+    <div
+      v-for="hour in timelineHours"
+      :key="hour"
+      class="day-timeline__hour"
+    >
       <span class="day-timeline__hour-text">
         {{ getLocaleTimeString(hour) }}
       </span>
@@ -37,18 +41,18 @@ export default defineComponent({
     };
   },
 
+  mounted() {
+    this.timelineHours = this.availableHours.filter(hour => {
+      return hour >= this.time.DAY_START && hour < this.time.DAY_END;
+    })
+  },
+
   methods: {
     getLocaleTimeString(time: dayStartOrEnd): string {
       const { hour } = this.time.getHourAndMinutesFromTimePoints(time);
 
       return this.time.getLocalizedHour(new Date(2100, 1, 1, hour));
     },
-  },
-
-  mounted() {
-    this.timelineHours = this.availableHours.filter(hour => {
-      return hour >= this.time.DAY_START && hour < this.time.DAY_END;
-    })
   }
 });
 </script>

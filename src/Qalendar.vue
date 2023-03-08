@@ -86,7 +86,10 @@
         </template>
 
         <template #monthEvent="p">
-          <slot :event-data="p.eventData" name="monthEvent"></slot>
+          <slot
+            :event-data="p.eventData"
+            name="monthEvent"
+          />
         </template>
       </Month>
     </div>

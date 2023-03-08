@@ -393,6 +393,7 @@ export default class Time {
 
   isTrailingOrLeadingDate(date: Date, month: number) {
     const { month: dateMonth } = new EDate(date);
+
     return month !== dateMonth
   }
 }

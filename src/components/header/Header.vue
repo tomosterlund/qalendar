@@ -1,6 +1,9 @@
 <template>
   <div class="calendar-header">
-    <div v-if="periodName" class="calendar-header__period-name">
+    <div
+      v-if="periodName"
+      class="calendar-header__period-name"
+    >
       {{ periodName }}
     </div>
 
@@ -27,8 +30,14 @@
         @updated="handlePeriodChange"
       />
 
-      <div v-if="!onlyDayModeIsEnabled" class="calendar-header__mode-picker">
-        <div class="calendar-header__mode-value" @click="showModePicker = true">
+      <div
+        v-if="!onlyDayModeIsEnabled"
+        class="calendar-header__mode-picker"
+      >
+        <div
+          class="calendar-header__mode-value"
+          @click="showModePicker = true"
+        >
           {{ modeName }}
         </div>
 
@@ -37,11 +46,14 @@
           class="calendar-header__mode-options"
           @mouseleave="showModePicker = false"
         >
-          <template v-for="mode in modeOptions" :key="mode">
+          <template
+            v-for="mode in modeOptions"
+            :key="mode"
+          >
             <div
               v-if="
-              !config.disableModes || !config.disableModes.includes(mode)
-            "
+                !config.disableModes || !config.disableModes.includes(mode)
+              "
               class="calendar-header__mode-option"
               :class="'is-' + mode + '-mode'"
               @click="$emit('change-mode', mode)"
@@ -160,6 +172,16 @@ export default defineComponent({
     },
   },
 
+  watch: {
+    isSmall: {
+      handler(value) {
+        if (value) this.modeOptions = ['month', 'day'];
+        else this.modeOptions = ['month', 'week', 'day'];
+      },
+      immediate: true,
+    },
+  },
+
   methods: {
     handlePeriodChange(value: { start: Date; end: Date; selectedDate: Date }) {
       this.currentPeriod = value;
@@ -169,16 +191,6 @@ export default defineComponent({
 
     goToPeriod(event: MouseEvent, direction: 'previous' | 'next') {
       (this.$refs.periodSelect as typeof DatePicker).goToPeriod(direction);
-    },
-  },
-
-  watch: {
-    isSmall: {
-      handler(value) {
-        if (value) this.modeOptions = ['month', 'day'];
-        else this.modeOptions = ['month', 'week', 'day'];
-      },
-      immediate: true,
     },
   }
 });

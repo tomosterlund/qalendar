@@ -19,7 +19,10 @@
           @updated-period="$emit('updated-period', $event)"
         >
           <template #monthEvent="p">
-            <slot :event-data="p.eventData" name="monthEvent"></slot>
+            <slot
+              :event-data="p.eventData"
+              name="monthEvent"
+            />
           </template>
         </Day>
       </div>
