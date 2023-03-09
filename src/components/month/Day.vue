@@ -3,7 +3,7 @@
     v-if="!hideLeadingAndTrailingDate"
     :id="'day-' + day.dateTimeString.substring(0, 10)"
     class="calendar-month__weekday"
-    :class="{ 'is-droppable': canBeDropped }"
+    :class="{ 'is-droppable': canBeDropped, 'trailing-or-leading': day.isTrailingOrLeadingDate }"
     @click.self="emitDayWasClicked"
     @dragleave="handleDragLeave"
     @dragover="handleDragOver"
@@ -59,7 +59,7 @@
 
   <div
     v-else
-    class="calendar-month__weekday trailing-or-leading"
+    class="space-reserver"
   />
 </template>
 
@@ -186,7 +186,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.calendar-month__weekday {
+@mixin dayBase {
   height: 100%;
   flex: 1;
   display: flex;
@@ -194,18 +194,15 @@ export default defineComponent({
   align-items: center;
   border-right: var(--qalendar-border-gray-thin);
   border-bottom: var(--qalendar-border-gray-thin);
-  overflow: hidden;
-  transition: background-color 0.2s ease-in-out;
+}
 
-  &.trailing-or-leading {
-    border-right-color: transparent;
+.calendar-month__weekday {
+    @include dayBase;
 
-    + .calendar-month__weekday:not(.trailing-or-leading) {
-      border-left: var(--qalendar-border-gray-thin);
-    }
-  }
+    overflow: hidden;
+    transition: background-color 0.2s ease-in-out;
 
-  &.is-droppable {
+    &.is-droppable {
     background-color: var(--qalendar-light-gray);
   }
 
@@ -217,18 +214,6 @@ export default defineComponent({
     height: auto;
     min-height: 7rem;
     border-right: 0;
-  }
-
-  .calendar-month__week:first-child & {
-    border-top: var(--qalendar-border-gray-thin);
-
-    .qalendar-is-small & {
-      border-top: 0;
-
-      &:first-child {
-        border-top: var(--qalendar-border-gray-thin);
-      }
-    }
   }
 
   .calendar-month__day-name,
@@ -251,6 +236,40 @@ export default defineComponent({
     padding-left: 4px;
     color: var(--qalendar-gray-quite-dark);
     cursor: pointer;
+  }
+}
+
+.space-reserver {
+  @include dayBase;
+
+  border-right-color: transparent;
+
+  + .calendar-month__weekday:not(.trailing-or-leading) {
+    border-left: var(--qalendar-border-gray-thin);
+  }
+}
+
+.space-reserver,
+.trailing-or-leading {
+
+  .qalendar-is-small & {
+    display: none;
+  }
+}
+
+.calendar-month__week:first-child {
+
+  .space-reserver,
+  .calendar-month__weekday {
+    border-top: var(--qalendar-border-gray-thin);
+
+    .qalendar-is-small & {
+      border-top: 0;
+
+      &:first-child {
+        border-top: var(--qalendar-border-gray-thin);
+      }
+    }
   }
 }
 </style>

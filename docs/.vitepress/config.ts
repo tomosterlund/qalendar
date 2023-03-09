@@ -14,6 +14,5 @@ export default {
       copyright: 'Copyright © 2022-present Tom Österlund'
     }
   },
-  outline: [2, 3],
   appearance: false,
 };
