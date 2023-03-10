@@ -1,4 +1,6 @@
 ---
+title: Guide
+description: Guide & API reference for Qalendar
 layout: doc
 ---
 
@@ -490,7 +492,7 @@ Some features of the calendar can be disabled/hidden through configuration.
 
 ## Date picker
 
-## Usage
+### Usage
 
 The date picker from the Qalendar-header, can also be used as a stand-alone component:
 
@@ -541,7 +543,7 @@ export default {
 The DatePicker component emits one event, `updated`, the payload of which can be spread into three
 variables: `year`, `month` and `date`, see example above.
 
-## Props
+### Datepicker Props
 
 |        Prop         | Type / Accepted values | Required |
 |:-------------------:|:----------------------:|:--------:|

@@ -1,7 +1,6 @@
 export default {
   base: "/qalendar/",
   title: "Qalendar",
-  description: "Vue 3 calendar component",
   themeConfig: {
     nav: [
       { text: "Guide", link: "/guide" },
@@ -12,7 +11,7 @@ export default {
     footer: {
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2022-present Tom Österlund'
-    }
+    },
   },
   appearance: false,
 };
