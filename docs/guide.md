@@ -60,7 +60,7 @@ export default {
 
 <br>
 
-<div style="height: 800px">
+<div style="height: 800px" class="calendar-container">
     <Qalendar :selected-date="new Date(2022, 4, 16)" :events="seededEventsDemoWeek" />
 </div>
 
@@ -204,7 +204,7 @@ in `./src/language`.
 
 A month view:
 
-<div style="height: 800px">
+<div class="calendar-container">
     <Qalendar :selected-date="new Date(2022, 0, 8)" :events="events" :config="config"  />
 </div>
 
