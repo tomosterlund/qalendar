@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.3](https://github.com/tomosterlund/qalendar/compare/v2.1.2...v2.1.3) (2023-03-10)
+
+
+### Bug Fixes
+
+* correct line-height for hours in day timeline ([#136](https://github.com/tomosterlund/qalendar/issues/136)) ([aedde41](https://github.com/tomosterlund/qalendar/commit/aedde41f7ad2797d12205aafb97500c03d6c1dbf))
+
 ## [2.1.2](https://github.com/tomosterlund/qalendar/compare/v2.1.1...v2.1.2) (2023-03-09)
 
 
