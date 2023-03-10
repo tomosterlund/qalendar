@@ -79,7 +79,8 @@ export default defineComponent({
     color: var(--qalendar-gray-quite-dark);
 
     &-text {
-      transform: translate(-40px, -6px); /** Sets the hour to be above the line for full hour */
+      line-height: 0;
+      transform: translate(-40px, 0px);
     }
 
     &:first-child {

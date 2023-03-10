@@ -1,4 +1,6 @@
 ---
+title: Vue 3 calendar
+description: Material calendar component for Vue 3 | Highly customizable, responsive and easy to use | Drag & drop events | Multi-language support
 layout: home
 
 hero:
