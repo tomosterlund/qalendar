@@ -30,8 +30,8 @@ export default class Time {
     this.DAY_START = dayBoundaries.start;
     this.DAY_END = dayBoundaries.end;
     this.HOURS_PER_DAY = (() => {
-      const dayEnd = Time.getDayBoundaryFromTimePoints(this.DAY_END),
-        dayStart = Time.getDayBoundaryFromTimePoints(this.DAY_START);
+      const dayEnd = Time.getHourFromTimePoints(this.DAY_END),
+        dayStart = Time.getHourFromTimePoints(this.DAY_START);
 
       if (dayEnd > dayStart) return dayEnd - dayStart;
 
@@ -237,8 +237,8 @@ export default class Time {
   }
 
   getLocalizedTime(dateTimeString: string) {
-    const h = dateTimeString.substring(11, 13);
-    const m = dateTimeString.substring(14, 16);
+    const h = this.hourFrom(dateTimeString);
+    const m = this.minutesFrom(dateTimeString);
     const d = new Date();
     d.setHours(+h);
     d.setMinutes(+m);
@@ -262,8 +262,8 @@ export default class Time {
       year: +dateTimeString.substring(0, 4),
       month: +dateTimeString.substring(5, 7) - 1,
       date: +dateTimeString.substring(8, 10),
-      hour: +dateTimeString.substring(11, 13),
-      minutes: +dateTimeString.substring(14, 16),
+      hour: this.hourFrom(dateTimeString),
+      minutes: this.minutesFrom(dateTimeString),
     };
   }
 
@@ -369,7 +369,7 @@ export default class Time {
     dayStart: number,
     dayEnd: number,
   ) {
-    const hour = +dateTimeString.substring(11, 13);
+    const hour = this.hourFrom(dateTimeString);
     const hourPoints = hour * 100;
     const minutes = +dateTimeString.substring(14, 16);
     const minutesPoints = +this.turnMinutesIntoPercentageOfHour(+minutes);
@@ -406,7 +406,7 @@ export default class Time {
     return month !== dateMonth
   }
 
-  static getTimePointsFromDayBoundary(boundary: number) {
+  static getTimePointsFromHour(boundary: number) {
     if (boundary < 0 || boundary > 24 || boundary % 1 !== 0) {
       throw new Error('Invalid day boundary');
     }
@@ -416,7 +416,7 @@ export default class Time {
     return boundary * 100;
   }
 
-  static getDayBoundaryFromTimePoints(timePoints: number) {
+  static getHourFromTimePoints(timePoints: number) {
     if (timePoints < 0 || timePoints > 2400 || timePoints % 100 !== 0) {
       throw new Error('Invalid time points');
     }
@@ -437,5 +437,27 @@ export default class Time {
       ...this.ALL_HOURS.filter(hour => hour >= this.DAY_START),
       ...this.ALL_HOURS.filter(hour => hour < this.DAY_END)
     ]
+  }
+
+  dateStringFrom(dateTimeString: string) {
+    return dateTimeString.substring(0, 10);
+  }
+
+  timeStringFrom(dateTimeString: string) {
+    return dateTimeString.substring(11, 16);
+  }
+
+  hourFrom(dateTimeString: string) {
+    return +dateTimeString.substring(11, 13);
+  }
+
+  minutesFrom(dateTimeString: string) {
+    return +dateTimeString.substring(14, 16);
+  }
+
+  areDaysConsecutive(dayOne: string, dayTwo: string) {
+    const dayOnePlusOneDay = this.dateStringFrom(this.addDaysToDateTimeString(1, dayOne))
+
+    return dayOnePlusOneDay === this.dateStringFrom(dayTwo);
   }
 }

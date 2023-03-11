@@ -495,18 +495,18 @@ describe("Time.ts", () => {
     const noon = 12;
     const sixPM = 18;
 
-    expect(Time.getTimePointsFromDayBoundary(midnight)).toBe(0);
-    expect(Time.getTimePointsFromDayBoundary(noon)).toBe(1200);
-    expect(Time.getTimePointsFromDayBoundary(sixPM)).toBe(1800);
+    expect(Time.getTimePointsFromHour(midnight)).toBe(0);
+    expect(Time.getTimePointsFromHour(noon)).toBe(1200);
+    expect(Time.getTimePointsFromHour(sixPM)).toBe(1800);
   })
 
   it('Throws an error, when trying to get time points from a day boundary that is not an integer', () => {
-    expect(() => Time.getTimePointsFromDayBoundary(12.5)).toThrow()
+    expect(() => Time.getTimePointsFromHour(12.5)).toThrow()
   })
 
   it('Throws an error, when trying to get time points from a day boundary that is not between 0 and 24', () => {
-    expect(() => Time.getTimePointsFromDayBoundary(25)).toThrow()
-    expect(() => Time.getTimePointsFromDayBoundary(-1)).toThrow()
+    expect(() => Time.getTimePointsFromHour(25)).toThrow()
+    expect(() => Time.getTimePointsFromHour(-1)).toThrow()
   })
 
   it('Gets day boundaries from time points', () => {
@@ -514,22 +514,22 @@ describe("Time.ts", () => {
     const noon = 1200;
     const sixPM = 1800;
 
-    expect(Time.getDayBoundaryFromTimePoints(midnight)).toBe(0);
-    expect(Time.getDayBoundaryFromTimePoints(noon)).toBe(12);
-    expect(Time.getDayBoundaryFromTimePoints(sixPM)).toBe(18);
+    expect(Time.getHourFromTimePoints(midnight)).toBe(0);
+    expect(Time.getHourFromTimePoints(noon)).toBe(12);
+    expect(Time.getHourFromTimePoints(sixPM)).toBe(18);
   });
 
   it('Throws an error, when trying to get day boundaries from time points that are not integers', () => {
-    expect(() => Time.getDayBoundaryFromTimePoints(1200.5)).toThrow()
+    expect(() => Time.getHourFromTimePoints(1200.5)).toThrow()
   });
 
   it('Throws an error, when trying to get day boundaries from time points that are not between 0 and 2400', () => {
-    expect(() => Time.getDayBoundaryFromTimePoints(2500)).toThrow()
-    expect(() => Time.getDayBoundaryFromTimePoints(-1)).toThrow()
+    expect(() => Time.getHourFromTimePoints(2500)).toThrow()
+    expect(() => Time.getHourFromTimePoints(-1)).toThrow()
   });
 
   it('Throws an error when trying to get day boundaries from time points that are not multiples of 100', () => {
-    expect(() => Time.getDayBoundaryFromTimePoints(123)).toThrow()
+    expect(() => Time.getHourFromTimePoints(123)).toThrow()
   });
 
   it('Gets the correct timeline hours for a full day', () => {
@@ -721,4 +721,63 @@ describe("Time.ts", () => {
 
     expect(+percentageIntoDay.toFixed(2)).toEqual(97.35);
   })
+
+  test("Getting date string from date time string", () => {
+    const dateString1 = timeM.dateStringFrom("2022-02-16 01:25");
+    expect(dateString1).toEqual("2022-02-16");
+
+    const dateString2 = timeM.dateStringFrom("2030-01-01 00:00");
+    expect(dateString2).toEqual("2030-01-01");
+  })
+
+  test("Getting time string from date time string", () => {
+    const timeString1 = timeM.timeStringFrom("2022-02-16 01:25");
+    expect(timeString1).toEqual("01:25");
+
+    const timeString2 = timeM.timeStringFrom("2030-01-01 00:00");
+    expect(timeString2).toEqual("00:00");
+  });
+
+  test("Getting hour from date time string", () => {
+    const hour1 = timeM.hourFrom("2022-02-16 01:25");
+    expect(hour1).toEqual(1);
+
+    const hour2 = timeM.hourFrom("2030-01-01 00:00");
+    expect(hour2).toEqual(0);
+  })
+
+  test("Getting minutes from date time string", () => {
+    const minutes1 = timeM.minutesFrom("2022-02-16 01:25");
+    expect(minutes1).toEqual(25);
+
+    const minutes2 = timeM.minutesFrom("2030-01-01 00:00");
+    expect(minutes2).toEqual(0);
+  })
+
+  test("If two days are consecutive", () => {
+    const consecutive = timeM.areDaysConsecutive(
+      "2022-02-16 01:25",
+      "2022-02-17 01:25"
+    );
+
+    expect(consecutive).toBe(true);
+  });
+
+  test("If two days are not consecutive", () => {
+    const consecutive = timeM.areDaysConsecutive(
+      "2022-02-16 01:25",
+      "2022-02-18 01:25"
+    );
+
+    expect(consecutive).toBe(false);
+  });
+
+  test("If two equal days are consecutive", () => {
+    const consecutive = timeM.areDaysConsecutive(
+      "2022-02-16 01:25",
+      "2022-02-16 01:25"
+    );
+
+    expect(consecutive).toBe(false);
+  });
 });

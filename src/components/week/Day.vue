@@ -1,7 +1,7 @@
 <template>
   <div
     class="calendar-week__day"
-    @click.self="$emit('day-was-clicked', day.dateTimeString.substring(0, 10))"
+    @click.self="$emit('day-was-clicked', time.dateStringFrom(day.dateTimeString))"
   >
     <DayEvent
       v-for="(event, eventIndex) in events"

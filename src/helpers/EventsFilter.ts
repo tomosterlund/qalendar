@@ -10,9 +10,10 @@ export class EventsFilter {
   }
 
   private isEventInDayBoundaries(event: eventInterface, timeInstance: Time, startDateTimeString: string): boolean {
-    const eventIsInDay = event.time.start.substring(0, 11) === startDateTimeString.substring(0, 11);
+    const eventIsInDay =
+      timeInstance.dateStringFrom(event.time.start) === timeInstance.dateStringFrom(startDateTimeString);
 
-    if (timeInstance.HOURS_PER_DAY === 24) {
+    if (timeInstance.HOURS_PER_DAY === 24 && timeInstance.DAY_END > timeInstance.DAY_START) {
       return eventIsInDay;
     }
 
@@ -32,9 +33,9 @@ export class EventsFilter {
   }
 
   private handleDayStretchingTwoDates(timeInstance: Time, event: eventInterface, startDateTimeString: string, eventIsInDay: boolean) {
-    const {hour: dayStartHour} = timeInstance.getHourAndMinutesFromTimePoints(timeInstance.DAY_START)
-    const {hour: dayEndHour} = timeInstance.getHourAndMinutesFromTimePoints(timeInstance.DAY_END)
-    const {hour: eventStartHour} = timeInstance.getAllVariablesFromDateTimeString(event.time.start)
+    const { hour: dayStartHour } = timeInstance.getHourAndMinutesFromTimePoints(timeInstance.DAY_START)
+    const { hour: dayEndHour } = timeInstance.getHourAndMinutesFromTimePoints(timeInstance.DAY_END)
+    const { hour: eventStartHour } = timeInstance.getAllVariablesFromDateTimeString(event.time.start)
     const nextDay = timeInstance.addDaysToDateTimeString(1, startDateTimeString);
     const eventStartsInNextDay = event.time.start.substring(0, 11) === nextDay.substring(0, 11);
 
@@ -43,9 +44,9 @@ export class EventsFilter {
   }
 
   private handlePartialDayWithinOneDayBoundary(timeInstance: Time, event: eventInterface) {
-    const {hour: dayStartHour} = timeInstance.getHourAndMinutesFromTimePoints(timeInstance.DAY_START)
-    const {hour: dayEndHour} = timeInstance.getHourAndMinutesFromTimePoints(timeInstance.DAY_END)
-    const {hour: eventStartHour} = timeInstance.getAllVariablesFromDateTimeString(event.time.start)
+    const { hour: dayStartHour } = timeInstance.getHourAndMinutesFromTimePoints(timeInstance.DAY_START)
+    const { hour: dayEndHour } = timeInstance.getHourAndMinutesFromTimePoints(timeInstance.DAY_END)
+    const { hour: eventStartHour } = timeInstance.getAllVariablesFromDateTimeString(event.time.start)
 
     // TODO: add check for event end time overlapping the day start time
     return eventStartHour >= dayStartHour && eventStartHour < dayEndHour;

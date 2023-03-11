@@ -190,25 +190,9 @@ export default defineComponent({
       // Because day 2 until (last day - 1) of a multiple day event, will technically be a full day event,
       // but we still want to display the original start and end time
       if (this.calendarEvent.originalEvent) {
-        const {
-          year: startYear,
-          month: startMonth,
-          date: startDate,
-          hour: startHour,
-          minutes: startMinutes,
-        } = this.time.getAllVariablesFromDateTimeString(this.calendarEvent.originalEvent.time.start)
-
         const startLocalizedString = this.getDateFromDateString(
           this.calendarEvent.originalEvent.time.start
         ) + ' ' + this.time.getLocalizedTime(this.calendarEvent.originalEvent.time.start)
-
-        const {
-          year: endYear,
-          month: endMonth,
-          date: endDate,
-          hour: endHour,
-          minutes: endMinutes,
-        } = this.time.getAllVariablesFromDateTimeString(this.calendarEvent.originalEvent.time.end)
 
         const endLocalizedString = this.getDateFromDateString(
           this.calendarEvent.originalEvent.time.end

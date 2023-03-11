@@ -101,7 +101,7 @@ export default class EventPosition extends Time {
     // Instead of iterating over the following units for => week of calendarMonth => day of week => event of fullDayEvents => date of allDatesOfEvent
     // we can stay on 2 levels of nesting with for => fullDayEvent of fullDayEvents => date of allDatesOfEvent, and then see if the map has a matching date
     const monthMap = new Map()
-    flatMonth.forEach(day => monthMap.set(day.dateTimeString.substring(0, 10), day))
+    flatMonth.forEach(day => monthMap.set(this.dateStringFrom(day.dateTimeString), day))
     // Sort events with the latest first. This will help the algorithm place the oldest events at the start of each "events" array later
     fullDayEvents = fullDayEvents.sort((a, b) => {
       if (a.time.start < b.time.start) return 1;
