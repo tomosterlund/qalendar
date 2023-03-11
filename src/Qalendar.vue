@@ -315,13 +315,7 @@ export default defineComponent({
     },
 
     setTimePointsFromDayBoundary(boundary: number) {
-      // Only allow integers between 0 and 24
-      if (boundary < 0 || boundary > 24 || boundary % 1 !== 0)
-        throw new Error('Invalid day boundary');
-
-      if (boundary === 0) return boundary;
-
-      return boundary * 100;
+      return Time.getTimePointsFromDayBoundary(boundary);
     },
 
     processEvents(events: eventInterface[]) {

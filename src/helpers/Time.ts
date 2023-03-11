@@ -1,5 +1,5 @@
 import Helpers from "./Helpers";
-import { dayStartOrEnd } from "../typings/config.interface";
+import { DAY_TIME_POINT } from "../typings/config.interface";
 import EDate from "./EDate";
 
 export type calendarWeekType = Date[];
@@ -9,35 +9,33 @@ export type calendarYearMonths = Date[];
 export default class Time {
   FIRST_DAY_OF_WEEK: "sunday" | "monday";
   CALENDAR_LOCALE: string;
-  ALL_HOURS: dayStartOrEnd[];
-  DAY_START: number;
-  DAY_END: number;
+  ALL_HOURS: DAY_TIME_POINT[] = [
+    0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300,
+    1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300
+  ];
+  DAY_START: DAY_TIME_POINT;
+  DAY_END: DAY_TIME_POINT;
   HOURS_PER_DAY = 24;
   MS_PER_DAY: number
 
   constructor(
     firstDayOfWeek: "sunday" | "monday" = "monday",
     locale: string | null = null,
-    dayBoundaries: { start: dayStartOrEnd; end: dayStartOrEnd } = { start: 0, end: 2400 }
+    dayBoundaries: { start: DAY_TIME_POINT; end: DAY_TIME_POINT } = { start: 0, end: 2400 }
   ) {
     this.FIRST_DAY_OF_WEEK = firstDayOfWeek;
     this.CALENDAR_LOCALE = locale
       ? locale
       : Helpers.getBrowserNavigatorLocale();
-    this.ALL_HOURS = [
-      0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300,
-      1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400,
-    ];
     this.DAY_START = dayBoundaries.start;
     this.DAY_END = dayBoundaries.end;
     this.HOURS_PER_DAY = (() => {
-      const convertTimePointToHours = (timePoint: number) => {
-        if (timePoint === 0) return 0;
+      const dayEnd = Time.getDayBoundaryFromTimePoints(this.DAY_END),
+        dayStart = Time.getDayBoundaryFromTimePoints(this.DAY_START);
 
-        return timePoint / 100;
-      }
+      if (dayEnd > dayStart) return dayEnd - dayStart;
 
-      return convertTimePointToHours(this.DAY_END) - convertTimePointToHours(this.DAY_START);
+      return this.HOURS_PER_DAY - dayStart + dayEnd;
     })()
     this.MS_PER_DAY = 86400000;
   }
@@ -369,16 +367,27 @@ export default class Time {
   getPercentageOfDayFromDateTimeString(
     dateTimeString: string,
     dayStart: number,
-    dayEnd: number
+    dayEnd: number,
   ) {
-    const pointsInDay = dayEnd - dayStart;
-    const hour = dateTimeString.substring(11, 13);
-    const minutes = dateTimeString.substring(14, 16);
-    const minutesPoints = this.turnMinutesIntoPercentageOfHour(+minutes);
-    const eventPoints = +(hour + minutesPoints);
-    const eventPointsIntoDay = eventPoints - dayStart;
+    const hour = +dateTimeString.substring(11, 13);
+    const hourPoints = hour * 100;
+    const minutes = +dateTimeString.substring(14, 16);
+    const minutesPoints = +this.turnMinutesIntoPercentageOfHour(+minutes);
 
-    return (eventPointsIntoDay / pointsInDay) * 100;
+    if (dayEnd > dayStart) {
+      const pointsInDay = dayEnd - dayStart;
+      const eventPoints = hourPoints + minutesPoints;
+      const eventPointsIntoDay = eventPoints - dayStart;
+
+      return (eventPointsIntoDay / pointsInDay) * 100;
+    }
+
+    const hourPointsInOriginalDay = DAY_TIME_POINT.TWELVE_AM - dayStart;
+    const pointsInDay = hourPointsInOriginalDay + dayEnd;
+    const eventPoints = hourPoints + minutesPoints;
+    const pointsIntoDay = eventPoints >= dayStart ? eventPoints - dayStart : hourPointsInOriginalDay + eventPoints;
+
+    return (pointsIntoDay / pointsInDay) * 100;
   }
 
   setSegmentOfDateTimeString(dateTimeString: string, segments: { hour: number|string }) {
@@ -395,5 +404,38 @@ export default class Time {
     const { month: dateMonth } = new EDate(date);
 
     return month !== dateMonth
+  }
+
+  static getTimePointsFromDayBoundary(boundary: number) {
+    if (boundary < 0 || boundary > 24 || boundary % 1 !== 0) {
+      throw new Error('Invalid day boundary');
+    }
+
+    if (boundary === 0) return boundary;
+
+    return boundary * 100;
+  }
+
+  static getDayBoundaryFromTimePoints(timePoints: number) {
+    if (timePoints < 0 || timePoints > 2400 || timePoints % 100 !== 0) {
+      throw new Error('Invalid time points');
+    }
+
+    if (timePoints === 0) return timePoints;
+
+    return timePoints / 100;
+  }
+
+  getTimelineHours(): DAY_TIME_POINT[] {
+    if (this.DAY_START < this.DAY_END) {
+      return this.ALL_HOURS.filter(hour => {
+        return hour >= this.DAY_START && hour < this.DAY_END;
+      })
+    }
+
+    return [
+      ...this.ALL_HOURS.filter(hour => hour >= this.DAY_START),
+      ...this.ALL_HOURS.filter(hour => hour < this.DAY_END)
+    ]
   }
 }

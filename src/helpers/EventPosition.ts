@@ -7,13 +7,20 @@ import Time from './Time';
 import {fullDayEventsWeek} from '../typings/interfaces/full-day-events-week.type';
 import {dayInterface} from '../typings/interfaces/day.interface';
 
+interface eventWithJSDatesInterface extends eventInterface {
+  timeJS: {
+    start: Date,
+    end: Date,
+  }
+}
+
 export default class EventPosition extends Time {
   /**
    * Yields a full calendar week, with all full-day events positioned in it
    * */
   positionFullDayEventsInWeek(weekStart: Date, weekEnd: Date, events: eventInterface[]) {
     // 1. add timeJS.start and timeJS.end to all objects
-    const eventsWithJSDates = events.map((scheduleEvent: eventInterface) => {
+    const eventsWithJSDates: eventWithJSDatesInterface[] = events.map((scheduleEvent: eventInterface) => {
       const { year: startYear, month: startMonth, date: startDate } = this.getAllVariablesFromDateTimeString(scheduleEvent.time.start)
       const { year: endYear, month: endMonth, date: endDate } = this.getAllVariablesFromDateTimeString(scheduleEvent.time.end)
       scheduleEvent.timeJS = {
@@ -21,7 +28,7 @@ export default class EventPosition extends Time {
         end: new Date(endYear, endMonth, endDate),
       }
 
-      return scheduleEvent
+      return scheduleEvent as eventWithJSDatesInterface
     }).sort((a, b) => {
       if (a.time.start < b.time.start) return -1;
       if (a.time.start > b.time.start) return 1;
@@ -39,9 +46,7 @@ export default class EventPosition extends Time {
         const thisDayDateString = this.getDateStringFromDate(day.date)
 
         if (
-          // @ts-ignore
           this.getDateStringFromDate(scheduleEvent.timeJS.start) <= thisDayDateString
-          // @ts-ignore
           && this.getDateStringFromDate(scheduleEvent.timeJS.end) >= thisDayDateString
         ) {
           // 2A. Get the first free level of the day
@@ -51,7 +56,6 @@ export default class EventPosition extends Time {
           }
 
           // 2B. set the event on this day
-          // @ts-ignore
           let eventNDays = (Math.ceil((scheduleEvent.timeJS.end.getTime() - day.date.getTime()) / this.MS_PER_DAY) + 1) // Get difference in days, plus the first day itself
           const remainingDaysOfWeek = (week.length - dayIndex)
           if (eventNDays > remainingDaysOfWeek) eventNDays = remainingDaysOfWeek

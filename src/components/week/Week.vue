@@ -107,6 +107,7 @@ import { modeType } from '../../typings/types';
 const eventPosition = new EventPosition();
 import PerfectScrollbar from 'perfect-scrollbar';
 import Helpers from '../../helpers/Helpers';
+import {EventsFilter} from "../../helpers/EventsFilter";
 
 export default defineComponent({
   name: 'Week',
@@ -270,19 +271,7 @@ export default defineComponent({
             day,
             'start'
           );
-          const events = this.events.filter((event: eventInterface) => {
-            const eventIsInDay = event.time.start.substring(0, 11) === dateTimeString.substring(0, 11);
-            let eventIsInDayBoundaries = true;
-
-            if (this.time.HOURS_PER_DAY !== 24) {
-              const { hour: dayStartHour } = this.time.getHourAndMinutesFromTimePoints(this.time.DAY_START)
-              const { hour: dayEndHour } = this.time.getHourAndMinutesFromTimePoints(this.time.DAY_END)
-              const { hour: eventStartHour } = this.time.getAllVariablesFromDateTimeString(event.time.start)
-              eventIsInDayBoundaries = eventStartHour >= dayStartHour && eventStartHour < dayEndHour;
-            }
-
-            return eventIsInDay && eventIsInDayBoundaries;
-          });
+          const events = new EventsFilter(this.events).getEventsForDay(this.time, dateTimeString);
 
           return { dayName, dateTimeString, events };
         });
