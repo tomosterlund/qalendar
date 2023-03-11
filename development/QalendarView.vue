@@ -139,13 +139,17 @@ export default defineComponent({
           height: 50,
           length: 30,
         },
+        dayBoundaries: {
+          start: 4,
+          end: 2,
+        },
         eventDialog: {
           isDisabled: false,
           // isCustom: true,
         },
-        month: {
-          showTrailingAndLeadingDates: false,
-        }
+        // month: {
+        //   showTrailingAndLeadingDates: false,
+        // }
       } as configInterface,
       events: [] as eventInterface[],
 
@@ -164,7 +168,7 @@ export default defineComponent({
       this.events = seededEvents.map((e) => {
         // @ts-ignore
         // e.isCustom = true;
-        // e.isEditable = false;
+        e.isEditable = true;
 
         return e;
       });

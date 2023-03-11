@@ -446,11 +446,11 @@ export default defineComponent({
   methods: {
     getPositionInDay(dateTimeString: string) {
       return (
-        eventPositionHelper
+        this.time
           .getPercentageOfDayFromDateTimeString(
             dateTimeString,
             this.time.DAY_START,
-            this.time.DAY_END
+            this.time.DAY_END,
           )
           .toString() + '%'
       );
@@ -458,13 +458,13 @@ export default defineComponent({
 
     getLengthOfEvent(start: string, end: string) {
       const startOfEvent =
-        eventPositionHelper.getPercentageOfDayFromDateTimeString(
+        this.time.getPercentageOfDayFromDateTimeString(
           start,
           this.time.DAY_START,
           this.time.DAY_END
         );
       const endOfEvent =
-        eventPositionHelper.getPercentageOfDayFromDateTimeString(
+        this.time.getPercentageOfDayFromDateTimeString(
           end,
           this.time.DAY_START,
           this.time.DAY_END
@@ -596,6 +596,10 @@ export default defineComponent({
       // Do not allow drag & drop, if event is not editable
       if (!this.event.isEditable || this.hasDisabledDragAndDrop) return;
 
+      this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
+        document.addEventListener(name, callback, { passive: false });
+      });
+
       if (domEvent instanceof TouchEvent) {
         this.handleDragMove(domEvent.touches[0].clientX, domEvent.touches[0].clientY);
       } else {
@@ -610,9 +614,6 @@ export default defineComponent({
       this.clientXDragStart = clientX;
       this.timeStartDragStart = this.event.time.start;
       this.timeEndDragStart = this.event.time.end;
-      this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
-        document.addEventListener(name, callback, { passive: false });
-      });
     },
 
     onMouseUpWhenDragging() {

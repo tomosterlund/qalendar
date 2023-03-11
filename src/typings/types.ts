@@ -1,4 +1,4 @@
-import { dayStartOrEnd } from "./config.interface";
+import { DAY_TIME_POINT } from "./config.interface";
 
 export interface DOMRect {
   bottom: number;
