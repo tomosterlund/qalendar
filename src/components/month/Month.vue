@@ -150,10 +150,7 @@ export default defineComponent({
         return week.map((day) => {
           const dateTimeString = this.time.getDateTimeStringFromDate(day);
           const events = this.events.filter((event) => {
-            return (
-              event.time.start.substring(0, 11) ===
-              dateTimeString.substring(0, 11)
-            );
+            return this.time.dateStringsHaveEqualDates(event.time.start, dateTimeString)
           });
 
           return {

@@ -400,11 +400,11 @@ export default defineComponent({
       // Only change the portion of a string that affects time
       this.event.time.start = this.event.time.start.replace(
         /\d{2}:\d{2}/,
-        newStart.substring(11, 16)
+        this.time.timeStringFrom(newStart),
       );
       this.event.time.end = this.event.time.end.replace(
         /\d{2}:\d{2}/,
-        newEnd.substring(11, 16)
+        this.time.timeStringFrom(newEnd),
       );
     },
 
@@ -430,11 +430,11 @@ export default defineComponent({
       );
       this.event.time.start = this.event.time.start.replace(
         /\d{4}-\d{2}-\d{2}/,
-        newStart.substring(0, 10)
+        this.time.dateStringFrom(newStart)
       );
       this.event.time.end = this.event.time.end.replace(
         /\d{4}-\d{2}-\d{2}/,
-        newEnd.substring(0, 10)
+        this.time.dateStringFrom(newEnd)
       );
     },
   },

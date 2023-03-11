@@ -312,12 +312,7 @@ export default defineComponent({
             this.period.selectedDate,
             'start'
           ),
-          events: this.events.filter((event: eventInterface) => {
-            return (
-              event.time.start.substring(0, 11) ===
-              dayDateTimeString.substring(0, 11)
-            );
-          }) as eventInterface[],
+          events: new EventsFilter(this.events).getEventsForDay(this.time, dayDateTimeString),
         },
       ];
 
