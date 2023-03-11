@@ -84,30 +84,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import {
-  configInterface,
-  dayIntervalsType,
-} from '../../typings/config.interface';
+import {defineComponent, PropType} from 'vue';
+import {configInterface, dayIntervalsType,} from '../../typings/config.interface';
 import DayTimeline from './DayTimeline.vue';
-import { periodInterface } from '../../typings/interfaces/period.interface';
-import { dayInterface } from '../../typings/interfaces/day.interface';
+import {periodInterface} from '../../typings/interfaces/period.interface';
+import {dayInterface} from '../../typings/interfaces/day.interface';
 import WeekTimeline from './WeekTimeline.vue';
 import Day from './Day.vue';
 import EventFlyout from '../partials/EventFlyout.vue';
-import { eventInterface } from '../../typings/interfaces/event.interface';
+import {EVENT_TYPE, eventInterface} from '../../typings/interfaces/event.interface';
 import Time from '../../helpers/Time';
-import {
-  DATE_TIME_STRING_FULL_DAY_PATTERN,
-  DATE_TIME_STRING_PATTERN,
-} from '../../constants';
 import EventPosition from '../../helpers/EventPosition';
-import { fullDayEventsWeek } from '../../typings/interfaces/full-day-events-week.type';
-import { modeType } from '../../typings/types';
-const eventPosition = new EventPosition();
+import {fullDayEventsWeek} from '../../typings/interfaces/full-day-events-week.type';
+import {modeType} from '../../typings/types';
 import PerfectScrollbar from 'perfect-scrollbar';
 import Helpers from '../../helpers/Helpers';
 import {EventsFilter} from "../../helpers/EventsFilter";
+
+const eventPosition = new EventPosition();
 
 export default defineComponent({
   name: 'Week',
@@ -230,16 +224,14 @@ export default defineComponent({
     },
 
     separateFullDayEventsFromOtherEvents() {
-      const fullDayEvents = [];
-      const allOtherEvents = [];
+      const fullDayAndMultipleDayEvents = [];
+      const singleDayTimedEvents = [];
 
       for (const scheduleEvent of this.events) {
-        if (scheduleEvent.time.start.match(DATE_TIME_STRING_PATTERN)) {
-          allOtherEvents.push(scheduleEvent);
-        } else if (
-          scheduleEvent.time.start.match(DATE_TIME_STRING_FULL_DAY_PATTERN)
-        ) {
-          fullDayEvents.push(scheduleEvent);
+        if (Helpers.getEventType(scheduleEvent, this.time) === EVENT_TYPE.SINGLE_DAY_TIMED) {
+          singleDayTimedEvents.push(scheduleEvent);
+        } else {
+          fullDayAndMultipleDayEvents.push(scheduleEvent);
         }
       }
 
@@ -252,14 +244,14 @@ export default defineComponent({
             )
           : this.period.end;
 
-      this.fullDayEvents = fullDayEvents.length
+      this.fullDayEvents = fullDayAndMultipleDayEvents.length
         ? eventPosition.positionFullDayEventsInWeek(
             this.period.start,
             weekEndDate,
-            fullDayEvents
+            fullDayAndMultipleDayEvents
           )
         : [];
-      this.events = allOtherEvents;
+      this.events = singleDayTimedEvents;
     },
 
     setDays() {
