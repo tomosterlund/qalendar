@@ -12,6 +12,10 @@
   max-width: initial;
 }
 
+.VPNav .VPNavBar .logo {
+  height: 50px;
+}
+
 .image .image-container img {
   max-width: 100%;
   max-height: 100%;
