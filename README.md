@@ -1,4 +1,4 @@
-# Qalendar
+![qalendar](https://discover-test-files.s3.eu-central-1.amazonaws.com/Logo+MAIN.png)
 
 [![Build](https://github.com/tomosterlund/qalendar/actions/workflows/build.yml/badge.svg)](https://github.com/tomosterlund/qalendar/actions/workflows/build.yml)
 [![Release](https://github.com/tomosterlund/qalendar/actions/workflows/release.yml/badge.svg)](https://github.com/tomosterlund/qalendar/actions/workflows/release.yml)
