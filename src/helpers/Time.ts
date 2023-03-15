@@ -1,13 +1,18 @@
 import Helpers from "./Helpers";
-import { DAY_TIME_POINT } from "../typings/config.interface";
+import {DAY_TIME_POINT} from "../typings/config.interface";
 import EDate from "./EDate";
 
 export type calendarWeekType = Date[];
 export type calendarMonthType = calendarWeekType[];
 export type calendarYearMonths = Date[];
 
+export enum WEEK_START_DAY {
+  SUNDAY = 'sunday',
+  MONDAY = 'monday'
+}
+
 export default class Time {
-  FIRST_DAY_OF_WEEK: "sunday" | "monday";
+  FIRST_DAY_OF_WEEK: WEEK_START_DAY;
   CALENDAR_LOCALE: string;
   ALL_HOURS: DAY_TIME_POINT[] = [
     0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300,
@@ -16,10 +21,10 @@ export default class Time {
   DAY_START: DAY_TIME_POINT;
   DAY_END: DAY_TIME_POINT;
   HOURS_PER_DAY = 24;
-  MS_PER_DAY: number
+  MS_PER_DAY: number;
 
   constructor(
-    firstDayOfWeek: "sunday" | "monday" = "monday",
+    firstDayOfWeek: WEEK_START_DAY = WEEK_START_DAY.MONDAY,
     locale: string | null = null,
     dayBoundaries: { start: DAY_TIME_POINT; end: DAY_TIME_POINT } = { start: 0, end: 2400 }
   ) {
@@ -459,5 +464,74 @@ export default class Time {
     const dayOnePlusOneDay = this.dateStringFrom(this.addDaysToDateTimeString(1, dayOne))
 
     return dayOnePlusOneDay === this.dateStringFrom(dayTwo);
+  }
+
+  setHourInDateTimeString(dateTimeString: string, hour: number) {
+    let hourString = hour.toString()
+
+    if (hour < 10) hourString = "0" + hour
+
+    dateTimeString = dateTimeString.replace(/\d{2}:/, hourString + ":")
+
+    return dateTimeString
+  }
+
+  setMinutesInDateTimeString(dateTimeString: string, minutes: number) {
+    let minutesString = minutes.toString()
+
+    if (minutes < 10) minutesString = "0" + minutes
+
+    dateTimeString = dateTimeString.replace(/:\d{2}/, ":" + minutesString)
+
+    return dateTimeString
+  }
+
+  getDateTimeStringDayBoundariesFrom(dateString: string): { start: string, end: string } {
+    if (this.DAY_END <= this.DAY_START) {
+      const nextDay = this.addDaysToDateTimeString(1, dateString);
+      const endOfDay = this.setHourInDateTimeString(nextDay, this.getHourAndMinutesFromTimePoints(this.DAY_END).hour);
+      const startOfDay = this.setHourInDateTimeString(dateString, this.getHourAndMinutesFromTimePoints(this.DAY_START).hour);
+
+      return { start: startOfDay, end: endOfDay }
+    }
+
+    const startOfDay = this.setHourInDateTimeString(dateString, this.getHourAndMinutesFromTimePoints(this.DAY_START).hour);
+    let endOfDay;
+    if (this.DAY_END === DAY_TIME_POINT.TWELVE_AM) {
+      endOfDay = this.setHourInDateTimeString(dateString, 23);
+      endOfDay = this.setMinutesInDateTimeString(endOfDay, 59);
+    } else {
+      endOfDay = this.setHourInDateTimeString(dateString, this.getHourAndMinutesFromTimePoints(this.DAY_END).hour);
+    }
+
+    return { start: startOfDay, end: endOfDay }
+  }
+}
+
+export class TimeBuilder {
+  private weekStartsOn: WEEK_START_DAY = WEEK_START_DAY.MONDAY;
+  private locale: string | null = null;
+  private dayBoundaries: { start: DAY_TIME_POINT, end: DAY_TIME_POINT } = { start: 0, end: 2400 };
+
+  build() {
+    return new Time(this.weekStartsOn, this.locale, this.dayBoundaries);
+  }
+
+  withWeekStartsOn(weekStartsOn: WEEK_START_DAY) {
+    this.weekStartsOn = weekStartsOn;
+
+    return this;
+  }
+
+  withLocale(locale: string) {
+    this.locale = locale;
+
+    return this;
+  }
+
+  withDayBoundaries(dayBoundaries: { start: DAY_TIME_POINT, end: DAY_TIME_POINT }) {
+    this.dayBoundaries = dayBoundaries;
+
+    return this;
   }
 }

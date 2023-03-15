@@ -15,6 +15,7 @@ import {defineComponent} from "vue";
 import Qalendar from '../../src/Qalendar.vue';
 import {fiveDayWeekEvents} from './__data__/02-five-day-week';
 import {configInterface} from '../../src/typings/config.interface';
+import {WEEK_START_DAY} from "../../src/helpers/Time";
 
 export default defineComponent({
   name: 'FiveDayWeek',
@@ -27,7 +28,7 @@ export default defineComponent({
         locale: 'de-DE',
         week: {
           nDays: 7,
-          startsOn: 'monday',
+          startsOn: WEEK_START_DAY.MONDAY,
         },
         dayBoundaries: {
           start: 6,
