@@ -126,23 +126,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { eventInterface } from '../../typings/interfaces/event.interface';
-import EventPosition from '../../helpers/EventPosition';
+import {defineComponent, PropType} from 'vue';
+import {eventInterface} from '../../typings/interfaces/event.interface';
 import {
   faClock,
   faComment,
-  faUser,
   faMapMarkerAlt,
   faQuestionCircle,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import Time from '../../helpers/Time';
-import { configInterface } from '../../typings/config.interface';
-import { EVENT_COLORS } from '../../constants';
-const eventPositionHelper = new EventPosition();
+import {configInterface} from '../../typings/config.interface';
+import {EVENT_COLORS} from '../../constants';
 import DragAndDrop from '../../helpers/DragAndDrop';
-import { modeType } from '../../typings/types';
+import {DayInfo, DRAG_DIRECTION, modeType} from '../../typings/types';
 import Helpers from "../../helpers/Helpers";
 
 export default defineComponent({
@@ -166,7 +164,7 @@ export default defineComponent({
       required: true,
     },
     dayInfo: {
-      type: Object as PropType<{ daysTotalN: number; thisDayIndex: number }>,
+      type: Object as PropType<DayInfo>,
       required: true,
     },
     mode: {
@@ -191,6 +189,7 @@ export default defineComponent({
       eventTransformValue: 'initial',
       eventZIndexValue: 'initial' as 'initial' | number,
       dayElement: document.querySelector('.calendar-week__day'),
+      dayBoundariesDateTimeStrings: this.time.getDateTimeStringDayBoundariesFrom(this.dayInfo.dateTimeString),
 
       // Resizing events
       resizingStartingPoint: undefined,
@@ -241,7 +240,7 @@ export default defineComponent({
     },
 
     timePointsInDay() {
-      return this.time.DAY_END;
+      return this.time.HOURS_PER_DAY * 100;
     },
 
     timePointsInOneMinute() {
@@ -314,13 +313,8 @@ export default defineComponent({
 
   watch: {
     changeInQuarterHoursEventStart(newValue) {
-      const { hour: dayStartHour, minutes: dayStartMinutes } =
-        this.time.getHourAndMinutesFromTimePoints(this.time.DAY_START);
       const { year, month, date } = this.time.getAllVariablesFromDateTimeString(
         this.event.time.start
-      );
-      const startOfDayDateTimeString = this.time.getDateTimeStringFromDate(
-        new Date(year, month, date, dayStartHour, dayStartMinutes)
       );
       const { hour: oldHour, minutes: oldMinutes } =
         this.time.getAllVariablesFromDateTimeString(
@@ -345,19 +339,14 @@ export default defineComponent({
       // and later than start of day
       if (
         newStartOfTimeDateTimeString < this.event.time.end &&
-        newStartOfTimeDateTimeString >= startOfDayDateTimeString
+        newStartOfTimeDateTimeString >= this.dayBoundariesDateTimeStrings.start
       )
         this.event.time.start = newStartOfTimeDateTimeString;
     },
 
     changeInQuarterHoursEventEnd(newValue) {
-      const { hour: dayEndHour, minutes: dayEndMinutes } =
-        this.time.getHourAndMinutesFromTimePoints(this.time.DAY_END);
       const { year, month, date } = this.time.getAllVariablesFromDateTimeString(
         this.event.time.start
-      );
-      const endOfDayDateTimeString = this.time.getDateTimeStringFromDate(
-        new Date(year, month, date, dayEndHour, dayEndMinutes)
       );
       const { hour: oldHour, minutes: oldMinutes } =
         this.time.getAllVariablesFromDateTimeString(
@@ -376,18 +365,23 @@ export default defineComponent({
       // and earlier than end of day
       if (
         newEndOfTimeDateTimeString > this.event.time.start &&
-        newEndOfTimeDateTimeString <= endOfDayDateTimeString
+        newEndOfTimeDateTimeString <= this.dayBoundariesDateTimeStrings.end
       )
         this.event.time.end = newEndOfTimeDateTimeString;
     },
 
     changeInQuartersOnDrag(newValue) {
+      const dayBoundaryDateTimeStrings = this.time.getDateTimeStringDayBoundariesFrom(
+        this.dayInfo.dateTimeString
+      );
+
       const eventCanBeDraggedFurther = DragAndDrop.eventCanBeDraggedFurther(
         this.event,
-        newValue <= -1 ? 'backwards' : 'forwards',
-        this.time.DAY_START,
-        this.time.DAY_END,
+        newValue <= -1 ? DRAG_DIRECTION.BACKWARDS : DRAG_DIRECTION.FORWARDS,
+        dayBoundaryDateTimeStrings.start,
+        dayBoundaryDateTimeStrings.end,
       );
+
       if (!eventCanBeDraggedFurther) return;
 
       const newStart = this.time.addMinutesToDateTimeString(
@@ -398,7 +392,7 @@ export default defineComponent({
         newValue * 15,
         this.timeEndDragStart
       );
-      // Only change the portion of a string that affects time
+      // Only change the portion of a string that affects time, since setting date is handled changeInDaysOnDrag
       this.event.time.start = this.event.time.start.replace(
         /\d{2}:\d{2}/,
         this.time.timeStringFrom(newStart),
@@ -520,6 +514,7 @@ export default defineComponent({
         (nOfPixelsDistance / eventsContainerHeight) * 100;
       const changeInTimePoints =
         (this.timePointsInDay / 100) * percentageOfDayChanged;
+
       const changeInMinutes = this.getMinutesFromTimePoints(changeInTimePoints);
 
       // Count how many quarters have changed, since the event will only be updated

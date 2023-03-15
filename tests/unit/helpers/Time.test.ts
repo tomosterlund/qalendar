@@ -1,11 +1,11 @@
 import {describe, expect, it, test} from "vitest";
-import Time from "../../../src/helpers/Time";
+import Time, {TimeBuilder, WEEK_START_DAY} from "../../../src/helpers/Time";
 import unidecode from "unidecode";
 import {DAY_TIME_POINT} from "../../../src/typings/config.interface";
 // Functionality which is sensitive to the class property FIRST_DAY_OF_WEEK
 // needs to be tested with both "timeM" and "timeS"
-const timeM = new Time("monday");
-const timeS = new Time("sunday");
+const timeM = new Time(WEEK_START_DAY.MONDAY);
+const timeS = new Time(WEEK_START_DAY.SUNDAY);
 
 describe("Time.ts", () => {
   it("Gets a calendar week, based on date 2022-05-14", () => {
@@ -220,7 +220,7 @@ describe("Time.ts", () => {
   });
 
   it("should get a localized string, for each hour of the day", () => {
-    const timeEnglish = new Time("sunday", "en-US");
+    const timeEnglish = new Time(WEEK_START_DAY.SUNDAY, "en-US");
     const hours = timeM.ALL_HOURS;
 
     let iterator = 0;
@@ -249,7 +249,7 @@ describe("Time.ts", () => {
 
   it("returns a localized name of the day, given a specified date", () => {
     // Long day names
-    const timeEnglish = new Time("sunday", "en-US");
+    const timeEnglish = new Time(WEEK_START_DAY.SUNDAY, "en-US");
 
     const saturday = timeEnglish.getLocalizedNameOfWeekday(
       new Date(2022, 5 - 1, 14),
@@ -264,7 +264,7 @@ describe("Time.ts", () => {
     expect(thursday).toEqual("Thursday");
 
     // Short day names
-    const timeSwedish = new Time("monday", "sv-SE");
+    const timeSwedish = new Time(WEEK_START_DAY.MONDAY, "sv-SE");
 
     const loerdag = timeSwedish.getLocalizedNameOfWeekday(
       new Date(2022, 5 - 1, 14),
@@ -280,7 +280,7 @@ describe("Time.ts", () => {
   });
 
   it("returns a localized name of the month, given a specified date", () => {
-    const timeEnglish = new Time("monday", "en-UK");
+    const timeEnglish = new Time(WEEK_START_DAY.MONDAY, "en-UK");
 
     // Try short month names
     const january = timeEnglish.getLocalizedNameOfMonth(
@@ -296,7 +296,7 @@ describe("Time.ts", () => {
     expect(december).toEqual("Dec");
 
     // And long ones
-    const timeGerman = new Time("monday", "de-DE");
+    const timeGerman = new Time(WEEK_START_DAY.MONDAY, "de-DE");
 
     const maerz = timeGerman.getLocalizedNameOfMonth(
       new Date(2025, 3 - 1, 31),
@@ -312,14 +312,14 @@ describe("Time.ts", () => {
   });
 
   it("returns a localized date string for US English", () => {
-    const timeEnglish = new Time("sunday", "en-US");
+    const timeEnglish = new Time(WEEK_START_DAY.SUNDAY, "en-US");
     const d = new Date(2022, 5 - 1, 15);
     const dateString = timeEnglish.getLocalizedDateString(d);
     expect(dateString).toEqual("5/15/2022");
   });
 
   it("returns a localized date string for German", () => {
-    const timeGerman = new Time("monday", "de-DE");
+    const timeGerman = new Time(WEEK_START_DAY.MONDAY, "de-DE");
     const d = new Date(2022, 1 - 1, 1);
     const dateString = timeGerman.getLocalizedDateString(d);
     expect(dateString).toEqual("1.1.2022");
@@ -343,7 +343,7 @@ describe("Time.ts", () => {
   });
 
   it("tests getHourAndMinutesFromTimePoints", () => {
-    let { hour: h1, minutes: m1 } = timeM.getHourAndMinutesFromTimePoints(0);
+    const { hour: h1, minutes: m1 } = timeM.getHourAndMinutesFromTimePoints(0);
     expect(h1).toBe(0);
     expect(m1).toBe(0);
 
@@ -359,13 +359,13 @@ describe("Time.ts", () => {
   });
 
   it("tests getLocalizedHours", () => {
-    const englishTime = new Time("sunday", "en-US");
+    const englishTime = new Time(WEEK_START_DAY.SUNDAY, "en-US");
     const fourAM = new Date(2022, 0, 1, 4);
     expect(
       unidecode(englishTime.getLocalizedHour(fourAM))
     ).toBe("04 AM");
 
-    const swedishTime = new Time("monday", "sv-SE");
+    const swedishTime = new Time(WEEK_START_DAY.MONDAY, "sv-SE");
     const elevenPM = new Date(0, 0, 1, 23);
     expect(
       unidecode(swedishTime.getLocalizedHour(elevenPM))
@@ -564,7 +564,7 @@ describe("Time.ts", () => {
 
   it('Gets the correct timeline hours for a half day', () => {
     const timeInstance = new Time(
-      'sunday',
+      WEEK_START_DAY.SUNDAY,
       'en',
       { start: DAY_TIME_POINT.TWELVE_PM, end: DAY_TIME_POINT.TWELVE_AM }
     );
@@ -600,7 +600,7 @@ describe("Time.ts", () => {
 
   it('Gets the correct timeline hours for a "day" stretched across two days', () => {
     const timeInstance = new Time(
-      'sunday',
+      WEEK_START_DAY.SUNDAY,
       'en',
       { start: DAY_TIME_POINT.FOUR_AM, end: DAY_TIME_POINT.TWO_AM }
     );
@@ -780,4 +780,82 @@ describe("Time.ts", () => {
 
     expect(consecutive).toBe(false);
   });
+
+  test("Setting hour in date time string", () => {
+    const newDateTimeString = timeM.setHourInDateTimeString(
+      "2022-02-16 01:25",
+      2
+    );
+    expect(newDateTimeString).toEqual("2022-02-16 02:25");
+
+    const newDateTimeString2 = timeM.setHourInDateTimeString(
+      "2022-12-31 23:00",
+      0
+    )
+    expect(newDateTimeString2).toEqual("2022-12-31 00:00");
+  });
+
+  test("Setting minutes in date time string", () => {
+    const newDateTimeString = timeM.setMinutesInDateTimeString(
+      "2022-02-16 01:25",
+      2
+    );
+    expect(newDateTimeString).toEqual("2022-02-16 01:02");
+
+    const newDateTimeString2 = timeM.setMinutesInDateTimeString(
+      "2022-12-31 23:59",
+      0
+    )
+    expect(newDateTimeString2).toEqual("2022-12-31 23:00");
+  });
+
+  test("setting date time strings for day boundaries 6AM - 2AM", () => {
+    const dateString = "2022-02-16 00:00";
+
+    const timeInstance = new TimeBuilder()
+      .withDayBoundaries({ start: 600, end: 200 })
+      .build();
+
+    const actualDateStringDayBoundaries = timeInstance.getDateTimeStringDayBoundariesFrom(dateString);
+
+    expect(actualDateStringDayBoundaries.start).toEqual("2022-02-16 06:00");
+    expect(actualDateStringDayBoundaries.end).toEqual("2022-02-17 02:00");
+  });
+
+  test("Setting date time strings for day boundaries 12AM - 12AM", () => {
+    const dateString = "2022-02-16 00:00";
+
+    const timeInstance = new TimeBuilder()
+      .withDayBoundaries({ start: 0, end: 2400 })
+      .build();
+
+    const actualDateStringDayBoundaries = timeInstance.getDateTimeStringDayBoundariesFrom(dateString);
+
+    expect(actualDateStringDayBoundaries.start).toEqual("2022-02-16 00:00");
+    expect(actualDateStringDayBoundaries.end).toEqual("2022-02-16 23:59");
+  })
+
+  test("Setting date time strings for day boundaries 6PM - 5AM, end date being in next year", () => {
+    const dateString = "2022-12-31 00:00";
+
+    const timeInstance = new TimeBuilder()
+      .withDayBoundaries({ start: 1800, end: 500 })
+      .build();
+
+    const actualDateStringDayBoundaries = timeInstance.getDateTimeStringDayBoundariesFrom(dateString);
+    expect(actualDateStringDayBoundaries.start).toEqual("2022-12-31 18:00");
+    expect(actualDateStringDayBoundaries.end).toEqual("2023-01-01 05:00");
+  })
+
+  test("Setting date time strings for day boundaries 3AM to 10PM", () => {
+    const dateString = "2022-12-31 00:00";
+
+    const timeInstance = new TimeBuilder()
+      .withDayBoundaries({ start: 300, end: 2200 })
+      .build();
+
+    const actualDateStringDayBoundaries = timeInstance.getDateTimeStringDayBoundariesFrom(dateString);
+    expect(actualDateStringDayBoundaries.start).toEqual("2022-12-31 03:00");
+    expect(actualDateStringDayBoundaries.end).toEqual("2022-12-31 22:00");
+  })
 });

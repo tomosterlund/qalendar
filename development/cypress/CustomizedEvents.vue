@@ -49,6 +49,7 @@ import Qalendar from '../../src/Qalendar.vue';
 import {fiveDayWeekEvents} from './__data__/02-five-day-week';
 import {configInterface} from '../../src/typings/config.interface';
 import {DATE_TIME_STRING_PATTERN} from '../../src/constants';
+import {WEEK_START_DAY} from "../../src/helpers/Time";
 
 export default defineComponent({
   name: 'CustomizedEvents',
@@ -60,7 +61,7 @@ export default defineComponent({
       config: {
         locale: 'de-DE',
         week: {
-          startsOn: 'monday',
+          startsOn: WEEK_START_DAY.MONDAY,
         },
         eventDialog: {
           isCustom: true,

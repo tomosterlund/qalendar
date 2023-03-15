@@ -60,7 +60,7 @@
           :day="day"
           :time="time"
           :config="config"
-          :day-info="{ daysTotalN: days.length, thisDayIndex: dayIndex }"
+          :day-info="{ daysTotalN: days.length, thisDayIndex: dayIndex, dateTimeString: day.dateTimeString }"
           :mode="mode"
           :day-intervals="dayIntervals"
           @event-was-clicked="handleClickOnEvent"
@@ -93,7 +93,7 @@ import WeekTimeline from './WeekTimeline.vue';
 import Day from './Day.vue';
 import EventFlyout from '../partials/EventFlyout.vue';
 import {EVENT_TYPE, eventInterface} from '../../typings/interfaces/event.interface';
-import Time from '../../helpers/Time';
+import Time, {WEEK_START_DAY} from '../../helpers/Time';
 import EventPosition from '../../helpers/EventPosition';
 import {fullDayEventsWeek} from '../../typings/interfaces/full-day-events-week.type';
 import {modeType} from '../../typings/types';
@@ -268,11 +268,11 @@ export default defineComponent({
           return { dayName, dateTimeString, events };
         });
 
-      if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === 'monday') {
+      if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === WEEK_START_DAY.MONDAY) {
         // Delete Saturday & Sunday
         days.splice(5, 2);
         this.fullDayEvents.splice(5, 2);
-      } else if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === 'sunday') {
+      } else if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === WEEK_START_DAY.SUNDAY) {
         // First delete Saturday, then Sunday
         days.splice(6, 1);
         this.fullDayEvents.splice(6, 1);

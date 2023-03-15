@@ -99,6 +99,7 @@ import { seededEvents } from './data/seeded-events';
 import DevToolbar from './components/DevToolbar.vue';
 import DevSidebar from './components/DevSidebar.vue';
 import DevHeader from './components/DevHeader.vue';
+import { WEEK_START_DAY } from "../src/helpers/Time";
 
 export default defineComponent({
   name: 'QalendarView',
@@ -114,7 +115,7 @@ export default defineComponent({
     return {
       config: {
         week: {
-          startsOn: 'monday',
+          startsOn: WEEK_START_DAY.MONDAY,
           nDays: 7,
           scrollToHour: 8,
         },
@@ -141,7 +142,7 @@ export default defineComponent({
         },
         dayBoundaries: {
           start: 4,
-          end: 2,
+          end: 3,
         },
         eventDialog: {
           isDisabled: false,

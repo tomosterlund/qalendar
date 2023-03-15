@@ -52,7 +52,7 @@ import {
   configInterface,
   dayIntervalsType,
 } from '../../typings/config.interface';
-import { modeType } from '../../typings/types';
+import {DayInfo, modeType} from '../../typings/types';
 import DayIntervals, { interval } from '../../helpers/DayIntervals';
 const eventConcurrencyHelper = new EventConcurrency();
 
@@ -75,7 +75,7 @@ export default defineComponent({
       required: true,
     },
     dayInfo: {
-      type: Object as PropType<{ daysTotalN: number; thisDayIndex: number }>,
+      type: Object as PropType<DayInfo>,
       required: true,
     },
     mode: {
