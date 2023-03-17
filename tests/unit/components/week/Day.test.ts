@@ -1,12 +1,12 @@
 import {mount, VueWrapper} from "@vue/test-utils";
 import Day from "../../../../src/components/week/Day.vue";
-import { describe, expect, test } from "vitest";
-import Time from "../../../../src/helpers/Time";
+import {describe, expect, test} from "vitest";
+import Time, {WEEK_START_DAY} from "../../../../src/helpers/Time";
 
 describe("Day.vue", () => {
-  let wrapper = mount(Day, {
+  const wrapper = mount(Day, {
     props: {
-      time: new Time("sunday", "en-US"),
+      time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
       day: {
         dayName: "Sunday",
         dateTimeString: "2022-05-22 00:00",
@@ -35,7 +35,7 @@ describe("Day.vue", () => {
         displayClickableInterval: true,
       },
       mode: 'week',
-      dayInfo: { daysTotalN: 7, thisDayIndex: 1 },
+      dayInfo: { daysTotalN: 7, thisDayIndex: 1, dateTimeString: "2022-05-22 00:00" },
     },
   });
 

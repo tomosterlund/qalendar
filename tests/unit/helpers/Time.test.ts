@@ -431,6 +431,15 @@ describe("Time.ts", () => {
     expect(newDateTime).toBe('2023-01-01 04:42')
   });
 
+  it('adds 15 minutes to 23:44', () => {
+    const minutesToAdd = 15
+    const oldDateTime = '2023-03-17 23:44'
+
+    const newDateTime = timeM.addMinutesToDateTimeString(minutesToAdd, oldDateTime)
+
+    expect(newDateTime).toBe('2023-03-17 23:59')
+  });
+
   it('adds 5 days to dateTimeString', () => {
     const daysToAdd = 5
     const oldDateTime = '2022-12-31 23:59'
