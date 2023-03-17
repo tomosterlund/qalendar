@@ -513,20 +513,20 @@ export default defineComponent({
       this.$emit('drag-start');
 
       this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
-        document.addEventListener(name, callback, { passive: false });
+        document.addEventListener(name, callback);
       });
 
       if (Helpers.isUIEventTouchEvent(domEvent)) {
-        this.handleDragMove(
+        this.setInitialDragValues(
           (domEvent as TouchEvent).touches[0].clientX,
           (domEvent as TouchEvent).touches[0].clientY
         );
       } else {
-        this.handleDragMove((domEvent as MouseEvent).clientX, (domEvent as MouseEvent).clientY);
+        this.setInitialDragValues((domEvent as MouseEvent).clientX, (domEvent as MouseEvent).clientY);
       }
     },
 
-    handleDragMove(clientX: number, clientY: number) {
+    setInitialDragValues(clientX: number, clientY: number) {
       this.canDrag = true;
       this.eventZIndexValue = 10;
       this.clientYDragStart = clientY;
@@ -546,11 +546,8 @@ export default defineComponent({
       this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
         document.removeEventListener(name, callback);
       });
-      const dayChanged =
-        this.changeInDaysOnDrag <= -1 || this.changeInDaysOnDrag > 0;
-      const timeChanged =
-        this.changeInQuartersOnDrag <= -1 || this.changeInQuartersOnDrag > 0;
-
+      const dayChanged = this.changeInDaysOnDrag <= -1 || this.changeInDaysOnDrag > 0;
+      const timeChanged = this.changeInQuartersOnDrag <= -1 || this.changeInQuartersOnDrag > 0;
       if (dayChanged || timeChanged) this.$emit('event-was-dragged', this.event);
     },
 
