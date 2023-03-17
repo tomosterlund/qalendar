@@ -1,21 +1,22 @@
-import { mount } from "@vue/test-utils";
+import {mount} from "@vue/test-utils";
 import DayEvent from "../../../../src/components/week/DayEvent.vue";
-import { describe, expect, test, it, vi } from "vitest";
-import Time from "../../../../src/helpers/Time";
-import { nextTick } from "vue";
+import {describe, expect, test, it, vi } from "vitest";
+import Time, {WEEK_START_DAY} from "../../../../src/helpers/Time";
+import {nextTick} from "vue";
 import {mountComponent} from "../../../vitest-setup";
 import unidecode from 'unidecode';
+
 const dayEvent = mountComponent(mount, DayEvent)
 
 describe("DayEvent.vue", () => {
   const propsForAllTests = {
-    time: new Time("sunday", "en-US"),
-    dayInfo: { daysTotalN: 7, thisDayIndex: 1 },
+    time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
+    dayInfo: { daysTotalN: 7, thisDayIndex: 1, dateTimeString: "2022-05-20" },
     mode: 'week',
   }
 
   test("Displaying the texts fed as props", () => {
-    let wrapper = dayEvent({
+    const wrapper = dayEvent({
       props: {
         eventProp: {
           id: "sdfgdfsda-435643-dsfghgd",
@@ -43,7 +44,7 @@ describe("DayEvent.vue", () => {
   });
 
   test("Setting colors via a colorScheme", async () => {
-    let wrapper = dayEvent({
+    const wrapper = dayEvent({
       props: {
         eventProp: {
           id: "sdfgdfsda-435643-dsfghgd",
