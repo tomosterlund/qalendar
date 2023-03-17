@@ -25,7 +25,7 @@ export class EventsFilter {
       return this.handlePartialDayWithinOneDayBoundary(timeInstance, event);
     }
 
-    if (timeInstance.DAY_END < timeInstance.DAY_START) {
+    if (timeInstance.DAY_END <= timeInstance.DAY_START) {
       return this.handleDayStretchingTwoDates(timeInstance, event, startDateTimeString, eventIsInDay);
     }
 
