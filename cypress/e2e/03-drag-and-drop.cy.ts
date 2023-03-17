@@ -21,7 +21,7 @@ describe('DragAndDrop.vue', () => {
         .trigger('mouseup')
 
       cy.get('.is-time').then($el => {
-        expect($el).not.to.have.text(initialTimeString)
+        expect($el).to.have.text('10:35 PM - 11:35 PM')
       })
     })
   });

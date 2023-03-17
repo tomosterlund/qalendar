@@ -514,13 +514,13 @@ export default defineComponent({
       });
 
       if (domEvent instanceof TouchEvent) {
-        this.handleDragMove(domEvent.touches[0].clientX, domEvent.touches[0].clientY);
+        this.setInitialDragValues(domEvent.touches[0].clientX, domEvent.touches[0].clientY);
       } else {
-        this.handleDragMove(domEvent.clientX, domEvent.clientY);
+        this.setInitialDragValues(domEvent.clientX, domEvent.clientY);
       }
     },
 
-    handleDragMove(clientX: number, clientY: number) {
+    setInitialDragValues(clientX: number, clientY: number) {
       this.canDrag = true;
       this.eventZIndexValue = 10;
       this.clientYDragStart = clientY;
@@ -540,16 +540,13 @@ export default defineComponent({
       this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
         document.removeEventListener(name, callback);
       });
-      const dayChanged =
-        this.changeInDaysOnDrag <= -1 || this.changeInDaysOnDrag > 0;
-      const timeChanged =
-        this.changeInQuartersOnDrag <= -1 || this.changeInQuartersOnDrag > 0;
-
+      const dayChanged = this.changeInDaysOnDrag <= -1 || this.changeInDaysOnDrag > 0;
+      const timeChanged = this.changeInQuartersOnDrag <= -1 || this.changeInQuartersOnDrag > 0;
       if (dayChanged || timeChanged) this.$emit('event-was-dragged', this.event);
     },
 
     handleDrag(mouseEvent: MouseEvent | TouchEvent) {
-      // Do not run the drag & drop algorithms, when element is being resized
+      // Do not run the drag & drop algorithms, under the following conditions:
       if (
         this.isResizing
         || !this.canDrag
