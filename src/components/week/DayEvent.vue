@@ -524,10 +524,12 @@ export default defineComponent({
 
       if (this.event?.color) {
         this.eventColor = '#fff';
-        return (this.eventBackgroundColor = this.colors[this.event.color]);
+        this.eventBackgroundColor = this.colors[this.event.color];
+
+        return;
       }
 
-      return (this.eventBackgroundColor = this.colors.blue);
+      this.eventBackgroundColor = this.colors.blue;
     },
 
     initDrag(domEvent: MouseEvent | TouchEvent) {

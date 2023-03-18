@@ -40,4 +40,40 @@ export class EventBuilder {
 
     return this;
   }
+
+  withColor(color: EventColor) {
+    this.eventImpl.color = color;
+
+    return this;
+  }
+
+  withColorScheme(colorScheme: string) {
+    this.eventImpl.colorScheme = colorScheme;
+
+    return this;
+  }
+
+  withDescription(description: string) {
+    this.eventImpl.description = description;
+
+    return this;
+  }
+
+  withTopic(topic: string) {
+    this.eventImpl.topic = topic;
+
+    return this;
+  }
+
+  withLocation(location: string) {
+    this.eventImpl.location = location;
+
+    return this;
+  }
+
+  withWith($with: string) {
+    this.eventImpl.with = $with;
+
+    return this;
+  }
 }
