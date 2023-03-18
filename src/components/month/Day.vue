@@ -4,7 +4,7 @@
     :id="'day-' + day.dateTimeString.substring(0, 10)"
     class="calendar-month__weekday"
     :class="{ 'is-droppable': canBeDropped, 'trailing-or-leading': day.isTrailingOrLeadingDate }"
-    @click.self="emitDayWasClicked"
+    @click="emitDayWasClicked"
     @dragleave="handleDragLeave"
     @dragover="handleDragOver"
     @drop="handleDrop"
@@ -12,7 +12,6 @@
   >
     <span
       class="calendar-month__day-date"
-      @click="emitDayWasClicked"
     >
       {{ day.dateTimeString.substring(8, 10) }}
     </span>

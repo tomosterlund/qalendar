@@ -46,4 +46,8 @@ export const languageKeys = {
     "th-TH": "+ เหตุการณ์เพิ่มเติม",
     "nl-NL": "meer evenementen",
   },
+  noEvent:{
+    'en-US': 'No Events',
+    'fr-FR': 'Aucun Evènement'
+  }
 };

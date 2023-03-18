@@ -1,10 +1,10 @@
 <template>
   <div class="calendar-month">
-    <div class="calendar-month__week-days">
+    <div class="calendar-month__week-dayNames">
       <WeekDay
         v-for="(day, dayIndex) in month[0]"
         :key="dayIndex"
-        class="calendar-month__week-day"
+        class="calendar-month__week-dayName"
         :config="config"
         :day="day"
         :time="time"
@@ -39,11 +39,12 @@
     </div>
 
     <div class="calendar-month__day_events">
-      <MonthDayEventsVue
+      <MonthDayEvents
         v-if="selectedDay"
         :config="config"
         :time="time"
         :day="selectedDay"
+        @event-was-clicked="handleClickOnEvent"
       />
     </div>
 
@@ -86,6 +87,7 @@ import EventPosition from '../../helpers/EventPosition';
 const EventPositionHelper = new EventPosition();
 import PerfectScrollbar from 'perfect-scrollbar';
 import WeekDay from './WeekDay.vue';
+import MonthDayEvents from './MonthDayEvents.vue'
 
 export default defineComponent({
   name: 'Month',
@@ -93,7 +95,8 @@ export default defineComponent({
   components: {
     Day,
     EventFlyout,
-    WeekDay
+    WeekDay,
+    MonthDayEvents
 },
 
   props: {
@@ -243,21 +246,24 @@ export default defineComponent({
 <style lang="scss" scoped>
 .calendar-month {
   position: relative;
+  display: flex;
+  flex-flow: column;
   flex: 1;
   width: 100%;
   overflow-y: auto;
 
-  .calendar-month__week-days{
+  .calendar-month__week-dayNames{
 
     display: flex;
     justify-content: space-between;
-    .calendar-month__week-day{
+    .calendar-month__week-dayName{
       flex-grow: 1;
       text-align: center;
     }
   }
   .calendar-month__weeks {
     height: 100%;
+    flex-grow: 1;
     display: flex;
     flex-flow: column;
     justify-content: space-between;
@@ -269,6 +275,13 @@ export default defineComponent({
 
     .qalendar-is-small & {
       display: flex;
+    }
+  }
+  .calendar-month__day_events{
+    display: none;
+
+    .qalendar-is-small & {
+      display: block;
     }
   }
 }
