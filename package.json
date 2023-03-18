@@ -75,7 +75,7 @@
     "@types/node": "18.14.2",
     "@types/unidecode": "^0.1.1",
     "@vitejs/plugin-vue": "2.3.3",
-    "@vitest/coverage-istanbul": "^0.29.3",
+    "@vitest/coverage-c8": "^0.29.3",
     "@vue/eslint-config-prettier": "7.1.0",
     "@vue/eslint-config-typescript": "11.0.2",
     "@vue/test-utils": "2.3.1",

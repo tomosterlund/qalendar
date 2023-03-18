@@ -526,18 +526,6 @@ export class TimeBuilder {
     return new Time(this.weekStartsOn, this.locale, this.dayBoundaries);
   }
 
-  withWeekStartsOn(weekStartsOn: WEEK_START_DAY) {
-    this.weekStartsOn = weekStartsOn;
-
-    return this;
-  }
-
-  withLocale(locale: string) {
-    this.locale = locale;
-
-    return this;
-  }
-
   withDayBoundaries(dayBoundaries: { start: DAY_TIME_POINT, end: DAY_TIME_POINT }) {
     this.dayBoundaries = dayBoundaries;
 
