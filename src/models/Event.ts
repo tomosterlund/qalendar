@@ -14,6 +14,9 @@ export class EventImpl implements eventInterface {
   disableResize?: modeType[];
   isCustom?: boolean | modeType[];
 
+  // Properties that should not be set from outside Qalendar
+  nOfPreviousConcurrentEvents?: number;
+
   constructor(
     public time: { start: string; end: string },
     public id: eventId,
@@ -73,6 +76,18 @@ export class EventBuilder {
 
   withWith($with: string) {
     this.eventImpl.with = $with;
+
+    return this;
+  }
+
+  withNOfPreviousConcurrentEvents(nOfPreviousConcurrentEvents: number) {
+    this.eventImpl.nOfPreviousConcurrentEvents = nOfPreviousConcurrentEvents;
+
+    return this;
+  }
+
+  withIsEditable(isEditable: boolean) {
+    this.eventImpl.isEditable = isEditable;
 
     return this;
   }

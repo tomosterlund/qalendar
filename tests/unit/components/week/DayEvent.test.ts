@@ -9,7 +9,10 @@ import {EventBuilder} from "../../../../src/models/Event";
 import {EVENT_COLORS} from "../../../../src/constants";
 
 const dayEvent = mountComponent(mount, DayEvent)
-
+const RESIZE_UP_SELECTOR = '.calendar-week__event-resize-up';
+const RESIZE_DOWN_SELECTOR = '.calendar-week__event-resize-down';
+const EVENT_ELEMENT_SELECTOR = ".calendar-week__event";
+const GRADIENT_SELECTOR = '.calendar-week__event-blend-out';
 describe("DayEvent.vue", () => {
   const propsForAllTests = {
     time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
@@ -139,11 +142,10 @@ describe("DayEvent.vue", () => {
             },
           },
         },
-        ...propsForAllTests
       },
     });
 
-    const eventElement = wrapper.find(".calendar-week__event");
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
 
     wrapper.vm.setColors();
     await nextTick();
@@ -171,7 +173,7 @@ describe("DayEvent.vue", () => {
       },
     });
 
-    const eventElement = wrapper.find(".calendar-week__event");
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
 
     wrapper.vm.setColors();
     await nextTick();
@@ -196,7 +198,7 @@ describe("DayEvent.vue", () => {
       }
     });
 
-    const eventElement = wrapper.find(".calendar-week__event");
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
     wrapper.vm.setColors();
     await nextTick();
     expect(eventElement.attributes().style).toContain(
@@ -219,5 +221,180 @@ describe("DayEvent.vue", () => {
     expect(wrapper.emitted('drag-end')).toBe(undefined);
     wrapper.vm.onMouseUpWhenDragging();
     expect(wrapper.emitted('drag-end')).toBeTruthy();
+  })
+
+  it('should not set a white border for an event with no previous concurrent events', () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+    .withNOfPreviousConcurrentEvents(0)
+    .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    });
+
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    expect(eventElement.attributes().style).not.toContain(
+      "border: 1px solid #fff"
+    )
+  })
+
+  it('should set a white border for an event with previous concurrent events', () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withNOfPreviousConcurrentEvents(1)
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    });
+
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    expect(eventElement.attributes().style).toContain(
+      "border: 1px solid #fff"
+    )
+  })
+
+  it('Displays not display the resize elements, for an editable event that is not hovered', () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withIsEditable(true)
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const resizeUpElement = wrapper.findAll(RESIZE_UP_SELECTOR)
+    const resizeDownElement = wrapper.findAll(RESIZE_DOWN_SELECTOR)
+    expect(resizeUpElement.length).toBe(0)
+    expect(resizeDownElement.length).toBe(0)
+  })
+
+  it('Displays the resize elements, for an editable event that is hovered', async () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withIsEditable(true)
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    await eventElement.trigger('mouseenter')
+
+    const resizeUpElement = wrapper.findAll(RESIZE_UP_SELECTOR)
+    const resizeDownElement = wrapper.findAll(RESIZE_DOWN_SELECTOR)
+    expect(resizeUpElement.length).toBe(1)
+    expect(resizeDownElement.length).toBe(1)
+  })
+
+  it('should hide the resize elements when the mouse leaves the event', async () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withIsEditable(true)
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    await eventElement.trigger('mouseenter')
+
+    let resizeUpElement = wrapper.findAll(RESIZE_UP_SELECTOR)
+    let resizeDownElement = wrapper.findAll(RESIZE_DOWN_SELECTOR)
+    expect(resizeUpElement.length).toBe(1)
+    expect(resizeDownElement.length).toBe(1)
+
+    await eventElement.trigger('mouseleave')
+    resizeUpElement = wrapper.findAll(RESIZE_UP_SELECTOR)
+    resizeDownElement = wrapper.findAll(RESIZE_DOWN_SELECTOR)
+    expect(resizeUpElement.length).toBe(0)
+    expect(resizeDownElement.length).toBe(0)
+  })
+
+  it('Does not display the resize elements, for a non-editable event that is hovered', async () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withIsEditable(false)
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    await eventElement.trigger('mouseenter')
+
+    const resizeUpElement = wrapper.findAll(RESIZE_UP_SELECTOR)
+    const resizeDownElement = wrapper.findAll(RESIZE_DOWN_SELECTOR)
+    expect(resizeUpElement.length).toBe(0)
+    expect(resizeDownElement.length).toBe(0)
+  });
+
+  it('should not display a gradient for blending out event texts, for an event shorter than 30 minutes', () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 09:25",
+    }).build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const gradientElement = wrapper.find(GRADIENT_SELECTOR)
+    expect(gradientElement.exists()).toBe(false)
+  })
+
+  it('should display a gradient for blending out event texts, for an event longer than 30 minutes', () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 09:30",
+    }).build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const gradientElement = wrapper.find(GRADIENT_SELECTOR)
+    expect(gradientElement.exists()).toBe(true)
   })
 });
