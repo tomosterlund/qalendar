@@ -8,19 +8,32 @@ import unidecode from 'unidecode';
 import {EventBuilder} from "../../../../src/models/Event";
 import {EVENT_COLORS} from "../../../../src/constants";
 
+const propsForAllTests = {
+  time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
+  dayInfo: { daysTotalN: 7, thisDayIndex: 1, dateTimeString: "2022-05-20" },
+  config: {},
+  mode: 'week',
+}
+
 const dayEvent = mountComponent(mount, DayEvent)
+const getWrapperWithRandomEvent = () => {
+  const event = new EventBuilder({
+    start: "2022-05-20 09:00",
+    end: "2022-05-20 09:30",
+  }).build()
+
+  return dayEvent({
+    props: {
+      ...propsForAllTests,
+      eventProp: event,
+    }
+  })
+}
 const RESIZE_UP_SELECTOR = '.calendar-week__event-resize-up';
 const RESIZE_DOWN_SELECTOR = '.calendar-week__event-resize-down';
 const EVENT_ELEMENT_SELECTOR = ".calendar-week__event";
 const GRADIENT_SELECTOR = '.calendar-week__event-blend-out';
 describe("DayEvent.vue", () => {
-  const propsForAllTests = {
-    time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
-    dayInfo: { daysTotalN: 7, thisDayIndex: 1, dateTimeString: "2022-05-20" },
-    config: {},
-    mode: 'week',
-  }
-
   it("should display the title of av event", () => {
     const event = new EventBuilder({ start: "2022-05-20 09:00", end: "2022-05-20 10:00" })
       .withTitle("Biology lab")
@@ -396,5 +409,119 @@ describe("DayEvent.vue", () => {
 
     const gradientElement = wrapper.find(GRADIENT_SELECTOR)
     expect(gradientElement.exists()).toBe(true)
+  })
+
+  it('should call initDrag on mousedown', () => {
+    const wrapper = getWrapperWithRandomEvent();
+    const initDragSpy = vi.spyOn(wrapper.vm, 'initDrag')
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR)
+    expect(initDragSpy).not.toHaveBeenCalled()
+    eventElement.trigger('mousedown')
+    expect(initDragSpy).toHaveBeenCalled()
+  })
+
+  it('should call initDrag on touchstart', () => {
+    const wrapper = getWrapperWithRandomEvent();
+    const initDragSpy = vi.spyOn(wrapper.vm, 'initDrag')
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR)
+    expect(initDragSpy).not.toHaveBeenCalled()
+    eventElement.trigger('touchstart')
+    expect(initDragSpy).toHaveBeenCalled()
+  })
+
+  it('should call initDrag on mousedown for custom event', () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withIsCustom(true)
+      .withIsEditable(true)
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const initDragSpy = vi.spyOn(wrapper.vm, 'initDrag')
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR)
+    expect(initDragSpy).not.toHaveBeenCalled()
+    eventElement.trigger('mousedown')
+    expect(initDragSpy).toHaveBeenCalled()
+  })
+
+  it('should call initDrag on touchstart for custom event', () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withIsCustom(true)
+      .withIsEditable(true)
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const initDragSpy = vi.spyOn(wrapper.vm, 'initDrag')
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR)
+    expect(initDragSpy).not.toHaveBeenCalled()
+    eventElement.trigger('touchstart')
+    expect(initDragSpy).toHaveBeenCalled()
+  })
+
+  it('Starts a resizing action on mousedown on the resize up element', async () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withIsEditable(true)
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    await eventElement.trigger('mouseenter')
+
+    const resizeUpElement = wrapper.find(RESIZE_UP_SELECTOR)
+    const initResizeSpy = vi.spyOn(wrapper.vm, 'resizeEvent')
+    expect(initResizeSpy).not.toHaveBeenCalled()
+    resizeUpElement.trigger('mousedown')
+    expect(initResizeSpy).toHaveBeenCalled()
+  });
+
+  it('Starts a resizing action on mouswdown on the resize down element', async () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withIsEditable(true)
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    await eventElement.trigger('mouseenter')
+
+    const resizeDownElement = wrapper.find(RESIZE_DOWN_SELECTOR)
+    const initResizeSpy = vi.spyOn(wrapper.vm, 'resizeEvent')
+    expect(initResizeSpy).not.toHaveBeenCalled()
+    resizeDownElement.trigger('mousedown')
+    expect(initResizeSpy).toHaveBeenCalled()
   })
 });

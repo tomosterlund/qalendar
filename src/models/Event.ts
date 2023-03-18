@@ -91,4 +91,10 @@ export class EventBuilder {
 
     return this;
   }
+
+  withIsCustom(isCustom: boolean | modeType[]) {
+    this.eventImpl.isCustom = isCustom;
+
+    return this;
+  }
 }
