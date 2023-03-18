@@ -15,4 +15,4 @@ TODOS:
 - ALL of the above with custom day boundaries
 - ALL of the above with custom day boundaries spanning 2 real days
 
-4. Fix D&D for multi-day timed events when passing midnight
+4. Fix size of events when dragged exactly to day boundary
