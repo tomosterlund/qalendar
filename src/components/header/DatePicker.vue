@@ -121,7 +121,7 @@ import {
 import Time, {
   calendarMonthType,
   calendarWeekType,
-  calendarYearMonths,
+  calendarYearMonths, WEEK_START_DAY,
 } from '../../helpers/Time';
 import { periodInterface } from '../../typings/interfaces/period.interface';
 import { modeType } from '../../typings/types';
@@ -150,7 +150,7 @@ export default defineComponent({
       default: null,
     },
     firstDayOfWeek: {
-      type: String as PropType<'sunday' | 'monday'>,
+      type: String as PropType<WEEK_START_DAY>,
       default: '',
     },
     defaultDate: {
@@ -193,8 +193,7 @@ export default defineComponent({
        * This should not change as the user browses in the date picker, only when the user
        * PICKS a date in the date picker
        * */
-      datePickerCurrentDate:
-        this.periodProp?.selectedDate || this.defaultDate || new Date(),
+      datePickerCurrentDate: this.periodProp?.selectedDate || this.defaultDate || new Date(),
       selectedDate: this.periodProp?.selectedDate || new Date(),
       datePickerMode: 'month' as 'month' | 'year',
       weekDays: [] as calendarWeekType, // Used only for printing week day names,

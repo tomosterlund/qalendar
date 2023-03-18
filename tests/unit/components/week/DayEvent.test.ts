@@ -1,7 +1,7 @@
 import {mount} from "@vue/test-utils";
 import DayEvent from "../../../../src/components/week/DayEvent.vue";
 import {describe, expect, test, it, vi } from "vitest";
-import Time, {WEEK_START_DAY} from "../../../../src/helpers/Time";
+import Time, {TimeBuilder, WEEK_START_DAY} from "../../../../src/helpers/Time";
 import {nextTick} from "vue";
 import {mountComponent} from "../../../vitest-setup";
 import unidecode from 'unidecode';
@@ -33,6 +33,11 @@ const RESIZE_UP_SELECTOR = '.calendar-week__event-resize-up';
 const RESIZE_DOWN_SELECTOR = '.calendar-week__event-resize-down';
 const EVENT_ELEMENT_SELECTOR = ".calendar-week__event";
 const GRADIENT_SELECTOR = '.calendar-week__event-blend-out';
+
+function getEventElement(wrapper: any) {
+  return wrapper.find(EVENT_ELEMENT_SELECTOR);
+}
+
 describe("DayEvent.vue", () => {
   it("should display the title of av event", () => {
     const event = new EventBuilder({ start: "2022-05-20 09:00", end: "2022-05-20 10:00" })
@@ -158,7 +163,7 @@ describe("DayEvent.vue", () => {
       },
     });
 
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    const eventElement = getEventElement(wrapper);
 
     wrapper.vm.setColors();
     await nextTick();
@@ -186,7 +191,7 @@ describe("DayEvent.vue", () => {
       },
     });
 
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    const eventElement = getEventElement(wrapper)
 
     wrapper.vm.setColors();
     await nextTick();
@@ -211,7 +216,7 @@ describe("DayEvent.vue", () => {
       }
     });
 
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    const eventElement = getEventElement(wrapper)
     wrapper.vm.setColors();
     await nextTick();
     expect(eventElement.attributes().style).toContain(
@@ -251,7 +256,7 @@ describe("DayEvent.vue", () => {
       }
     });
 
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    const eventElement = getEventElement(wrapper)
     expect(eventElement.attributes().style).not.toContain(
       "border: 1px solid #fff"
     )
@@ -272,7 +277,7 @@ describe("DayEvent.vue", () => {
       }
     });
 
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    const eventElement = getEventElement(wrapper);
     expect(eventElement.attributes().style).toContain(
       "border: 1px solid #fff"
     )
@@ -314,7 +319,7 @@ describe("DayEvent.vue", () => {
       }
     })
 
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    const eventElement = getEventElement(wrapper);
     await eventElement.trigger('mouseenter')
 
     const resizeUpElement = wrapper.findAll(RESIZE_UP_SELECTOR)
@@ -338,7 +343,7 @@ describe("DayEvent.vue", () => {
       }
     })
 
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    const eventElement = getEventElement(wrapper);
     await eventElement.trigger('mouseenter')
 
     let resizeUpElement = wrapper.findAll(RESIZE_UP_SELECTOR)
@@ -414,7 +419,7 @@ describe("DayEvent.vue", () => {
   it('should call initDrag on mousedown', () => {
     const wrapper = getWrapperWithRandomEvent();
     const initDragSpy = vi.spyOn(wrapper.vm, 'initDrag')
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR)
+    const eventElement = getEventElement(wrapper)
     expect(initDragSpy).not.toHaveBeenCalled()
     eventElement.trigger('mousedown')
     expect(initDragSpy).toHaveBeenCalled()
@@ -423,7 +428,7 @@ describe("DayEvent.vue", () => {
   it('should call initDrag on touchstart', () => {
     const wrapper = getWrapperWithRandomEvent();
     const initDragSpy = vi.spyOn(wrapper.vm, 'initDrag')
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR)
+    const eventElement = getEventElement(wrapper)
     expect(initDragSpy).not.toHaveBeenCalled()
     eventElement.trigger('touchstart')
     expect(initDragSpy).toHaveBeenCalled()
@@ -446,7 +451,7 @@ describe("DayEvent.vue", () => {
     })
 
     const initDragSpy = vi.spyOn(wrapper.vm, 'initDrag')
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR)
+    const eventElement = getEventElement(wrapper)
     expect(initDragSpy).not.toHaveBeenCalled()
     eventElement.trigger('mousedown')
     expect(initDragSpy).toHaveBeenCalled()
@@ -469,7 +474,7 @@ describe("DayEvent.vue", () => {
     })
 
     const initDragSpy = vi.spyOn(wrapper.vm, 'initDrag')
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR)
+    const eventElement = getEventElement(wrapper)
     expect(initDragSpy).not.toHaveBeenCalled()
     eventElement.trigger('touchstart')
     expect(initDragSpy).toHaveBeenCalled()
@@ -490,7 +495,7 @@ describe("DayEvent.vue", () => {
       }
     })
 
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    const eventElement = getEventElement(wrapper);
     await eventElement.trigger('mouseenter')
 
     const resizeUpElement = wrapper.find(RESIZE_UP_SELECTOR)
@@ -515,7 +520,7 @@ describe("DayEvent.vue", () => {
       }
     })
 
-    const eventElement = wrapper.find(EVENT_ELEMENT_SELECTOR);
+    const eventElement = getEventElement(wrapper);
     await eventElement.trigger('mouseenter')
 
     const resizeDownElement = wrapper.find(RESIZE_DOWN_SELECTOR)
@@ -538,5 +543,149 @@ describe("DayEvent.vue", () => {
     wrapper.vm.changeInDaysOnDrag = 1 // to pass condition for emitting event
     wrapper.vm.handleDragEnd()
     expect(wrapper.emitted('event-was-dragged')).toBeDefined()
+  })
+
+  it('changes event.time.start on changes in changeInQuarterHoursEventStart', async () => {
+    const wrapper = getWrapperWithRandomEvent();
+    const event = wrapper.vm.event
+    const initialStart = event.time.start
+    const initialStartPlus15minutes = new Time().addMinutesToDateTimeString(15, initialStart);
+    wrapper.vm.changeInQuarterHoursEventStart = 1
+    await nextTick()
+    expect(event.time.start).toEqual(initialStartPlus15minutes)
+  })
+
+  it('changes event.time.end on changes in changeInQuarterHoursEventEnd', async () => {
+    const wrapper = getWrapperWithRandomEvent();
+    const event = wrapper.vm.event
+    const initialEnd = event.time.end
+    const initialEndPlus15minutes = new Time().addMinutesToDateTimeString(15, initialEnd);
+    wrapper.vm.changeInQuarterHoursEventEnd = 1
+    await nextTick()
+    expect(event.time.end).toEqual(initialEndPlus15minutes)
+  })
+
+  it('changes event.time.start on changes in changeInQuartersOnDrag', async () => {
+    const wrapper = getWrapperWithRandomEvent();
+    const event = wrapper.vm.event
+    const initialStart = event.time.start
+    const initialStartPlus15minutes = new Time().addMinutesToDateTimeString(15, initialStart);
+    expect(event.time.start).not.toEqual(initialStartPlus15minutes)
+    wrapper.vm.changeInQuartersOnDrag = 1
+    await nextTick()
+    expect(event.time.start).toEqual(initialStartPlus15minutes)
+  })
+
+  it('changes event.time.end on changes in changeInQuartersOnDrag', async () => {
+    const wrapper = getWrapperWithRandomEvent();
+    const event = wrapper.vm.event
+    const initialEnd = event.time.end
+    const initialEndPlus15minutes = new Time().addMinutesToDateTimeString(15, initialEnd);
+    expect(event.time.end).not.toEqual(initialEndPlus15minutes)
+    wrapper.vm.changeInQuartersOnDrag = 1
+    await nextTick()
+    expect(event.time.end).toEqual(initialEndPlus15minutes)
+  })
+
+  it('changes event.time.start on changes in changeInDaysOnDrag', async () => {
+    const wrapper = getWrapperWithRandomEvent();
+    const event = wrapper.vm.event
+    const initialStart = event.time.start
+    const initialStartPlus1Day = new Time().addDaysToDateTimeString(1, initialStart);
+    expect(event.time.start).not.toEqual(initialStartPlus1Day)
+    wrapper.vm.dayElement = document.createElement('div') // needed to deactivate guard
+    wrapper.vm.changeInDaysOnDrag = 1
+    await nextTick()
+    expect(event.time.start).toEqual(initialStartPlus1Day)
+  })
+
+  it('changes event.time.end on changes in changeInDaysOnDrag', async () => {
+    const wrapper = getWrapperWithRandomEvent();
+    const event = wrapper.vm.event
+    const initialEnd = event.time.end
+    const initialEndPlus1Day = new Time().addDaysToDateTimeString(1, initialEnd);
+    expect(event.time.end).not.toEqual(initialEndPlus1Day)
+    wrapper.vm.dayElement = document.createElement('div') // needed to deactivate guard
+    wrapper.vm.changeInDaysOnDrag = 1
+    await nextTick()
+    expect(event.time.end).toEqual(initialEndPlus1Day)
+  })
+
+  it('detects if event is custom, through checking an isCustom-Array against the calendar mode', () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withIsCustom(['week'])
+      .build()
+
+    const wrapperCustomEvent = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    expect(wrapperCustomEvent.vm.isCustomEvent).toBe(true)
+  })
+
+  it('calculates the number of timePoints in a full day', () => {
+    const wrapper = getWrapperWithRandomEvent();
+    expect(wrapper.vm.timePointsInDay).toBe(2400)
+  })
+
+  it('calculates the number of timePoints in a shortened day', () => {
+    const wrapperInShortenedDay = dayEvent({
+      props: {
+        ...propsForAllTests,
+        time: new TimeBuilder().withDayBoundaries({ start: 800, end: 1800 }).build(),
+        eventProp: new EventBuilder({ start: '2022-01-01 00:00', end: '2022-01-01 00:10' }).build()
+      }
+    })
+
+    expect(wrapperInShortenedDay.vm.timePointsInDay).toBe(1000)
+  })
+
+  it('calculates the number of timePoints in a minute', () => {
+    const wrapper = getWrapperWithRandomEvent();
+    expect(wrapper.vm.timePointsInOneMinute).toBe(100 / 60)
+  })
+
+  it('has no class for forbidden cursor, when not disabling drag & drop through disableDnD array', () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withDisableDnD(['month'])
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const eventElement = getEventElement(wrapper)
+    expect(eventElement.classes()).not.toContain('has-disabled-dnd')
+  })
+
+  it('sets class for forbidden cursor, when disabling drag & drop through disableDnD array', () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withDisableDnD(['week'])
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const eventElement = getEventElement(wrapper)
+    expect(eventElement.classes()).toContain('has-disabled-dnd')
   })
 });

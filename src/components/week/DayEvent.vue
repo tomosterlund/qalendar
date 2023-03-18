@@ -368,8 +368,7 @@ export default defineComponent({
     changeInDaysOnDrag(newValue) {
       if (!this.dayElement) return;
       // +1 to account for the zero indexing vs length
-      const upcomingDaysInWeek =
-        this.dayInfo.daysTotalN - (this.dayInfo.thisDayIndex + 1);
+      const upcomingDaysInWeek = this.dayInfo.daysTotalN - (this.dayInfo.thisDayIndex + 1);
       const previousDaysInWeek = 0 - this.dayInfo.thisDayIndex;
       if (newValue > upcomingDaysInWeek || newValue < previousDaysInWeek)
         return;

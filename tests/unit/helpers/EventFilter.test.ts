@@ -1,5 +1,5 @@
 import {describe, expect, it} from "vitest";
-import Time from "../../../src/helpers/Time";
+import Time, {WEEK_START_DAY} from "../../../src/helpers/Time";
 import {EventsFilter} from "../../../src/helpers/EventsFilter";
 
 describe("EventFilter", () => {
@@ -37,7 +37,7 @@ describe("EventFilter", () => {
 
   it('Filters events for a partial day', () => {
     const timeInstance = new Time(
-      'monday',
+      WEEK_START_DAY.MONDAY,
         'de',
       { start: 1300, end: 2300 }
       );
@@ -52,7 +52,7 @@ describe("EventFilter", () => {
 
   it('Filters events for a partial day starting on 6AM and ending 2AM', () => {
     const timeInstance = new Time(
-      'monday',
+      WEEK_START_DAY.MONDAY,
         'de',
       { start: 600, end: 200 }
       );

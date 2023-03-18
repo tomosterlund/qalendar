@@ -1,4 +1,5 @@
 import { modeType } from "./types";
+import {WEEK_START_DAY} from "../helpers/Time";
 
 export enum DAY_TIME_POINT {
   MIDNIGHT = 0,
@@ -51,7 +52,7 @@ export interface configInterface {
   locale?: string;
   week?: {
     nDays?: 5 | 7;
-    startsOn?: "sunday" | "monday";
+    startsOn?: WEEK_START_DAY;
     scrollToHour?: number;
   };
   style?: {
