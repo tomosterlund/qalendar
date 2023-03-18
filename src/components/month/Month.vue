@@ -23,6 +23,7 @@
           :config="config"
           :day="day"
           :time="time"
+          :selected="selectedDay?.dateTimeString===day.dateTimeString"
           @event-was-clicked="handleClickOnEvent"
           @event-was-dragged="handleEventWasDragged"
           @day-was-clicked="onDayWasClicked"

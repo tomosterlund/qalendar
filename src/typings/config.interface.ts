@@ -77,5 +77,6 @@ export interface configInterface {
     showTrailingAndLeadingDates?:boolean,
     showAgenda?:boolean,
     showEventsOnMobileView?:boolean,
+    selectedDayColor?: string
   }
 }

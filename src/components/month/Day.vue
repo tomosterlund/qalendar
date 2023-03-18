@@ -3,7 +3,11 @@
     v-if="!hideLeadingAndTrailingDate"
     :id="'day-' + day.dateTimeString.substring(0, 10)"
     class="calendar-month__weekday"
-    :class="{ 'is-droppable': canBeDropped, 'trailing-or-leading': day.isTrailingOrLeadingDate }"
+    :class="{ 
+      'is-droppable': canBeDropped,
+      'trailing-or-leading': day.isTrailingOrLeadingDate ,
+      'selected':selected
+    }"
     @click="emitDayWasClicked"
     @dragleave="handleDragLeave"
     @dragover="handleDragOver"
@@ -89,6 +93,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    selected: {
+      type: Boolean,
+      default: false,
+    },
 
   },
 
@@ -112,6 +120,12 @@ export default defineComponent({
 
     hideLeadingAndTrailingDate() {
       return this.day.isTrailingOrLeadingDate === true && this.config.month?.showTrailingAndLeadingDates === false
+    },
+    selectedDayColor (){
+      if(this.config?.month?.selectedDayColor!=null){
+        return this.config.month.selectedDayColor
+      }
+      return 'var(--qalendar-light-gray)'
     }
   },
 
@@ -205,6 +219,10 @@ export default defineComponent({
     border-right: 0;
   }
 
+  &.selected{
+    background-color: v-bind(selectedDayColor) ;
+  }
+
   .qalendar-is-small & {
     height: 45px;
     width: 45px;
@@ -224,6 +242,7 @@ export default defineComponent({
     &:first-child {
       margin-top: 6px;
     }
+
   }
   .calendar-month_events{
     .qalendar-is-small & {
