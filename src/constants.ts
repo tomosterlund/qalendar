@@ -1,6 +1,6 @@
 export const EVENT_COLORS = {
   yellow: "rgb(244, 180, 0)",
-  blue: "rgba(38, 132, 255)",
+  blue: "rgb(38, 132, 255)",
   green: "rgb(51, 182, 121)",
   red: "rgb(255, 84, 86)",
   pink: "rgb(239, 139, 239)",
