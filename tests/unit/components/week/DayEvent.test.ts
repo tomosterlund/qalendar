@@ -524,4 +524,19 @@ describe("DayEvent.vue", () => {
     resizeDownElement.trigger('mousedown')
     expect(initResizeSpy).toHaveBeenCalled()
   })
+
+  it('Emits event-was-resized when resize action ends', () => {
+    const wrapper = getWrapperWithRandomEvent();
+    expect(wrapper.emitted('event-was-resized')).toBeUndefined()
+    wrapper.vm.stopResizing()
+    expect(wrapper.emitted('event-was-resized')).toBeDefined()
+  })
+
+  it('Emits event-was-dragged when drag action ends', () => {
+    const wrapper = getWrapperWithRandomEvent();
+    expect(wrapper.emitted('event-was-dragged')).toBeUndefined()
+    wrapper.vm.changeInDaysOnDrag = 1 // to pass condition for emitting event
+    wrapper.vm.handleDragEnd()
+    expect(wrapper.emitted('event-was-dragged')).toBeDefined()
+  })
 });

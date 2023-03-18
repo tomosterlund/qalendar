@@ -6,6 +6,7 @@
     <DayEvent
       v-for="(event, eventIndex) in events"
       :key="eventIndex"
+      data-test="day-event"
       :event-prop="event"
       :day="day"
       :time="time"
@@ -28,7 +29,8 @@
 
     <template v-if="dayIntervals && dayIntervals.displayClickableInterval">
       <div
-        v-for="interval in intervals"
+        v-for="(interval, intervalIndex) in intervals"
+        :id="'interval-' + intervalIndex"
         :key="interval.intervalStart"
         class="calendar-week__day-interval"
         :class="{ 'has-border': interval.hasBorder }"
