@@ -11,49 +11,43 @@
     @dragend="handleDragEnd"
   >
     <span
-      v-if="isFirstWeek"
-      class="calendar-month__day-name"
-      @click="emitDayWasClicked"
-    >
-      {{ day.dayName }}
-    </span>
-
-    <span
       class="calendar-month__day-date"
       @click="emitDayWasClicked"
     >
       {{ day.dateTimeString.substring(8, 10) }}
     </span>
+    
 
-    <div
-      v-for="(calendarEvent, index) in day.events"
-      :key="index"
-      class="calendar-month__event-wrapper"
-    >
-      <Event
-        v-if="index < 3"
-        :key="calendarEvent.id"
-        :calendar-event="calendarEvent"
-        :config="config"
-        :time="time"
-        :day="day"
-        @event-was-clicked="$emit('event-was-clicked', $event)"
+   
+    <div class="calendar-month_events">
+      <div
+        v-for="(calendarEvent, index) in day.events"
+        :key="index"
       >
-        <template #monthEvent="p">
-          <slot
-            :event-data="p.eventData"
-            name="monthEvent"
-          />
-        </template>
-      </Event>
-    </div>
-
-    <div
-      v-if="day.events.length >= 4"
-      class="calendar-month__weekday-more"
-      @click="getMoreEvents"
-    >
-      {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
+        <Event
+          v-if="index < 3"
+          :key="calendarEvent.id"
+          :calendar-event="calendarEvent"
+          :config="config"
+          :time="time"
+          :day="day"
+          @event-was-clicked="$emit('event-was-clicked', $event)"
+        >
+          <template #monthEvent="p">
+            <slot
+              :event-data="p.eventData"
+              name="monthEvent"
+            />
+          </template>
+        </Event>
+      </div>
+      <div
+        v-if="day.events.length >= 4"
+        class="calendar-month__weekday-more"
+        @click="getMoreEvents"
+      >
+        {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
+      </div>
     </div>
   </div>
 
@@ -179,7 +173,7 @@ export default defineComponent({
     },
 
     emitDayWasClicked() {
-      this.$emit('day-was-clicked', this.day.dateTimeString.substring(0, 10));
+      this.$emit('day-was-clicked', this.day);
     },
   },
 });
@@ -196,6 +190,8 @@ export default defineComponent({
   border-bottom: var(--qalendar-border-gray-thin);
 }
 
+
+
 .calendar-month__weekday {
     @include dayBase;
 
@@ -211,10 +207,15 @@ export default defineComponent({
   }
 
   .qalendar-is-small & {
-    height: auto;
-    min-height: 7rem;
-    border-right: 0;
+    height: 45px;
+    width: 45px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
   }
+
+
+ 
 
   .calendar-month__day-name,
   .calendar-month__day-date {
@@ -225,10 +226,20 @@ export default defineComponent({
       margin-top: 6px;
     }
   }
-
-  .calendar-month__event-wrapper {
-    width: 100%;
+  .calendar-month_events{
+    .qalendar-is-small & {
+      display: flex ;
+      flex-flow:row;
+      width: 100%;
+      justify-content: center;
+    }
+    .calendar-month__weekday-more{
+      .qalendar-is-small & {
+        display: none ;
+      }
+    }
   }
+
 
   .calendar-month__weekday-more {
     font-size: var(--qalendar-font-2xs);
@@ -249,13 +260,6 @@ export default defineComponent({
   }
 }
 
-.space-reserver,
-.trailing-or-leading {
-
-  .qalendar-is-small & {
-    display: none;
-  }
-}
 
 .calendar-month__week:first-child {
 
