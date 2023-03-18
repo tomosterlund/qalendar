@@ -9,6 +9,8 @@ export enum EVENT_TYPE {
   MULTI_DAY_FULL_DAY = 'MULTI_DAY_FULL_DAY',
 }
 
+export type EventColor = "blue" | "yellow" | "green" | "red";
+
 export interface eventInterface {
   id: eventId;
   title?: string;
@@ -18,7 +20,7 @@ export interface eventInterface {
   location?: string; // Name of the event location
   with?: string; // Names of people
   colorScheme?: string;
-  color?: "blue" | "yellow" | "green" | "red"; // Says 'color', but represents CSS-Property background-color
+  color?: EventColor; // Says 'color', but represents CSS-Property background-color
   isEditable?: boolean; // If true, the event has delete- and edit icons in Event-Flyout. Can also be dragged and dropped.
   disableDnD?: modeType[]; // Disable Drag and Drop for this event, in the modes specified
   disableResize?: modeType[]; // Disable Resize for this event, in the modes specified
