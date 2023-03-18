@@ -2,6 +2,7 @@ import {describe, expect, it} from "vitest";
 import {TimeBuilder} from "../../../src/helpers/Time";
 import {EventChange} from "../../../src/helpers/EventChange";
 import {DRAG_DIRECTION} from "../../../src/typings/types";
+import {EventBuilder, EventImpl} from "../../../src/models/Event";
 
 describe("EventChange", () => {
   it('Should not be able to move event forwards, beyond day end 2400', () => {
@@ -12,14 +13,12 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 23:00',
-        end: '2023-03-17 23:45'
-      },
-      id: 1,
-      title: 'Test event'
-    }
+    const event = new EventBuilder(
+      {
+          start: '2023-03-17 23:00',
+          end: '2023-03-17 23:45'
+        }
+    ).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(false);
@@ -33,14 +32,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 23:00',
-        end: '2023-03-17 23:44'
-      },
-      id: 1,
-      title: 'Test event'
-    }
+    const event = new EventBuilder({
+      start: '2023-03-17 23:00',
+      end: '2023-03-17 23:44'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(true);
@@ -54,14 +49,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 00:00',
-        end: '2023-03-17 00:45'
-      },
-      id: 1,
-      title: 'Test event'
-    }
+    const event = new EventBuilder({
+      start: '2023-03-17 00:00',
+      end: '2023-03-17 00:45'
+    }).build();
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(false);
@@ -75,14 +66,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 00:15',
-        end: '2023-03-17 00:45'
-      },
-      id: 1,
-      title: 'Test event'
-    }
+    const event = new EventBuilder({
+      start: '2023-03-17 00:15',
+      end: '2023-03-17 00:45'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(true);
@@ -96,14 +83,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 20:00',
-        end: '2023-03-17 21:00'
-      },
-      id: 1,
-      title: 'Test event'
-    }
+    const event = new EventBuilder({
+      start: '2023-03-17 20:00',
+      end: '2023-03-17 21:00'
+    }).build();
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(false);
@@ -117,14 +100,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 20:00',
-        end: '2023-03-17 20:46'
-      },
-      id: 1,
-      title: 'Test event'
-    }
+    const event = new EventBuilder({
+      start: '2023-03-17 20:00',
+      end: '2023-03-17 20:46'
+    }).build();
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(false);
@@ -138,14 +117,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 20:00',
-        end: '2023-03-17 20:45'
-      },
-      id: 1,
-      title: 'Test event'
-    }
+    const event = new EventBuilder({
+      start: '2023-03-17 20:00',
+      end: '2023-03-17 20:45'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(true);
@@ -159,14 +134,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 06:15',
-        end: '2023-03-17 07:00'
-      },
-      id: 1,
-      title: 'Test event'
-    }
+    const event = new EventBuilder({
+      start: '2023-03-17 06:15',
+      end: '2023-03-17 07:00'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(true);
@@ -180,14 +151,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 06:00',
-        end: '2023-03-17 07:00'
-      },
-      id: 1,
-      title: 'Test event'
-    }
+    const event = new EventBuilder({
+      start: '2023-03-17 06:00',
+      end: '2023-03-17 07:00'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(false);
@@ -201,14 +168,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 06:14',
-        end: '2023-03-17 07:00'
-      },
-      id: 1,
-      title: 'Test event'
-    }
+    const event = new EventBuilder({
+      start: '2023-03-17 06:14',
+      end: '2023-03-17 07:00'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(false);
@@ -224,14 +187,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 04:00',
-        end: '2023-03-17 05:00'
-      },
-      id: 1,
-      title: 'Test event'
-    };
+    const event = new EventBuilder({
+      start: '2023-03-17 04:00',
+      end: '2023-03-17 05:00'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(false);
@@ -247,14 +206,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 07:14',
-        end: '2023-03-17 08:00'
-      },
-      id: 1,
-      title: 'Test event'
-    };
+    const event = new EventBuilder({
+      start: '2023-03-17 07:14',
+      end: '2023-03-17 08:00'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(false);
@@ -270,14 +225,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-18 01:00',
-        end: '2023-03-18 02:00'
-      },
-      id: 1,
-      title: 'Test event'
-    };
+    const event = new EventBuilder({
+      start: '2023-03-18 01:00',
+      end: '2023-03-18 02:00'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(true);
@@ -293,14 +244,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 07:15',
-        end: '2023-03-17 08:00'
-      },
-      id: 1,
-      title: 'Test event'
-    };
+    const event = new EventBuilder({
+      start: '2023-03-17 07:15',
+      end: '2023-03-17 08:00'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(true);
@@ -316,14 +263,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-18 01:00',
-        end: '2023-03-18 02:00'
-      },
-      id: 1,
-      title: 'Test event'
-    };
+    const event = new EventBuilder({
+      start: '2023-03-18 01:00',
+      end: '2023-03-18 02:00'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(false);
@@ -339,14 +282,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 05:00',
-        end: '2023-03-18 02:46'
-      },
-      id: 1,
-      title: 'Test event'
-    };
+    const event = new EventBuilder({
+      start: '2023-03-17 05:00',
+      end: '2023-03-18 02:46'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(false);
@@ -362,14 +301,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 05:00',
-        end: '2023-03-18 02:45'
-      },
-      id: 1,
-      title: 'Test event'
-    };
+    const event = new EventBuilder({
+      start: '2023-03-17 05:00',
+      end: '2023-03-18 02:45'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(true);
@@ -385,14 +320,10 @@ describe("EventChange", () => {
 
     const eventChange = new EventChange(time, '2023-03-17');
 
-    const event = {
-      time: {
-        start: '2023-03-17 05:00',
-        end: '2023-03-17 23:59'
-      },
-      id: 1,
-      title: 'Test event'
-    };
+    const event = new EventBuilder({
+      start: '2023-03-17 05:00',
+      end: '2023-03-17 23:59'
+    }).build()
 
     const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(true);
