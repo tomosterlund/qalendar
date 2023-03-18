@@ -867,4 +867,17 @@ describe("Time.ts", () => {
     expect(actualDateStringDayBoundaries.start).toEqual("2022-12-31 03:00");
     expect(actualDateStringDayBoundaries.end).toEqual("2022-12-31 22:00");
   })
+
+  test('setting a date to end of day', () => {
+    const date = new Date(2022, 1, 1, 12, 30, 22, 976);
+    const expectedHour = 23;
+    const expectedMinutes = 59;
+    const expectedSeconds = 59;
+    const expectedMilliseconds = 999;
+    const updatedDate = timeM.setDateToEndOfDay(date);
+    expect(updatedDate.getHours()).toEqual(expectedHour);
+    expect(updatedDate.getMinutes()).toEqual(expectedMinutes);
+    expect(updatedDate.getSeconds()).toEqual(expectedSeconds);
+    expect(updatedDate.getMilliseconds()).toEqual(expectedMilliseconds);
+  })
 });

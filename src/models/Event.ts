@@ -97,4 +97,10 @@ export class EventBuilder {
 
     return this;
   }
+
+  withDisableDnD(disableDnD: modeType[]) {
+    this.eventImpl.disableDnD = disableDnD;
+
+    return this;
+  }
 }

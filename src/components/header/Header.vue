@@ -157,7 +157,6 @@ export default defineComponent({
     },
 
     modeName() {
-      // @ts-ignore
       return this.getLanguage(
         this.languageKeys[this.mode],
         this.time?.CALENDAR_LOCALE

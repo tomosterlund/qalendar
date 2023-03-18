@@ -1,5 +1,6 @@
 import {eventInterface} from "../typings/interfaces/event.interface";
 import Time from "./Time";
+import {DAY_MODE} from "../typings/interfaces/time-modes";
 
 export class EventsFilter {
 
@@ -13,19 +14,15 @@ export class EventsFilter {
     const eventIsInDay =
       timeInstance.dateStringFrom(event.time.start) === timeInstance.dateStringFrom(startDateTimeString);
 
-    if (timeInstance.HOURS_PER_DAY === 24 && timeInstance.DAY_END > timeInstance.DAY_START) {
+    if (timeInstance.dayMode === DAY_MODE.REGULAR) {
       return eventIsInDay;
     }
 
-    if (
-      eventIsInDay
-      && timeInstance.HOURS_PER_DAY !== 24
-      && (timeInstance.DAY_END > timeInstance.DAY_START)
-    ) {
+    if (eventIsInDay && timeInstance.dayMode === DAY_MODE.SHORTENED) {
       return this.handlePartialDayWithinOneDayBoundary(timeInstance, event);
     }
 
-    if (timeInstance.DAY_END <= timeInstance.DAY_START) {
+    if (timeInstance.dayMode === DAY_MODE.FLEXIBLE) {
       return this.handleDayStretchingTwoDates(timeInstance, event, startDateTimeString, eventIsInDay);
     }
 

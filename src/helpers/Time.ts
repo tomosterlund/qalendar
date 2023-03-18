@@ -66,22 +66,20 @@ export default class Time {
     return arr;
   }
 
-  getCalendarWeekDateObjects(date: Date | null = null): calendarWeekType {
-    const selectedDate = date ? date : new Date();
-
+  getCalendarWeekDateObjects(date: Date): calendarWeekType {
     // If week starts on Sunday, we can get the first date of the week, by simply counting selectedDate.getDate() - selectedDate.getDay()
     let subtractedDaysToGetFirstDate;
     if (this.FIRST_DAY_OF_WEEK === "sunday")
-      subtractedDaysToGetFirstDate = selectedDate.getDay();
+      subtractedDaysToGetFirstDate = date.getDay();
     // However, if week starts on Monday, we need to make sure Mondays are represented as 0, instead of Sundays
     else
       subtractedDaysToGetFirstDate =
-        selectedDate.getDay() === 0 ? 6 : selectedDate.getDay() - 1;
+        date.getDay() === 0 ? 6 : date.getDay() - 1;
 
-    const dateOfFirstDayOfWeek = selectedDate.getDate() - subtractedDaysToGetFirstDate; // First date of week is the date of the month - the day of the week
+    const dateOfFirstDayOfWeek = date.getDate() - subtractedDaysToGetFirstDate; // First date of week is the date of the month - the day of the week
     const firstDay = new Date(
-      selectedDate.getFullYear(),
-      selectedDate.getMonth(),
+      date.getFullYear(),
+      date.getMonth(),
       dateOfFirstDayOfWeek
     );
 
@@ -103,9 +101,7 @@ export default class Time {
    * */
   getCalendarMonthSplitInWeeks(yyyy: number, mm: number): calendarMonthType {
     const month: calendarMonthType = [];
-    const selectedDate = ![typeof yyyy, typeof mm].includes("undefined")
-      ? new Date(yyyy, mm, 1)
-      : new Date();
+    const selectedDate = new Date(yyyy, mm, 1);
 
     // 1. Get the first date of the month, and push the full week of this date into the month list
     const firstDateOfMonth = new Date(
@@ -144,14 +140,12 @@ export default class Time {
    * Returns an array with the length of 12 dates,
    * one date for the first day of each month of the year
    * */
-  getCalendarYearMonths(year: number | null = null): calendarYearMonths {
-    const selectedYear = year ? year : new Date().getFullYear();
+  getCalendarYearMonths(year: number): calendarYearMonths {
     const yearList: calendarYearMonths = [];
-
     let month = 0;
 
     while (month <= 11) {
-      yearList.push(new Date(selectedYear, month, 1));
+      yearList.push(new Date(year, month, 1));
       month++;
     }
 
@@ -441,7 +435,7 @@ export default class Time {
   }
 
   getTimelineHours(): DAY_TIME_POINT[] {
-    if (this.DAY_START < this.DAY_END) {
+    if (this.dayMode !== DAY_MODE.FLEXIBLE) {
       return this.ALL_HOURS.filter(hour => {
         return hour >= this.DAY_START && hour < this.DAY_END;
       })
