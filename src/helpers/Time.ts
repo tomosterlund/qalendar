@@ -1,6 +1,7 @@
 import Helpers from "./Helpers";
 import {DAY_TIME_POINT} from "../typings/config.interface";
 import EDate from "./EDate";
+import {DAY_MODE} from "../typings/interfaces/time-modes";
 
 export type calendarWeekType = Date[];
 export type calendarMonthType = calendarWeekType[];
@@ -43,6 +44,14 @@ export default class Time {
       return this.HOURS_PER_DAY - dayStart + dayEnd;
     })()
     this.MS_PER_DAY = 86400000;
+  }
+
+  get dayMode() {
+    if (this.DAY_START === 0 && this.DAY_END === 2400) return DAY_MODE.REGULAR;
+
+    if (this.DAY_START >= this.DAY_END) return DAY_MODE.FLEXIBLE;
+
+    return DAY_MODE.SHORTENED;
   }
 
   getDatesBetweenTwoDates(start: Date, end: Date) {

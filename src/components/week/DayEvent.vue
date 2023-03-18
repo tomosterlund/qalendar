@@ -139,8 +139,8 @@ import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import Time from '../../helpers/Time';
 import {configInterface} from '../../typings/config.interface';
 import {EVENT_COLORS} from '../../constants';
-import DragAndDrop from '../../helpers/DragAndDrop';
 import {DayInfo, DRAG_DIRECTION, modeType} from '../../typings/types';
+import { EventChange } from '../../helpers/EventChange';
 
 export default defineComponent({
   name: 'DayEvent',
@@ -223,6 +223,12 @@ export default defineComponent({
   },
 
   computed: {
+    eventChangeHelper() {
+      const eventCurrentDay = this.time.addDaysToDateTimeString(this.changeInDaysOnDrag, this.dayInfo.dateTimeString)
+
+      return new EventChange(this.time, this.time.dateStringFrom(eventCurrentDay))
+    },
+
     isCustomEvent(): boolean {
       if (Array.isArray(this.eventProp.isCustom)) {
         return this.eventProp.isCustom.includes(this.mode);
@@ -312,31 +318,50 @@ export default defineComponent({
   },
 
   watch: {
-    changeInQuarterHoursEventStart(newValue) {
+    changeInQuarterHoursEventStart(newValue, oldValue) {
       const newStartOfTimeDateTimeString = this.time.addMinutesToDateTimeString(
         15 * newValue,
-        this.resizingStartingPointStartOfTime)
-      ;
+        this.resizingStartingPointStartOfTime
+      );
+      const direction = newValue > oldValue ? DRAG_DIRECTION.FORWARDS : DRAG_DIRECTION.BACKWARDS;
+      const eventCanBeResizedFurther = this.eventChangeHelper.canEventBeMoved(
+        this.event,
+        direction
+      )
 
       // Only set the new start time, if it's earlier than the end time of the event
-      if (newStartOfTimeDateTimeString < this.event.time.end) {
+      if (newStartOfTimeDateTimeString < this.event.time.end && eventCanBeResizedFurther) {
         this.event.time.start = newStartOfTimeDateTimeString;
       }
     },
 
-    changeInQuarterHoursEventEnd(newValue) {
+    changeInQuarterHoursEventEnd(newValue, oldValue) {
       const newEndOfTimeDateTimeString = this.time.addMinutesToDateTimeString(
         15 * newValue,
         this.resizingStartingPointEndOfTime
       )
+      const direction = newValue > oldValue ? DRAG_DIRECTION.FORWARDS : DRAG_DIRECTION.BACKWARDS;
+      const eventCanBeResizedFurther = this.eventChangeHelper.canEventBeMoved(
+        this.event,
+        direction
+      )
 
       // Only set the new end time, if it's later than the start time of the event
-      if (newEndOfTimeDateTimeString > this.event.time.start) {
+      if (newEndOfTimeDateTimeString > this.event.time.start && eventCanBeResizedFurther) {
         this.event.time.end = newEndOfTimeDateTimeString;
       }
     },
 
-    changeInQuartersOnDrag() {
+    changeInQuartersOnDrag(newValue, oldValue) {
+      const direction = newValue > oldValue ? DRAG_DIRECTION.FORWARDS : DRAG_DIRECTION.BACKWARDS;
+
+      const eventCanBeDraggedFurther = this.eventChangeHelper.canEventBeMoved(
+        this.event,
+        direction
+      )
+
+      if (!eventCanBeDraggedFurther) return;
+
       this.updatePositionOnDrag();
     },
 
@@ -421,7 +446,7 @@ export default defineComponent({
     onMouseMoveResize(event: MouseEvent) {
       const eventsContainer = document.querySelector('.calendar-week__events');
 
-      if (!eventsContainer || !this.isCursorInWeek(event.target as HTMLElement)) return;
+      if (!eventsContainer) return;
 
       if (typeof this.resizingStartingPoint === 'undefined') {
         this.resizingStartingPoint = event.clientY;
@@ -551,7 +576,6 @@ export default defineComponent({
         this.isResizing
         || !this.canDrag
         || !this.clientYDragStart
-        || !this.isCursorInWeek(mouseEvent.target as HTMLElement)
       ) return;
 
       this.$emit('drag-start');
@@ -563,12 +587,6 @@ export default defineComponent({
         this.handleVerticalDrag(mouseEvent.clientY);
         this.handleHorizontalDrag(mouseEvent.clientX);
       }
-    },
-
-    isCursorInWeek(eventTarget: HTMLElement | null) {
-      if (!eventTarget) return false;
-
-      return !!eventTarget.closest('.calendar-week');
     },
 
     /**
