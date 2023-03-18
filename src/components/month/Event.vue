@@ -198,6 +198,12 @@ export default defineComponent({
   cursor: pointer;
   user-select: none;
 
+  .qalendar-is-small & {
+    margin-bottom: 0px;
+    padding: 2px;
+    width:4px;
+  }
+
   &.is-draggable {
     cursor: grab;
   }
@@ -226,6 +232,12 @@ export default defineComponent({
 
   .calendar-month__event-time {
     margin-right: 6px;
+  
+  }
+  .calendar-month__event-time, .calendar-month__event-title {
+    .qalendar-is-small &{
+      display: none;
+    }
   }
 
   .calendar-month__event-time,

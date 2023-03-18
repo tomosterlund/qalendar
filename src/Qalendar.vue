@@ -453,6 +453,16 @@ export default defineComponent({
   min-height: 700px;
   display: flex;
 
+  .qalendar-is-small &{
+    height: auto;
+    max-height: auto;
+    display: block;
+  }
+
+  
+  .calendar-root.qalendar-is-small {
+      display: block;
+    }
   .calendar-root {
     flex: 1;
     border: var(--qalendar-border-gray-thin);
@@ -464,6 +474,7 @@ export default defineComponent({
     margin: 0 auto;
     display: flex;
     flex-flow: column;
+ 
 
     .top-bar-loader {
       position: absolute;

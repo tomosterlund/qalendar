@@ -1,5 +1,15 @@
 <template>
   <div class="calendar-month">
+    <div class="calendar-month__week-days">
+      <WeekDay
+        v-for="(day, dayIndex) in month[0]"
+        :key="dayIndex"
+        class="calendar-month__week-day"
+        :config="config"
+        :day="day"
+        :time="time"
+      />
+    </div>
     <div class="calendar-month__weeks">
       <div
         v-for="(week, weekIndex) in month"
@@ -15,7 +25,7 @@
           :time="time"
           @event-was-clicked="handleClickOnEvent"
           @event-was-dragged="handleEventWasDragged"
-          @day-was-clicked="$emit('day-was-clicked', $event)"
+          @day-was-clicked="onDayWasClicked"
           @updated-period="$emit('updated-period', $event)"
         >
           <template #monthEvent="p">
@@ -26,6 +36,15 @@
           </template>
         </Day>
       </div>
+    </div>
+
+    <div class="calendar-month__day_events">
+      <MonthDayEventsVue
+        v-if="selectedDay"
+        :config="config"
+        :time="time"
+        :day="selectedDay"
+      />
     </div>
 
     <EventFlyout
@@ -66,6 +85,7 @@ import {
 import EventPosition from '../../helpers/EventPosition';
 const EventPositionHelper = new EventPosition();
 import PerfectScrollbar from 'perfect-scrollbar';
+import WeekDay from './WeekDay.vue';
 
 export default defineComponent({
   name: 'Month',
@@ -73,7 +93,8 @@ export default defineComponent({
   components: {
     Day,
     EventFlyout,
-  },
+    WeekDay
+},
 
   props: {
     config: {
@@ -111,6 +132,7 @@ export default defineComponent({
       events: this.eventsProp,
       fullDayEvents: [] as eventInterface[],
       scrollbar: null as any,
+      selectedDay: null as dayInterface|null,
     };
   },
 
@@ -120,6 +142,10 @@ export default defineComponent({
   },
 
   methods: {
+    onDayWasClicked(day: dayInterface){
+      this.selectedDay =day
+      this.$emit('day-was-clicked', day)
+    },
     initScrollbar(elapsedMs = 0) {
       const el = document.querySelector('.calendar-month');
       if (elapsedMs > 3000) return;
@@ -157,6 +183,7 @@ export default defineComponent({
           });
 
           return {
+           
             isTrailingOrLeadingDate: this.time.isTrailingOrLeadingDate(day, month),
             dayName: this.time.getLocalizedNameOfWeekday(day),
             dateTimeString: this.time.getDateTimeStringFromDate(day),
@@ -220,6 +247,15 @@ export default defineComponent({
   width: 100%;
   overflow-y: auto;
 
+  .calendar-month__week-days{
+
+    display: flex;
+    justify-content: space-between;
+    .calendar-month__week-day{
+      flex-grow: 1;
+      text-align: center;
+    }
+  }
   .calendar-month__weeks {
     height: 100%;
     display: flex;
@@ -232,7 +268,7 @@ export default defineComponent({
     flex: 1;
 
     .qalendar-is-small & {
-      display: block;
+      display: flex;
     }
   }
 }

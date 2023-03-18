@@ -45,19 +45,19 @@
             />
           </div>
         </template>
-<!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
-<!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
-<!--                    {{ eventProps.eventData.title }}-->
+        <!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
+        <!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
+        <!--                    {{ eventProps.eventData.title }}-->
 
-<!--            <div>-->
-<!--              <input type="checkbox" />-->
+        <!--            <div>-->
+        <!--              <input type="checkbox" />-->
 
-<!--              <label for="checkbox">-->
-<!--                Select time slot-->
-<!--              </label>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </template>-->
+        <!--              <label for="checkbox">-->
+        <!--                Select time slot-->
+        <!--              </label>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </template>-->
 
         <template #eventDialog="props">
           <div
@@ -114,11 +114,11 @@ export default defineComponent({
     return {
       config: {
         week: {
-          startsOn: 'monday',
+          startsOn: 'sunday',
           nDays: 7,
           scrollToHour: 8,
         },
-        locale: 'de-DE',
+        locale: 'en-US',
         style: {
           fontFamily: `'Nunito', 'sans-serif', 'Verdana`,
           colorSchemes: {
@@ -145,6 +145,7 @@ export default defineComponent({
         },
         month: {
           showTrailingAndLeadingDates: false,
+          showEventsOnMobileView:false
         }
       } as configInterface,
       events: [] as eventInterface[],

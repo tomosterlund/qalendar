@@ -74,6 +74,8 @@ export interface configInterface {
   //specific settings for month view
   month?:{
     //Hide the days of the next month and previous month in calendar to enhance the appearance
-    showTrailingAndLeadingDates?:boolean
+    showTrailingAndLeadingDates?:boolean,
+    showAgenda?:boolean,
+    showEventsOnMobileView?:boolean,
   }
 }
