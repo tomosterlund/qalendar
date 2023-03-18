@@ -409,7 +409,7 @@ export default defineComponent({
           this.time.DAY_START,
           this.time.DAY_END
         );
-      const length = endOfEvent - startOfEvent;
+      const length = Math.abs(endOfEvent - startOfEvent);
 
       return length + '%';
     },
