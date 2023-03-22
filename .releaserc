@@ -3,8 +3,7 @@
     "branches": [
       "master",
       "semantic-release",
-      "beta",
-      "alpha"
+      "beta"
     ]
   },
   "branches": [
