@@ -12,6 +12,7 @@
       color: eventColor,
       backgroundColor: eventBackgroundColor,
     }"
+    :data-ref="'event-' + event.id"
     @click="handleClickOnEvent"
     @mouseenter="showResizeElements = isEditable && !hasDisabledResize"
     @mouseleave="showResizeElements = false"
