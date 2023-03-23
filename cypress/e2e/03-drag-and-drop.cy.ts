@@ -1,3 +1,5 @@
+import PageObject from "../support/page-object";
+
 describe('DragAndDrop.vue', () => {
   const EVENT_SELECTOR = '.calendar-week__event'
 
@@ -28,7 +30,7 @@ describe('DragAndDrop.vue', () => {
 
   it('Drags an editable event between days', () => {
     // 1. Go to next week
-    cy.get('.calendar-header__chevron-arrow-right').click()
+    PageObject.clickChevronRight()
 
     // 2. Assert initial time
     const initialTimeString = '10:00 AM - 11:20 AM'
@@ -57,7 +59,7 @@ describe('DragAndDrop.vue', () => {
 
   it('Fails dragging a non-editable event', () => {
     // 1. Go to the third week of June
-    cy.get('.calendar-header__chevron-arrow-right').click().click()
+    PageObject.clickChevronRight(2)
 
     // 2. Assert initial time
     const initialTimeString = '10:00 AM - 11:20 AM'

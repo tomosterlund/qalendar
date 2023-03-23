@@ -1,3 +1,5 @@
+import PageObject from "../support/page-object";
+
 describe('DisableDnD.vue', () => {
   beforeEach(() => {
     cy.visit('#/cypress/disable-dnd');
@@ -31,7 +33,7 @@ describe('DisableDnD.vue', () => {
     cy.get('.is-month-mode').click();
 
     // Go to January 2024
-    cy.get('.calendar-header__chevron-arrow-right').click();
+    PageObject.clickChevronRight();
 
     // Expect to find a draggable event
     cy.get('div[draggable]').should('have.length', 1);

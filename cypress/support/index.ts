@@ -18,3 +18,5 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+export const CYPRESS_FOR_WHITE = 'rgb(255, 255, 255)';
