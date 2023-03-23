@@ -597,6 +597,10 @@ export default defineComponent({
         color: darkgray;
         cursor: not-allowed;
       }
+
+      [data-lang="ar"] & {
+        font-size: 0.65rem;
+      }
     }
   }
 
