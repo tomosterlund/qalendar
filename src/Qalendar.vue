@@ -8,6 +8,7 @@
         'mode-is-month': mode === 'month',
         'qalendar-is-small': isSmall,
       }"
+      :data-lang="config?.locale?.substring(0, 2) || 'en'"
     >
       <Transition name="loading">
         <div
