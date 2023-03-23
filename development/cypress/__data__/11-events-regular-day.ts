@@ -30,7 +30,7 @@ const eventsRegularDay: eventInterface[] = [];
 
   const fullMultiDayEventsYearBreak = new EventBuilder({
     start: '2023-12-31',
-    end: '2024-02-01',
+    end: '2024-01-03',
   }, 5)
   .withTitle('Full multi day event year break').build();
 
