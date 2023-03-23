@@ -11,6 +11,7 @@ export const languageKeys = {
     "th-TH": "สัปดาห์",
     "nl-NL": "Week",
     "ru-RU": "Неделя",
+    "ar-YE": "إسبوع",
   },
   month: {
     "it-IT": "Mese",
@@ -23,6 +24,7 @@ export const languageKeys = {
     "th-TH": "เดือน",
     "nl-NL": "Maand",
     "ru-RU": "Месяц",
+    "ar-YE": "شهر",
   },
   day: {
     "it-IT": "Giorno",
@@ -35,6 +37,7 @@ export const languageKeys = {
     "th-TH": "วัน",
     "nl-NL": "Dag",
     "ru-RU": "День",
+    "ar-YE": "يوم",
   },
 
   /** Other keys */
@@ -49,5 +52,6 @@ export const languageKeys = {
     "th-TH": "+ เหตุการณ์เพิ่มเติม",
     "nl-NL": "meer evenementen",
     "ru-RU": "+ ещё события",
+    "ar-YE": "+ المزيد من الأحداث",
   },
 };
