@@ -53,7 +53,7 @@ describe('event rendering - regular day in week mode', () => {
   })
 
   it('renders a multi day full-day event, spanning two years', () => {
-    PageObject.clickChevronRight(41);
+    PageObject.goTo31stDecember();
 
     cy
       .get('#week-timeline__event-id-5')
@@ -71,7 +71,7 @@ describe('event rendering - regular day in week mode', () => {
   })
 
   it('renders a multi day timed event, spanning two years', () => {
-    PageObject.clickChevronRight(41);
+    PageObject.goTo31stDecember();
 
     cy
       .get('#week-timeline__event-id-6')
@@ -144,7 +144,8 @@ describe('event rendering - regular day in month mode', () => {
   })
 
   it('renders full day multi day event spanning two years', () => {
-    PageObject.clickChevronRight(9)
+    PageObject.goTo31stDecember()
+    PageObject.setMonthMode()
 
     cy
       .get('#calendar-month__event-52023-12-31')
@@ -168,6 +169,30 @@ describe('event rendering - regular day in month mode', () => {
 
     cy
       .get('#calendar-month__event-52024-01-04')
+      .should('not.exist')
+  })
 
+  it('renders a multi day timed event spanning two years', () => {
+    PageObject.goTo31stDecember()
+    PageObject.setMonthMode()
+
+    cy
+      .get('#calendar-month__event-62023-12-31')
+      .should('contain.text', '6:23 PM')
+      .should('contain.text', 'Timed multi day event year break')
+
+    PageObject.clickChevronRight()
+
+    cy
+      .get('#calendar-month__event-62024-01-01')
+      .should('contain.text', '6:23 PM')
+
+    cy
+      .get('#calendar-month__event-62024-02-01')
+      .should('contain.text', '6:23 PM')
+
+    cy
+      .get('#calendar-month__event-62024-02-02')
+      .should('not.exist')
   })
 });
