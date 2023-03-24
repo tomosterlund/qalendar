@@ -34,34 +34,37 @@
         v-if="!onlyDayModeIsEnabled"
         class="calendar-header__mode-picker"
       >
-        <div
-          class="calendar-header__mode-value"
+        <button
+          type="button"
+          class="calendar-header__mode-value c-button--reset"
+          :aria-expanded="showModePicker"
           @click="showModePicker = true"
         >
           {{ modeName }}
-        </div>
+        </button>
 
-        <div
+        <menu
           v-if="showModePicker"
+          v-click-outside="hideModePicker"
           class="calendar-header__mode-options"
-          @mouseleave="showModePicker = false"
         >
           <template
-            v-for="mode in modeOptions"
-            :key="mode"
+            v-for="modeOption in modeOptions"
+            :key="modeOption"
           >
-            <div
+            <button
               v-if="
-                !config.disableModes || !config.disableModes.includes(mode)
+                !config.disableModes || !config.disableModes.includes(modeOption)
               "
-              class="calendar-header__mode-option"
-              :class="'is-' + mode + '-mode'"
-              @click="$emit('change-mode', mode)"
+              type="button"
+              class="calendar-header__mode-option c-button--reset"
+              :class="'is-' + modeOption + '-mode'"
+              @click="$emit('change-mode', modeOption)"
             >
-              {{ getLanguage(languageKeys[mode], time.CALENDAR_LOCALE) }}
-            </div>
+              {{ getLanguage(languageKeys[modeOption], time.CALENDAR_LOCALE) }}
+            </button>
           </template>
-        </div>
+        </menu>
       </div>
     </div>
   </div>
@@ -80,6 +83,7 @@ import Time from '../../helpers/Time';
 import { periodInterface } from '../../typings/interfaces/period.interface';
 import getLanguage from '../../language';
 import { modeType } from '../../typings/types';
+import vClickOutside from 'click-outside-vue3';
 
 export default defineComponent({
   name: 'AppHeader',
@@ -87,6 +91,10 @@ export default defineComponent({
   components: {
     DatePicker,
     FontAwesomeIcon,
+  },
+
+  directives: {
+    clickOutside: vClickOutside.directive
   },
 
   mixins: [getLanguage],
@@ -175,8 +183,7 @@ export default defineComponent({
   watch: {
     isSmall: {
       handler(value) {
-        if (value) this.modeOptions = ['month', 'day'];
-        else this.modeOptions = ['month', 'week', 'day'];
+        this.modeOptions = value ? ['month', 'day'] : ['month', 'week', 'day'];
       },
       immediate: true,
     },
@@ -191,6 +198,10 @@ export default defineComponent({
 
     goToPeriod(event: MouseEvent, direction: 'previous' | 'next') {
       (this.$refs.periodSelect as typeof DatePicker).goToPeriod(direction);
+    },
+
+    hideModePicker() {
+      this.showModePicker = false;
     },
   }
 });
@@ -282,6 +293,8 @@ export default defineComponent({
       transform: translateX(-50%);
       border: var(--qalendar-border-gray-thin);
       background-color: #fff;
+      margin: 0;
+      padding: 0;
 
       .calendar-header__mode-option {
         padding: var(--qalendar-spacing-half) var(--qalendar-spacing);
