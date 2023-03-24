@@ -42,16 +42,21 @@ export default class Time {
     this.MS_PER_DAY = 86400000;
   }
 
-  getDatesBetweenTwoDates(start: Date, end: Date) {
-    for (
-      var arr = [], dt = new Date(start);
-      dt <= end;
-      dt.setDate(dt.getDate() + 1)
-    ) {
-      arr.push(new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()));
+  /**
+   * Get all dates between two dates
+   *
+   * @param   {Date}  start  start date
+   * @param   {Date}  end    end date
+   *
+   * @return  {Array}       Array of dates between start and end
+   */
+  getDatesBetweenTwoDates(start: Date, end: Date): Date[] {
+    const dateArray = [];
+    while (start <= end) {
+      dateArray.push(new Date(start));
+      start.setDate(start.getDate() + 1);
     }
-
-    return arr;
+    return dateArray;
   }
 
   getCalendarWeekDateObjects(date: Date | null = null): calendarWeekType {
@@ -222,7 +227,7 @@ export default class Time {
     const y = date.getFullYear();
     const m = date.getMonth() + 1;
     const d = date.getDate();
-    const fullDate = `${y}-${m >= 10 ? m : "0" + m}-${d >= 10 ? d : "0" + d}`;
+    const fullDate = `${y}-${m >= 10 ? m : `0${m}`}-${d >= 10 ? d : `0${d}`}`;
 
     if (!timeIsStartOrEndOfDay) {
       const hour = date.getHours();
@@ -307,7 +312,7 @@ export default class Time {
     const mm = (date.getMonth() + 1)
     const dd = date.getDate()
 
-    return `${yyyy}-${mm >= 10 ? mm : "0" + mm}-${dd >= 10 ? dd : "0" + dd}`;
+    return `${yyyy}-${mm >= 10 ? mm : `0${mm}`}-${dd >= 10 ? dd : `0${dd}`}`;
   }
 
   addMinutesToDateTimeString(minutes: number, dateTimeString: string) {
@@ -320,7 +325,7 @@ export default class Time {
     } = this.getAllVariablesFromDateTimeString(dateTimeString)
 
     const oldDateObject = new Date(oldYear, oldMonth, oldDate, oldHour, oldMinutes)
-    const newDateObject = new Date(oldDateObject.getTime() + (minutes * 60000))
+    const newDateObject = new Date(oldDateObject.getTime() + (minutes * 60_000))
 
     return this.getDateTimeStringFromDate(newDateObject)
   }
@@ -353,7 +358,7 @@ export default class Time {
 
     const minutePoints = oneMinutePercentage * minutes;
 
-    if (minutePoints < 10) return "0" + minutePoints;
+    if (minutePoints < 10) return `0${minutePoints}`;
 
     return minutePoints.toString();
   }
@@ -384,11 +389,9 @@ export default class Time {
   setSegmentOfDateTimeString(dateTimeString: string, segments: { hour: number|string }) {
     if (segments.hour < 0 || segments.hour > 23) throw new Error('Invalid hour')
 
-    segments.hour = String(segments.hour < 10 ? "0" + segments.hour : segments.hour)
+    segments.hour = String(segments.hour < 10 ? `0${segments.hour}` : segments.hour)
 
-    dateTimeString = dateTimeString.replace(/\d{2}:/, segments.hour + ":")
-
-    return dateTimeString
+    return dateTimeString.replace(/\d{2}:/, `${segments.hour}:`);
   }
 
   isTrailingOrLeadingDate(date: Date, month: number) {
