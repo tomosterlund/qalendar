@@ -99,7 +99,7 @@
 
 <script lang="ts">
 import {defineComponent, PropType} from 'vue';
-import {EVENT_TYPE, eventInterface} from './typings/interfaces/event.interface';
+import {eventInterface} from './typings/interfaces/event.interface';
 import {configInterface} from './typings/config.interface';
 import Time from './helpers/Time';
 import AppHeader from './components/header/Header.vue';
@@ -107,7 +107,6 @@ import Week from './components/week/Week.vue';
 import {modeType} from './typings/types';
 import Month from './components/month/Month.vue';
 import Errors from './helpers/Errors';
-import Helpers from "./helpers/Helpers";
 
 export default defineComponent({
   name: 'Qalendar',
