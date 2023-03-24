@@ -8,8 +8,8 @@
       v-if="!isStandAloneComponent"
       class="c-date-picker__value-display"
       type="button"
+      :aria-expanded="showDatePicker"
       @click="togglePeriodSelector"
-      @keyup.shift="togglePeriodSelector"
     >
       <font-awesome-icon :icon="icons.calendarIcon" />
       <span class="c-date-picker__value-display-text">{{ periodText }}</span>
@@ -20,6 +20,9 @@
       v-click-outside="hideDatePicker"
       class="c-date-picker__week-picker"
       :class="{ 'is-in-qalendar': !isStandAloneComponent }"
+      aria-modal="true"
+      :aria-label="getLanguage(languageKeys.datePickerAriaLabel, time.CALENDAR_LOCALE)"
+      role="dialog"
     >
       <div class="c-date-picker__week-picker-navigation">
         <font-awesome-icon
@@ -31,7 +34,6 @@
           class="c-date-picker__toggle-mode c-button--reset"
           type="button"
           @click="toggleDatePickerMode"
-          @keyup.page-up="toggleDatePickerMode"
         >
           <template v-if="datePickerMode === 'month'">
             {{
@@ -131,6 +133,7 @@ import Time, {
 import { periodInterface } from '../../typings/interfaces/period.interface';
 import { modeType } from '../../typings/types';
 import vClickOutside from 'click-outside-vue3';
+import getLanguage from '../../language/index';
 
 interface disableDates {
   before: Date;
@@ -145,6 +148,8 @@ export default defineComponent({
   directives: {
     clickOutside: vClickOutside.directive
   },
+
+  mixins: [getLanguage],
 
   props: {
     mode: {
@@ -291,7 +296,7 @@ export default defineComponent({
       this.emitChange(start, end);
     },
 
-    setMonth(date: Date) {
+    setMonth(date: Date): void {
       this.datePickerCurrentDate = date;
       this.setMonthDaysInWeekPicker(date.getMonth(), date.getFullYear());
       this.datePickerMode = 'month';
@@ -354,14 +359,14 @@ export default defineComponent({
           dateToSet.getFullYear()
         );
         this.datePickerCurrentDate = dateToSet;
-      } else {
-        this.monthPickerDates = this.time.getCalendarYearMonths(
-          direction === 'previous'
-            ? currentDate.getFullYear() - 1
-            : currentDate.getFullYear() + 1
-        );
-        this.datePickerCurrentDate = new Date(this.monthPickerDates[0]);
+        return;
       }
+      this.monthPickerDates = this.time.getCalendarYearMonths(
+        direction === 'previous'
+          ? currentDate.getFullYear() - 1
+          : currentDate.getFullYear() + 1
+      );
+      this.datePickerCurrentDate = new Date(this.monthPickerDates[0]);
     },
 
     toggleDatePickerMode() {
@@ -440,17 +445,20 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @use '../../styles/mixins.scss' as mixins;
 @use '../../styles/variables.scss';
 
 
 .c-button {
+  cursor: pointer;
+
   &--reset {
     background-color: transparent;
     border: none;
   }
 }
+
 .c-date-picker {
   position: relative;
   width: fit-content;
@@ -619,7 +627,7 @@ export default defineComponent({
       cursor: not-allowed;
     }
 
-    [data-lang="ar"] & {
+    [data-lang='ar'] & {
       font-size: 0.65rem;
     }
   }

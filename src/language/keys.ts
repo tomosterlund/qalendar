@@ -54,4 +54,18 @@ export const languageKeys = {
     "ru-RU": "+ ещё события",
     "ar-YE": "+ المزيد من الأحداث",
   },
+
+  datePickerAriaLabel: {
+    "it-IT": "",
+    "en-US": "Select a date",
+    "de-DE": "Wähle ein Datum",
+    "sv-SE": "",
+    "zh-CN": "",
+    "pt-BR": "",
+    "fr-FR": "",
+    "th-TH": "",
+    "nl-NL": "",
+    "ru-RU": "",
+    "ar-YE": "",
+  },
 };
