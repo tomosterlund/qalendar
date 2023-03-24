@@ -387,9 +387,9 @@ export default class Time {
   }
 
   setSegmentOfDateTimeString(dateTimeString: string, segments: { hour: number|string }) {
-    if (segments.hour < 0 || segments.hour > 23) throw new Error('Invalid hour')
+    if (+segments.hour < 0 || +segments.hour > 23) throw new Error('Invalid hour')
 
-    segments.hour = String(segments.hour < 10 ? `0${segments.hour}` : segments.hour)
+    segments.hour = String(+segments.hour < 10 ? `0${segments.hour}` : segments.hour)
 
     return dateTimeString.replace(/\d{2}:/, `${segments.hour}:`);
   }
