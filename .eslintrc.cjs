@@ -8,6 +8,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:vue/vue3-recommended',
     '@vue/eslint-config-typescript/recommended',
+    'plugin:vuejs-accessibility/recommended',
   ],
   env: {
     'vue/setup-compiler-macros': true,
