@@ -9,7 +9,7 @@ describe("DatePicker.vue", () => {
   let wrapper: any;
 
   const openDatePicker = async () => {
-    const datePicker = wrapper.find(".date-picker__value-display");
+    const datePicker = wrapper.find(".c-date-picker__value-display");
     await datePicker.trigger("click");
   };
 
@@ -25,7 +25,7 @@ describe("DatePicker.vue", () => {
       },
     });
     await openDatePicker();
-    const period = wrapper.find(".date-picker__toggle-mode");
+    const period = wrapper.find(".c-date-picker__toggle-mode");
     expect(period.text()).toBe("May 2022");
   });
 
@@ -42,7 +42,7 @@ describe("DatePicker.vue", () => {
     });
     await openDatePicker();
     await wrapper.find(".is-chevron-left").trigger("click");
-    const period = wrapper.find(".date-picker__toggle-mode");
+    const period = wrapper.find(".c-date-picker__toggle-mode");
     expect(period.text()).toBe("December 2021");
   });
 
@@ -59,7 +59,7 @@ describe("DatePicker.vue", () => {
     });
     await openDatePicker();
     await wrapper.find(".is-chevron-right").trigger("click");
-    const period = wrapper.find(".date-picker__toggle-mode");
+    const period = wrapper.find(".c-date-picker__toggle-mode");
     expect(period.text()).toBe("January 2024");
   });
 
@@ -75,10 +75,10 @@ describe("DatePicker.vue", () => {
       },
     });
     await openDatePicker();
-    await wrapper.find(".date-picker__toggle-mode").trigger("click");
+    await wrapper.find(".c-date-picker__toggle-mode").trigger("click");
     const months = wrapper.findAll(".has-month");
     await months[5].trigger("click");
-    const period = wrapper.find(".date-picker__toggle-mode");
+    const period = wrapper.find(".c-date-picker__toggle-mode");
     expect(period.text()).toBe("Juni 2023");
   });
 
@@ -95,13 +95,13 @@ describe("DatePicker.vue", () => {
     });
     await openDatePicker();
 
-    await wrapper.find(".date-picker__toggle-mode").trigger("click");
+    await wrapper.find(".c-date-picker__toggle-mode").trigger("click");
 
     const chevronLeft = await wrapper.find(".is-chevron-left");
     await chevronLeft.trigger("click");
     await chevronLeft.trigger("click");
     await chevronLeft.trigger("click");
-    let period = wrapper.find(".date-picker__toggle-mode");
+    let period = wrapper.find(".c-date-picker__toggle-mode");
     expect(period.text()).toBe("2029");
 
     await wrapper.find(".is-chevron-right").trigger("click");
@@ -109,7 +109,7 @@ describe("DatePicker.vue", () => {
 
     const months = wrapper.findAll(".has-month");
     await months[11].trigger("click");
-    period = wrapper.find(".date-picker__toggle-mode");
+    period = wrapper.find(".c-date-picker__toggle-mode");
     expect(period.text()).toBe("Dezember 2030");
   });
 

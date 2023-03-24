@@ -1,33 +1,37 @@
 <template>
   <div
-    class="date-picker"
+    v-click-outside="hideDatePicker"
+    class="c-date-picker"
     :class="isStandAloneComponent ? 'date-picker-root' : 'is-in-qalendar'"
-    @mouseleave="hideDatePicker"
   >
-    <div
+    <button
       v-if="!isStandAloneComponent"
-      class="date-picker__value-display"
+      class="c-date-picker__value-display"
+      type="button"
       @click="togglePeriodSelector"
+      @keyup.shift="togglePeriodSelector"
     >
       <font-awesome-icon :icon="icons.calendarIcon" />
-      <span class="date-picker__value-display-text">{{ periodText }}</span>
-    </div>
+      <span class="c-date-picker__value-display-text">{{ periodText }}</span>
+    </button>
 
     <div
       v-if="showDatePicker"
-      class="date-picker__week-picker"
+      v-click-outside="hideDatePicker"
+      class="c-date-picker__week-picker"
       :class="{ 'is-in-qalendar': !isStandAloneComponent }"
-      @mouseleave="hideDatePicker"
     >
-      <div class="date-picker__week-picker-navigation">
+      <div class="c-date-picker__week-picker-navigation">
         <font-awesome-icon
           class="is-icon is-chevron-left"
           :icon="icons.chevronLeft"
           @click="toggleDatePickerPeriod('previous')"
         />
-        <span
-          class="date-picker__toggle-mode"
+        <button
+          class="c-date-picker__toggle-mode c-button--reset"
+          type="button"
           @click="toggleDatePickerMode"
+          @keyup.page-up="toggleDatePickerMode"
         >
           <template v-if="datePickerMode === 'month'">
             {{
@@ -45,7 +49,7 @@
               })
             }}
           </template>
-        </span>
+        </button>
         <font-awesome-icon
           class="is-icon is-chevron-right"
           :icon="icons.chevronRight"
@@ -55,7 +59,7 @@
 
       <div
         v-if="datePickerMode === 'month'"
-        class="date-picker__day-names week"
+        class="c-date-picker__day-names week"
       >
         <span
           v-for="day in weekDays"
@@ -76,35 +80,36 @@
             : ''
         "
       >
-        <span
+        <button
           v-for="(day, dayIndex) in week"
           :key="weekIndex + dayIndex"
-          :class="{
+          :class="['c-date-picker__day-button',{
             'is-weekend': [5, 6].includes(dayIndex),
             'is-not-in-month':
               day.getMonth() !== datePickerCurrentDate.getMonth(),
             'has-day': day,
             'is-today': time.dateIsToday(day),
             'is-disabled': checkIfDateIsDisabled(day),
-          }"
+          }]"
           @click="!checkIfDateIsDisabled(day) ? setWeek(day) : null"
         >
           {{ day ? day.getDate() : '' }}
-        </span>
+        </button>
       </div>
 
       <div
         v-show="datePickerMode === 'year'"
-        class="months"
+        class="c-date-picker__months"
       >
-        <span
+        <button
           v-for="(date, monthIndex) in monthPickerDates"
           :key="monthIndex"
-          class="has-month"
+          type="button"
+          class="c-date-picker__month c-button--reset"
           @click="setMonth(date)"
         >
           {{ new Date(date).toLocaleString(getLocale(), { month: 'long' }) }}
-        </span>
+        </button>
       </div>
     </div>
   </div>
@@ -125,6 +130,7 @@ import Time, {
 } from '../../helpers/Time';
 import { periodInterface } from '../../typings/interfaces/period.interface';
 import { modeType } from '../../typings/types';
+import vClickOutside from 'click-outside-vue3';
 
 interface disableDates {
   before: Date;
@@ -135,6 +141,10 @@ export default defineComponent({
   name: 'DatePicker',
 
   components: { FontAwesomeIcon },
+
+  directives: {
+    clickOutside: vClickOutside.directive
+  },
 
   props: {
     mode: {
@@ -434,7 +444,14 @@ export default defineComponent({
 @use '../../styles/mixins.scss' as mixins;
 @use '../../styles/variables.scss';
 
-.date-picker {
+
+.c-button {
+  &--reset {
+    background-color: transparent;
+    border: none;
+  }
+}
+.c-date-picker {
   position: relative;
   width: fit-content;
   min-width: 16rem;
@@ -471,6 +488,8 @@ export default defineComponent({
     gap: var(--qalendar-spacing-half);
     user-select: none;
     border: var(--qalendar-border-gray-thin);
+    width: 100%;
+    background: transparent;
 
     .qalendar-is-small & {
       border: 0;
@@ -562,45 +581,46 @@ export default defineComponent({
       border: 1px dashed var(--qalendar-theme-color);
       border-radius: 4px;
     }
+  }
 
-    span {
-      display: flex;
-      min-height: 32px;
-      min-width: 32px;
-      justify-content: center;
-      align-items: center;
-      flex: 1 1 100%;
-      cursor: pointer;
-      border-radius: 50%;
-      font-size: var(--qalendar-font-xs);
+  &__day-button {
+    display: flex;
+    min-height: 32px;
+    min-width: 32px;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1 100%;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: var(--qalendar-font-xs);
+    border: none;
 
-      &.is-weekend {
-        color: gray;
+    &:where(.is-weekend) {
+      color: gray;
+    }
+
+    &:where(.has-day) {
+      @include mixins.hover {
+        background-color: var(--qalendar-light-gray);
       }
+    }
 
-      &.has-day {
-        @include mixins.hover {
-          background-color: var(--qalendar-light-gray);
-        }
-      }
+    &:where(.is-today) {
+      background-color: var(--qalendar-blue);
+      color: #fff;
+    }
 
-      &.is-today {
-        background-color: var(--qalendar-blue);
-        color: #fff;
-      }
+    &:where(.is-not-in-month) {
+      color: darkgray;
+    }
 
-      &.is-not-in-month {
-        color: darkgray;
-      }
+    &:where(.is-disabled) {
+      color: darkgray;
+      cursor: not-allowed;
+    }
 
-      &.is-disabled {
-        color: darkgray;
-        cursor: not-allowed;
-      }
-
-      [data-lang="ar"] & {
-        font-size: 0.65rem;
-      }
+    [data-lang="ar"] & {
+      font-size: 0.65rem;
     }
   }
 
@@ -610,27 +630,27 @@ export default defineComponent({
     font-size: var(--qalendar-font-s);
   }
 
-  .months {
+  .c-date-picker__months {
     display: flex;
     flex-wrap: wrap;
     gap: var(--qalendar-spacing-half);
     max-width: 20rem;
+  }
 
-    span {
-      padding: 4px;
-      border: var(--qalendar-border-gray-thin);
-      border-radius: 2px;
-      flex: 1 0 33%;
-      text-align: center;
-      cursor: pointer;
-      font-size: var(--qalendar-font-xs);
-      transition: all 0.2s ease;
+  .c-date-picker__month {
+    padding: 4px;
+    border: var(--qalendar-border-gray-thin);
+    border-radius: 2px;
+    flex: 1 0 33%;
+    text-align: center;
+    cursor: pointer;
+    font-size: var(--qalendar-font-xs);
+    transition: all 0.2s ease;
 
-      @include mixins.hover {
-        background-color: var(--qalendar-theme-color);
-        color: #fff;
-        border: var(--qalendar-border-blue-thin);
-      }
+    @include mixins.hover {
+      background-color: var(--qalendar-theme-color);
+      color: #fff;
+      border: var(--qalendar-border-blue-thin);
     }
   }
 }
