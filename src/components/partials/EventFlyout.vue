@@ -108,27 +108,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { eventInterface } from '../../typings/interfaces/event.interface';
-import EventFlyoutPosition, {
-  EVENT_FLYOUT_WIDTH,
-} from '../../helpers/EventFlyoutPosition';
-import { faMapMarkerAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {defineComponent, PropType} from 'vue';
+import {EVENT_TYPE, eventInterface} from '../../typings/interfaces/event.interface';
+import EventFlyoutPosition, {EVENT_FLYOUT_WIDTH,} from '../../helpers/EventFlyoutPosition';
+import {faMapMarkerAlt, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {
   faClock,
   faComment,
-  faUser,
   faEdit,
-  faTrashAlt,
   faQuestionCircle,
+  faTrashAlt,
+  faUser,
 } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { configInterface } from '../../typings/config.interface';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import {configInterface} from '../../typings/config.interface';
 import Time from '../../helpers/Time';
-import {
-  DATE_TIME_STRING_FULL_DAY_PATTERN,
-  EVENT_COLORS,
-} from '../../constants';
+import {EVENT_COLORS,} from '../../constants';
+import Helpers from "../../helpers/Helpers";
+
 const eventFlyoutPositionHelper = new EventFlyoutPosition();
 
 export default defineComponent({
@@ -182,33 +179,28 @@ export default defineComponent({
 
   computed: {
     getEventTime() {
-      // 1. Null handling
       if (!this.calendarEvent || !this.calendarEvent.time) return null;
 
-      // 2. Handle multiple day events
-      // Important: This must always be evaluated before checking if the event is a full day event
-      // Because day 2 until (last day - 1) of a multiple day event, will technically be a full day event,
-      // but we still want to display the original start and end time
-      if (this.calendarEvent.originalEvent) {
+
+      const eventType = Helpers.getEventType(this.calendarEvent, this.time);
+
+      if ([EVENT_TYPE.MULTI_DAY_TIMED, EVENT_TYPE.MULTI_DAY_FULL_DAY].includes(eventType)) {
         const startLocalizedString = this.getDateFromDateString(
-          this.calendarEvent.originalEvent.time.start
-        ) + ' ' + this.time.getLocalizedTime(this.calendarEvent.originalEvent.time.start)
+          this.calendarEvent.time.start
+        ) + ' ' + this.time.getLocalizedTime(this.calendarEvent.time.start)
 
         const endLocalizedString = this.getDateFromDateString(
-          this.calendarEvent.originalEvent.time.end
-        ) + ' ' + this.time.getLocalizedTime(this.calendarEvent.originalEvent.time.end)
+          this.calendarEvent.time.end
+        ) + ' ' + this.time.getLocalizedTime(this.calendarEvent.time.end)
 
         return `${startLocalizedString} - ${endLocalizedString}`;
       }
 
       // 3. Handle full day events
-      if (
-        DATE_TIME_STRING_FULL_DAY_PATTERN.test(this.calendarEvent.time.start)
-      ) {
-        const startDate = this.getDateFromDateString(
-          this.calendarEvent.time.start
-        );
+      if (eventType === EVENT_TYPE.SINGLE_DAY_FULL_DAY) {
+        const startDate = this.getDateFromDateString(this.calendarEvent.time.start);
         const endDate = this.getDateFromDateString(this.calendarEvent.time.end);
+
         if (startDate === endDate) return startDate;
 
         return `${startDate} - ${endDate}`;
