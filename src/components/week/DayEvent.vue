@@ -174,7 +174,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['event-was-clicked', 'event-was-resized', 'event-was-dragged', 'drag-start'],
+  emits: ['event-was-clicked', 'event-was-resized', 'event-was-dragged', 'drag-start', 'drag-end'],
 
   data() {
     return {
@@ -216,8 +216,8 @@ export default defineComponent({
       dragMoveListenerNameAndCallbacks: [
         ['mousemove', this.handleDrag],
         ['touchmove', this.handleDrag],
-        ['mouseup', this.handleDragEnd],
-        ['touchend', this.handleDragEnd],
+        ['mouseup', this.onMouseUpWhenDragging],
+        ['touchend', this.onMouseUpWhenDragging],
       ] as ReadonlyArray<[string, any]>,
     };
   },
@@ -533,7 +533,7 @@ export default defineComponent({
     /**
      * Handle mouseup-events, for when an event stops being resized
      * */
-    onMouseUp() {
+    onMouseUpWhenResizing() {
       this.stopResizing();
     },
 
@@ -541,12 +541,12 @@ export default defineComponent({
       this.isResizing = true;
       this.resizingDirection = direction;
       document.addEventListener('mousemove', this.onMouseMove);
-      document.addEventListener('mouseup', this.onMouseUp);
+      document.addEventListener('mouseup', this.onMouseUpWhenResizing);
     },
 
     stopResizing() {
       document.removeEventListener('mousemove', this.onMouseMove);
-      document.removeEventListener('mouseup', this.onMouseUp);
+      document.removeEventListener('mouseup', this.onMouseUpWhenResizing);
       this.resetResizingValues();
       this.$emit('event-was-resized', this.event);
       this.isResizing = false;
@@ -615,6 +615,11 @@ export default defineComponent({
       });
     },
 
+    onMouseUpWhenDragging() {
+      this.$emit('drag-end');
+      this.handleDragEnd();
+    },
+
     handleDragEnd() {
       this.canDrag = false;
       this.eventZIndexValue = 'initial';
@@ -626,8 +631,7 @@ export default defineComponent({
       const timeChanged =
         this.changeInQuartersOnDrag <= -1 || this.changeInQuartersOnDrag > 0;
 
-      if (dayChanged || timeChanged)
-        this.$emit('event-was-dragged', this.event);
+      if (dayChanged || timeChanged) this.$emit('event-was-dragged', this.event);
     },
 
     handleDrag(mouseEvent: MouseEvent | TouchEvent) {

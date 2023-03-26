@@ -132,7 +132,7 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: 'month',
+        defaultMode: 'week',
         showCurrentTime: true,
         isSilent: true,
         dayIntervals: {

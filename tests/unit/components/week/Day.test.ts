@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import {mount, VueWrapper} from "@vue/test-utils";
 import Day from "../../../../src/components/week/Day.vue";
 import { describe, expect, test } from "vitest";
 import Time from "../../../../src/helpers/Time";
@@ -65,5 +65,12 @@ describe("Day.vue", () => {
     await day.trigger("click");
     expect(wrapper.emitted()).toHaveProperty('day-was-clicked');
     expect(wrapper.emitted('day-was-clicked'));
+  })
+
+  test('passing "drag-end" to parent component upon receiving it from DayEvent', async () => {
+    expect(wrapper.emitted()).not.toHaveProperty('drag-end');
+    const dayEvent = wrapper.findComponent(".calendar-week__event");
+    await (dayEvent as VueWrapper).vm.$emit('drag-end');
+    expect(wrapper.emitted()).toHaveProperty('drag-end');
   })
 });
