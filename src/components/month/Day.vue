@@ -186,7 +186,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@mixin dayBase {
+@mixin day-base {
   height: 100%;
   flex: 1;
   display: flex;
@@ -197,7 +197,7 @@ export default defineComponent({
 }
 
 .calendar-month__weekday {
-    @include dayBase;
+    @include day-base;
 
     overflow: hidden;
     transition: background-color 0.2s ease-in-out;
@@ -240,7 +240,7 @@ export default defineComponent({
 }
 
 .space-reserver {
-  @include dayBase;
+  @include day-base;
 
   border-right-color: transparent;
 
@@ -251,14 +251,12 @@ export default defineComponent({
 
 .space-reserver,
 .trailing-or-leading {
-
   .qalendar-is-small & {
     display: none;
   }
 }
 
 .calendar-month__week:first-child {
-
   .space-reserver,
   .calendar-month__weekday {
     border-top: var(--qalendar-border-gray-thin);
