@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0-beta.1](https://github.com/tomosterlund/qalendar/compare/v2.3.1...v2.4.0-beta.1) (2023-03-26)
+
+
+### Bug Fixes
+
+* bug in DayEvent, which prevents event from being displayed up until day end ([c23ea70](https://github.com/tomosterlund/qalendar/commit/c23ea70b363a7156837358bc16199aa1fe334906))
+* display of time for single-day full day events ([650f6e7](https://github.com/tomosterlund/qalendar/commit/650f6e797451189d50f0a57bca5cb8ebc9abfc77))
+* resizing and drag & drop in week mode ([67ea8ae](https://github.com/tomosterlund/qalendar/commit/67ea8ae110022621b8f0b067b928e93aaab02f70))
+* resizing and dragging ([bc7e72e](https://github.com/tomosterlund/qalendar/commit/bc7e72ed0ea392398280cc87c118effe3fe006f6))
+* time display for hours prolonged or skipped by daylight savings ([ab44e31](https://github.com/tomosterlund/qalendar/commit/ab44e3165400bd3e6a20a439dcc8f08d89868554))
+* ts-error in DayEvent.vue ([6bddb7a](https://github.com/tomosterlund/qalendar/commit/6bddb7acc73ebcfbf14e57dc4b2368959984ac6e))
+
+
+### Features
+
+* add new helper class EventChange ([c8841a9](https://github.com/tomosterlund/qalendar/commit/c8841a9936152ccd48da598ae48c51ec9e1e10d5))
+* enable drag & drop and resize for fluent day boundaries ([def7511](https://github.com/tomosterlund/qalendar/commit/def7511c48eccd2e861a11098099cf9e1326d494))
+* refactor code ([77a6fa7](https://github.com/tomosterlund/qalendar/commit/77a6fa78f9c64f05f0771e9583cd79cd0a36437c))
+* refactor code and introduce enum for event type ([c832b36](https://github.com/tomosterlund/qalendar/commit/c832b36c272f59d2ca950bc91d3e38d19a4b057d))
+* start building allowance for dayBoundaries that stretch over two real days ([68ab106](https://github.com/tomosterlund/qalendar/commit/68ab106391ea01d14b07bea3f772152ec0520443))
+
 ## [2.3.1](https://github.com/tomosterlund/qalendar/compare/v2.3.0...v2.3.1) (2023-03-26)
 
 
