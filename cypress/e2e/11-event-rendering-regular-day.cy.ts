@@ -94,6 +94,14 @@ describe('event rendering - regular day in week mode', () => {
       .should('be.visible')
       .should('have.attr', 'style')
       .and('include', 'width: calc(700% - 6px);')
+
+    PageObject.clickChevronRight(3);
+
+    cy
+    .get('#week-timeline__event-id-6')
+    .should('be.visible')
+    .should('have.attr', 'style')
+    .and('include', 'width: calc(400% - 6px);')
   })
 })
 
@@ -113,6 +121,8 @@ describe('event rendering - regular day in month mode', () => {
     cy
       .get('#calendar-month__event-22023-03-18')
       .should('be.visible')
+      .should('contain.text', '6:30 PM')
+      .should('contain.text', 'Event 2')
   })
 
   it('renders a full day single day event', () => {
