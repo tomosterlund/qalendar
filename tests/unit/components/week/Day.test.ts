@@ -133,7 +133,7 @@ describe("Day.vue", () => {
     expect(wrapper.emitted()).toHaveProperty('drag-start');
   })
 
-  test('passing "drag-end" to parent component upon receiving it from DayEvent', async () => {
+  it('passing "drag-end" to parent component upon receiving it from DayEvent', async () => {
     expect(wrapper.emitted()).not.toHaveProperty('drag-end');
     const dayEvent = wrapper.findComponent(".calendar-week__event");
     await (dayEvent as VueWrapper).vm.$emit('drag-end');
