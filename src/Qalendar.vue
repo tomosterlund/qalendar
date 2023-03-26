@@ -180,7 +180,7 @@ export default defineComponent({
         // The check on strict equality as primitive values is needed,
         // since we do not want to trigger a rerender on event-was-resized
         if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
-          this.eventsDataProperty = this.processEvents(newVal);
+          this.eventsDataProperty = newVal;
           this.eventRenderingKey = this.eventRenderingKey + 1;
         }
 
@@ -315,135 +315,6 @@ export default defineComponent({
 
     setTimePointsFromDayBoundary(boundary: number) {
       return Time.getTimePointsFromHour(boundary);
-    },
-
-    // TODO: delete, and make sure that timed, multi-day events are handled correctly in week.vue
-    processEvents(events: eventInterface[]) {
-      // return events.reduce((processedEvents: eventInterface[], event) => {
-      //   const allEvents = processedEvents;
-      //
-      //   // For all single day events { start: '2022-01-01 00:00', end: '2022-01-01 01:00' },
-      //   // or non-timed full day events { start: '2022-01-01', end: '2022-01-04' },
-      //   // just push them to the array
-      //   const eventType = Helpers.getEventType(event, this.time)
-      //   const { hour: eventEndHour } = this.time.getAllVariablesFromDateTimeString(event.time.end);
-      //
-      //   if (eventType !== EVENT_TYPE.MULTI_DAY_TIMED) {
-      //     allEvents.push(event);
-      //   }
-      //
-      //   // If day end is less than day start, indicating dayBoundaries stretching two real days
-      //   // then also check whether a multi-day timed event can be displayed within one day
-      //   else if (
-      //     eventType === EVENT_TYPE.MULTI_DAY_TIMED
-      //     && this.time.DAY_END < this.time.DAY_START
-      //     && this.time.areDaysConsecutive(event.time.start, event.time.end)
-      //     && this.time.DAY_END > Time.getTimePointsFromHour(eventEndHour)
-      //   ) {
-      //     allEvents.push(event);
-      //   }
-      //
-      //   // For all multiple-day events, that are also timed { start: '2022-01-01 10:00', end: '2022-01-04 01:00' }
-      //   // do the following:
-      //   else {
-      //     // 1. Create the first day event as a normal timed event
-      //     const {
-      //       year: firstDayYear,
-      //       month: firstDayMonth,
-      //       date: firstDayDate,
-      //     } = this.time.getAllVariablesFromDateTimeString(event.time.start);
-      //
-      //     allEvents.push({
-      //       ...event,
-      //       time: {
-      //         start: event.time.start,
-      //         end: this.time.getDateTimeStringFromDate(
-      //           new Date(
-      //             firstDayYear,
-      //             firstDayMonth,
-      //             firstDayDate,
-      //             23,
-      //             59,
-      //             59,
-      //             999
-      //           )
-      //         ),
-      //       },
-      //       originalEvent: event,
-      //       isEditable: false, // Multiple-day events cannot be dragged or resized
-      //     });
-      //
-      //     // 2. Create a multiple-day full-day event, that stretches from day 2 until day (end - 1)
-      //     const day2Start = this.time.addDaysToDateTimeString(
-      //       1,
-      //       this.time.dateStringFrom(event.time.start)
-      //     );
-      //     const endDateMinus1Day = this.time.addDaysToDateTimeString(
-      //       -1,
-      //       this.time.dateStringFrom(event.time.end),
-      //     );
-      //
-      //     if (endDateMinus1Day >= day2Start) {
-      //       const {
-      //         year: startYear,
-      //         month: startMonth,
-      //         date: startDate,
-      //       } = this.time.getAllVariablesFromDateTimeString(day2Start);
-      //
-      //       const {
-      //         year: endYear,
-      //         month: endMonth,
-      //         date: endDate,
-      //       } = this.time.getAllVariablesFromDateTimeString(endDateMinus1Day);
-      //
-      //       allEvents.push({
-      //         ...event,
-      //         time: {
-      //           start: this.time.getDateStringFromDate(
-      //             new Date(startYear, startMonth, startDate)
-      //           ),
-      //           end: this.time.getDateStringFromDate(
-      //             new Date(endYear, endMonth, endDate)
-      //           ),
-      //         },
-      //         originalEvent: event,
-      //       });
-      //     }
-      //
-      //     // 3. Add the last day of the multiple day event
-      //     const {
-      //       year: lastDayYear,
-      //       month: lastDayMonth,
-      //       date: lastDayDate,
-      //       hour: lastDayHour,
-      //       minutes: lastDayMinute,
-      //     } = this.time.getAllVariablesFromDateTimeString(event.time.end);
-      //
-      //     allEvents.push({
-      //       ...event,
-      //       time: {
-      //         start: this.time.getDateTimeStringFromDate(
-      //           new Date(lastDayYear, lastDayMonth, lastDayDate, 0, 0, 0)
-      //         ),
-      //         end: this.time.getDateTimeStringFromDate(
-      //           new Date(
-      //             lastDayYear,
-      //             lastDayMonth,
-      //             lastDayDate,
-      //             lastDayHour,
-      //             lastDayMinute
-      //           )
-      //         ),
-      //       },
-      //       originalEvent: event,
-      //       // Multiple-day events cannot be dragged or resized
-      //     });
-      //   }
-      //
-      //   return allEvents;
-      // }, []);
-
-      return events;
     },
   },
 });

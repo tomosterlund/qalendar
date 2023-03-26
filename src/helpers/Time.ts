@@ -245,11 +245,16 @@ export default class Time {
   }
 
   getLocalizedTime(dateTimeString: string) {
-    const h = this.hourFrom(dateTimeString);
-    const m = this.minutesFrom(dateTimeString);
-    const d = new Date();
-    d.setHours(+h);
-    d.setMinutes(+m);
+    // Though only displaying time, the exact date is needed, because otherwise time will be displayed
+    // incorrectly on days when daylight saving time changes
+    const {
+      year,
+      month,
+      date,
+      hour,
+      minutes,
+    } = this.getAllVariablesFromDateTimeString(dateTimeString);
+    const d = new Date(year, month, date, hour, minutes);
 
     return d.toLocaleTimeString(this.CALENDAR_LOCALE, {
       hour: "numeric",
