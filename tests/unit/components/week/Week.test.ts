@@ -1,4 +1,4 @@
-import {describe, expect, test} from "vitest";
+import {describe, expect, test, vi} from "vitest";
 import Week from '../../../../src/components/week/Week.vue'
 import {mount} from "@vue/test-utils";
 import Time from '../../../../src/helpers/Time'
@@ -102,5 +102,13 @@ describe('Week.vue', () => {
 
     await wrapper.vm.setDays()
     expect(wrapper.get('.current-time-line'))
+  })
+
+  test('runs initScrollbar when receiving event "drag-end"', () => {
+    const initScrollbarSpy = vi.spyOn(wrapper.vm, 'initScrollbar')
+    expect(initScrollbarSpy).not.toHaveBeenCalled()
+    const day = wrapper.findComponent('.calendar-week__day')
+    day.vm.$emit('drag-end')
+    expect(initScrollbarSpy).toHaveBeenCalled()
   })
 })

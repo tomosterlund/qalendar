@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import DayEvent from "../../../../src/components/week/DayEvent.vue";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, it, vi } from "vitest";
 import Time from "../../../../src/helpers/Time";
 import { nextTick } from "vue";
 import {mountComponent} from "../../../vitest-setup";
@@ -76,4 +76,22 @@ describe("DayEvent.vue", () => {
       "color: rgb(255, 255, 255)"
     ); // The white text
   });
+
+  it('should emit "drag-end" on mouseup after dragging', () => {
+    const wrapper = dayEvent({
+      props: {
+        eventProp: {
+          id: "sdfgdfsda-435643-dsfghgd",
+          title: "Biology lab",
+          time: { start: "2022-05-20 09:00", end: "2022-05-20 10:00" },
+        },
+        config: {},
+        ...propsForAllTests
+      },
+    });
+
+    expect(wrapper.emitted('drag-end')).toBe(undefined);
+    wrapper.vm.onMouseUpWhenDragging();
+    expect(wrapper.emitted('drag-end')).toBeTruthy();
+  })
 });

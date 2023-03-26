@@ -16,6 +16,7 @@
       @event-was-dragged="$emit('event-was-dragged', $event)"
       @event-was-resized="handleEventWasResized"
       @drag-start="$emit('drag-start')"
+      @drag-end="$emit('drag-end')"
     >
       <template #weekDayEvent="p">
         <slot
@@ -94,6 +95,7 @@ export default defineComponent({
     'interval-was-clicked',
     'day-was-clicked',
     'drag-start',
+    'drag-end',
   ],
 
   data() {

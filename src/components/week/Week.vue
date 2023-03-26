@@ -69,6 +69,7 @@
           @interval-was-clicked="$emit('interval-was-clicked', $event)"
           @day-was-clicked="$emit('day-was-clicked', $event)"
           @drag-start="destroyScrollbarAndHideOverflow"
+          @drag-end="initScrollbar"
         >
           <template #weekDayEvent="p">
             <slot
