@@ -1,5 +1,5 @@
 import Time from "./Time";
-import {DRAG_DIRECTION} from "../typings/types";
+import {DRAG_N_RESIZE_DIRECTION} from "../typings/types";
 import {eventInterface} from "../typings/interfaces/event.interface";
 import {DAY_MODE} from "../typings/interfaces/time-modes";
 
@@ -11,7 +11,7 @@ export class EventChange {
     this.setDayBoundariesTimeStrings();
   }
 
-  public canEventBeMoved(event: eventInterface, direction: DRAG_DIRECTION): boolean {
+  public canEventBeMoved(event: eventInterface, direction: DRAG_N_RESIZE_DIRECTION): boolean {
     if (this.timeInstance.dayMode !== DAY_MODE.FLEXIBLE) {
       return this.handleNonFlexibleDays(direction, event);
     }
@@ -19,16 +19,16 @@ export class EventChange {
     return this.handleFlexibleDays(direction, event);
   }
 
-  private handleNonFlexibleDays(direction: DRAG_DIRECTION, event: eventInterface) {
-    if (direction === DRAG_DIRECTION.FORWARDS) {
+  private handleNonFlexibleDays(direction: DRAG_N_RESIZE_DIRECTION, event: eventInterface) {
+    if (direction === DRAG_N_RESIZE_DIRECTION.FORWARDS) {
       return this.handleForwardsMoveForNonFlexibleDays(event);
     }
 
     return this.handleBackwardsMoveForNonFlexibleDays(event);
   }
 
-  private handleFlexibleDays(direction: DRAG_DIRECTION, event: eventInterface) {
-    if (direction == DRAG_DIRECTION.FORWARDS) {
+  private handleFlexibleDays(direction: DRAG_N_RESIZE_DIRECTION, event: eventInterface) {
+    if (direction == DRAG_N_RESIZE_DIRECTION.FORWARDS) {
       return this.handleForwardsMoveForFlexibleDays(event);
     }
 

@@ -196,7 +196,6 @@ export default defineComponent({
         return `${startLocalizedString} - ${endLocalizedString}`;
       }
 
-      // 3. Handle full day events
       if (eventType === EVENT_TYPE.SINGLE_DAY_FULL_DAY) {
         const startDate = this.getDateFromDateString(this.calendarEvent.time.start);
         const endDate = this.getDateFromDateString(this.calendarEvent.time.end);
@@ -206,7 +205,6 @@ export default defineComponent({
         return `${startDate} - ${endDate}`;
       }
 
-      // 4. Handle timed events
       const dateString = this.getDateFromDateString(
         this.calendarEvent.time.start
       );

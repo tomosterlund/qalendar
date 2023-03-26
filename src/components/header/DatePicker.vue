@@ -121,7 +121,8 @@ import {
 import Time, {
   calendarMonthType,
   calendarWeekType,
-  calendarYearMonths, WEEK_START_DAY,
+  calendarYearMonths,
+  WEEK_START_DAY,
 } from '../../helpers/Time';
 import { periodInterface } from '../../typings/interfaces/period.interface';
 import { modeType } from '../../typings/types';
