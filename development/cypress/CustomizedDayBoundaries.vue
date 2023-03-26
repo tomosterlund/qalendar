@@ -13,7 +13,6 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import Qalendar from '../../src/Qalendar.vue';
-import {fiveDayWeekEvents} from './__data__/02-five-day-week';
 import {configInterface} from '../../src/typings/config.interface';
 import {WEEK_START_DAY} from "../../src/helpers/Time";
 

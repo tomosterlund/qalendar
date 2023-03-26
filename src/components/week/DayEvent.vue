@@ -140,7 +140,7 @@ import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import Time from '../../helpers/Time';
 import {configInterface} from '../../typings/config.interface';
 import {EVENT_COLORS} from '../../constants';
-import {DayInfo, DRAG_DIRECTION, modeType} from '../../typings/types';
+import {DayInfo, DRAG_N_RESIZE_DIRECTION, modeType} from '../../typings/types';
 import { EventChange } from '../../helpers/EventChange';
 
 export default defineComponent({
@@ -324,7 +324,7 @@ export default defineComponent({
         15 * newValue,
         this.resizingStartingPointStartOfTime
       );
-      const direction = newValue > oldValue ? DRAG_DIRECTION.FORWARDS : DRAG_DIRECTION.BACKWARDS;
+      const direction = newValue > oldValue ? DRAG_N_RESIZE_DIRECTION.FORWARDS : DRAG_N_RESIZE_DIRECTION.BACKWARDS;
       const eventCanBeResizedFurther = this.eventChangeHelper.canEventBeMoved(
         this.event,
         direction
@@ -341,7 +341,7 @@ export default defineComponent({
         15 * newValue,
         this.resizingStartingPointEndOfTime
       )
-      const direction = newValue > oldValue ? DRAG_DIRECTION.FORWARDS : DRAG_DIRECTION.BACKWARDS;
+      const direction = newValue > oldValue ? DRAG_N_RESIZE_DIRECTION.FORWARDS : DRAG_N_RESIZE_DIRECTION.BACKWARDS;
       const eventCanBeResizedFurther = this.eventChangeHelper.canEventBeMoved(
         this.event,
         direction
@@ -354,7 +354,7 @@ export default defineComponent({
     },
 
     changeInQuartersOnDrag(newValue, oldValue) {
-      const direction = newValue > oldValue ? DRAG_DIRECTION.FORWARDS : DRAG_DIRECTION.BACKWARDS;
+      const direction = newValue > oldValue ? DRAG_N_RESIZE_DIRECTION.FORWARDS : DRAG_N_RESIZE_DIRECTION.BACKWARDS;
 
       const eventCanBeDraggedFurther = this.eventChangeHelper.canEventBeMoved(
         this.event,
@@ -574,11 +574,7 @@ export default defineComponent({
 
     handleDrag(mouseEvent: MouseEvent | TouchEvent) {
       // Do not run the drag & drop algorithms, under the following conditions:
-      if (
-        this.isResizing
-        || !this.canDrag
-        || !this.clientYDragStart
-      ) return;
+      if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
 
       this.$emit('drag-start');
 

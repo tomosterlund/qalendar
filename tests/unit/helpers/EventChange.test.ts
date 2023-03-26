@@ -1,7 +1,7 @@
 import {describe, expect, it} from "vitest";
 import {TimeBuilder} from "../../../src/helpers/Time";
 import {EventChange} from "../../../src/helpers/EventChange";
-import {DRAG_DIRECTION} from "../../../src/typings/types";
+import {DRAG_N_RESIZE_DIRECTION} from "../../../src/typings/types";
 import {EventBuilder, EventImpl} from "../../../src/models/Event";
 
 describe("EventChange", () => {
@@ -20,7 +20,7 @@ describe("EventChange", () => {
         }
     ).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(false);
   })
 
@@ -37,7 +37,7 @@ describe("EventChange", () => {
       end: '2023-03-17 23:44'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(true);
   });
 
@@ -54,7 +54,7 @@ describe("EventChange", () => {
       end: '2023-03-17 00:45'
     }).build();
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(false);
   });
 
@@ -71,7 +71,7 @@ describe("EventChange", () => {
       end: '2023-03-17 00:45'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(true);
   });
 
@@ -88,7 +88,7 @@ describe("EventChange", () => {
       end: '2023-03-17 21:00'
     }).build();
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(false);
   })
 
@@ -105,7 +105,7 @@ describe("EventChange", () => {
       end: '2023-03-17 20:46'
     }).build();
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(false);
   });
 
@@ -122,7 +122,7 @@ describe("EventChange", () => {
       end: '2023-03-17 20:45'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(true);
   })
 
@@ -139,7 +139,7 @@ describe("EventChange", () => {
       end: '2023-03-17 07:00'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(true);
   })
 
@@ -156,7 +156,7 @@ describe("EventChange", () => {
       end: '2023-03-17 07:00'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(false);
   })
 
@@ -173,7 +173,7 @@ describe("EventChange", () => {
       end: '2023-03-17 07:00'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(false);
   })
 
@@ -192,7 +192,7 @@ describe("EventChange", () => {
       end: '2023-03-17 05:00'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(false);
   })
 
@@ -211,7 +211,7 @@ describe("EventChange", () => {
       end: '2023-03-17 08:00'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(false);
   })
 
@@ -230,7 +230,7 @@ describe("EventChange", () => {
       end: '2023-03-18 02:00'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(true);
   })
 
@@ -249,7 +249,7 @@ describe("EventChange", () => {
       end: '2023-03-17 08:00'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.BACKWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.BACKWARDS);
     expect(canBeMoved).toBe(true);
   })
 
@@ -268,7 +268,7 @@ describe("EventChange", () => {
       end: '2023-03-18 02:00'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(false);
   })
 
@@ -287,7 +287,7 @@ describe("EventChange", () => {
       end: '2023-03-18 02:46'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(false);
   })
 
@@ -306,7 +306,7 @@ describe("EventChange", () => {
       end: '2023-03-18 02:45'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(true);
   })
 
@@ -325,7 +325,7 @@ describe("EventChange", () => {
       end: '2023-03-17 23:59'
     }).build()
 
-    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_DIRECTION.FORWARDS);
+    const canBeMoved = eventChange.canEventBeMoved(event, DRAG_N_RESIZE_DIRECTION.FORWARDS);
     expect(canBeMoved).toBe(true);
   })
 });

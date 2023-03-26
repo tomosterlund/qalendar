@@ -59,7 +59,6 @@ import {EVENT_TYPE, eventInterface} from '../../typings/interfaces/event.interfa
 import EDate from '../../helpers/EDate';
 import {dayInterface} from '../../typings/interfaces/day.interface';
 import EventFlyout from '../partials/EventFlyout.vue';
-import {DATE_TIME_STRING_FULL_DAY_PATTERN,} from '../../constants';
 import EventPosition from '../../helpers/EventPosition';
 import PerfectScrollbar from 'perfect-scrollbar';
 import Helpers from "../../helpers/Helpers";
