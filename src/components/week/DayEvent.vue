@@ -541,7 +541,7 @@ export default defineComponent({
       });
 
       if (domEvent instanceof TouchEvent) {
-        this.setInitialDragValues(domEvent.touches[0].clientX, domEvent.touches[0].clientY);
+        this.setInitialDragValues(domEvent.touches[0]?.clientX, domEvent.touches[0]?.clientY);
       } else {
         this.setInitialDragValues(domEvent.clientX, domEvent.clientY);
       }
@@ -579,8 +579,8 @@ export default defineComponent({
       this.$emit('drag-start');
 
       if (mouseEvent instanceof TouchEvent) {
-        this.handleVerticalDrag(mouseEvent.touches[0].clientY);
-        this.handleHorizontalDrag(mouseEvent.touches[0].clientX);
+        this.handleVerticalDrag(mouseEvent.touches[0]?.clientY);
+        this.handleHorizontalDrag(mouseEvent.touches[0]?.clientX);
       } else {
         this.handleVerticalDrag(mouseEvent.clientY);
         this.handleHorizontalDrag(mouseEvent.clientX);
