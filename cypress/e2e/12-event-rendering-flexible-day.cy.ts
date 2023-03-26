@@ -66,3 +66,27 @@ describe('Flexible day event rendering', () => {
       .find('#week-timeline__event-id-6')
   })
 });
+
+describe('Flexible day event rendering in month mode', () => {
+  beforeEach(() => {
+    cy.visit('/#/cypress/events-flexible-day')
+    PageObject.setMonthMode()
+  })
+
+  it('does not render a timed multi-day event in its previous day, though in it according to day boundaries', () => {
+    PageObject.goTo31stDecember();
+
+    cy
+      .get('#day-2023-12-31')
+      .should('not.contain.text', 'Timed multi day event year break')
+  })
+
+  it('does render a timed multi-day event starting on the standard calendar day of its time.start', () => {
+    PageObject.goTo31stDecember();
+    PageObject.clickChevronRight();
+
+    cy
+      .get('#day-2024-01-01')
+      .should('contain.text', 'Timed multi day event year break')
+  })
+})
