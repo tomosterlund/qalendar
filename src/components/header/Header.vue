@@ -47,18 +47,18 @@
           @mouseleave="showModePicker = false"
         >
           <template
-            v-for="mode in modeOptions"
-            :key="mode"
+            v-for="calendarMode in modeOptions"
+            :key="calendarMode"
           >
             <div
               v-if="
-                !config.disableModes || !config.disableModes.includes(mode)
+                !config.disableModes || !config.disableModes.includes(calendarMode)
               "
               class="calendar-header__mode-option"
-              :class="'is-' + mode + '-mode'"
-              @click="$emit('change-mode', mode)"
+              :class="'is-' + calendarMode + '-mode'"
+              @click="$emit('change-mode', calendarMode)"
             >
-              {{ getLanguage(languageKeys[mode], time.CALENDAR_LOCALE) }}
+              {{ getLanguage(languageKeys[calendarMode], time.CALENDAR_LOCALE) }}
             </div>
           </template>
         </div>

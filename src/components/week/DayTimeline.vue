@@ -80,7 +80,7 @@ export default defineComponent({
 
     &-text {
       line-height: 0;
-      transform: translate(-40px, 0px);
+      transform: translate(-40px, 0);
     }
 
     &:first-child {

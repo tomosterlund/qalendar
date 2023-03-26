@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, Comment, Text, Slot, VNode } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import {
   configInterface,
   dayIntervalsType,
