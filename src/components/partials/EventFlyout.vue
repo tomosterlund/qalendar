@@ -184,7 +184,7 @@ export default defineComponent({
 
       const eventType = Helpers.getEventType(this.calendarEvent, this.time);
 
-      if ([EVENT_TYPE.MULTI_DAY_TIMED, EVENT_TYPE.MULTI_DAY_FULL_DAY].includes(eventType)) {
+      if ([EVENT_TYPE.MULTI_DAY_TIMED].includes(eventType)) {
         const startLocalizedString = this.getDateFromDateString(
           this.calendarEvent.time.start
         ) + ' ' + this.time.getLocalizedTime(this.calendarEvent.time.start)
@@ -196,7 +196,7 @@ export default defineComponent({
         return `${startLocalizedString} - ${endLocalizedString}`;
       }
 
-      if (eventType === EVENT_TYPE.SINGLE_DAY_FULL_DAY) {
+      if ([EVENT_TYPE.SINGLE_DAY_FULL_DAY, EVENT_TYPE.MULTI_DAY_FULL_DAY].includes(eventType)) {
         const startDate = this.getDateFromDateString(this.calendarEvent.time.start);
         const endDate = this.getDateFromDateString(this.calendarEvent.time.end);
 
