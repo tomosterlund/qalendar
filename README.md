@@ -17,7 +17,7 @@ For documentation and demo, see: https://tomosterlund.github.io/qalendar/
 
 For bug reports and feature requests, please [open an issue](https://github.com/tomosterlund/qalendar/issues/new/choose) here on GitHub.
 
-For any other questions or comments, feel free to chat with us on Discord: https://discord.gg/MavkRHgJ
+For any other questions or comments, feel free to chat with us on Discord: https://discord.gg/Z6sTaTNADN
 
 ## License
 
