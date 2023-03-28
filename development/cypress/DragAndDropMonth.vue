@@ -15,6 +15,7 @@ import {defineComponent} from "vue";
 import Qalendar from '../../src/Qalendar.vue';
 import {configInterface} from '../../src/typings/config.interface';
 import {dragAndDropMonthEvents} from './__data__/04-drag-and-drop-month';
+import {WEEK_START_DAY} from "../../src/helpers/Time";
 
 export default defineComponent({
   name: 'DragAndDropMonth',
@@ -27,7 +28,7 @@ export default defineComponent({
         locale: 'en-US',
         week: {
           nDays: 7,
-          startsOn: 'sunday',
+          startsOn: WEEK_START_DAY.SUNDAY,
         },
         style: {
           fontFamily: `Roboto, sans-serif`

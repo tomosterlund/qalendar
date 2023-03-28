@@ -1,15 +1,23 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base"
   ],
   "packageRules": [
     {
-      "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["patch", "minor"],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
       "groupName": "devDependencies (non-major)"
     }
   ],
-  "schedule": ["before 5am on the first day of the month"],
+  "schedule": [
+    "before 5am on the first day of the month"
+  ],
   "ignoreDeps": [
     "@fortawesome/fontawesome-svg-core",
     "@fortawesome/free-regular-svg-icons",
@@ -20,5 +28,8 @@
     "vue",
     "cypress"
   ],
-  "ignorePaths": ["**/.circleci/**", "docker-compose.yml"]
+  "ignorePaths": [
+    "**/.circleci/**",
+    "docker-compose.yml"
+  ]
 }

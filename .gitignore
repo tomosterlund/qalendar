@@ -29,3 +29,5 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+/docs/.vitepress/cache

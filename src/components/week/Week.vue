@@ -60,7 +60,7 @@
           :day="day"
           :time="time"
           :config="config"
-          :day-info="{ daysTotalN: days.length, thisDayIndex: dayIndex }"
+          :day-info="{ daysTotalN: days.length, thisDayIndex: dayIndex, dateTimeString: day.dateTimeString }"
           :mode="mode"
           :day-intervals="dayIntervals"
           @event-was-clicked="handleClickOnEvent"
@@ -69,6 +69,7 @@
           @interval-was-clicked="$emit('interval-was-clicked', $event)"
           @day-was-clicked="$emit('day-was-clicked', $event)"
           @drag-start="destroyScrollbarAndHideOverflow"
+          @drag-end="initScrollbar"
         >
           <template #weekDayEvent="p">
             <slot
@@ -83,29 +84,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, Comment, Text, Slot, VNode } from 'vue';
-import {
-  configInterface,
-  dayIntervalsType,
-} from '../../typings/config.interface';
+import {defineComponent, PropType} from 'vue';
+import {configInterface, dayIntervalsType,} from '../../typings/config.interface';
 import DayTimeline from './DayTimeline.vue';
-import { periodInterface } from '../../typings/interfaces/period.interface';
-import { dayInterface } from '../../typings/interfaces/day.interface';
+import {periodInterface} from '../../typings/interfaces/period.interface';
+import {dayInterface} from '../../typings/interfaces/day.interface';
 import WeekTimeline from './WeekTimeline.vue';
 import Day from './Day.vue';
 import EventFlyout from '../partials/EventFlyout.vue';
-import { eventInterface } from '../../typings/interfaces/event.interface';
-import Time from '../../helpers/Time';
-import {
-  DATE_TIME_STRING_FULL_DAY_PATTERN,
-  DATE_TIME_STRING_PATTERN,
-} from '../../constants';
+import {EVENT_TYPE, eventInterface} from '../../typings/interfaces/event.interface';
+import Time, {WEEK_START_DAY} from '../../helpers/Time';
 import EventPosition from '../../helpers/EventPosition';
-import { fullDayEventsWeek } from '../../typings/interfaces/full-day-events-week.type';
-import { modeType } from '../../typings/types';
-const eventPosition = new EventPosition();
+import {fullDayEventsWeek} from '../../typings/interfaces/full-day-events-week.type';
+import {modeType} from '../../typings/types';
 import PerfectScrollbar from 'perfect-scrollbar';
 import Helpers from '../../helpers/Helpers';
+import {EventsFilter} from "../../helpers/EventsFilter";
+
+const eventPosition = new EventPosition();
 
 export default defineComponent({
   name: 'Week',
@@ -228,16 +224,14 @@ export default defineComponent({
     },
 
     separateFullDayEventsFromOtherEvents() {
-      const fullDayEvents = [];
-      const allOtherEvents = [];
+      const fullDayAndMultipleDayEvents = [];
+      const singleDayTimedEvents = [];
 
       for (const scheduleEvent of this.events) {
-        if (scheduleEvent.time.start.match(DATE_TIME_STRING_PATTERN)) {
-          allOtherEvents.push(scheduleEvent);
-        } else if (
-          scheduleEvent.time.start.match(DATE_TIME_STRING_FULL_DAY_PATTERN)
-        ) {
-          fullDayEvents.push(scheduleEvent);
+        if (Helpers.getEventType(scheduleEvent, this.time) === EVENT_TYPE.SINGLE_DAY_TIMED) {
+          singleDayTimedEvents.push(scheduleEvent);
+        } else {
+          fullDayAndMultipleDayEvents.push(scheduleEvent);
         }
       }
 
@@ -250,14 +244,14 @@ export default defineComponent({
             )
           : this.period.end;
 
-      this.fullDayEvents = fullDayEvents.length
+      this.fullDayEvents = fullDayAndMultipleDayEvents.length
         ? eventPosition.positionFullDayEventsInWeek(
             this.period.start,
             weekEndDate,
-            fullDayEvents
+            fullDayAndMultipleDayEvents
           )
         : [];
-      this.events = allOtherEvents;
+      this.events = singleDayTimedEvents;
     },
 
     setDays() {
@@ -269,28 +263,16 @@ export default defineComponent({
             day,
             'start'
           );
-          const events = this.events.filter((event: eventInterface) => {
-            const eventIsInDay = event.time.start.substring(0, 11) === dateTimeString.substring(0, 11);
-            let eventIsInDayBoundaries = true;
-
-            if (this.time.HOURS_PER_DAY !== 24) {
-              const { hour: dayStartHour } = this.time.getHourAndMinutesFromTimePoints(this.time.DAY_START)
-              const { hour: dayEndHour } = this.time.getHourAndMinutesFromTimePoints(this.time.DAY_END)
-              const { hour: eventStartHour } = this.time.getAllVariablesFromDateTimeString(event.time.start)
-              eventIsInDayBoundaries = eventStartHour >= dayStartHour && eventStartHour < dayEndHour;
-            }
-
-            return eventIsInDay && eventIsInDayBoundaries;
-          });
+          const events = new EventsFilter(this.events).getEventsForDay(this.time, dateTimeString);
 
           return { dayName, dateTimeString, events };
         });
 
-      if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === 'monday') {
+      if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === WEEK_START_DAY.MONDAY) {
         // Delete Saturday & Sunday
         days.splice(5, 2);
         this.fullDayEvents.splice(5, 2);
-      } else if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === 'sunday') {
+      } else if (this.nDays === 5 && this.time.FIRST_DAY_OF_WEEK === WEEK_START_DAY.SUNDAY) {
         // First delete Saturday, then Sunday
         days.splice(6, 1);
         this.fullDayEvents.splice(6, 1);
@@ -322,12 +304,7 @@ export default defineComponent({
             this.period.selectedDate,
             'start'
           ),
-          events: this.events.filter((event: eventInterface) => {
-            return (
-              event.time.start.substring(0, 11) ===
-              dayDateTimeString.substring(0, 11)
-            );
-          }) as eventInterface[],
+          events: new EventsFilter(this.events).getEventsForDay(this.time, dayDateTimeString),
         },
       ];
 

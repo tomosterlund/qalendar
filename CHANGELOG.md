@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/tomosterlund/qalendar/compare/v2.3.0...v2.3.1) (2023-03-26)
+
+
+### Bug Fixes
+
+* re-init scrollbar every time a drag & drop action is canceled ([#147](https://github.com/tomosterlund/qalendar/issues/147)) ([b3568d0](https://github.com/tomosterlund/qalendar/commit/b3568d0bcaef200e1d24584452cab4296ab0cd6b))
+
+# [2.3.0](https://github.com/tomosterlund/qalendar/compare/v2.2.0...v2.3.0) (2023-03-23)
+
+
+### Features
+
+* Add Language Support for Ababic ([#145](https://github.com/tomosterlund/qalendar/issues/145)) ([96bfebd](https://github.com/tomosterlund/qalendar/commit/96bfebd2e7d1129992388e165b90739bf0016e81))
+
+# [2.2.0](https://github.com/tomosterlund/qalendar/compare/v2.1.3...v2.2.0) (2023-03-17)
+
+
+### Features
+
+* add Russian language ([#141](https://github.com/tomosterlund/qalendar/issues/141)) ([7b44629](https://github.com/tomosterlund/qalendar/commit/7b44629ce70740c4830e4a6752f7420c54c38708))
+
 ## [2.1.3](https://github.com/tomosterlund/qalendar/compare/v2.1.2...v2.1.3) (2023-03-10)
 
 

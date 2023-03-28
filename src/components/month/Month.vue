@@ -71,24 +71,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import {defineComponent, PropType} from 'vue';
 import Day from './Day.vue';
 import Time from '../../helpers/Time';
-import { periodInterface } from '../../typings/interfaces/period.interface';
-import { configInterface } from '../../typings/config.interface';
-import { eventInterface } from '../../typings/interfaces/event.interface';
+import {periodInterface} from '../../typings/interfaces/period.interface';
+import {configInterface} from '../../typings/config.interface';
+import {EVENT_TYPE, eventInterface} from '../../typings/interfaces/event.interface';
 import EDate from '../../helpers/EDate';
-import { dayInterface } from '../../typings/interfaces/day.interface';
+import {dayInterface} from '../../typings/interfaces/day.interface';
 import EventFlyout from '../partials/EventFlyout.vue';
-import {
-  DATE_TIME_STRING_FULL_DAY_PATTERN,
-  DATE_TIME_STRING_PATTERN,
-} from '../../constants';
 import EventPosition from '../../helpers/EventPosition';
-const EventPositionHelper = new EventPosition();
 import PerfectScrollbar from 'perfect-scrollbar';
 import WeekDay from './WeekDay.vue';
 import MonthDayEvents from './MonthDayEvents.vue'
+import Helpers from "../../helpers/Helpers";
+
+const EventPositionHelper = new EventPosition();
 
 export default defineComponent({
   name: 'Month',
@@ -180,10 +178,7 @@ export default defineComponent({
         return week.map((day) => {
           const dateTimeString = this.time.getDateTimeStringFromDate(day);
           const events = this.events.filter((event) => {
-            return (
-              event.time.start.substring(0, 11) ===
-              dateTimeString.substring(0, 11)
-            );
+            return this.time.dateStringsHaveEqualDates(event.time.start, dateTimeString)
           });
 
           return {
@@ -207,12 +202,11 @@ export default defineComponent({
       const fullDayEvents = [];
 
       for (const calendarEvent of this.events) {
-        if (DATE_TIME_STRING_PATTERN.test(calendarEvent.time.start))
+        if (Helpers.getEventType(calendarEvent, this.time) === EVENT_TYPE.SINGLE_DAY_TIMED)
           timedEvents.push(calendarEvent);
-        else if (
-          DATE_TIME_STRING_FULL_DAY_PATTERN.test(calendarEvent.time.start)
-        )
+        else {
           fullDayEvents.push(calendarEvent);
+        }
       }
 
       this.events = timedEvents;

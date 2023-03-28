@@ -1,11 +1,12 @@
 <template>
   <div
     class="calendar-week__day"
-    @click.self="$emit('day-was-clicked', day.dateTimeString.substring(0, 10))"
+    @click.self="$emit('day-was-clicked', time.dateStringFrom(day.dateTimeString))"
   >
     <DayEvent
       v-for="(event, eventIndex) in events"
       :key="eventIndex"
+      data-test="day-event"
       :event-prop="event"
       :day="day"
       :time="time"
@@ -16,6 +17,7 @@
       @event-was-dragged="$emit('event-was-dragged', $event)"
       @event-was-resized="handleEventWasResized"
       @drag-start="$emit('drag-start')"
+      @drag-end="$emit('drag-end')"
     >
       <template #weekDayEvent="p">
         <slot
@@ -27,7 +29,8 @@
 
     <template v-if="dayIntervals && dayIntervals.displayClickableInterval">
       <div
-        v-for="interval in intervals"
+        v-for="(interval, intervalIndex) in intervals"
+        :id="'interval-' + intervalIndex"
         :key="interval.intervalStart"
         class="calendar-week__day-interval"
         :class="{ 'has-border': interval.hasBorder }"
@@ -51,7 +54,7 @@ import {
   configInterface,
   dayIntervalsType,
 } from '../../typings/config.interface';
-import { modeType } from '../../typings/types';
+import {DayInfo, modeType} from '../../typings/types';
 import DayIntervals, { interval } from '../../helpers/DayIntervals';
 const eventConcurrencyHelper = new EventConcurrency();
 
@@ -74,7 +77,7 @@ export default defineComponent({
       required: true,
     },
     dayInfo: {
-      type: Object as PropType<{ daysTotalN: number; thisDayIndex: number }>,
+      type: Object as PropType<DayInfo>,
       required: true,
     },
     mode: {
@@ -94,6 +97,7 @@ export default defineComponent({
     'interval-was-clicked',
     'day-was-clicked',
     'drag-start',
+    'drag-end',
   ],
 
   data() {

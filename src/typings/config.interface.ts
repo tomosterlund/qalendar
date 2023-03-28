@@ -1,31 +1,33 @@
 import { modeType } from "./types";
+import {WEEK_START_DAY} from "../helpers/Time";
 
-export type dayStartOrEnd =
-  | 0
-  | 100
-  | 200
-  | 300
-  | 400
-  | 500
-  | 600
-  | 700
-  | 800
-  | 900
-  | 1000
-  | 1100
-  | 1200
-  | 1300
-  | 1400
-  | 1500
-  | 1600
-  | 1700
-  | 1800
-  | 1900
-  | 2000
-  | 2100
-  | 2200
-  | 2300
-  | 2400;
+export enum DAY_TIME_POINT {
+  MIDNIGHT = 0,
+  ONE_AM = 100,
+  TWO_AM = 200,
+  THREE_AM = 300,
+  FOUR_AM = 400,
+  FIVE_AM = 500,
+  SIX_AM = 600,
+  SEVEN_AM = 700,
+  EIGHT_AM = 800,
+  NINE_AM = 900,
+  TEN_AM = 1000,
+  ELEVEN_AM = 1100,
+  TWELVE_PM = 1200,
+  ONE_PM = 1300,
+  TWO_PM = 1400,
+  THREE_PM = 1500,
+  FOUR_PM = 1600,
+  FIVE_PM = 1700,
+  SIX_PM = 1800,
+  SEVEN_PM = 1900,
+  EIGHT_PM = 2000,
+  NINE_PM = 2100,
+  TEN_PM = 2200,
+  ELEVEN_PM = 2300,
+  TWELVE_AM = 2400,
+}
 
 export type colorScheme = { color: string; backgroundColor: string };
 
@@ -50,7 +52,7 @@ export interface configInterface {
   locale?: string;
   week?: {
     nDays?: 5 | 7;
-    startsOn?: "sunday" | "monday";
+    startsOn?: WEEK_START_DAY;
     scrollToHour?: number;
   };
   style?: {
