@@ -45,6 +45,7 @@
             />
           </div>
         </template>
+       
         <!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
         <!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
         <!--                    {{ eventProps.eventData.title }}-->
@@ -149,7 +150,7 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: 'week',
+        defaultMode: 'month',
         showCurrentTime: true,
         isSilent: true,
         dayIntervals: {
@@ -186,7 +187,7 @@ export default defineComponent({
     setTimeout(() => {
       this.events = seededEvents.map((e) => {
         // @ts-ignore
-        // e.isCustom = true;
+        e.isCustom = false;
         e.isEditable = true;
 
         return e;
