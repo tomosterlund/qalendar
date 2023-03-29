@@ -23,7 +23,7 @@
 
    
     <div class="calendar-month_events">
-      <div
+      <template
         v-for="(calendarEvent, index) in day.events"
         :key="index"
       >
@@ -43,7 +43,7 @@
             />
           </template>
         </Event>
-      </div>
+      </template>
       <div
         v-if="day.events.length >= 4"
         class="calendar-month__weekday-more"
