@@ -39,7 +39,10 @@
       </div>
     </div>
 
-    <div class="calendar-month__day_events">
+    <div
+      v-if="!(config.month?.showEventsOnMobileView===false)"
+      class="calendar-month__day_events"
+    >
       <MonthDayEvents
         v-if="selectedDay"
         :config="config"
