@@ -7,6 +7,7 @@
     v-else
     name="monthEvent"
     :event-data="calendarEvent"
+    @click="handleClickOnEvent"
   >
     <div
       :id="elementId"
