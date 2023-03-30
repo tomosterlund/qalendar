@@ -1,30 +1,32 @@
 <template>
-  <slot
-    name="monthEvent"
-    :event-data="calendarEvent"
-  >
-    <div
-      :id="elementId"
-      class="calendar-month__event is-event"
-      :class="{ 'is-draggable': elementDraggableAttribute }"
-      :draggable="elementDraggableAttribute"
-      @dragstart="handleDragStart"
-      @click="handleClickOnEvent"
+  <div @click="handleClickOnEvent">
+    <slot
+      name="monthEvent"
+      :event-data="calendarEvent"
     >
-      <span class="calendar-month__event-color" />
-
-      <span
-        v-if="eventTimeStart && !calendarEvent.originalEvent"
-        class="calendar-month__event-time"
+      <div
+        :id="elementId"
+        class="calendar-month__event is-event"
+        :class="{ 'is-draggable': elementDraggableAttribute }"
+        :draggable="elementDraggableAttribute"
+        @dragstart="handleDragStart"
+        @click="handleClickOnEvent"
       >
-        {{ eventTimeStart }}
-      </span>
+        <span class="calendar-month__event-color" />
 
-      <span class="calendar-month__event-title">
-        {{ calendarEvent.title }}
-      </span>
-    </div>
-  </slot>
+        <span
+          v-if="eventTimeStart && !calendarEvent.originalEvent"
+          class="calendar-month__event-time"
+        >
+          {{ eventTimeStart }}
+        </span>
+
+        <span class="calendar-month__event-title">
+          {{ calendarEvent.title }}
+        </span>
+      </div>
+    </slot>
+  </div>
 </template>
 
 <script lang="ts">

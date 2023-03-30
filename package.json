@@ -24,7 +24,7 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port=4000",
     "build": "vue-tsc --noEmit && vite build && tsc --emitDeclarationOnly",
     "preview": "vite preview --port 5050",
     "prepare": "npm run build",

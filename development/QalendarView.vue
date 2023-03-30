@@ -24,6 +24,12 @@
         @event-was-dragged="handleEventWasDragged"
         @interval-was-clicked="handleIntervalWasClicked"
       >
+        <template
+          
+          #monthEvent="{eventData}"
+        >
+          {{ eventData.title }}
+        </template>
         <template #customCurrentTime>
           <div
             :style="{
@@ -167,7 +173,7 @@ export default defineComponent({
         },
         month: {
           showTrailingAndLeadingDates: false,
-          showEventsOnMobileView:false,
+          showEventsOnMobileView:true,
           selectedDayColor:'rgb(180 180 180)'
         }
       } as configInterface,

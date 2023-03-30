@@ -9,11 +9,21 @@
       v-if="eventTimeStart && !calendarEvent.originalEvent"
       class="agenda__event-time"
     >
+      <FontAwesomeIcon :icon="icons.clock" />
       {{ eventTimeStart }}
     </span>
 
     <span class="agenda__event-title">
       {{ calendarEvent.title }}
+    </span>
+    <span v-if="calendarEvent.with">
+      <FontAwesomeIcon :icon="icons.user" />
+      {{ calendarEvent.with }}
+    </span>
+
+    <span v-if="calendarEvent.location">
+      <FontAwesomeIcon :icon="icons.location" />
+      {{ calendarEvent.location }}
     </span>
   </div>
 </template>
@@ -25,9 +35,20 @@
   import { DATE_TIME_STRING_PATTERN, EVENT_COLORS } from '../../constants';
   import { configInterface } from '../../typings/config.interface';
   import { dayInterface } from '../../typings/interfaces/day.interface';
+  import {
+  faClock,
+  faComment,
+  faEdit,
+  faQuestionCircle,
+  faTrashAlt,
+  faUser,
+} from '@fortawesome/free-regular-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import { faTimes, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
   
   export default defineComponent({
     name: 'Event',
+    components:{FontAwesomeIcon},
   
     props: {
       time: {
@@ -47,10 +68,19 @@
         required: true,
       },
     },
-  
-  
+
     data() {
       return {
+        icons: {
+        clock: faClock,
+        user: faUser,
+        description: faComment,
+        trash: faTrashAlt,
+        edit: faEdit,
+        times: faTimes,
+        topic: faQuestionCircle,
+        location: faMapMarkerAlt,
+      },
         colors: EVENT_COLORS as { [key: string]: string },
         eventBackgroundColor: '',
         eventIdPrefix: 'agenda__event-',
