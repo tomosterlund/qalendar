@@ -24,12 +24,12 @@
         @event-was-dragged="handleEventWasDragged"
         @interval-was-clicked="handleIntervalWasClicked"
       >
-        <template
+        <!-- <template
           
           #monthEvent="{eventData}"
         >
           {{ eventData.title }}
-        </template>
+        </template> -->
         <template #customCurrentTime>
           <div
             :style="{
