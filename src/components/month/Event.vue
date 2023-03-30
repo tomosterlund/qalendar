@@ -3,34 +3,42 @@
     v-if="config.isSmall"
     class="calendar-month__event"
   />
-  <slot
+  <div
     v-else
-    name="monthEvent"
-    :event-data="calendarEvent"
-    @click="handleClickOnEvent"
+    class="calendar-month__event is-event"
+    @click.stop="handleClickOnEvent"
   >
-    <div
-      :id="elementId"
-      class="calendar-month__event is-event"
-      :class="{ 'is-draggable': elementDraggableAttribute }"
-      :draggable="elementDraggableAttribute"
-      @dragstart="handleDragStart"
-      @click.stop="handleClickOnEvent"
+    <slot
+   
+      name="monthEvent"
+      :event-data="calendarEvent"
+      style="{
+      cursor: pointer;
+    }"
     >
-      <span class="calendar-month__event-color" />
-
-      <span
-        v-if="eventTimeStart && !calendarEvent.originalEvent"
-        class="calendar-month__event-time"
+      <div
+        :id="elementId"
+        class="calendar-month__event is-event"
+        :class="{ 'is-draggable': elementDraggableAttribute }"
+        :draggable="elementDraggableAttribute"
+        @dragstart="handleDragStart"
+        @click.stop="handleClickOnEvent"
       >
-        {{ eventTimeStart }}
-      </span>
+        <span class="calendar-month__event-color" />
 
-      <span class="calendar-month__event-title">
-        {{ calendarEvent.title }}
-      </span>
-    </div>
-  </slot>
+        <span
+          v-if="eventTimeStart && !calendarEvent.originalEvent"
+          class="calendar-month__event-time"
+        >
+          {{ eventTimeStart }}
+        </span>
+
+        <span class="calendar-month__event-title">
+          {{ calendarEvent.title }}
+        </span>
+      </div>
+    </slot>
+  </div>
 </template>
 
 <script lang="ts">
