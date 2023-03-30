@@ -162,7 +162,7 @@ import { faTimes, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
     background-color: v-bind(eventBackgroundColor);
     display: flex;
     flex-flow: column;
-    justify-content: start;
+    justify-content: flex-start;
     border-radius: 4px;
     font-size: var(--qalendar-font-2xs);
     margin-bottom: 4px;
