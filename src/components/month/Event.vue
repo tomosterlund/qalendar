@@ -2,12 +2,7 @@
   <div
     v-if="config.isSmall"
     class="calendar-month__event"
-  >
-    <span
-     
-      class="calendar-month__event-color"
-    />
-  </div>
+  />
   <slot
     v-else
     name="monthEvent"
@@ -19,7 +14,7 @@
       :class="{ 'is-draggable': elementDraggableAttribute }"
       :draggable="elementDraggableAttribute"
       @dragstart="handleDragStart"
-      @click="handleClickOnEvent"
+      @click.stop="handleClickOnEvent"
     >
       <span class="calendar-month__event-color" />
 
@@ -161,10 +156,7 @@ export default defineComponent({
 
     handleClickOnEvent() {
       const eventElement = document.getElementById(this.elementId);
-
-      console.log("this.calendarEvent",this.calendarEvent);
-      
-
+  
       this.$emit('event-was-clicked', {
         clickedEvent: this.calendarEvent,
         eventElement,
@@ -202,9 +194,12 @@ export default defineComponent({
   user-select: none;
 
   .qalendar-is-small & {
-    margin-bottom: 0px;
-    padding: 2px;
-    width:4px;
+    background-color: v-bind(eventBackgroundColor);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    padding: 1px;
+    margin-right: 1px;
   }
 
   &.is-draggable {
