@@ -9,7 +9,7 @@
     @click.stop="handleClickOnEvent"
   >
     <slot
-   
+      :id="elementId"
       name="monthEvent"
       :event-data="calendarEvent"
       style="{
