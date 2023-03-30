@@ -29,9 +29,9 @@
           @day-was-clicked="onDayWasClicked"
           @updated-period="$emit('updated-period', $event)"
         >
-          <template #monthEvent="p">
+          <template #monthEvent="{eventData}">
             <slot
-              :event-data="p.eventData"
+              :event-data="eventData"
               name="monthEvent"
             />
           </template>
@@ -105,6 +105,10 @@ export default defineComponent({
     config: {
       type: Object as PropType<configInterface>,
       required: true,
+    },
+    isSmall:{
+      type: Boolean,
+      required:true
     },
     time: {
       type: Object as PropType<Time>,

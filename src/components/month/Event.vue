@@ -1,32 +1,40 @@
 <template>
-  <div @click="handleClickOnEvent">
-    <slot
-      name="monthEvent"
-      :event-data="calendarEvent"
-    >
-      <div
-        :id="elementId"
-        class="calendar-month__event is-event"
-        :class="{ 'is-draggable': elementDraggableAttribute }"
-        :draggable="elementDraggableAttribute"
-        @dragstart="handleDragStart"
-        @click="handleClickOnEvent"
-      >
-        <span class="calendar-month__event-color" />
-
-        <span
-          v-if="eventTimeStart && !calendarEvent.originalEvent"
-          class="calendar-month__event-time"
-        >
-          {{ eventTimeStart }}
-        </span>
-
-        <span class="calendar-month__event-title">
-          {{ calendarEvent.title }}
-        </span>
-      </div>
-    </slot>
+  <div
+    v-if="config.isSmall"
+    class="calendar-month__event"
+  >
+    <span
+     
+      class="calendar-month__event-color"
+    />
   </div>
+  <slot
+    v-else
+    name="monthEvent"
+    :event-data="calendarEvent"
+  >
+    <div
+      :id="elementId"
+      class="calendar-month__event is-event"
+      :class="{ 'is-draggable': elementDraggableAttribute }"
+      :draggable="elementDraggableAttribute"
+      @dragstart="handleDragStart"
+      @click="handleClickOnEvent"
+    >
+      <span class="calendar-month__event-color" />
+
+      <span
+        v-if="eventTimeStart && !calendarEvent.originalEvent"
+        class="calendar-month__event-time"
+      >
+        {{ eventTimeStart }}
+      </span>
+
+      <span class="calendar-month__event-title">
+        {{ calendarEvent.title }}
+      </span>
+    </div>
+  </slot>
 </template>
 
 <script lang="ts">
@@ -70,6 +78,7 @@ export default defineComponent({
   },
 
   computed: {
+   
     isCustomEvent(): boolean {
       if (Array.isArray(this.calendarEvent.isCustom)) {
         return this.calendarEvent.isCustom.includes('month');
@@ -152,6 +161,9 @@ export default defineComponent({
 
     handleClickOnEvent() {
       const eventElement = document.getElementById(this.elementId);
+
+      console.log("this.calendarEvent",this.calendarEvent);
+      
 
       this.$emit('event-was-clicked', {
         clickedEvent: this.calendarEvent,

@@ -8,7 +8,7 @@
       'trailing-or-leading': day.isTrailingOrLeadingDate ,
       'selected':selected
     }"
-    @click.stop="emitDayWasClicked"
+    @click="emitDayWasClicked"
     @dragleave="handleDragLeave"
     @dragover="handleDragOver"
     @drop="handleDrop"
