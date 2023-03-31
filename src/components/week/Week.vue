@@ -100,6 +100,7 @@ import {modeType} from '../../typings/types';
 import PerfectScrollbar from 'perfect-scrollbar';
 import Helpers from '../../helpers/Helpers';
 import {EventsFilter} from "../../helpers/EventsFilter";
+import {WeekHelper} from "../../helpers/Week";
 
 const eventPosition = new EventPosition();
 
@@ -313,11 +314,8 @@ export default defineComponent({
       // 2. Set full day events
       for (const day of this.fullDayEvents) {
         const dayDateString = this.time.getDateTimeStringFromDate(day.date);
-        if (
-          dayDateString.substring(0, 11) === dayDateTimeString.substring(0, 11)
-        ) {
+        if (dayDateString.substring(0, 11) === dayDateTimeString.substring(0, 11)) {
           this.fullDayEvents = [day];
-
           return;
         }
       }
@@ -360,13 +358,11 @@ export default defineComponent({
       ];
       this.setInitialEvents(this.mode);
       this.weekVersion = this.weekVersion + 1;
-
       this.$emit('event-was-dragged', event);
     },
 
     scrollOnMount() {
-      // The scrollToHour option is not compatible with setting custom day boundaries
-      if (this.time.HOURS_PER_DAY !== 24) return;
+      if (typeof this.config.week?.scrollToHour !== 'number') return;
 
       const weekWrapper = document.querySelector('.calendar-week__wrapper');
 
@@ -375,7 +371,7 @@ export default defineComponent({
       this.$nextTick(() => {
         const weekHeight = +this.weekHeight.split('p')[0];
         const oneHourInPixel = weekHeight / this.time.HOURS_PER_DAY;
-        const hourToScrollTo = typeof this.config.week?.scrollToHour === 'number' ? this.config.week.scrollToHour : 8;
+        const hourToScrollTo =  WeekHelper.getNHoursIntoDayFromHour(this.config.week!.scrollToHour!, this.time);
         const desiredNumberOfPixelsToScroll = oneHourInPixel * hourToScrollTo;
         weekWrapper.scroll(0, desiredNumberOfPixelsToScroll - 10); // -10 to display the hour in DayTimeline
       })

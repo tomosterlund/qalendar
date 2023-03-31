@@ -117,7 +117,7 @@ export default defineComponent({
         week: {
           startsOn: WEEK_START_DAY.MONDAY,
           nDays: 7,
-          scrollToHour: 8,
+          scrollToHour: 11,
         },
         locale: 'de-DE',
         style: {
