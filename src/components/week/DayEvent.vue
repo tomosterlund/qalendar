@@ -545,8 +545,8 @@ export default defineComponent({
 
       if (Helpers.isUIEventTouchEvent(domEvent)) {
         this.setInitialDragValues(
-          (domEvent as TouchEvent).touches[0].clientX,
-          (domEvent as TouchEvent).touches[0].clientY
+          (domEvent as TouchEvent).touches[0]?.clientX,
+          (domEvent as TouchEvent).touches[0]?.clientY
         );
       } else {
         this.setInitialDragValues((domEvent as MouseEvent).clientX, (domEvent as MouseEvent).clientY);
