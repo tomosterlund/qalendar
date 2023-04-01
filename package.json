@@ -1,7 +1,7 @@
 {
   "name": "qalendar",
   "description": "Event calendar and date picker for Vue 3",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "homepage": "https://tomosterlund.github.io/qalendar/",
   "repository": {
     "type": "git",
