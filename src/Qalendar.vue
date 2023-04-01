@@ -8,6 +8,7 @@
         'mode-is-month': mode === 'month',
         'qalendar-is-small': isSmall,
       }"
+      :data-lang="config?.locale?.substring(0, 2) || 'en'"
     >
       <Transition name="loading">
         <div
@@ -91,6 +92,7 @@
             name="monthEvent"
           />
         </template>
+
         <template #dayCell="{dayData}">
           <slot
             :day-data="dayData"
@@ -212,7 +214,6 @@ export default defineComponent({
     this.onCalendarResize(); // Trigger once on mount, in order to set the correct mode, if viewing on a small screen
     this.setPeriodOnMount();
     window.addEventListener('resize', this.onCalendarResize);
-    
   },
 
   beforeUnmount() {

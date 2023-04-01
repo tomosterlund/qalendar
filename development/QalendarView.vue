@@ -45,19 +45,19 @@
             />
           </div>
         </template>
-        <!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
-        <!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
-        <!--                    {{ eventProps.eventData.title }}-->
+<!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
+<!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
+<!--                    {{ eventProps.eventData.title }}-->
 
-        <!--            <div>-->
-        <!--              <input type="checkbox" />-->
+<!--            <div>-->
+<!--              <input type="checkbox" />-->
 
-        <!--              <label for="checkbox">-->
-        <!--                Select time slot-->
-        <!--              </label>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </template>-->
+<!--              <label for="checkbox">-->
+<!--                Select time slot-->
+<!--              </label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </template>-->
 
         <template #eventDialog="props">
           <div
@@ -79,6 +79,7 @@
             </button>
           </div>
         </template>
+
         <template #dayCell="{dayData}">
           <div>
             <div> {{ dayData.dateTimeString.substring(8, 10) }}</div>
@@ -138,7 +139,7 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: 'month',
+        defaultMode: 'week',
         showCurrentTime: true,
         isSilent: true,
         dayIntervals: {

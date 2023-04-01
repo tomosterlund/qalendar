@@ -143,6 +143,7 @@ import { EVENT_COLORS } from '../../constants';
 const eventPositionHelper = new EventPosition();
 import DragAndDrop from '../../helpers/DragAndDrop';
 import { modeType } from '../../typings/types';
+import Helpers from "../../helpers/Helpers";
 
 export default defineComponent({
   name: 'DayEvent',
@@ -174,7 +175,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['event-was-clicked', 'event-was-resized', 'event-was-dragged', 'drag-start'],
+  emits: ['event-was-clicked', 'event-was-resized', 'event-was-dragged', 'drag-start', 'drag-end'],
 
   data() {
     return {
@@ -216,8 +217,8 @@ export default defineComponent({
       dragMoveListenerNameAndCallbacks: [
         ['mousemove', this.handleDrag],
         ['touchmove', this.handleDrag],
-        ['mouseup', this.handleDragEnd],
-        ['touchend', this.handleDragEnd],
+        ['mouseup', this.onMouseUpWhenDragging],
+        ['touchend', this.onMouseUpWhenDragging],
       ] as ReadonlyArray<[string, any]>,
     };
   },
@@ -533,7 +534,7 @@ export default defineComponent({
     /**
      * Handle mouseup-events, for when an event stops being resized
      * */
-    onMouseUp() {
+    onMouseUpWhenResizing() {
       this.stopResizing();
     },
 
@@ -541,12 +542,12 @@ export default defineComponent({
       this.isResizing = true;
       this.resizingDirection = direction;
       document.addEventListener('mousemove', this.onMouseMove);
-      document.addEventListener('mouseup', this.onMouseUp);
+      document.addEventListener('mouseup', this.onMouseUpWhenResizing);
     },
 
     stopResizing() {
       document.removeEventListener('mousemove', this.onMouseMove);
-      document.removeEventListener('mouseup', this.onMouseUp);
+      document.removeEventListener('mouseup', this.onMouseUpWhenResizing);
       this.resetResizingValues();
       this.$emit('event-was-resized', this.event);
       this.isResizing = false;
@@ -592,14 +593,19 @@ export default defineComponent({
       return (this.eventBackgroundColor = this.colors.blue);
     },
 
-    initDrag(domEvent: MouseEvent | TouchEvent) {
+    initDrag(domEvent: UIEvent) {
       // Do not allow drag & drop, if event is not editable
       if (!this.event.isEditable || this.hasDisabledDragAndDrop) return;
 
-      if (domEvent instanceof TouchEvent) {
-        this.handleDragMove(domEvent.touches[0].clientX, domEvent.touches[0].clientY);
+      this.$emit('drag-start');
+
+      if (Helpers.isUIEventTouchEvent(domEvent)) {
+        this.handleDragMove(
+          (domEvent as TouchEvent).touches[0].clientX,
+          (domEvent as TouchEvent).touches[0].clientY
+        );
       } else {
-        this.handleDragMove(domEvent.clientX, domEvent.clientY);
+        this.handleDragMove((domEvent as MouseEvent).clientX, (domEvent as MouseEvent).clientY);
       }
     },
 
@@ -615,6 +621,11 @@ export default defineComponent({
       });
     },
 
+    onMouseUpWhenDragging() {
+      this.$emit('drag-end');
+      this.handleDragEnd();
+    },
+
     handleDragEnd() {
       this.canDrag = false;
       this.eventZIndexValue = 'initial';
@@ -626,22 +637,19 @@ export default defineComponent({
       const timeChanged =
         this.changeInQuartersOnDrag <= -1 || this.changeInQuartersOnDrag > 0;
 
-      if (dayChanged || timeChanged)
-        this.$emit('event-was-dragged', this.event);
+      if (dayChanged || timeChanged) this.$emit('event-was-dragged', this.event);
     },
 
-    handleDrag(mouseEvent: MouseEvent | TouchEvent) {
+    handleDrag(mouseEvent: UIEvent) {
       // Do not run the drag & drop algorithms, when element is being resized
       if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
 
-      this.$emit('drag-start');
-
-      if (mouseEvent instanceof TouchEvent) {
-        this.handleVerticalDrag(mouseEvent.touches[0].clientY);
-        this.handleHorizontalDrag(mouseEvent.touches[0].clientX);
+      if (Helpers.isUIEventTouchEvent(mouseEvent)) {
+        this.handleVerticalDrag((mouseEvent as TouchEvent).touches[0].clientY);
+        this.handleHorizontalDrag((mouseEvent as TouchEvent).touches[0].clientX);
       } else {
-        this.handleVerticalDrag(mouseEvent.clientY);
-        this.handleHorizontalDrag(mouseEvent.clientX);
+        this.handleVerticalDrag((mouseEvent as MouseEvent).clientY);
+        this.handleHorizontalDrag((mouseEvent as MouseEvent).clientX);
       }
     },
 

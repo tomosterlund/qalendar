@@ -24,4 +24,12 @@ describe('SmallQalendar', () => {
     cy.get('.is-day-mode').should('exist')
     cy.get('.is-week-mode').should('not.exist')
   })
+
+  it('Should not display leading or trailing days in month mode', () => {
+    cy
+      // @ts-ignore
+      .changeMode('month')
+
+    cy.get('.trailing-or-leading').should('not.be.visible')
+  })
 })

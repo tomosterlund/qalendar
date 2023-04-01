@@ -9,7 +9,10 @@
       class="event-flyout__relative-wrapper"
     >
       <div class="event-flyout__menu">
-        <span v-if="isEditable" class="event-flyout__menu-editable">
+        <span
+          v-if="isEditable"
+          class="event-flyout__menu-editable"
+        >
           <font-awesome-icon
             class="event-flyout__menu-item is-edit-icon"
             :icon="icons.edit"
@@ -32,8 +35,14 @@
         </span>
       </div>
 
-      <div v-if="calendarEvent" class="event-flyout__info-wrapper">
-        <div v-if="calendarEvent.title" class="event-flyout__row is-title">
+      <div
+        v-if="calendarEvent"
+        class="event-flyout__info-wrapper"
+      >
+        <div
+          v-if="calendarEvent.title"
+          class="event-flyout__row is-title"
+        >
           <div
             class="event-flyout__color-icon"
             :style="{ backgroundColor: eventBackgroundColor }"
@@ -41,7 +50,10 @@
           {{ calendarEvent.title }}
         </div>
 
-        <div v-if="calendarEvent.time" class="event-flyout__row is-time">
+        <div
+          v-if="calendarEvent.time"
+          class="event-flyout__row is-time"
+        >
           {{ getEventTime }}
         </div>
 
@@ -53,12 +65,18 @@
           {{ calendarEvent.location }}
         </div>
 
-        <div v-if="calendarEvent.with" class="event-flyout__row">
+        <div
+          v-if="calendarEvent.with"
+          class="event-flyout__row"
+        >
           <font-awesome-icon :icon="icons.user" />
           {{ calendarEvent.with }}
         </div>
 
-        <div v-if="calendarEvent.topic" class="event-flyout__row">
+        <div
+          v-if="calendarEvent.topic"
+          class="event-flyout__row"
+        >
           <font-awesome-icon
             :icon="icons.topic"
             class="calendar-week__event-icon"
@@ -66,7 +84,10 @@
           {{ calendarEvent.topic }}
         </div>
 
-        <div v-if="calendarEvent.description" class="event-flyout__row">
+        <div
+          v-if="calendarEvent.description"
+          class="event-flyout__row"
+        >
           <font-awesome-icon
             :icon="icons.description"
             class="calendar-week__event-icon"
@@ -82,7 +103,7 @@
       v-else
       :event-dialog-data="calendarEvent"
       :close-event-dialog="closeFlyout"
-    ></slot>
+    />
   </div>
 </template>
 

@@ -19,7 +19,10 @@
       </div>
 
       <div class="week-timeline__events">
-        <template v-for="(event, key) in day.fullDayEvents" :key="key">
+        <template
+          v-for="(event, key) in day.fullDayEvents"
+          :key="key"
+        >
           <FullDayEvent
             v-if="key !== 'date'"
             :schedule-event="typeof event === 'object' ? event : null"

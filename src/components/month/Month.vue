@@ -24,6 +24,7 @@
               name="monthEvent"
             />
           </template>
+
           <template #dayCell="{dayData}">
             <slot
               :day-data="dayData"
@@ -123,7 +124,6 @@ export default defineComponent({
   mounted() {
     this.initMonth();
     this.initScrollbar();
-    console.log(this.$slots);
   },
 
   methods: {
@@ -143,8 +143,6 @@ export default defineComponent({
       this.sortOutFullDayEvents();
       this.setMonth();
     },
-
-
 
     setMonth() {
       const { month, fullYear } = new EDate(this.period.selectedDate);

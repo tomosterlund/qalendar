@@ -1,0 +1,32 @@
+/* .vitepress/theme/custom.css */
+:root {
+  --vp-c-brand: #646cff;
+  --vp-c-brand-light: #747bff;
+}
+
+.VPDoc:not(.has-sidebar) .content {
+  max-width: 52rem;
+}
+
+.VPDoc:not(.has-sidebar) .content .content-container {
+  max-width: initial;
+}
+
+.VPNav .VPNavBar .logo {
+  height: 50px;
+}
+
+.image .image-container img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.calendar-container {
+  height: 800px;
+}
+
+@media (min-width: 768px) {
+  .calendar-container {
+    max-height: initial;
+  }
+}

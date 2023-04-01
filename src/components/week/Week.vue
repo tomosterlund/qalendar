@@ -25,17 +25,25 @@
           name="eventDialog"
           :event-dialog-data="p.eventDialogData"
           :close-event-dialog="p.closeEventDialog"
-        ></slot>
+        />
       </template>
     </EventFlyout>
 
     <section class="calendar-week">
-      <div v-if="hasCustomCurrentTimeSlot && showCurrentTime" class="custom-current-time" :style="{ top: `${currentTimePercentage}%` }">
-        <slot name="customCurrentTime"></slot>
+      <div
+        v-if="hasCustomCurrentTimeSlot && showCurrentTime"
+        class="custom-current-time"
+        :style="{ top: `${currentTimePercentage}%` }"
+      >
+        <slot name="customCurrentTime" />
       </div>
 
-      <div v-else-if="config && config.showCurrentTime && showCurrentTime" class="current-time-line" :style="{ top: `${currentTimePercentage}%` }">
-        <div class="current-time-line__circle"></div>
+      <div
+        v-else-if="config && config.showCurrentTime && showCurrentTime"
+        class="current-time-line"
+        :style="{ top: `${currentTimePercentage}%` }"
+      >
+        <div class="current-time-line__circle" />
       </div>
 
       <DayTimeline
@@ -61,9 +69,13 @@
           @interval-was-clicked="$emit('interval-was-clicked', $event)"
           @day-was-clicked="$emit('day-was-clicked', $event)"
           @drag-start="destroyScrollbarAndHideOverflow"
+          @drag-end="initScrollbar"
         >
           <template #weekDayEvent="p">
-            <slot :event-data="p.eventData" name="weekDayEvent"></slot>
+            <slot
+              :event-data="p.eventData"
+              name="weekDayEvent"
+            />
           </template>
         </Day>
       </div>
@@ -189,7 +201,7 @@ export default defineComponent({
 
   mounted() {
     this.setDayIntervals();
-    this.filterOutFullDayEvents();
+    this.separateFullDayEventsFromOtherEvents();
     this.setInitialEvents(this.modeProp);
     this.scrollOnMount();
     this.initScrollbar();
@@ -216,7 +228,7 @@ export default defineComponent({
       this.scrollbar.destroy();
     },
 
-    filterOutFullDayEvents() {
+    separateFullDayEventsFromOtherEvents() {
       const fullDayEvents = [];
       const allOtherEvents = [];
 

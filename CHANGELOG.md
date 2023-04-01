@@ -2,6 +2,69 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.3](https://github.com/tomosterlund/qalendar/compare/v2.3.2...v2.3.3) (2023-04-01)
+
+
+### Bug Fixes
+
+* safari touch event error ([#155](https://github.com/tomosterlund/qalendar/issues/155)) ([0248e37](https://github.com/tomosterlund/qalendar/commit/0248e374adfbf4fcfb7d3343b02f20b4f445bbfb))
+
+## [2.3.2](https://github.com/tomosterlund/qalendar/compare/v2.3.1...v2.3.2) (2023-04-01)
+
+
+### Bug Fixes
+
+* faulty timezone config in pipeline ([#151](https://github.com/tomosterlund/qalendar/issues/151)) ([265fdc6](https://github.com/tomosterlund/qalendar/commit/265fdc6411a9b2801a4f17a2e5aaf72f4c7f1585))
+
+## [2.3.1](https://github.com/tomosterlund/qalendar/compare/v2.3.0...v2.3.1) (2023-03-26)
+
+
+### Bug Fixes
+
+* re-init scrollbar every time a drag & drop action is canceled ([#147](https://github.com/tomosterlund/qalendar/issues/147)) ([b3568d0](https://github.com/tomosterlund/qalendar/commit/b3568d0bcaef200e1d24584452cab4296ab0cd6b))
+
+# [2.3.0](https://github.com/tomosterlund/qalendar/compare/v2.2.0...v2.3.0) (2023-03-23)
+
+
+### Features
+
+* Add Language Support for Ababic ([#145](https://github.com/tomosterlund/qalendar/issues/145)) ([96bfebd](https://github.com/tomosterlund/qalendar/commit/96bfebd2e7d1129992388e165b90739bf0016e81))
+
+# [2.2.0](https://github.com/tomosterlund/qalendar/compare/v2.1.3...v2.2.0) (2023-03-17)
+
+
+### Features
+
+* add Russian language ([#141](https://github.com/tomosterlund/qalendar/issues/141)) ([7b44629](https://github.com/tomosterlund/qalendar/commit/7b44629ce70740c4830e4a6752f7420c54c38708))
+
+## [2.1.3](https://github.com/tomosterlund/qalendar/compare/v2.1.2...v2.1.3) (2023-03-10)
+
+
+### Bug Fixes
+
+* correct line-height for hours in day timeline ([#136](https://github.com/tomosterlund/qalendar/issues/136)) ([aedde41](https://github.com/tomosterlund/qalendar/commit/aedde41f7ad2797d12205aafb97500c03d6c1dbf))
+
+## [2.1.2](https://github.com/tomosterlund/qalendar/compare/v2.1.1...v2.1.2) (2023-03-09)
+
+
+### Bug Fixes
+
+* hide leading and trailing days in month on mobile ([#135](https://github.com/tomosterlund/qalendar/issues/135)) ([5633922](https://github.com/tomosterlund/qalendar/commit/5633922874afea413e5d6e3cd610f9ffb833db01))
+
+## [2.1.1](https://github.com/tomosterlund/qalendar/compare/v2.1.0...v2.1.1) (2023-03-08)
+
+
+### Bug Fixes
+
+* prevent layout shifts in header ([#132](https://github.com/tomosterlund/qalendar/issues/132)) ([09b3864](https://github.com/tomosterlund/qalendar/commit/09b386460877df57d99c2b151cf7d1d10d6e1071))
+
+# [2.1.0](https://github.com/tomosterlund/qalendar/compare/v2.0.0...v2.1.0) (2023-03-08)
+
+
+### Features
+
+* allow user to optionally hide leading and trailing days in month mode ([#129](https://github.com/tomosterlund/qalendar/issues/129)) ([ba4d5d0](https://github.com/tomosterlund/qalendar/commit/ba4d5d066791670cc792f44c538e16e5061690fd))
+
 # [2.0.0](https://github.com/tomosterlund/qalendar/compare/v1.18.1...v2.0.0) (2023-03-01)
 
 

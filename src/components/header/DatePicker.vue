@@ -1,7 +1,7 @@
 <template>
   <div
     class="date-picker"
-    :class="{ 'date-picker-root': isStandAloneComponent }"
+    :class="isStandAloneComponent ? 'date-picker-root' : 'is-in-qalendar'"
     @mouseleave="hideDatePicker"
   >
     <div
@@ -25,7 +25,10 @@
           :icon="icons.chevronLeft"
           @click="toggleDatePickerPeriod('previous')"
         />
-        <span class="date-picker__toggle-mode" @click="toggleDatePickerMode">
+        <span
+          class="date-picker__toggle-mode"
+          @click="toggleDatePickerMode"
+        >
           <template v-if="datePickerMode === 'month'">
             {{
               datePickerCurrentDate.toLocaleString(getLocale(), {
@@ -54,7 +57,10 @@
         v-if="datePickerMode === 'month'"
         class="date-picker__day-names week"
       >
-        <span v-for="day in weekDays" :key="day.getDate()">
+        <span
+          v-for="day in weekDays"
+          :key="day.getDate()"
+        >
           {{ time.getLocalizedNameOfWeekday(day, 'short') }}
         </span>
       </div>
@@ -87,7 +93,10 @@
         </span>
       </div>
 
-      <div v-show="datePickerMode === 'year'" class="months">
+      <div
+        v-show="datePickerMode === 'year'"
+        class="months"
+      >
         <span
           v-for="(date, monthIndex) in monthPickerDates"
           :key="monthIndex"
@@ -428,7 +437,15 @@ export default defineComponent({
 .date-picker {
   position: relative;
   width: fit-content;
-  min-width: 300px;
+  min-width: 16rem;
+
+  .mode-is-month & {
+    min-width: 8rem;
+  }
+
+  .mode-is-day & {
+    min-width: 10rem;
+  }
 
   .qalendar-is-small & {
     min-width: initial;
@@ -579,6 +596,10 @@ export default defineComponent({
       &.is-disabled {
         color: darkgray;
         cursor: not-allowed;
+      }
+
+      [data-lang="ar"] & {
+        font-size: 0.65rem;
       }
     }
   }

@@ -1,4 +1,4 @@
-# Qalendar
+![qalendar](https://discover-test-files.s3.eu-central-1.amazonaws.com/Logo+MAIN.png)
 
 [![Build](https://github.com/tomosterlund/qalendar/actions/workflows/build.yml/badge.svg)](https://github.com/tomosterlund/qalendar/actions/workflows/build.yml)
 [![Release](https://github.com/tomosterlund/qalendar/actions/workflows/release.yml/badge.svg)](https://github.com/tomosterlund/qalendar/actions/workflows/release.yml)
@@ -13,9 +13,15 @@ Event calendar for Vue 3.
 
 For documentation and demo, see: https://tomosterlund.github.io/qalendar/
 
+## Contact
+
+For bug reports and feature requests, please [open an issue](https://github.com/tomosterlund/qalendar/issues/new/choose) here on GitHub.
+
+For any other questions or comments, feel free to chat with us on Discord: https://discord.gg/Z6sTaTNADN
+
 ## License
 
 MIT
 
-Copyright (c) 2022, Tom Österlund
+Copyright (c) 2022-present, Tom Österlund
 
