@@ -39,7 +39,8 @@
     "seed": "node ./development/faker/seed.js",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs --port=8080"
+    "docs:serve": "vitepress serve docs --port=8080",
+    "publish:beta": "npm publish --tag beta"
   },
   "files": [
     "dist"
@@ -74,7 +75,7 @@
     "@types/jsdom": "21.1.0",
     "@types/node": "18.14.2",
     "@types/unidecode": "^0.1.1",
-    "@vitejs/plugin-vue": "2.3.3",
+    "@vitejs/plugin-vue": "4.1.0",
     "@vitest/coverage-c8": "^0.29.3",
     "@vue/eslint-config-prettier": "7.1.0",
     "@vue/eslint-config-typescript": "11.0.2",
@@ -98,7 +99,7 @@
     "stylelint-config-standard-scss": "7.0.1",
     "typescript": "4.9.5",
     "unidecode": "^0.1.8",
-    "vite": "2.9.14",
+    "vite": "4.2.1",
     "vitepress": "1.0.0-alpha.50",
     "vitest": "0.29.2",
     "vue": "^3.0.0",
