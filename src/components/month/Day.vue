@@ -201,18 +201,10 @@ export default defineComponent({
 }
 
 .calendar-month__weekday {
-    @include dayBase;
+  @include dayBase;
 
-    overflow: hidden;
-    transition: background-color 0.2s ease-in-out;
-
-    &.trailing-or-leading {
-    border-right-color: transparent;
-
-    + .calendar-month__weekday:not(.trailing-or-leading) {
-      border-left: var(--qalendar-border-gray-thin);
-    }
-  }
+  overflow: hidden;
+  transition: background-color 0.2s ease-in-out;
 
   &.is-droppable {
     background-color: var(--qalendar-light-gray);
