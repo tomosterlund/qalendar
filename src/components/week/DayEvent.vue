@@ -143,6 +143,7 @@ import { EVENT_COLORS } from '../../constants';
 const eventPositionHelper = new EventPosition();
 import DragAndDrop from '../../helpers/DragAndDrop';
 import { modeType } from '../../typings/types';
+import Helpers from "../../helpers/Helpers";
 
 export default defineComponent({
   name: 'DayEvent',
@@ -592,14 +593,19 @@ export default defineComponent({
       return (this.eventBackgroundColor = this.colors.blue);
     },
 
-    initDrag(domEvent: MouseEvent | TouchEvent) {
+    initDrag(domEvent: UIEvent) {
       // Do not allow drag & drop, if event is not editable
       if (!this.event.isEditable || this.hasDisabledDragAndDrop) return;
 
-      if (domEvent instanceof TouchEvent) {
-        this.handleDragMove(domEvent.touches[0].clientX, domEvent.touches[0].clientY);
+      this.$emit('drag-start');
+
+      if (Helpers.isUIEventTouchEvent(domEvent)) {
+        this.handleDragMove(
+          (domEvent as TouchEvent).touches[0].clientX,
+          (domEvent as TouchEvent).touches[0].clientY
+        );
       } else {
-        this.handleDragMove(domEvent.clientX, domEvent.clientY);
+        this.handleDragMove((domEvent as MouseEvent).clientX, (domEvent as MouseEvent).clientY);
       }
     },
 
@@ -634,18 +640,16 @@ export default defineComponent({
       if (dayChanged || timeChanged) this.$emit('event-was-dragged', this.event);
     },
 
-    handleDrag(mouseEvent: MouseEvent | TouchEvent) {
+    handleDrag(mouseEvent: UIEvent) {
       // Do not run the drag & drop algorithms, when element is being resized
       if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
 
-      this.$emit('drag-start');
-
-      if (mouseEvent instanceof TouchEvent) {
-        this.handleVerticalDrag(mouseEvent.touches[0].clientY);
-        this.handleHorizontalDrag(mouseEvent.touches[0].clientX);
+      if (Helpers.isUIEventTouchEvent(mouseEvent)) {
+        this.handleVerticalDrag((mouseEvent as TouchEvent).touches[0].clientY);
+        this.handleHorizontalDrag((mouseEvent as TouchEvent).touches[0].clientX);
       } else {
-        this.handleVerticalDrag(mouseEvent.clientY);
-        this.handleHorizontalDrag(mouseEvent.clientX);
+        this.handleVerticalDrag((mouseEvent as MouseEvent).clientY);
+        this.handleHorizontalDrag((mouseEvent as MouseEvent).clientX);
       }
     },
 
