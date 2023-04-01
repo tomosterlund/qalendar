@@ -30,4 +30,8 @@ export default class Helpers {
       );
     });
   }
+
+  static isUIEventTouchEvent(event: UIEvent): boolean {
+    return 'touches' in event && typeof event.touches === 'object';
+  }
 }
