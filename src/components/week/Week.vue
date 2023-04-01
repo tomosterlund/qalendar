@@ -92,7 +92,7 @@ import {dayInterface} from '../../typings/interfaces/day.interface';
 import WeekTimeline from './WeekTimeline.vue';
 import Day from './Day.vue';
 import EventFlyout from '../partials/EventFlyout.vue';
-import {EVENT_TYPE, eventInterface} from '../../typings/interfaces/event.interface';
+import {eventInterface} from '../../typings/interfaces/event.interface';
 import Time, {WEEK_START_DAY} from '../../helpers/Time';
 import EventPosition from '../../helpers/EventPosition';
 import {fullDayEventsWeek} from '../../typings/interfaces/full-day-events-week.type';
@@ -225,34 +225,32 @@ export default defineComponent({
     },
 
     separateFullDayEventsFromOtherEvents() {
-      const fullDayAndMultipleDayEvents = [];
-      const singleDayTimedEvents = [];
+      const {
+        singleDayTimedEvents,
+        fullDayAndMultipleDayEvents,
+      } = WeekHelper.eventSeparator(this.events, this.time)
 
-      for (const scheduleEvent of this.events) {
-        if (Helpers.getEventType(scheduleEvent, this.time) === EVENT_TYPE.SINGLE_DAY_TIMED) {
-          singleDayTimedEvents.push(scheduleEvent);
-        } else {
-          fullDayAndMultipleDayEvents.push(scheduleEvent);
-        }
-      }
+      this.events = singleDayTimedEvents;
+      this.positionFullDayEvents(fullDayAndMultipleDayEvents);
+    },
 
+    positionFullDayEvents(fullDayAndMultipleDayEvents: eventInterface[]) {
       const weekEndDate =
         this.nDays === 5
           ? new Date(
-              this.period.end.getFullYear(),
-              this.period.end.getMonth(),
-              this.period.end.getDate() - 2
-            )
+            this.period.end.getFullYear(),
+            this.period.end.getMonth(),
+            this.period.end.getDate() - 2
+          )
           : this.period.end;
 
       this.fullDayEvents = fullDayAndMultipleDayEvents.length
         ? eventPosition.positionFullDayEventsInWeek(
-            this.period.start,
-            weekEndDate,
-            fullDayAndMultipleDayEvents
-          )
+          this.period.start,
+          weekEndDate,
+          fullDayAndMultipleDayEvents
+        )
         : [];
-      this.events = singleDayTimedEvents;
     },
 
     setDays() {

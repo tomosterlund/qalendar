@@ -1,6 +1,7 @@
 import {describe, expect, it} from "vitest";
 import {WeekHelper} from "../../../src/helpers/Week";
 import {TimeBuilder} from "../../../src/helpers/Time";
+import {EventBuilder} from "../../../src/models/Event";
 
 describe("WeekHelper", () => {
 
@@ -80,4 +81,86 @@ describe("WeekHelper", () => {
     const actualHoursIntoDay = WeekHelper.getNHoursIntoDayFromHour(18, timeInstance);
     expect(actualHoursIntoDay).toBe(expectedHoursIntoDay);
   });
+
+  it('Sorts single day timed events into singleDayTimedEvents', () => {
+
+  });
 })
+
+describe('WeekHelper/eventSeparator', () => {
+
+  const singleDayTimedEvent1 = new EventBuilder({
+    start: '2023-04-01 00:00',
+    end: '2023-04-01 01:00',
+  }).build();
+  const singleDayTimedEvent2 = new EventBuilder({
+    start: '2023-04-03 04:00',
+    end: '2023-04-03 05:00',
+  }).build();
+  const singleDayTimedEvent3 = new EventBuilder({
+    start: '2023-04-03 06:01',
+    end: '2023-04-03 07:42',
+  }).build();
+
+  const multipleDayTimedEvent = new EventBuilder({
+    start: '2023-04-01 00:00',
+    end: '2023-04-03 01:00',
+  }).build();
+
+  const singleDayFullDayEvent = new EventBuilder({
+    start: '2023-04-01',
+    end: '2023-04-01',
+  }).build();
+
+  const multipleDayFullDayEvent = new EventBuilder({
+    start: '2023-04-01',
+    end: '2023-04-03',
+  }).build();
+
+  const events = [
+    singleDayTimedEvent1,
+    singleDayTimedEvent2,
+    singleDayTimedEvent3,
+    multipleDayTimedEvent,
+    singleDayFullDayEvent,
+    multipleDayFullDayEvent,
+  ]
+
+  it('sorts the events into singleDayTimedEvents, with default day boundaries', () => {
+    const defaultTimeInstance = new TimeBuilder().build();
+    const actualSingleDayTimedEvents = WeekHelper
+      .eventSeparator(events, defaultTimeInstance).singleDayTimedEvents;
+    expect(actualSingleDayTimedEvents).toHaveLength(3);
+  });
+
+  it('sorts the events into fullDayAndMultipleDayEvents, with default day boundaries', () => {
+    const defaultTimeInstance = new TimeBuilder().build();
+    const actualFullDayAndMultipleDayEvents = WeekHelper
+      .eventSeparator(events, defaultTimeInstance).fullDayAndMultipleDayEvents;
+    expect(actualFullDayAndMultipleDayEvents).toHaveLength(3);
+  });
+
+  it('sorts an event that would be hybrid for custom day boundaries into fullDayAndMultipleDayEvents', () => {
+    const defaultTimeInstance = new TimeBuilder().build();
+    const eventThatCouldBeHybrid = new EventBuilder({
+      start: '2023-04-01 23:50',
+      end: '2023-04-02 00:10',
+    }).build();
+    const allEvents = [...events, eventThatCouldBeHybrid];
+    const actualFullDayAndMultipleDayEvents = WeekHelper
+      .eventSeparator(allEvents, defaultTimeInstance).fullDayAndMultipleDayEvents;
+    expect(actualFullDayAndMultipleDayEvents).toHaveLength(4);
+  });
+
+  it('sorts a hybrid event into singleDayTimedEvents for custom day boundaries', () => {
+    const customTimeInstance = new TimeBuilder().withDayBoundaries({ start: 400, end: 200 }).build();
+    const eventThatCouldBeHybrid = new EventBuilder({
+      start: '2023-04-01 23:50',
+      end: '2023-04-02 01:59',
+    }).build();
+    const allEvents = [...events, eventThatCouldBeHybrid];
+    const actualSingleDayTimedEvents = WeekHelper
+      .eventSeparator(allEvents, customTimeInstance).singleDayTimedEvents;
+    expect(actualSingleDayTimedEvents).toHaveLength(4);
+  });
+});
