@@ -92,6 +92,13 @@
             name="monthEvent"
           />
         </template>
+
+        <template #dayCell="{dayData}">
+          <slot
+            :day-data="dayData"
+            name="dayCell"
+          />
+        </template>
       </Month>
     </div>
   </div>

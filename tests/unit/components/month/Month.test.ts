@@ -11,7 +11,8 @@ describe("Month.vue", () => {
 
       time: new Time("monday", "de-DE"),
       config: {
-        month: {
+
+      month: {
           showTrailingAndLeadingDates: false,
         }
       },
