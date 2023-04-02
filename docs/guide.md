@@ -333,7 +333,9 @@ data()
 }
 ```
 
-## Custom events
+## Slots
+
+### Custom events
 
 The Qalendar component also allows you to take full control over the looks and content of an event.
 The data of your event, can then be accessed via scoped, named slots in the following manner:
@@ -372,7 +374,7 @@ const event = {
 Alternatively, you can set `isCustom` to an array of modes, such as `['month', 'week']`, to only use
 the custom markup in those modes.
 
-## Custom event dialog
+### Custom event dialog
 
 The dialog which is opened when an event is clicked can also be customized. To enable this, you
 first need to set the configuration option `eventDialog.isCustom` to true, and then add a scoped
@@ -407,6 +409,41 @@ dialog for letting your user edit the event directly in the calendar. Just save 
 that was clicked, and display some input fields in the dialog, targeting the properties of the event
 that was just clicked.
 :::
+
+### Custom current-time line
+
+As shown above under basic configuration, there is a `showCurrentTime` option for displaying a red
+line, marking what time of the day it is. If you, however, want to customize the looks of this line,
+use the `customCurrentTime` slot as shown below, **instead** of `showCurrentTime`. Qalendar takes
+care of the positioning, you just need to style the line as you wish.
+
+```vue
+
+<template #customCurrentTime>
+  <div :style="{ height: '3px', backgroundColor: 'cornflowerblue', position: 'relative' }">
+    <div :style="{ position: 'absolute', left: '-7px', top: '-6px', height: '15px', width: '15px', backgroundColor: 'cornflowerblue', borderRadius: '50%' }"></div>
+  </div>
+</template>
+```
+
+
+### Day cell slot
+
+With the `dayCell` slot, you can customize the looks of a day in month mode. The slot is scoped and 
+exposes some metadata about the day to the implementer, such as:
+
+```vue
+<template #dayCell="{dayData}">
+  <div>
+    <div> {{ dayData.dateTimeString.substring(8, 10) }}</div>
+    <div> {{ dayData.events.length }} events</div>
+  </div>
+</template>
+```
+
+The full interface of the data object that you can access `dayCell` is found here:
+https://github.com/tomosterlund/qalendar/blob/master/src/typings/interfaces/day.interface.ts
+
 
 ## Intervals
 
@@ -463,22 +500,6 @@ The `dayBoundaries.start` and `dayBoundaries.end` options take any integer betwe
 If you only display a few hours of a day, you might want to consider using the `dayIntervals`
 option, which allows you to adjust the height of each hour.
 :::
-
-## Custom current-time line
-
-As shown above under basic configuration, there is a `showCurrentTime` option for displaying a red
-line, marking what time of the day it is. If you, however, want to customize the looks of this line,
-use the `customCurrentTime` slot as shown below, **instead** of `showCurrentTime`. Qalendar takes
-care of the positioning, you just need to style the line as you wish.
-
-```vue
-
-<template #customCurrentTime>
-  <div :style="{ height: '3px', backgroundColor: 'cornflowerblue', position: 'relative' }">
-    <div :style="{ position: 'absolute', left: '-7px', top: '-6px', height: '15px', width: '15px', backgroundColor: 'cornflowerblue', borderRadius: '50%' }"></div>
-  </div>
-</template>
-```
 
 ## Disabling features
 
