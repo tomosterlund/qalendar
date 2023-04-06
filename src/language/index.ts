@@ -20,6 +20,7 @@ export default {
       if (locale.startsWith('nl')) locale = 'nl-NL';
       if (locale.startsWith('ru')) locale = 'ru-RU';
       if (locale.startsWith('ar')) locale = 'ar-YE';
+      if (locale.startsWith('es')) locale = 'es-ES';
 
       return languageKeys[locale]
         ? languageKeys[locale]
