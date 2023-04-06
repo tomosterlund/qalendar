@@ -19,6 +19,7 @@
         <option value="pt-BR">pt-BR</option>
         <option value="fr-FR">fr-FR</option>
         <option value="ar-YE">ar-YE</option>
+        <option value="es-ES">es-ES</option>
       </select>
 
       <select id="nDays" v-model="nDays" name="nDays">
