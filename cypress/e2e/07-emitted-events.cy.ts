@@ -1,3 +1,7 @@
+import PageObject from "../support/page-object";
+
+const { setMonthMode } = PageObject
+
 describe('EmittedEvents.vue', () => {
   beforeEach(() => {
     cy.visit('#/cypress/emitted-events')
@@ -7,23 +11,17 @@ describe('EmittedEvents.vue', () => {
     cy
       .get('#day-was-clicked').should('not.exist')
 
-    cy
-      .get('.week-timeline__date')
-      .first()
+    PageObject.getFirstTimelineDate()
       .click()
       .get('#day-was-clicked').should('exist').should('contain', '2022-06-12')
   })
 
   it('Should display the output of the \'day-was-clicked\' event after clicking day in month', () => {
-    cy
-    // @ts-ignore
-      .changeMode('month')
-      .get('#day-was-clicked').should('not.exist')
+    setMonthMode()
+    cy.get('#day-was-clicked').should('not.exist')
 
-    cy
-      .wait(1000)
-      .get('.calendar-month__weekday')
-      .last()
+    PageObject
+      .getLastDayOfMonth()
       .click()
       .get('#day-was-clicked').should('exist').should('contain', '2022-07-02')
   });

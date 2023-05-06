@@ -1,6 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["./integration/**/*", "./support/**/*"],
+  "include": ["./integration/**/*", "./e2e/**/*", "./support/**/*"],
   "compilerOptions": {
     "isolatedModules": false,
     "target": "es5",
