@@ -43,7 +43,6 @@ describe('Rendering the component', () => {
     cy.get('.is-chevron-right').click()
     cy.get('.is-chevron-right').click()
     cy.get('.is-chevron-right').click()
-    cy.get('.is-chevron-right').click()
     cy.get('.has-day').first().click()
 
     cy.get('.calendar-header__period-name').first().then(periodNameElement => {
