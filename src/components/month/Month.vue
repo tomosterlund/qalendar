@@ -254,6 +254,10 @@ export default defineComponent({
   width: 100%;
   overflow-y: auto;
 
+  .qalendar-is-small & {
+    overflow-y:hidden;
+  }
+
   .calendar-month__week-dayNames{
 
     display: flex;

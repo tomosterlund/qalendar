@@ -65,12 +65,14 @@ import AgendaEventTile from './AgendaEventTile.vue'
   
     data() {
       return {
-      
+        
       };
     },
   
     computed: {
-     
+      agendaHeight (){
+        return this.config.month?.agendaHeight
+      }
     },
   
     methods: {
@@ -85,6 +87,8 @@ import AgendaEventTile from './AgendaEventTile.vue'
     display: flex;
     flex-flow: row;
     padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 
     .agenda__header{
       padding-right: 10px;
@@ -110,11 +114,14 @@ import AgendaEventTile from './AgendaEventTile.vue'
     }
     .agenda__content{
       flex-grow: 1;
+      overflow-y: scroll;
+      height: v-bind(agendaHeight);
       .agenda__content-events-list{
         width: 100%;
         display: flex;
         flex-flow: column;
         flex-grow: 1;
+        overflow-y:scroll ;
       }
     }
   }

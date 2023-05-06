@@ -78,7 +78,8 @@ export interface configInterface {
   month?:{
     //Hide the days of the next month and previous month in calendar to enhance the appearance
     showTrailingAndLeadingDates?:boolean,
-    showAgenda?:boolean,
+    showAgenda?:boolean, // weither the   agenda will show on mobile view on not,
+    agendaHeight?: "500px", // height of agenda part on mobile view
     showEventsOnMobileView?:boolean,
     selectedDayColor?: string,
   }

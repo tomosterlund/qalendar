@@ -174,6 +174,7 @@ export default defineComponent({
         month: {
           showTrailingAndLeadingDates: false,
           showEventsOnMobileView:true,
+          agendaHeight:'500px',
           selectedDayColor:'rgb(180 180 180)'
         }
       } as configInterface,

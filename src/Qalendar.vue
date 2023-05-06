@@ -339,10 +339,11 @@ export default defineComponent({
   min-height: 700px;
   display: flex;
 
-  .qalendar-is-small &{
+  .qalendar-is-small & {
     height: auto;
     max-height: auto;
     display: block;
+    overflow-y: hidden;
   }
 
   
