@@ -45,19 +45,19 @@
             />
           </div>
         </template>
-<!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
-<!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
-<!--                    {{ eventProps.eventData.title }}-->
+        <template v-slot:weekDayEvent="eventProps">
+          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
+                    {{ eventProps.eventData.title }}
 
-<!--            <div>-->
-<!--              <input type="checkbox" />-->
+            <div>
+              <input type="checkbox" />
 
-<!--              <label for="checkbox">-->
-<!--                Select time slot-->
-<!--              </label>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </template>-->
+              <label for="checkbox">
+                Select time slot
+              </label>
+            </div>
+          </div>
+        </template>
 
         <template #eventDialog="props">
           <div
@@ -99,6 +99,7 @@ import { seededEvents } from './data/seeded-events';
 import DevToolbar from './components/DevToolbar.vue';
 import DevSidebar from './components/DevSidebar.vue';
 import DevHeader from './components/DevHeader.vue';
+import { WEEK_START_DAY } from "../src/helpers/Time";
 
 export default defineComponent({
   name: 'QalendarView',
@@ -114,9 +115,9 @@ export default defineComponent({
     return {
       config: {
         week: {
-          startsOn: 'monday',
+          startsOn: WEEK_START_DAY.MONDAY,
           nDays: 7,
-          scrollToHour: 8,
+          // scrollToHour: 11,
         },
         locale: 'de-DE',
         style: {
@@ -139,13 +140,17 @@ export default defineComponent({
           height: 50,
           length: 30,
         },
+        dayBoundaries: {
+          start: 4,
+          end: 4,
+        },
         eventDialog: {
           isDisabled: false,
           // isCustom: true,
         },
-        month: {
-          showTrailingAndLeadingDates: false,
-        }
+        // month: {
+        //   showTrailingAndLeadingDates: false,
+        // }
       } as configInterface,
       events: [] as eventInterface[],
 
@@ -164,7 +169,7 @@ export default defineComponent({
       this.events = seededEvents.map((e) => {
         // @ts-ignore
         // e.isCustom = true;
-        // e.isEditable = false;
+        e.isEditable = true;
 
         return e;
       });

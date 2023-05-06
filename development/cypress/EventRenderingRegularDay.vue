@@ -2,9 +2,9 @@
   <div class="page">
     <div class="wrapper">
       <Qalendar
-          :config="config"
-          :selected-date="new Date(2022, (6 - 1), 1)"
-          :events="events"
+        :config="config"
+        :events="events"
+        :selected-date="new Date(2023, 3 - 1, 18)"
       />
     </div>
   </div>
@@ -13,12 +13,10 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import Qalendar from '../../src/Qalendar.vue';
-import {configInterface} from '../../src/typings/config.interface';
-import {dragAndDropEvents} from './__data__/03-drag-and-drop-events';
-import {WEEK_START_DAY} from "../../src/helpers/Time";
+import eventsRegularDay from "./__data__/11-events-regular-day";
 
 export default defineComponent({
-  name: 'DragAndDrop',
+  name: 'EventRenderingRegularDay',
 
   components: {Qalendar},
 
@@ -26,13 +24,9 @@ export default defineComponent({
     return {
       config: {
         locale: 'en-US',
-        week: {
-          nDays: 5,
-          startsOn: WEEK_START_DAY.MONDAY,
-        },
-      } as configInterface,
+      },
 
-      events: dragAndDropEvents,
+      events: eventsRegularDay,
     }
   }
 })

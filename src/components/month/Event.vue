@@ -97,7 +97,7 @@ export default defineComponent({
       return (
         this.eventIdPrefix +
         this.calendarEvent.id +
-        this.day.dateTimeString.substring(0, 10)
+        this.time.dateStringFrom(this.day.dateTimeString)
       );
     },
 

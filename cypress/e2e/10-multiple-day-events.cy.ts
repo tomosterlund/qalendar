@@ -1,11 +1,12 @@
-describe('SmallQalendar', () => {
+describe('Multiple day events', () => {
   beforeEach(() => {
     cy.visit('/#/cypress/multiple-day-events')
   })
 
   it('Renders an event starting on 5th of January, until 6th of March in week mode', () => {
     cy
-      .get('.calendar-week__event')
+      .get('.week-timeline__event')
+      .first()
       .click({ force: true })
 
     cy

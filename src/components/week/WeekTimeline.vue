@@ -8,7 +8,7 @@
         'is-today':
           time.getDateTimeStringFromDate(now, 'start') === day.dateTimeString,
       }"
-      @click="$emit('day-was-clicked', day.dateTimeString.substring(0, 10))"
+      @click="$emit('day-was-clicked', time.dateStringFrom(day.dateTimeString))"
     >
       <div class="week-timeline__day-name">
         {{ day.dayName.substring(0, 2).toUpperCase() }}

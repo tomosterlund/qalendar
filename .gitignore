@@ -29,4 +29,5 @@ coverage
 *.sln
 *.sw?
 
+/docs/.vitepress/cache
 docs/.vitepress/cache/deps

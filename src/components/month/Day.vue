@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!hideLeadingAndTrailingDate"
-    :id="'day-' + day.dateTimeString.substring(0, 10)"
+    :id="'day-' + time.dateStringFrom(day.dateTimeString)"
     class="calendar-month__weekday"
     :class="{ 'is-droppable': canBeDropped, 'trailing-or-leading': day.isTrailingOrLeadingDate }"
     @click.self="emitDayWasClicked"
@@ -155,18 +155,18 @@ export default defineComponent({
       );
       const eventDroppedOnSameDay = this.time.dateStringsHaveEqualDates(
         calendarEvent.time.start,
-        this.day.dateTimeString.substring(0, 10)
+        this.time.dateStringFrom(this.day.dateTimeString),
       );
       if (eventDroppedOnSameDay) return;
 
       // Exchange the yyyy-mm-dd part of the string
       calendarEvent.time.start = calendarEvent.time.start.replace(
         /^\d{4}-\d{2}-\d{2}/,
-        this.day.dateTimeString.substring(0, 10)
+        this.time.dateStringFrom(this.day.dateTimeString)
       );
       calendarEvent.time.end = calendarEvent.time.end.replace(
         /^\d{4}-\d{2}-\d{2}/,
-        this.day.dateTimeString.substring(0, 10)
+        this.time.dateStringFrom(this.day.dateTimeString)
       );
       this.$emit('event-was-dragged', calendarEvent);
     },
@@ -179,7 +179,7 @@ export default defineComponent({
     },
 
     emitDayWasClicked() {
-      this.$emit('day-was-clicked', this.day.dateTimeString.substring(0, 10));
+      this.$emit('day-was-clicked', this.time.dateStringFrom(this.day.dateTimeString));
     },
   },
 });

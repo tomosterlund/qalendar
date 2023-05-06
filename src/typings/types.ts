@@ -1,5 +1,3 @@
-import { dayStartOrEnd } from "./config.interface";
-
 export interface DOMRect {
   bottom: number;
   height: number;
@@ -12,3 +10,14 @@ export interface DOMRect {
 }
 
 export type modeType = "day" | "week" | "month";
+
+export enum DRAG_N_RESIZE_DIRECTION {
+  BACKWARDS = "backwards",
+  FORWARDS = "forwards",
+}
+
+export type DayInfo = {
+  daysTotalN: number;
+  thisDayIndex: number,
+  dateTimeString: string
+}
