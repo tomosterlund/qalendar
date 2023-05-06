@@ -1,6 +1,6 @@
 import Time from "./Time";
 import {DAY_MODE} from "../typings/interfaces/time-modes";
-import {EVENT_TYPE, eventInterface} from "../typings/interfaces/event.interface";
+import {EVENT_TYPE, type eventInterface} from "../typings/interfaces/event.interface";
 import Helpers from "./Helpers";
 
 export class WeekHelper {

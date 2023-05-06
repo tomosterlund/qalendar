@@ -1,5 +1,5 @@
-import {EventColor, eventId, eventInterface} from "../typings/interfaces/event.interface";
-import {modeType} from "../typings/types";
+import type {EventColor, eventId, eventInterface} from "../typings/interfaces/event.interface";
+import type {modeType} from "../typings/types";
 
 export class EventImpl implements eventInterface {
   title?: string;

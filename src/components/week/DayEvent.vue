@@ -127,8 +127,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {eventInterface} from '../../typings/interfaces/event.interface';
+import {defineComponent, type PropType} from 'vue';
+import {type eventInterface} from '../../typings/interfaces/event.interface';
 import {
   faClock,
   faComment,
@@ -138,9 +138,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import Time from '../../helpers/Time';
-import {configInterface} from '../../typings/config.interface';
+import {type configInterface} from '../../typings/config.interface';
 import {EVENT_COLORS} from '../../constants';
-import {DayInfo, DRAG_N_RESIZE_DIRECTION, modeType} from '../../typings/types';
+import {type DayInfo, DRAG_N_RESIZE_DIRECTION, type modeType} from '../../typings/types';
 import { EventChange } from '../../helpers/EventChange';
 import Helpers from "../../helpers/Helpers";
 

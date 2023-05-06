@@ -44,18 +44,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { dayInterface } from '../../typings/interfaces/day.interface';
+import { defineComponent, type PropType } from 'vue';
+import { type dayInterface } from '../../typings/interfaces/day.interface';
 import DayEvent from './DayEvent.vue';
 import EventConcurrency from '../../helpers/EventConcurrency';
-import { eventInterface } from '../../typings/interfaces/event.interface';
+import { type eventInterface } from '../../typings/interfaces/event.interface';
 import Time from '../../helpers/Time';
 import {
-  configInterface,
-  dayIntervalsType,
+  type configInterface,
+  type dayIntervalsType,
 } from '../../typings/config.interface';
-import {DayInfo, modeType} from '../../typings/types';
-import DayIntervals, { interval } from '../../helpers/DayIntervals';
+import {type DayInfo, type modeType} from '../../typings/types';
+import DayIntervals, { type interval } from '../../helpers/DayIntervals';
 const eventConcurrencyHelper = new EventConcurrency();
 
 export default defineComponent({

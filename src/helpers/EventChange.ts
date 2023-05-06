@@ -1,6 +1,6 @@
 import Time from "./Time";
 import {DRAG_N_RESIZE_DIRECTION} from "../typings/types";
-import {eventInterface} from "../typings/interfaces/event.interface";
+import type {eventInterface} from "../typings/interfaces/event.interface";
 import {DAY_MODE} from "../typings/interfaces/time-modes";
 
 export class EventChange {

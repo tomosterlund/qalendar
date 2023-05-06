@@ -111,7 +111,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faCalendarDay,
@@ -119,13 +119,13 @@ import {
   faChevronCircleRight,
 } from '@fortawesome/free-solid-svg-icons';
 import Time, {
-  calendarMonthType,
-  calendarWeekType,
-  calendarYearMonths,
+  type calendarMonthType,
+  type calendarWeekType,
+  type calendarYearMonths,
   WEEK_START_DAY,
 } from '../../helpers/Time';
-import { periodInterface } from '../../typings/interfaces/period.interface';
-import { modeType } from '../../typings/types';
+import { type periodInterface } from '../../typings/interfaces/period.interface';
+import { type modeType } from '../../typings/types';
 
 interface disableDates {
   before: Date;

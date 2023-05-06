@@ -1,4 +1,4 @@
-import {eventInterface} from "../typings/interfaces/event.interface";
+import type {eventInterface} from "../typings/interfaces/event.interface";
 import Time from "./Time";
 import {DAY_MODE} from "../typings/interfaces/time-modes";
 

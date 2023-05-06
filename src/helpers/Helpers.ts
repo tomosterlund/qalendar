@@ -1,5 +1,5 @@
-import {Comment, Slot, Text, VNode} from 'vue';
-import {EVENT_TYPE, eventInterface} from "../typings/interfaces/event.interface";
+import {Comment, type Slot, Text, type VNode} from 'vue';
+import {EVENT_TYPE, type eventInterface} from "../typings/interfaces/event.interface";
 import Time from "./Time";
 import {DATE_TIME_STRING_FULL_DAY_PATTERN, DATE_TIME_STRING_PATTERN} from "../constants";
 import {DAY_MODE} from "../typings/interfaces/time-modes";

@@ -84,19 +84,20 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {configInterface, dayIntervalsType,} from '../../typings/config.interface';
+import {defineComponent} from 'vue';
+import type {PropType} from 'vue';
+import {type configInterface, type dayIntervalsType,} from '../../typings/config.interface';
 import DayTimeline from './DayTimeline.vue';
-import {periodInterface} from '../../typings/interfaces/period.interface';
-import {dayInterface} from '../../typings/interfaces/day.interface';
+import {type periodInterface} from '../../typings/interfaces/period.interface';
+import {type dayInterface} from '../../typings/interfaces/day.interface';
 import WeekTimeline from './WeekTimeline.vue';
 import Day from './Day.vue';
 import EventFlyout from '../partials/EventFlyout.vue';
-import {eventInterface} from '../../typings/interfaces/event.interface';
+import {type eventInterface} from '../../typings/interfaces/event.interface';
 import Time, {WEEK_START_DAY} from '../../helpers/Time';
 import EventPosition from '../../helpers/EventPosition';
-import {fullDayEventsWeek} from '../../typings/interfaces/full-day-events-week.type';
-import {modeType} from '../../typings/types';
+import {type fullDayEventsWeek} from '../../typings/interfaces/full-day-events-week.type';
+import type {modeType} from '../../typings/types';
 import PerfectScrollbar from 'perfect-scrollbar';
 import Helpers from '../../helpers/Helpers';
 import {EventsFilter} from "../../helpers/EventsFilter";

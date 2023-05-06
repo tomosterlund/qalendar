@@ -1,5 +1,5 @@
 type elementDimensions = { height: number; width: number };
-import { DOMRect } from "../typings/types";
+import type { DOMRect } from "../typings/types";
 const calendarDomRectForVitest = {
   x: 8,
   y: 26,
