@@ -108,8 +108,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {EVENT_TYPE, eventInterface} from '../../typings/interfaces/event.interface';
+import {defineComponent, type PropType} from 'vue';
+import {EVENT_TYPE, type eventInterface} from '../../typings/interfaces/event.interface';
 import EventFlyoutPosition, {EVENT_FLYOUT_WIDTH,} from '../../helpers/EventFlyoutPosition';
 import {faMapMarkerAlt, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {
@@ -121,7 +121,7 @@ import {
   faUser,
 } from '@fortawesome/free-regular-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import {configInterface} from '../../typings/config.interface';
+import type {configInterface} from '../../typings/config.interface';
 import Time from '../../helpers/Time';
 import {EVENT_COLORS,} from '../../constants';
 import Helpers from "../../helpers/Helpers";

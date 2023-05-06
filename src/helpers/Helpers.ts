@@ -1,7 +1,8 @@
-import {Comment, Slot, Text, VNode} from 'vue';
-import {EVENT_TYPE, eventInterface} from "../typings/interfaces/event.interface";
+import {Comment, type Slot, Text, type VNode} from 'vue';
+import {EVENT_TYPE, type eventInterface} from "../typings/interfaces/event.interface";
 import Time from "./Time";
 import {DATE_TIME_STRING_FULL_DAY_PATTERN, DATE_TIME_STRING_PATTERN} from "../constants";
+import {DAY_MODE} from "../typings/interfaces/time-modes";
 
 export default class Helpers {
   /**
@@ -53,6 +54,20 @@ export default class Helpers {
       return EVENT_TYPE.SINGLE_DAY_TIMED;
     }
 
+    if (time.dayMode === DAY_MODE.FLEXIBLE) {
+      const endBoundaryForSingleHybridDay = time.setHourInDateTimeString(
+        time.addDaysToDateTimeString(
+          1,
+          time.dateStringFrom(event.time.start)
+        ),
+        Time.getHourFromTimePoints(time.DAY_END),
+      );
+
+      if (event.time.end < endBoundaryForSingleHybridDay) {
+        return EVENT_TYPE.SINGLE_HYBRID_DAY_TIMED;
+      }
+    }
+
     return EVENT_TYPE.MULTI_DAY_TIMED;
   }
 
@@ -62,5 +77,9 @@ export default class Helpers {
     }
 
     return EVENT_TYPE.MULTI_DAY_FULL_DAY;
+  }
+
+  static isUIEventTouchEvent(event: UIEvent): boolean {
+    return 'touches' in event && typeof event.touches === 'object';
   }
 }

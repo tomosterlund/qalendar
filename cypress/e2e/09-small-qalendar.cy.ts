@@ -1,35 +1,36 @@
+import PageObject from "../support/page-object";
+
+const {
+  setMonthMode,
+  clickViewMoreEventsOnFirstMonthEvent,
+  getFirstTimelineDate,
+  getModePicker,
+  getModePickerWeekOption,
+  getModePickerMonthOption,
+  getModePickerDayOption,
+  getTrailingOrLeadingDays,
+} = PageObject
+
 describe('SmallQalendar', () => {
   beforeEach(() => {
     cy.visit('/#/cypress/small-qalendar')
   })
 
   it('Should visit a day, when clicking "more events" in month mode', () => {
-    cy
-    // @ts-ignore
-      .changeMode('month')
-
-    cy.get('.calendar-month__weekday-more')
-      .first()
-      .click()
-      .get('.week-timeline__date')
-      .should('have.text', '1')
+    setMonthMode()
+    clickViewMoreEventsOnFirstMonthEvent()
+    getFirstTimelineDate().should('have.text', '1')
   })
 
   it('Should only display mode options for day and month', () => {
-    cy
-      .get('.calendar-header__mode-picker')
-      .click()
-
-    cy.get('.is-month-mode').should('exist')
-    cy.get('.is-day-mode').should('exist')
-    cy.get('.is-week-mode').should('not.exist')
+    getModePicker().click()
+    getModePickerMonthOption().should('exist')
+    getModePickerDayOption().should('exist')
+    getModePickerWeekOption().should('not.exist')
   })
 
   it('Should not display leading or trailing days in month mode', () => {
-    cy
-      // @ts-ignore
-      .changeMode('month')
-
-    cy.get('.trailing-or-leading').should('not.be.visible')
+    setMonthMode()
+    getTrailingOrLeadingDays().should('not.be.visible')
   })
 })

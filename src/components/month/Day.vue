@@ -3,7 +3,7 @@
     v-if="!hideLeadingAndTrailingDate"
     :id="'day-' + time.dateStringFrom(day.dateTimeString)"
     class="calendar-month__weekday"
-    :class="{ 
+    :class="{
       'is-droppable': canBeDropped,
       'trailing-or-leading': day.isTrailingOrLeadingDate ,
       'selected':selected
@@ -19,9 +19,9 @@
     >
       {{ day.dateTimeString.substring(8, 10).startsWith('0')?day.dateTimeString.substring(9, 10): day.dateTimeString.substring(8, 10) }}
     </span>
-    
 
-   
+
+
     <div class="calendar-month_events">
       <template
         v-for="(calendarEvent, index) in day.events"
@@ -61,13 +61,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { configInterface } from '../../typings/config.interface';
+import { defineComponent, type PropType } from 'vue';
+import { type configInterface } from '../../typings/config.interface';
 import Time from '../../helpers/Time';
 import Event from './Event.vue';
-import { dayInterface } from '../../typings/interfaces/day.interface';
+import { type dayInterface } from '../../typings/interfaces/day.interface';
 import getLanguage from '../../language/index';
-import { eventInterface } from '../../typings/interfaces/event.interface';
+import { type eventInterface } from '../../typings/interfaces/event.interface';
 
 export default defineComponent({
   name: 'Day',
@@ -193,7 +193,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@mixin dayBase {
+@mixin day-base {
   height: 100%;
   flex: 1;
   display: flex;
@@ -206,7 +206,7 @@ export default defineComponent({
 
 
 .calendar-month__weekday {
-    @include dayBase;
+    @include day-base;
 
     overflow: hidden;
     transition: background-color 0.2s ease-in-out;
@@ -232,7 +232,7 @@ export default defineComponent({
   }
 
 
- 
+
 
   .calendar-month__day-name,
   .calendar-month__day-date {
@@ -269,7 +269,7 @@ export default defineComponent({
 }
 
 .space-reserver {
-  @include dayBase;
+  @include day-base;
 
   border-right-color: transparent;
 
@@ -278,9 +278,14 @@ export default defineComponent({
   }
 }
 
+.space-reserver,
+.trailing-or-leading {
+  .qalendar-is-small & {
+    display: none;
+  }
+}
 
 .calendar-month__week:first-child {
-
   .space-reserver,
   .calendar-month__weekday {
     border-top: var(--qalendar-border-gray-thin);

@@ -74,19 +74,19 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
+import {defineComponent, type PropType} from 'vue';
 import Day from './Day.vue';
 import Time from '../../helpers/Time';
-import {periodInterface} from '../../typings/interfaces/period.interface';
-import {configInterface} from '../../typings/config.interface';
-import {EVENT_TYPE, eventInterface} from '../../typings/interfaces/event.interface';
+import {type periodInterface} from '../../typings/interfaces/period.interface';
+import {type configInterface} from '../../typings/config.interface';
+import {EVENT_TYPE, type eventInterface} from '../../typings/interfaces/event.interface';
 import EDate from '../../helpers/EDate';
-import {dayInterface} from '../../typings/interfaces/day.interface';
+import {type dayInterface} from '../../typings/interfaces/day.interface';
 import EventFlyout from '../partials/EventFlyout.vue';
 import EventPosition from '../../helpers/EventPosition';
 import PerfectScrollbar from 'perfect-scrollbar';
 import WeekDay from './WeekDay.vue';
-import MonthDayEvents from './MonthDayEvents.vue'
+import MonthDayEvents from './MonthDayEvents.vue';
 import Helpers from "../../helpers/Helpers";
 
 const EventPositionHelper = new EventPosition();
@@ -189,7 +189,7 @@ export default defineComponent({
           });
 
           return {
-           
+
             isTrailingOrLeadingDate: this.time.isTrailingOrLeadingDate(day, month),
             dayName: this.time.getLocalizedNameOfWeekday(day),
             dateTimeString: this.time.getDateTimeStringFromDate(day),

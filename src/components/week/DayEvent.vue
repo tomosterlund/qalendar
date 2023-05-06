@@ -127,8 +127,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {eventInterface} from '../../typings/interfaces/event.interface';
+import {defineComponent, type PropType} from 'vue';
+import {type eventInterface} from '../../typings/interfaces/event.interface';
 import {
   faClock,
   faComment,
@@ -138,10 +138,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import Time from '../../helpers/Time';
-import {configInterface} from '../../typings/config.interface';
+import {type configInterface} from '../../typings/config.interface';
 import {EVENT_COLORS} from '../../constants';
-import {DayInfo, DRAG_N_RESIZE_DIRECTION, modeType} from '../../typings/types';
+import {type DayInfo, DRAG_N_RESIZE_DIRECTION, type modeType} from '../../typings/types';
 import { EventChange } from '../../helpers/EventChange';
+import Helpers from "../../helpers/Helpers";
 
 export default defineComponent({
   name: 'DayEvent',
@@ -532,18 +533,23 @@ export default defineComponent({
       this.eventBackgroundColor = this.colors.blue;
     },
 
-    initDrag(domEvent: MouseEvent | TouchEvent) {
+    initDrag(domEvent: UIEvent) {
       // Do not allow drag & drop, if event is not editable
       if (!this.event.isEditable || this.hasDisabledDragAndDrop) return;
+
+      this.$emit('drag-start');
 
       this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
         document.addEventListener(name, callback);
       });
 
-      if (domEvent instanceof TouchEvent) {
-        this.setInitialDragValues(domEvent.touches[0]?.clientX, domEvent.touches[0]?.clientY);
+      if (Helpers.isUIEventTouchEvent(domEvent)) {
+        this.setInitialDragValues(
+          (domEvent as TouchEvent).touches[0]?.clientX,
+          (domEvent as TouchEvent).touches[0]?.clientY
+        );
       } else {
-        this.setInitialDragValues(domEvent.clientX, domEvent.clientY);
+        this.setInitialDragValues((domEvent as MouseEvent).clientX, (domEvent as MouseEvent).clientY);
       }
     },
 
@@ -572,18 +578,16 @@ export default defineComponent({
       if (dayChanged || timeChanged) this.$emit('event-was-dragged', this.event);
     },
 
-    handleDrag(mouseEvent: MouseEvent | TouchEvent) {
+    handleDrag(mouseEvent: UIEvent) {
       // Do not run the drag & drop algorithms, under the following conditions:
       if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
 
-      this.$emit('drag-start');
-
-      if (mouseEvent instanceof TouchEvent) {
-        this.handleVerticalDrag(mouseEvent.touches[0]?.clientY);
-        this.handleHorizontalDrag(mouseEvent.touches[0]?.clientX);
+      if (Helpers.isUIEventTouchEvent(mouseEvent)) {
+        this.handleVerticalDrag((mouseEvent as TouchEvent).touches[0].clientY);
+        this.handleHorizontalDrag((mouseEvent as TouchEvent).touches[0].clientX);
       } else {
-        this.handleVerticalDrag(mouseEvent.clientY);
-        this.handleHorizontalDrag(mouseEvent.clientX);
+        this.handleVerticalDrag((mouseEvent as MouseEvent).clientY);
+        this.handleHorizontalDrag((mouseEvent as MouseEvent).clientX);
       }
     },
 

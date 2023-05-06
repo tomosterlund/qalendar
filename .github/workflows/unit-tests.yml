@@ -13,9 +13,9 @@ jobs:
       - name: Checkout ✅
         uses: actions/checkout@v3
       - name: Set Timezone 🌍🌎🌏
-        uses: szenius/set-timezone@v1.1
+        uses: szenius/set-timezone@v1.2
         with:
-          timezone: "Europe/London"
+          timezoneLinux: "Europe/London"
       - name: Setup Node.js 🔧
         uses: actions/setup-node@v3
         with:
@@ -32,9 +32,9 @@ jobs:
       - name: Checkout ✅
         uses: actions/checkout@v3
       - name: Set Timezone 🌍🌎🌏
-        uses: szenius/set-timezone@v1.1
+        uses: szenius/set-timezone@v1.2
         with:
-          timezone: "US/Pacific"
+          timezoneLinux: "US/Pacific"
       - name: Setup Node.js 🔧
         uses: actions/setup-node@v3
         with:
@@ -51,9 +51,9 @@ jobs:
       - name: Checkout ✅
         uses: actions/checkout@v3
       - name: Set Timezone 🌍🌎🌏
-        uses: szenius/set-timezone@v1.1
+        uses: szenius/set-timezone@v1.2
         with:
-          timezone: "Asia/Tokyo"
+          timezoneLinux: "Asia/Tokyo"
       - name: Setup Node.js 🔧
         uses: actions/setup-node@v3
         with:

@@ -42,12 +42,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import Time from '../../helpers/Time';
-import { eventInterface } from '../../typings/interfaces/event.interface';
+import { type eventInterface } from '../../typings/interfaces/event.interface';
 import { DATE_TIME_STRING_PATTERN, EVENT_COLORS } from '../../constants';
-import { configInterface } from '../../typings/config.interface';
-import { dayInterface } from '../../typings/interfaces/day.interface';
+import { type configInterface } from '../../typings/config.interface';
+import { type dayInterface } from '../../typings/interfaces/day.interface';
 
 export default defineComponent({
   name: 'Event',

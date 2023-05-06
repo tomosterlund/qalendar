@@ -15,11 +15,10 @@
 	"stylelint-config-recommended-vue"
   ],
   "rules": {
-	"string-quotes": "single",
-	"max-line-length": null,
-	"function-no-unknown": null,
-	"selector-class-pattern": null,
-	"at-rule-no-unknown": null,
-	"custom-property-no-missing-var-function": null
+    "function-no-unknown": null,
+    "selector-class-pattern": null,
+    "at-rule-no-unknown": null,
+    "custom-property-no-missing-var-function": null,
+    "value-keyword-case": null
   }
 }

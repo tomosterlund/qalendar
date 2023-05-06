@@ -403,12 +403,10 @@ export default class Time {
     return (pointsIntoDay / pointsInDay) * 100;
   }
 
-  setSegmentOfDateTimeString(dateTimeString: string, segments: { hour: number|string }) {
+  setSegmentOfDateTimeString(dateTimeString: string, segments: { hour: number }) {
     if (segments.hour < 0 || segments.hour > 23) throw new Error('Invalid hour')
-
-    segments.hour = String(segments.hour < 10 ? "0" + segments.hour : segments.hour)
-
-    dateTimeString = dateTimeString.replace(/\d{2}:/, segments.hour + ":")
+    const newHour = String(segments.hour < 10 ? "0" + segments.hour : segments.hour)
+    dateTimeString = dateTimeString.replace(/\d{2}:/, newHour + ":")
 
     return dateTimeString
   }

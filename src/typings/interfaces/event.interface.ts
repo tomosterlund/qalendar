@@ -1,10 +1,11 @@
-import {modeType} from '../types';
+import type { modeType } from '../types';
 
 export type eventId = string | number;
 
 export enum EVENT_TYPE {
   SINGLE_DAY_TIMED = 'SINGLE_DAY_TIMED',
   SINGLE_DAY_FULL_DAY = 'SINGLE_DAY_FULL_DAY',
+  SINGLE_HYBRID_DAY_TIMED = 'SINGLE_HYBRID_DAY_TIMED',
   MULTI_DAY_TIMED = 'MULTI_DAY_TIMED',
   MULTI_DAY_FULL_DAY = 'MULTI_DAY_FULL_DAY',
 }

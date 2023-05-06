@@ -9,7 +9,7 @@
 
     <main>
       <Qalendar
-        :key="config.locale! + config.week!.nDays!"
+        :key="config.locale + config.week.nDays"
         :selected-date="new Date()"
         :config="config"
         :events="events"
@@ -25,7 +25,7 @@
         @interval-was-clicked="handleIntervalWasClicked"
       >
         <!-- <template
-          
+
           #monthEvent="{eventData}"
         >
           {{ eventData.title }}
@@ -51,13 +51,13 @@
             />
           </div>
         </template>
-       
-        <!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
-        <!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
-        <!--                    {{ eventProps.eventData.title }}-->
 
-        <!--            <div>-->
-        <!--              <input type="checkbox" />-->
+        <template v-slot:weekDayEvent="eventProps">
+        <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
+                            {{ eventProps.eventData.title }}
+
+        <div>
+        <input type="checkbox" />
 
         <!--              <label for="checkbox">-->
         <!--                Select time slot-->

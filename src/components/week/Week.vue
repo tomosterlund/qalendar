@@ -84,22 +84,24 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {configInterface, dayIntervalsType,} from '../../typings/config.interface';
+import {defineComponent} from 'vue';
+import type {PropType} from 'vue';
+import {type configInterface, type dayIntervalsType,} from '../../typings/config.interface';
 import DayTimeline from './DayTimeline.vue';
-import {periodInterface} from '../../typings/interfaces/period.interface';
-import {dayInterface} from '../../typings/interfaces/day.interface';
+import {type periodInterface} from '../../typings/interfaces/period.interface';
+import {type dayInterface} from '../../typings/interfaces/day.interface';
 import WeekTimeline from './WeekTimeline.vue';
 import Day from './Day.vue';
 import EventFlyout from '../partials/EventFlyout.vue';
-import {EVENT_TYPE, eventInterface} from '../../typings/interfaces/event.interface';
+import {type EVENT_TYPE, type eventInterface} from '../../typings/interfaces/event.interface';
 import Time, {WEEK_START_DAY} from '../../helpers/Time';
 import EventPosition from '../../helpers/EventPosition';
-import {fullDayEventsWeek} from '../../typings/interfaces/full-day-events-week.type';
-import {modeType} from '../../typings/types';
+import {type fullDayEventsWeek} from '../../typings/interfaces/full-day-events-week.type';
+import type{modeType} from '../../typings/types';
 import PerfectScrollbar from 'perfect-scrollbar';
 import Helpers from '../../helpers/Helpers';
 import {EventsFilter} from "../../helpers/EventsFilter";
+import {WeekHelper} from "../../helpers/Week";
 
 const eventPosition = new EventPosition();
 
@@ -224,34 +226,32 @@ export default defineComponent({
     },
 
     separateFullDayEventsFromOtherEvents() {
-      const fullDayAndMultipleDayEvents = [];
-      const singleDayTimedEvents = [];
+      const {
+        singleDayTimedEvents,
+        fullDayAndMultipleDayEvents,
+      } = WeekHelper.eventSeparator(this.events, this.time)
 
-      for (const scheduleEvent of this.events) {
-        if (Helpers.getEventType(scheduleEvent, this.time) === EVENT_TYPE.SINGLE_DAY_TIMED) {
-          singleDayTimedEvents.push(scheduleEvent);
-        } else {
-          fullDayAndMultipleDayEvents.push(scheduleEvent);
-        }
-      }
+      this.events = singleDayTimedEvents;
+      this.positionFullDayEvents(fullDayAndMultipleDayEvents);
+    },
 
+    positionFullDayEvents(fullDayAndMultipleDayEvents: eventInterface[]) {
       const weekEndDate =
         this.nDays === 5
           ? new Date(
-              this.period.end.getFullYear(),
-              this.period.end.getMonth(),
-              this.period.end.getDate() - 2
-            )
+            this.period.end.getFullYear(),
+            this.period.end.getMonth(),
+            this.period.end.getDate() - 2
+          )
           : this.period.end;
 
       this.fullDayEvents = fullDayAndMultipleDayEvents.length
         ? eventPosition.positionFullDayEventsInWeek(
-            this.period.start,
-            weekEndDate,
-            fullDayAndMultipleDayEvents
-          )
+          this.period.start,
+          weekEndDate,
+          fullDayAndMultipleDayEvents
+        )
         : [];
-      this.events = singleDayTimedEvents;
     },
 
     setDays() {
@@ -313,11 +313,8 @@ export default defineComponent({
       // 2. Set full day events
       for (const day of this.fullDayEvents) {
         const dayDateString = this.time.getDateTimeStringFromDate(day.date);
-        if (
-          dayDateString.substring(0, 11) === dayDateTimeString.substring(0, 11)
-        ) {
+        if (dayDateString.substring(0, 11) === dayDateTimeString.substring(0, 11)) {
           this.fullDayEvents = [day];
-
           return;
         }
       }
@@ -360,13 +357,11 @@ export default defineComponent({
       ];
       this.setInitialEvents(this.mode);
       this.weekVersion = this.weekVersion + 1;
-
       this.$emit('event-was-dragged', event);
     },
 
     scrollOnMount() {
-      // The scrollToHour option is not compatible with setting custom day boundaries
-      if (this.time.HOURS_PER_DAY !== 24) return;
+      if (typeof this.config.week?.scrollToHour !== 'number') return;
 
       const weekWrapper = document.querySelector('.calendar-week__wrapper');
 
@@ -375,7 +370,7 @@ export default defineComponent({
       this.$nextTick(() => {
         const weekHeight = +this.weekHeight.split('p')[0];
         const oneHourInPixel = weekHeight / this.time.HOURS_PER_DAY;
-        const hourToScrollTo = typeof this.config.week?.scrollToHour === 'number' ? this.config.week.scrollToHour : 8;
+        const hourToScrollTo =  WeekHelper.getNHoursIntoDayFromHour(this.config.week!.scrollToHour!, this.time);
         const desiredNumberOfPixelsToScroll = oneHourInPixel * hourToScrollTo;
         weekWrapper.scroll(0, desiredNumberOfPixelsToScroll - 10); // -10 to display the hour in DayTimeline
       })

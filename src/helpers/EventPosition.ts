@@ -2,10 +2,17 @@
  * The following class contains methods for calculating where to position
  * calendar events within a given day
  * */
-import {eventInterface} from '../typings/interfaces/event.interface';
+import type {eventInterface} from '../typings/interfaces/event.interface';
 import Time from './Time';
-import {fullDayEventsWeek} from '../typings/interfaces/full-day-events-week.type';
-import {dayInterface} from '../typings/interfaces/day.interface';
+import type {fullDayEventsWeek} from '../typings/interfaces/full-day-events-week.type';
+import type {dayInterface} from '../typings/interfaces/day.interface';
+
+interface eventWithJSDatesInterface extends eventInterface {
+  timeJS: {
+    start: Date,
+    end: Date,
+  }
+}
 
 interface eventWithJSDatesInterface extends eventInterface {
   timeJS: {

@@ -18,8 +18,7 @@ dist
 dist-ssr
 coverage
 *.local
-.vitepress/
-.vitepress/cache
+
 # Editor directories and files
 .vscode/extensions.json
 !.vscode/extensions.json
@@ -31,3 +30,4 @@ coverage
 *.sw?
 
 /docs/.vitepress/cache
+docs/.vitepress/cache/deps

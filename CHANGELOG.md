@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.3](https://github.com/tomosterlund/qalendar/compare/v2.3.2...v2.3.3) (2023-04-01)
+
+
+### Bug Fixes
+
+* safari touch event error ([#155](https://github.com/tomosterlund/qalendar/issues/155)) ([0248e37](https://github.com/tomosterlund/qalendar/commit/0248e374adfbf4fcfb7d3343b02f20b4f445bbfb))
+
+## [2.3.2](https://github.com/tomosterlund/qalendar/compare/v2.3.1...v2.3.2) (2023-04-01)
+
+
+### Bug Fixes
+
+* faulty timezone config in pipeline ([#151](https://github.com/tomosterlund/qalendar/issues/151)) ([265fdc6](https://github.com/tomosterlund/qalendar/commit/265fdc6411a9b2801a4f17a2e5aaf72f4c7f1585))
+
 ## [2.3.1](https://github.com/tomosterlund/qalendar/compare/v2.3.0...v2.3.1) (2023-03-26)
 
 
