@@ -1,28 +1,31 @@
 import PageObject from "../support/page-object";
 
-describe('DragAndDrop.vue', () => {
-  const EVENT_SELECTOR = '.calendar-week__event'
+const {
+  getEventTime,
+  getFirstEventInWeek,
+} = PageObject
 
+describe('DragAndDrop.vue', () => {
   beforeEach(() => {
     cy.visit('#/cypress/drag-and-drop');
   });
 
   it('Drags an editable event within a day', () => {
     const initialTimeString = '9:20 AM - 10:20 AM'
-    cy.get('.is-time').then($el => {
+    getEventTime().then($el => {
       expect($el).to.have.text(initialTimeString)
     })
     let initialY = 0
 
-    cy.get(EVENT_SELECTOR).then($calendarEvent => {
+    getFirstEventInWeek().then($calendarEvent => {
       initialY = $calendarEvent.position().top
 
-      cy.get(EVENT_SELECTOR)
+      getFirstEventInWeek()
         .trigger('mousedown', { which: 1 })
         .trigger('mousemove', { clientY: initialY + 300 })
         .trigger('mouseup')
 
-      cy.get('.is-time').then($el => {
+      getEventTime().then($el => {
         expect($el).to.have.text('10:35 PM - 11:35 PM')
       })
     })
@@ -69,17 +72,17 @@ describe('DragAndDrop.vue', () => {
     })
     let initialY = 0
 
-    cy.get(EVENT_SELECTOR).then($calendarEvent => {
+    getFirstEventInWeek().then($calendarEvent => {
       initialY = $calendarEvent.position().top
 
       // 3. Try to drag an drop
-      cy.get(EVENT_SELECTOR)
+      getFirstEventInWeek()
         .trigger('mousedown')
         .trigger('mousemove', { clientY: initialY + 300 })
         .trigger('mouseup')
 
       // 4. Time should not have changed
-      cy.get('.is-time').then($el => {
+      getEventTime().then($el => {
         expect($el).to.have.text(initialTimeString)
       })
     })
@@ -92,8 +95,6 @@ describe('DragAndDrop on mobile', () => {
     cy.visit('#/cypress/drag-and-drop');
   });
 
-  const EVENT_SELECTOR = '.calendar-week__event'
-
   it('Drags an editable event within a day', () => {
     const initialTimeString = '9:20 AM - 10:20 AM';
     cy.get('.is-time').then(($el) => {
@@ -101,15 +102,15 @@ describe('DragAndDrop on mobile', () => {
     });
     let initialY = 0;
 
-    cy.get(EVENT_SELECTOR).then(($calendarEvent) => {
+    getFirstEventInWeek().then(($calendarEvent) => {
       initialY = $calendarEvent.position().top;
 
-      cy.get(EVENT_SELECTOR)
+      getFirstEventInWeek()
       .trigger('touchstart')
       .trigger('touchmove', { clientY: initialY + 300 })
       .trigger('touchend');
 
-      cy.get('.is-time').then(($el) => {
+      getEventTime().then(($el) => {
         expect($el).not.to.have.text(initialTimeString);
       });
     });
