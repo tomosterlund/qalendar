@@ -52,19 +52,6 @@
           </div>
         </template>
 
-        <template v-slot:weekDayEvent="eventProps">
-        <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
-                            {{ eventProps.eventData.title }}
-
-        <div>
-        <input type="checkbox" />
-
-        <!--              <label for="checkbox">-->
-        <!--                Select time slot-->
-        <!--              </label>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </template>-->
         <template #weekDayEvent="eventProps">
           <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
             {{ eventProps.eventData.title }}
