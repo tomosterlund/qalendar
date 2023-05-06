@@ -64,13 +64,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { configInterface } from '../../typings/config.interface';
+import { defineComponent, type PropType } from 'vue';
+import { type configInterface } from '../../typings/config.interface';
 import Time from '../../helpers/Time';
 import Event from './Event.vue';
-import { dayInterface } from '../../typings/interfaces/day.interface';
+import { type dayInterface } from '../../typings/interfaces/day.interface';
 import getLanguage from '../../language/index';
-import { eventInterface } from '../../typings/interfaces/event.interface';
+import { type eventInterface } from '../../typings/interfaces/event.interface';
 
 export default defineComponent({
   name: 'Day',

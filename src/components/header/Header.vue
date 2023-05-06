@@ -68,18 +68,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import DatePicker from './DatePicker.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
-import { configInterface } from '../../typings/config.interface';
+import { type configInterface } from '../../typings/config.interface';
 import Time from '../../helpers/Time';
-import { periodInterface } from '../../typings/interfaces/period.interface';
+import { type periodInterface } from '../../typings/interfaces/period.interface';
 import getLanguage from '../../language';
-import { modeType } from '../../typings/types';
+import { type modeType } from '../../typings/types';
 
 export default defineComponent({
   name: 'AppHeader',

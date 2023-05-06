@@ -1,6 +1,6 @@
-import { eventInterface } from "../typings/interfaces/event.interface";
+import { type eventInterface } from "../typings/interfaces/event.interface";
 import {DATE_TIME_STRING_FULL_DAY_PATTERN, DATE_TIME_STRING_PATTERN} from "../constants";
-import { configInterface } from "../typings/config.interface";
+import { type configInterface } from "../typings/config.interface";
 
 export default class Errors {
   public static PREFIX = "[Qalendar warning]";

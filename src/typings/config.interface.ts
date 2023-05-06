@@ -1,4 +1,4 @@
-import { modeType } from "./types";
+import type { modeType } from "./types";
 import {WEEK_START_DAY} from "../helpers/Time";
 
 export enum DAY_TIME_POINT {

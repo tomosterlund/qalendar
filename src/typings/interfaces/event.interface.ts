@@ -1,4 +1,4 @@
-import {modeType} from '../types';
+import type { modeType } from '../types';
 
 export type eventId = string | number;
 
