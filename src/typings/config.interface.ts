@@ -59,6 +59,7 @@ export interface configInterface {
   };
   defaultMode?: modeType;
   disableModes?: ('week'|'month'|string)[];
+  showModesAsHorizontalMenu?: boolean;
   isSilent?: boolean;
   dayIntervals?: dayIntervalsType;
   eventDialog?: {

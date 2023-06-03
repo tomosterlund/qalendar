@@ -511,6 +511,10 @@ Some features of the calendar can be disabled/hidden through configuration.
 | `eventDialog.isDisabled`  |                        boolean                        | Prevent the event dialog from showing at all |
 |  `eventDialog.isCustom`   |                        boolean                        |   Enable customization of the event dialog   |
 
+## Fixed mode menu
+
+If you prefer to view the modes menu options at all times, enabling you to choose day, week or month with a single click, set the `showModesAsHorizontalMenu` to true in the config file.
+
 ## Date picker
 
 ### Usage

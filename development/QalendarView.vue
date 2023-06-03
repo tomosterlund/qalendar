@@ -152,7 +152,8 @@ export default defineComponent({
         },
         month: {
           showTrailingAndLeadingDates: false,
-        }
+        },
+        showModesAsHorizontalMenu: false,
       } as configInterface,
       events: [] as eventInterface[],
 

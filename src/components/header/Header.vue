@@ -30,39 +30,63 @@
         @updated="handlePeriodChange"
       />
 
+      <!-- mode menu as horizontal group -->
       <div
-        v-if="!onlyDayModeIsEnabled"
+        v-if="showModesAsHorizontalMenu"
         class="calendar-header__mode-picker"
       >
-        <div
-          class="calendar-header__mode-value"
-          @click="showModePicker = true"
+        <template
+          v-for="mode in modeOptions"
+          :key="mode"
         >
-          {{ modeName }}
-        </div>
-
-        <div
-          v-if="showModePicker"
-          class="calendar-header__mode-options"
-          @mouseleave="showModePicker = false"
-        >
-          <template
-            v-for="mode in modeOptions"
-            :key="mode"
+          <div
+            class="calendar-header__mode-value"
+            @click="$emit('change-mode', mode)"
           >
-            <div
-              v-if="
-                !config.disableModes || !config.disableModes.includes(mode)
-              "
-              class="calendar-header__mode-option"
-              :class="'is-' + mode + '-mode'"
-              @click="$emit('change-mode', mode)"
+            {{ getLanguage(languageKeys[mode], time.CALENDAR_LOCALE) }}
+          </div>
+        </template>
+      </div>
+
+      <!-- mode menu as dropdown menu -->
+      <div
+        v-else
+      >
+        <div
+          v-if="!onlyDayModeIsEnabled"
+          class="calendar-header__mode-picker"
+        >
+          <div
+            class="calendar-header__mode-value"
+            @click="showModePicker = true"
+          >
+            {{ modeName }}
+          </div>
+
+          <div
+            v-if="showModePicker"
+            class="calendar-header__mode-options"
+            @mouseleave="showModePicker = false"
+          >
+            <template
+              v-for="mode in modeOptions"
+              :key="mode"
             >
-              {{ getLanguage(languageKeys[mode], time.CALENDAR_LOCALE) }}
-            </div>
-          </template>
+              <div
+                v-if="
+                  !config.disableModes || !config.disableModes.includes(mode)
+                "
+                class="calendar-header__mode-option"
+                :class="'is-' + mode + '-mode'"
+                @click="$emit('change-mode', mode)"
+              >
+                {{ getLanguage(languageKeys[mode], time.CALENDAR_LOCALE) }}
+              </div>
+            </template>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -125,6 +149,7 @@ export default defineComponent({
       },
       currentPeriod: this.period,
       showModePicker: false,
+      showModesAsHorizontalMenu: this.config.showModesAsHorizontalMenu,
     };
   },
 
@@ -272,6 +297,10 @@ export default defineComponent({
       display: flex;
       align-items: center;
       user-select: none;
+    }
+
+    .calendar-header__mode-value:hover {
+      background-color: lightgrey;
     }
 
     .calendar-header__mode-options {
