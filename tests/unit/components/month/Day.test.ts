@@ -1,19 +1,20 @@
 import { mount } from "@vue/test-utils";
-import { describe, test, expect } from "vitest";
+import { describe, expect, test } from "vitest";
 import Day from "../../../../src/components/month/Day.vue";
-import Time from "../../../../src/helpers/Time";
-import {mountComponent} from "../../../vitest-setup";
+import Time, { WEEK_START_DAY } from "../../../../src/helpers/Time";
+import { mountComponent } from "../../../vitest-setup";
+
 const day = mountComponent(mount, Day)
 
 describe("Day.vue", () => {
   const propsForAllTests = {
     dayInfo: { daysTotalN: 7, thisDayIndex: 1 },
     config: {},
-    time: new Time("sunday", "en-US"),
+    time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
     mode: 'week',
   }
 
-  let wrapper = day({
+  const wrapper = day({
     props: {
       day: {
         events: [
@@ -62,17 +63,4 @@ describe("Day.vue", () => {
   //   await dayEvent.trigger("click");
   //   expect(wrapper.emitted("day-was-clicked")).toBeFalsy();
   // })
-
-  test("Displaying the day name, if the isFirstWeek-prop === true", () => {
-    wrapper = day({
-      props: {
-        day: { events: [], dayName: "Mon", dateTimeString: "2022-05-23 16:38" },
-        isFirstWeek: true,
-        ...propsForAllTests
-      },
-    });
-
-    const dayName = wrapper.find(".calendar-month__day-name");
-    expect(dayName.text()).toContain("Mon");
-  });
 });

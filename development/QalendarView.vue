@@ -160,9 +160,8 @@ export default defineComponent({
         },
         month: {
           showTrailingAndLeadingDates: false,
-          showEventsOnMobileView:true,
-          agendaHeight:'500px',
-          selectedDayColor:'rgb(180 180 180)'
+          showEventsOnMobileView: true,
+          selectedDayColor: 'rgb(180 180 180)'
         }
       } as configInterface,
       events: [] as eventInterface[],
@@ -235,7 +234,7 @@ export default defineComponent({
   main {
     width: 1400px;
     max-width: 100%;
-    height: 900px;
+    height: 800px;
     max-height: calc(100vh - 20px);
   }
 }
@@ -249,6 +248,7 @@ body {
 
   main {
     width: 100%;
+    height: 600px;
   }
 }
 

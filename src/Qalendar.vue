@@ -176,7 +176,6 @@ export default defineComponent({
   computed:{
     enhancedConfig(){
       return {...this.config,isSmall:this.isSmall} as configInterface
-
     }
   },
 
@@ -336,20 +335,8 @@ export default defineComponent({
   width: 100%;
   max-width: 100vw;
   height: 100%;
-  min-height: 700px;
   display: flex;
 
-  .qalendar-is-small & {
-    height: auto;
-    max-height: auto;
-    display: block;
-    overflow-y: hidden;
-  }
-
-
-  .calendar-root.qalendar-is-small {
-      display: block;
-    }
   .calendar-root {
     flex: 1;
     border: var(--qalendar-border-gray-thin);

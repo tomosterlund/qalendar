@@ -74,13 +74,10 @@ export interface configInterface {
   }
   showCurrentTime?: boolean;
 
-  //specific settings for month view
   month?:{
-    //Hide the days of the next month and previous month in calendar to enhance the appearance
-    showTrailingAndLeadingDates?:boolean,
-    showAgenda?:boolean, // weither the   agenda will show on mobile view on not,
-    agendaHeight?: "500px", // height of agenda part on mobile view
-    showEventsOnMobileView?:boolean,
+    // Hide the days of the next month and previous month in calendar to enhance the appearance
+    showTrailingAndLeadingDates?: boolean,
+    showEventsOnMobileView?: boolean,
     selectedDayColor?: string,
   }
 }

@@ -20,8 +20,6 @@
       {{ day.dateTimeString.substring(8, 10).startsWith('0')?day.dateTimeString.substring(9, 10): day.dateTimeString.substring(8, 10) }}
     </span>
 
-
-
     <div class="calendar-month_events">
       <template
         v-for="(calendarEvent, index) in day.events"
@@ -97,7 +95,6 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-
   },
 
   emits: [
@@ -121,8 +118,9 @@ export default defineComponent({
     hideLeadingAndTrailingDate() {
       return this.day.isTrailingOrLeadingDate === true && this.config.month?.showTrailingAndLeadingDates === false
     },
+
     selectedDayColor (){
-      if(this.config?.month?.selectedDayColor!=null){
+      if(this.config?.month?.selectedDayColor != null) {
         return this.config.month.selectedDayColor
       }
       return 'var(--qalendar-light-gray)'
@@ -203,15 +201,13 @@ export default defineComponent({
   border-bottom: var(--qalendar-border-gray-thin);
 }
 
-
-
 .calendar-month__weekday {
-    @include day-base;
+  @include day-base;
 
-    overflow: hidden;
-    transition: background-color 0.2s ease-in-out;
+  overflow: hidden;
+  transition: background-color 0.2s ease-in-out;
 
-    &.is-droppable {
+  &.is-droppable {
     background-color: var(--qalendar-light-gray);
   }
 
@@ -219,8 +215,11 @@ export default defineComponent({
     border-right: 0;
   }
 
-  &.selected{
-    background-color: v-bind(selectedDayColor) ;
+  &.selected {
+
+     .qalendar-is-small & {
+       background-color: v-bind(selectedDayColor);
+     }
   }
 
   .qalendar-is-small & {
@@ -231,10 +230,6 @@ export default defineComponent({
     justify-content: space-around;
   }
 
-
-
-
-  .calendar-month__day-name,
   .calendar-month__day-date {
     font-size: var(--qalendar-font-xs);
     color: var(--qalendar-gray-quite-dark);
@@ -242,22 +237,25 @@ export default defineComponent({
     &:first-child {
       margin-top: 6px;
     }
-
   }
-  .calendar-month_events{
+
+  .calendar-month_events {
+    width: 100%;
+
     .qalendar-is-small & {
       display: flex ;
-      flex-flow:row;
+      flex-flow: row;
       width: 100%;
       justify-content: center;
     }
-    .calendar-month__weekday-more{
+
+    .calendar-month__weekday-more {
+
       .qalendar-is-small & {
         display: none ;
       }
     }
   }
-
 
   .calendar-month__weekday-more {
     font-size: var(--qalendar-font-2xs);
@@ -275,28 +273,6 @@ export default defineComponent({
 
   + .calendar-month__weekday:not(.trailing-or-leading) {
     border-left: var(--qalendar-border-gray-thin);
-  }
-}
-
-.space-reserver,
-.trailing-or-leading {
-  .qalendar-is-small & {
-    display: none;
-  }
-}
-
-.calendar-month__week:first-child {
-  .space-reserver,
-  .calendar-month__weekday {
-    border-top: var(--qalendar-border-gray-thin);
-
-    .qalendar-is-small & {
-      border-top: 0;
-
-      &:first-child {
-        border-top: var(--qalendar-border-gray-thin);
-      }
-    }
   }
 }
 </style>

@@ -5,7 +5,6 @@
   />
   <div
     v-else
-    class="calendar-month__event is-event"
     @click.stop="handleClickOnEvent"
   >
     <slot
@@ -82,7 +81,7 @@ export default defineComponent({
   },
 
   computed: {
-   
+
     isCustomEvent(): boolean {
       if (Array.isArray(this.calendarEvent.isCustom)) {
         return this.calendarEvent.isCustom.includes('month');
@@ -165,7 +164,7 @@ export default defineComponent({
 
     handleClickOnEvent() {
       const eventElement = document.getElementById(this.elementId);
-  
+
       this.$emit('event-was-clicked', {
         clickedEvent: this.calendarEvent,
         eventElement,
@@ -198,7 +197,7 @@ export default defineComponent({
   font-size: var(--qalendar-font-2xs);
   width: calc(100% - #{calc(var(--event-inline-padding) * 2)});
   margin-bottom: 4px;
-  padding: 2px var(--event-inline-padding);
+  padding: 0.25rem var(--event-inline-padding);
   cursor: pointer;
   user-select: none;
 
@@ -239,7 +238,7 @@ export default defineComponent({
 
   .calendar-month__event-time {
     margin-right: 6px;
-  
+
   }
   .calendar-month__event-time, .calendar-month__event-title {
     .qalendar-is-small &{
