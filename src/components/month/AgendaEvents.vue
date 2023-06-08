@@ -4,7 +4,7 @@
       <div class="agenda__header-day-name">
         {{ day.dayName }}
       </div>
-      <div class="agenda__header-day">
+      <div class="agenda__header-date">
         {{ day.dateTimeString.substring(8, 10) }}
       </div>
     </div>
@@ -41,7 +41,7 @@ import AgendaEventTile from './AgendaEventTile.vue'
 import PerfectScrollbar from "perfect-scrollbar";
 
 export default defineComponent({
-  name: 'MonthDayEvents',
+  name: 'AgendaEvents',
 
   components: { AgendaEventTile },
 
@@ -59,7 +59,6 @@ export default defineComponent({
     day: {
       type: Object as PropType<dayInterface>,
       required: true,
-      default: null,
     },
   },
 
@@ -92,7 +91,7 @@ export default defineComponent({
       font-weight: bold;
     }
 
-    .agenda__header-day {
+    .agenda__header-date {
       border-radius: 4px;
       background-color: var(--qalendar-theme-color);
       padding: 5px;

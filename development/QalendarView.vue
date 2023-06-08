@@ -159,7 +159,7 @@ export default defineComponent({
           // isCustom: true,
         },
         month: {
-          showTrailingAndLeadingDates: false,
+          // showTrailingAndLeadingDates: false,
           showEventsOnMobileView: true,
           selectedDayColor: 'rgb(180 180 180)'
         }
