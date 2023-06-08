@@ -55,7 +55,7 @@ export const languageKeys = {
     "ar-YE": "+ المزيد من الأحداث",
   },
   noEvent:{
-    'en-US': 'No Events',
+    'en-US': 'No events',
     'fr-FR': 'Aucun Evènement'
   }
 };

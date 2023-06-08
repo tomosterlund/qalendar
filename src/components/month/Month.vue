@@ -184,6 +184,8 @@ export default defineComponent({
             return this.time.dateStringsHaveEqualDates(event.time.start, dateTimeString)
           });
 
+          // IMPORTANT: we explicitly do NOT separate fullDayEvents from other events here,
+          // since all events are positioned in a similar manner in the month view
           return {
             isTrailingOrLeadingDate: this.time.isTrailingOrLeadingDate(day, month),
             dayName: this.time.getLocalizedNameOfWeekday(day),

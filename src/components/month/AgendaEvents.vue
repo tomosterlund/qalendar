@@ -9,7 +9,10 @@
       </div>
     </div>
     <div class="agenda__content">
-      <div v-if="day.events.length === 0">
+      <div
+        v-if="day.events.length === 0"
+        class="is-empty"
+      >
         {{ getLanguage(languageKeys['noEvent'], time.CALENDAR_LOCALE) }}
       </div>
       <div
@@ -115,6 +118,13 @@ export default defineComponent({
       width: 100%;
       height: auto;
       overflow-y: auto;
+    }
+
+    .is-empty {
+      min-height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }

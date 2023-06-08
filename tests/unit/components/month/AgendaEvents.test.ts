@@ -47,4 +47,18 @@ describe('AgendaEvents', () => {
     const agendaContentEventsList = underTest.find('.agenda__content-events-list');
     expect(agendaContentEventsList.exists()).toBeFalsy();
   });
+
+  it('should display the text "No events" for a day with no events', () => {
+    const componentOptions = JSON.parse(JSON.stringify(defaultComponentOptions));
+    componentOptions.props.day.events = [];
+    const underTest = agendaEvents(componentOptions);
+    const text = underTest.find('.is-empty').text();
+    expect(text).toContain('No events');
+  });
+
+  it('should not find element with class "is-empty" for a day with events', () => {
+    const underTest = agendaEvents(defaultComponentOptions);
+    const isEmpty = underTest.find('.is-empty');
+    expect(isEmpty.exists()).toBeFalsy();
+  });
 });
