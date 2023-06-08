@@ -45,7 +45,7 @@ export const languageKeys = {
     "it-IT": "+ altri eventi",
     "en-US": "+ more events",
     "de-DE": "+ weitere Ereignisse",
-    "sv-SE": "+ fler händelser",
+    "sv-SE": "+ fler event",
     "zh-CN": "列出其他结果",
     "pt-BR": "+ mais eventos",
     "fr-FR": "+ d'autres événements",
@@ -55,7 +55,16 @@ export const languageKeys = {
     "ar-YE": "+ المزيد من الأحداث",
   },
   noEvent:{
+    'it-IT': 'Nessun evento',
     'en-US': 'No events',
-    'fr-FR': 'Aucun Evènement'
-  }
+    'de-DE': 'Keine Ereignisse',
+    'sv-SE': 'Inga event',
+    'zh-CN': '沒有活動',
+    'pt-BR': 'Sem eventos',
+    'fr-FR': 'Aucun Evènement',
+    'th-TH': 'ไม่มีกิจกรรม',
+    'nl-NL': 'Geen evenementen',
+    'ru-RU': 'Нет событий',
+    'ar-YE': 'لا أحداث',
+  },
 };
