@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
-import { describe, test, expect } from "vitest";
+import { describe, expect, test } from "vitest";
 import Month from "../../../../src/components/month/Month.vue";
-import Time from "../../../../src/helpers/Time";
+import Time, { WEEK_START_DAY } from "../../../../src/helpers/Time";
 import { nextTick } from "vue";
 
 describe("Month.vue", () => {
@@ -9,10 +9,11 @@ describe("Month.vue", () => {
     props: {
       eventsProp: [],
 
-      time: new Time("monday", "de-DE"),
+      time: new Time(WEEK_START_DAY.MONDAY, "de-DE"),
       config: {
         month: {
           showTrailingAndLeadingDates: false,
+          isSmall: true,
         }
       },
       period: {
@@ -48,6 +49,7 @@ describe("Month.vue", () => {
 
         time: new Time("monday", "de-DE"),
         config: {
+          isSmall: true,
           month: {
             showTrailingAndLeadingDates: true,
           }
@@ -71,8 +73,9 @@ describe("Month.vue", () => {
       props: {
         eventsProp: [],
 
-        time: new Time("monday", "de-DE"),
+        time: new Time(WEEK_START_DAY.MONDAY, "de-DE"),
         config: {
+          isSmall: true,
         },
         period: {
           start: new Date(2023, 3 - 1, 1),
@@ -87,4 +90,9 @@ describe("Month.vue", () => {
     const trailingAndLeadingDays = wrapper.findAll(".trailing-or-leading");
     expect(trailingAndLeadingDays).toHaveLength(4);
   })
+
+  test('showing AgendaEvents child component upon mounting', async () => {
+    const agendaEvents = wrapper.findComponent({ name: "AgendaEvents" });
+    expect(agendaEvents.exists()).toBe(true);
+  });
 });

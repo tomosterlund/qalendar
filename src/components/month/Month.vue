@@ -168,6 +168,7 @@ export default defineComponent({
       this.month = [];
       this.sortOutFullDayEvents();
       this.setMonth();
+      if (this.config.isSmall) this.setInitialSelectedDay();
     },
 
     setMonth() {
@@ -237,6 +238,13 @@ export default defineComponent({
       this.fullDayEvents = [];
       this.events = newEvents;
       this.initMonth();
+    },
+
+    setInitialSelectedDay() {
+      const selectedDayDateString = this.time.getDateStringFromDate(this.period.selectedDate);
+      this.selectedDay = this.month.flat().find(day => {
+        return this.time.dateStringFrom(day.dateTimeString) === selectedDayDateString;
+      })
     },
   },
 });
