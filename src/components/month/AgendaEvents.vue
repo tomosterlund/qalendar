@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="agenda__content">
-      <div v-if="day.events.length===0">
+      <div v-if="day.events.length === 0">
         {{ getLanguage(languageKeys['noEvent'], time.CALENDAR_LOCALE) }}
       </div>
       <div
@@ -23,7 +23,7 @@
           :config="config"
           :calendar-event="dayEvent"
           :time="time"
-          @click="()=>$emit('event-was-clicked',dayEvent)"
+          @event-was-clicked="$emit('event-was-clicked', $event)"
         />
       </div>
     </div>

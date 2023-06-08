@@ -1,0 +1,73 @@
+import { describe, it, expect } from "vitest";
+import AgendaEventTile from '../../../../src/components/month/AgendaEventTile.vue';
+import { mount } from "@vue/test-utils";
+import { TimeBuilder } from "../../../../src/helpers/Time";
+import { EventBuilder } from "../../../../src/models/Event";
+import { mountComponent } from "../../../vitest-setup";
+
+describe('AgendaEventTile', () => {
+  const timeInstance = new TimeBuilder().build();
+  const config = {}
+  const EXPECTED_EVENT_START = '2024-01-01 10:00';
+  const EXPECTED_EVENT_TITLE = 'Test Event';
+  const EXPECTED_EVENT_WITH = 'Test person';
+  const EXPECTED_EVENT_LOCATION = 'Test location';
+  const event = new EventBuilder({
+    start: EXPECTED_EVENT_START, end: '2024-01-01 11:00'
+  })
+  .withTitle(EXPECTED_EVENT_TITLE)
+  .withWith(EXPECTED_EVENT_WITH)
+  .withLocation(EXPECTED_EVENT_LOCATION)
+  .build();
+  const agendaEventTile = mountComponent(mount, AgendaEventTile)
+  const defaultOptions = { props: {
+    calendarEvent: event,
+    time: timeInstance,
+    config,
+  }}
+
+  it('should display an event title', () => {
+    const underTest = agendaEventTile(defaultOptions);
+    const eventTitle = underTest.find('.agenda__event-title');
+    expect(eventTitle.text()).toBe(EXPECTED_EVENT_TITLE);
+  });
+
+  it('should display the event start time', () => {
+    const underTest = agendaEventTile(defaultOptions);
+    const eventTime = underTest.find('.agenda__event-time');
+    const expectedTime = timeInstance.timeStringFrom(EXPECTED_EVENT_START);
+    expect(eventTime.text()).toContain(expectedTime);
+  });
+
+  it('should display the value of the event\'s "with" property', () => {
+    const underTest = agendaEventTile(defaultOptions);
+    const eventWith = underTest.find('.agenda__event-with');
+    expect(eventWith.text()).toContain(EXPECTED_EVENT_WITH);
+  });
+
+  it('should display the value of the event\'s "location" property', () => {
+    const underTest = agendaEventTile(defaultOptions);
+    const eventLocation = underTest.find('.agenda__event-location');
+    expect(eventLocation.text()).toContain(EXPECTED_EVENT_LOCATION);
+  });
+
+  it('should emit event-was-clicked when clicked', async () => {
+    const underTest = agendaEventTile(defaultOptions);
+    const eventTile = underTest.find('.agenda__event');
+    await eventTile.trigger('click');
+    expect(underTest.emitted()).toHaveProperty('event-was-clicked');
+  });
+
+  it('should not display a time if the event is a full-day event', () => {
+    const event = new EventBuilder({
+      start: '2024-01-01', end: '2024-01-01'
+    }).build()
+    const underTest = agendaEventTile({ props: {
+      calendarEvent: event,
+      time: timeInstance,
+      config,
+    }});
+    const eventTime = underTest.find('.agenda__event-time');
+    expect(eventTime.exists()).toBe(false);
+  });
+});

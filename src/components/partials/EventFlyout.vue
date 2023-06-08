@@ -461,11 +461,5 @@ export default defineComponent({
     font-size: var(--qalendar-font-s);
     margin-bottom: 0.75em;
   }
-
-  .qalendar-is-small & {
-     display: none;
-    }
-
-
 }
 </style>

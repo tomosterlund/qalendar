@@ -71,7 +71,6 @@
         :time="time"
         :config="enhancedConfig"
         :period="period"
-        :is-small="isSmall"
         @event-was-clicked="$emit('event-was-clicked', $event)"
         @day-was-clicked="$emit('day-was-clicked', $event)"
         @event-was-dragged="handleEventWasUpdated($event, 'dragged')"
@@ -174,8 +173,8 @@ export default defineComponent({
     };
   },
   computed:{
-    enhancedConfig(){
-      return {...this.config,isSmall:this.isSmall} as configInterface
+    enhancedConfig(): configInterface {
+      return { ...this.config, isSmall: this.isSmall }
     }
   },
 
@@ -284,7 +283,6 @@ export default defineComponent({
       if (!calendarRoot) return;
 
       this.isSmall = calendarRoot.clientWidth < smallCalendarBreakpoint;
-      this.config.isSmall =this.isSmall
 
       if (this.isSmall && !['day', 'month'].includes(this.mode)) {
         this.mode = 'day';

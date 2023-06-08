@@ -108,10 +108,6 @@ export default defineComponent({
       type: Object as PropType<configInterface>,
       required: true,
     },
-    isSmall: {
-      type: Boolean,
-      required:true
-    },
     time: {
       type: Object as PropType<Time>,
       required: true,

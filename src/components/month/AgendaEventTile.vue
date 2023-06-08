@@ -1,7 +1,5 @@
 <template>
   <div
-    name="AgendaEvent"
-    :event-data="calendarEvent"
     class="agenda__event is-event"
     @click.prevent="handleClickOnEvent"
   >
@@ -16,12 +14,18 @@
     <span class="agenda__event-title">
       {{ calendarEvent.title }}
     </span>
-    <span v-if="calendarEvent.with">
+    <span
+      v-if="calendarEvent.with"
+      class="agenda__event-with"
+    >
       <FontAwesomeIcon :icon="icons.user" />
       {{ calendarEvent.with }}
     </span>
 
-    <span v-if="calendarEvent.location">
+    <span
+      v-if="calendarEvent.location"
+      class="agenda__event-location"
+    >
       <FontAwesomeIcon :icon="icons.location" />
       {{ calendarEvent.location }}
     </span>
@@ -35,7 +39,6 @@ import Time from '../../helpers/Time';
 import type { eventInterface } from '../../typings/interfaces/event.interface';
 import { DATE_TIME_STRING_PATTERN, EVENT_COLORS } from '../../constants';
 import type { configInterface } from '../../typings/config.interface';
-import type { dayInterface } from '../../typings/interfaces/day.interface';
 import {
   faClock,
   faComment,
@@ -64,11 +67,9 @@ export default defineComponent({
       type: Object as PropType<configInterface>,
       required: true,
     },
-    day: {
-      type: Object as PropType<dayInterface>,
-      required: true,
-    },
   },
+
+  emits: ['event-was-clicked'],
 
   data() {
     return {
@@ -96,11 +97,7 @@ export default defineComponent({
     },
 
     elementId() {
-      return (
-        this.eventIdPrefix +
-        this.calendarEvent.id +
-        this.day.dateTimeString.substring(0, 10)
-      );
+      return this.eventIdPrefix + this.calendarEvent.id;
     },
   },
 
@@ -110,7 +107,6 @@ export default defineComponent({
 
   methods: {
     setColors() {
-      // First, if the event has a customColorScheme, and the name of that
       if (
         this.calendarEvent?.colorScheme &&
         this.config.style?.colorSchemes &&
@@ -137,16 +133,6 @@ export default defineComponent({
         clickedEvent: this.calendarEvent,
         eventElement,
       });
-    },
-
-    handleDragStart(dragEvent: DragEvent) {
-      if (!dragEvent || !dragEvent.dataTransfer) return;
-
-      dragEvent.dataTransfer.effectAllowed = 'move';
-      dragEvent.dataTransfer.setData(
-        'json',
-        JSON.stringify(this.calendarEvent)
-      );
     },
   },
 });
