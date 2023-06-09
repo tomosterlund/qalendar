@@ -3,41 +3,46 @@
     v-if="config.isSmall"
     class="calendar-month__event"
   />
-  <div
-    v-else
-    @click.stop="handleClickOnEvent"
-  >
-    <slot
+
+  <template v-else>
+    <div
+      v-if="isCustomEvent"
       :id="elementId"
-      name="monthEvent"
-      :event-data="calendarEvent"
-      style="{
-      cursor: pointer;
-    }"
+      class="is-event"
+      :class="{ 'is-draggable': elementDraggableAttribute }"
+      :draggable="elementDraggableAttribute"
+      @dragstart="handleDragStart"
+      @click="handleClickOnEvent"
     >
-      <div
-        :id="elementId"
-        class="calendar-month__event is-event"
-        :class="{ 'is-draggable': elementDraggableAttribute }"
-        :draggable="elementDraggableAttribute"
-        @dragstart="handleDragStart"
-        @click.stop="handleClickOnEvent"
+      <slot
+        name="monthEvent"
+        :event-data="calendarEvent"
+      />
+    </div>
+
+    <div
+      v-else
+      :id="elementId"
+      class="calendar-month__event is-event"
+      :class="{ 'is-draggable': elementDraggableAttribute }"
+      :draggable="elementDraggableAttribute"
+      @dragstart="handleDragStart"
+      @click="handleClickOnEvent"
+    >
+      <span class="calendar-month__event-color" />
+
+      <span
+        v-if="eventTimeStart && !calendarEvent.originalEvent"
+        class="calendar-month__event-time"
       >
-        <span class="calendar-month__event-color" />
+        {{ eventTimeStart }}
+      </span>
 
-        <span
-          v-if="eventTimeStart && !calendarEvent.originalEvent"
-          class="calendar-month__event-time"
-        >
-          {{ eventTimeStart }}
-        </span>
-
-        <span class="calendar-month__event-title">
-          {{ calendarEvent.title }}
-        </span>
-      </div>
-    </slot>
-  </div>
+      <span class="calendar-month__event-title">
+        {{ calendarEvent.title }}
+      </span>
+    </div>
+  </template>
 </template>
 
 <script lang="ts">
@@ -81,7 +86,6 @@ export default defineComponent({
   },
 
   computed: {
-
     isCustomEvent(): boolean {
       if (Array.isArray(this.calendarEvent.isCustom)) {
         return this.calendarEvent.isCustom.includes('month');
@@ -241,7 +245,8 @@ export default defineComponent({
 
   }
   .calendar-month__event-time, .calendar-month__event-title {
-    .qalendar-is-small &{
+
+    .qalendar-is-small & {
       display: none;
     }
   }

@@ -29,6 +29,7 @@
           @event-was-clicked="handleClickOnEvent"
           @event-was-dragged="handleEventWasDragged"
           @day-was-clicked="onDayWasClicked"
+          @day-was-selected="selectedDay = $event"
           @updated-period="$emit('updated-period', $event)"
         >
           <template #monthEvent="{eventData}">
@@ -150,7 +151,6 @@ export default defineComponent({
 
   methods: {
     onDayWasClicked(day: dayInterface) {
-      this.selectedDay = day
       this.$emit('day-was-clicked', day)
     },
 
