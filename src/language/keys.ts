@@ -54,7 +54,7 @@ export const languageKeys = {
     "ru-RU": "+ ещё события",
     "ar-YE": "+ المزيد من الأحداث",
   },
-  noEvent:{
+  noEvent: {
     'it-IT': 'Nessun evento',
     'en-US': 'No events',
     'de-DE': 'Keine Ereignisse',

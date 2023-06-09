@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# npm run lint:js
-# npm run lint:scss
-# git add .
-# vitest run
-# npm run test:e2e:ci
-# npm run build
+ npm run lint:js
+ npm run lint:scss
+ git add .
+ vitest run
+ npm run test:e2e:ci
+ npm run build

@@ -14,13 +14,6 @@ interface eventWithJSDatesInterface extends eventInterface {
   }
 }
 
-interface eventWithJSDatesInterface extends eventInterface {
-  timeJS: {
-    start: Date,
-    end: Date,
-  }
-}
-
 export default class EventPosition extends Time {
   /**
    * Yields a full calendar week, with all full-day events positioned in it

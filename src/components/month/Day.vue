@@ -5,8 +5,8 @@
     class="calendar-month__weekday"
     :class="{
       'is-droppable': canBeDropped,
-      'trailing-or-leading': day.isTrailingOrLeadingDate ,
-      'selected':selected
+      'trailing-or-leading': day.isTrailingOrLeadingDate,
+      'selected': selected
     }"
     @click="emitDayWasClicked"
     @dragleave="handleDragLeave"
@@ -17,7 +17,7 @@
     <span
       class="calendar-month__day-date"
     >
-      {{ day.dateTimeString.substring(8, 10).startsWith('0')?day.dateTimeString.substring(9, 10): day.dateTimeString.substring(8, 10) }}
+      {{ day.dateTimeString.substring(8, 10).startsWith('0') ? day.dateTimeString.substring(9, 10) : day.dateTimeString.substring(8, 10) }}
     </span>
 
     <div class="calendar-month_events">
@@ -120,8 +120,8 @@ export default defineComponent({
       return this.day.isTrailingOrLeadingDate === true && this.config.month?.showTrailingAndLeadingDates === false
     },
 
-    selectedDayColor (){
-      if(this.config?.month?.selectedDayColor != null) {
+    selectedDayColor() {
+      if (this.config?.month?.selectedDayColor != null) {
         return this.config.month.selectedDayColor
       }
       return 'var(--qalendar-light-gray)'

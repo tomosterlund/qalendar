@@ -169,9 +169,5 @@ export default defineComponent({
       cursor: not-allowed;
     }
   }
-
-  @include mixins.hover {
-    background-color: var(--qalendar-light-gray);
-  }
 }
 </style>
