@@ -82,7 +82,7 @@ export default defineComponent({
 .agenda__wrapper {
   display: flex;
   flex-flow: row;
-  padding: 10px 5px 0 5px;
+  padding: 10px 5px 0;
 
   .agenda__header {
     padding-right: 10px;

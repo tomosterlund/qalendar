@@ -218,7 +218,6 @@ export default defineComponent({
   }
 
   &.selected {
-
      .qalendar-is-small & {
        background-color: v-bind(selectedDayColor);
      }
@@ -241,6 +240,14 @@ export default defineComponent({
     }
   }
 
+  .calendar-month__weekday-more {
+    font-size: var(--qalendar-font-2xs);
+    width: 100%;
+    padding-left: 4px;
+    color: var(--qalendar-gray-quite-dark);
+    cursor: pointer;
+  }
+
   .calendar-month_events {
     width: 100%;
 
@@ -252,19 +259,10 @@ export default defineComponent({
     }
 
     .calendar-month__weekday-more {
-
       .qalendar-is-small & {
         display: none ;
       }
     }
-  }
-
-  .calendar-month__weekday-more {
-    font-size: var(--qalendar-font-2xs);
-    width: 100%;
-    padding-left: 4px;
-    color: var(--qalendar-gray-quite-dark);
-    cursor: pointer;
   }
 }
 

@@ -93,7 +93,7 @@ import {type dayInterface} from '../../typings/interfaces/day.interface';
 import WeekTimeline from './WeekTimeline.vue';
 import Day from './Day.vue';
 import EventFlyout from '../partials/EventFlyout.vue';
-import {type EVENT_TYPE, type eventInterface} from '../../typings/interfaces/event.interface';
+import { type eventInterface } from '../../typings/interfaces/event.interface';
 import Time, {WEEK_START_DAY} from '../../helpers/Time';
 import EventPosition from '../../helpers/EventPosition';
 import {type fullDayEventsWeek} from '../../typings/interfaces/full-day-events-week.type';

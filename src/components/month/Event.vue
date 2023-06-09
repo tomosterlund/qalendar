@@ -205,6 +205,23 @@ export default defineComponent({
   cursor: pointer;
   user-select: none;
 
+  .calendar-month__event-time {
+    margin-right: 6px;
+  }
+
+  .calendar-month__event-time,
+  .calendar-month__event-title,
+  .calendar-month__event-color {
+    flex-shrink: 0;
+  }
+
+  .calendar-month__event-time,
+  .calendar-month__event-title {
+    .qalendar-is-small & {
+      display: none;
+    }
+  }
+
   .qalendar-is-small & {
     background-color: v-bind(eventBackgroundColor);
     width: 4px;
@@ -238,27 +255,6 @@ export default defineComponent({
     height: 6px;
     border-radius: 50%;
     margin-right: 4px;
-  }
-
-  .calendar-month__event-time {
-    margin-right: 6px;
-
-  }
-  .calendar-month__event-time, .calendar-month__event-title {
-
-    .qalendar-is-small & {
-      display: none;
-    }
-  }
-
-  .calendar-month__event-time,
-  .calendar-month__event-title,
-  .calendar-month__event-color {
-    flex-shrink: 0;
-  }
-
-  .calendar-month__event-title {
-    // font-weight: 600;
   }
 }
 </style>

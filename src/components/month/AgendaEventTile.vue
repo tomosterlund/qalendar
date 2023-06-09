@@ -143,6 +143,7 @@ export default defineComponent({
 
 .agenda__event {
   --event-inline-padding: 4px;
+
   background-color: v-bind(eventBackgroundColor);
   display: flex;
   flex-flow: column;
