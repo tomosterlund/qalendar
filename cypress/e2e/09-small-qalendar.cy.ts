@@ -7,6 +7,12 @@ const {
   getModePickerMonthOption,
   getModePickerDayOption,
   getTrailingOrLeadingDays,
+  getSelectedDayInAgenda,
+  clickChevronRight,
+  getElementWithId,
+  getFlyoutTime,
+  closeEventFlyout,
+  getAgendaEvent,
 } = PageObject
 
 describe('SmallQalendar', () => {
@@ -14,15 +20,40 @@ describe('SmallQalendar', () => {
     cy.visit('/#/cypress/small-qalendar')
   })
 
-  it('Should only display mode options for day and month', () => {
+  it('should only display mode options for day and month', () => {
     getModePicker().click()
     getModePickerMonthOption().should('exist')
     getModePickerDayOption().should('exist')
     getModePickerWeekOption().should('not.exist')
   })
 
-  it('Should display leading and trailing days by default in month mode', () => {
+  it('should display leading and trailing days by default in month mode', () => {
     setMonthMode()
     getTrailingOrLeadingDays().should('be.visible')
+  })
+
+  it('should set selected date by default in month mode and display active style for it', () => {
+    setMonthMode()
+    getSelectedDayInAgenda().contains('27')
+    clickChevronRight()
+    getSelectedDayInAgenda().contains('1')
+  })
+
+  it('should open event flyout when clicking on events in agenda', () => {
+    setMonthMode()
+
+    getElementWithId('agenda__event-371d8f3228ac').click()
+    getFlyoutTime().contains('November 24, 2022 - November 29, 2022')
+    closeEventFlyout()
+
+    cy.wait(1000)
+
+    getElementWithId('agenda__event-3ec6a094b24e').click()
+    getFlyoutTime().contains('November 27, 2022 ⋅ 12:25 AM - 1:55 AM')
+  })
+
+  it('should display all all events no matter if timed, full-day or hybrid', () => {
+    setMonthMode()
+    getAgendaEvent().should('have.length', 13)
   })
 })

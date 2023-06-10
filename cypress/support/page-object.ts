@@ -149,8 +149,12 @@ export default class PageObject {
     cy.get('.flyout-input').should('be.visible')
   }
 
-  static closeEventFlyout() {
+  static closeEventFlyoutInCustomEvent() {
     cy.get('.close-flyout').click()
+  }
+
+  static closeEventFlyout() {
+    cy.get('.event-flyout__menu-close').click()
   }
 
   static assertMonthEventExistsWithId(id: string, isCustom = false) {
@@ -219,5 +223,13 @@ export default class PageObject {
   static getWeekTimelineEventNumberX(x: number) {
     return cy
     .get(`#week-timeline__event-id-${x}`)
+  }
+
+  static getSelectedDayInAgenda() {
+    return cy.get('.calendar-month__weekday.selected')
+  }
+
+  static getAgendaEvent() {
+    return cy.get('.is-event')
   }
 }

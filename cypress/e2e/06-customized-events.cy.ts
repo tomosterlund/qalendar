@@ -3,7 +3,7 @@ import PageObject from "../support/page-object";
 const {
   getFirstEventInWeek,
   assertInputInCustomFlyoutIsVisible,
-  closeEventFlyout,
+  closeEventFlyoutInCustomEvent,
   getEventFlyout,
   setMonthMode,
   assertMonthEventExistsWithId,
@@ -22,7 +22,7 @@ describe('CustomizedEvents.vue', () => {
   it('Opens a customized flyout from a custom event and closes it again', () => {
     getFirstEventInWeek().click()
     assertInputInCustomFlyoutIsVisible()
-    closeEventFlyout()
+    closeEventFlyoutInCustomEvent()
     getEventFlyout().should('not.be.visible')
   });
 
