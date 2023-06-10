@@ -73,9 +73,14 @@ export interface configInterface {
   }
   showCurrentTime?: boolean;
 
-  //specific settings for month view
   month?:{
-    //Hide the days of the next month and previous month in calendar to enhance the appearance
-    showTrailingAndLeadingDates?:boolean
+    // Hide the days of the next month and previous month in calendar to enhance the appearance
+    showTrailingAndLeadingDates?: boolean,
+    showEventsOnMobileView?: boolean,
   }
+
+  // The isSmall property is an internal API attached to the config object, and usage of this
+  // from an implementer is strongly discouraged
+  // TODO: create internal config interface and replace all usages in components with that
+  isSmall?: boolean;
 }

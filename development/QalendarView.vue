@@ -24,6 +24,9 @@
         @event-was-dragged="handleEventWasDragged"
         @interval-was-clicked="handleIntervalWasClicked"
       >
+        <template #monthEvent="{eventData}">
+          {{ eventData.title }}
+        </template>
         <template #customCurrentTime>
           <div
             :style="{
@@ -45,14 +48,18 @@
             />
           </div>
         </template>
-        <template v-slot:weekDayEvent="eventProps">
+
+        <template #weekDayEvent="eventProps">
           <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
-                    {{ eventProps.eventData.title }}
+            {{ eventProps.eventData.title }}
 
             <div>
-              <input type="checkbox" />
+              <input
+                id="checkox-select-time"
+                type="checkbox"
+              >
 
-              <label for="checkbox">
+              <label for="checkox-select-time">
                 Select time slot
               </label>
             </div>
@@ -85,7 +92,7 @@
     <DevToolbar
       @selected-locale="config.locale = $event"
       @selected-layout="layout = $event"
-      @selected-n-days="config.week.nDays = $event"
+      @selected-n-days="config.week!.nDays = $event"
     />
   </div>
 </template>
@@ -117,9 +124,9 @@ export default defineComponent({
         week: {
           startsOn: WEEK_START_DAY.MONDAY,
           nDays: 7,
-          // scrollToHour: 11,
+          scrollToHour: 8,
         },
-        locale: 'de-DE',
+        locale: 'en-US',
         style: {
           fontFamily: `'Nunito', 'sans-serif', 'Verdana`,
           colorSchemes: {
@@ -133,7 +140,7 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: 'week',
+        defaultMode: 'month',
         showCurrentTime: true,
         isSilent: true,
         dayIntervals: {
@@ -148,9 +155,10 @@ export default defineComponent({
           isDisabled: false,
           // isCustom: true,
         },
-        // month: {
-        //   showTrailingAndLeadingDates: false,
-        // }
+        month: {
+          // showTrailingAndLeadingDates: false,
+          showEventsOnMobileView: true,
+        }
       } as configInterface,
       events: [] as eventInterface[],
 
@@ -168,7 +176,7 @@ export default defineComponent({
     setTimeout(() => {
       this.events = seededEvents.map((e) => {
         // @ts-ignore
-        // e.isCustom = true;
+        e.isCustom = false;
         e.isEditable = true;
 
         return e;
@@ -222,7 +230,7 @@ export default defineComponent({
   main {
     width: 1400px;
     max-width: 100%;
-    height: 900px;
+    height: 800px;
     max-height: calc(100vh - 20px);
   }
 }
@@ -236,6 +244,7 @@ body {
 
   main {
     width: 100%;
+    height: 600px;
   }
 }
 

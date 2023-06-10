@@ -3,57 +3,52 @@
     v-if="!hideLeadingAndTrailingDate"
     :id="'day-' + time.dateStringFrom(day.dateTimeString)"
     class="calendar-month__weekday"
-    :class="{ 'is-droppable': canBeDropped, 'trailing-or-leading': day.isTrailingOrLeadingDate }"
-    @click.self="emitDayWasClicked"
+    :class="{
+      'is-droppable': canBeDropped,
+      'trailing-or-leading': day.isTrailingOrLeadingDate,
+      'is-selected': isSelected
+    }"
+    @click="emitDayWasClicked"
     @dragleave="handleDragLeave"
     @dragover="handleDragOver"
     @drop="handleDrop"
     @dragend="handleDragEnd"
   >
     <span
-      v-if="isFirstWeek"
-      class="calendar-month__day-name"
-      @click="emitDayWasClicked"
-    >
-      {{ day.dayName }}
-    </span>
-
-    <span
       class="calendar-month__day-date"
-      @click="emitDayWasClicked"
     >
-      {{ day.dateTimeString.substring(8, 10) }}
+      {{ day.dateTimeString.substring(8, 10).startsWith('0') ? day.dateTimeString.substring(9, 10) : day.dateTimeString.substring(8, 10) }}
     </span>
 
-    <div
-      v-for="(calendarEvent, index) in day.events"
-      :key="index"
-      class="calendar-month__event-wrapper"
-    >
-      <Event
-        v-if="index < 3"
-        :key="calendarEvent.id"
-        :calendar-event="calendarEvent"
-        :config="config"
-        :time="time"
-        :day="day"
-        @event-was-clicked="$emit('event-was-clicked', $event)"
+    <div class="calendar-month_events">
+      <template
+        v-for="(calendarEvent, index) in day.events"
+        :key="index"
       >
-        <template #monthEvent="p">
-          <slot
-            :event-data="p.eventData"
-            name="monthEvent"
-          />
-        </template>
-      </Event>
-    </div>
-
-    <div
-      v-if="day.events.length >= 4"
-      class="calendar-month__weekday-more"
-      @click="getMoreEvents"
-    >
-      {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
+        <Event
+          v-if="index < 3"
+          :key="calendarEvent.id"
+          :calendar-event="calendarEvent"
+          :config="config"
+          :time="time"
+          :day="day"
+          @event-was-clicked="$emit('event-was-clicked', $event)"
+        >
+          <template #monthEvent="p">
+            <slot
+              :event-data="p.eventData"
+              name="monthEvent"
+            />
+          </template>
+        </Event>
+      </template>
+      <div
+        v-if="day.events.length >= 4"
+        class="calendar-month__weekday-more"
+        @click="getMoreEvents"
+      >
+        {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
+      </div>
     </div>
   </div>
 
@@ -96,7 +91,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-
+    isSelected: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   emits: [
@@ -104,6 +102,7 @@ export default defineComponent({
     'event-was-dragged',
     'updated-period',
     'day-was-clicked',
+    'day-was-selected',
   ],
 
   data() {
@@ -119,7 +118,7 @@ export default defineComponent({
 
     hideLeadingAndTrailingDate() {
       return this.day.isTrailingOrLeadingDate === true && this.config.month?.showTrailingAndLeadingDates === false
-    }
+    },
   },
 
   methods: {
@@ -180,6 +179,7 @@ export default defineComponent({
 
     emitDayWasClicked() {
       this.$emit('day-was-clicked', this.time.dateStringFrom(this.day.dateTimeString));
+      if (this.config.isSmall) this.$emit('day-was-selected', this.day);
     },
   },
 });
@@ -197,12 +197,12 @@ export default defineComponent({
 }
 
 .calendar-month__weekday {
-    @include day-base;
+  @include day-base;
 
-    overflow: hidden;
-    transition: background-color 0.2s ease-in-out;
+  overflow: hidden;
+  transition: background-color 0.2s ease-in-out;
 
-    &.is-droppable {
+  &.is-droppable {
     background-color: var(--qalendar-light-gray);
   }
 
@@ -210,13 +210,23 @@ export default defineComponent({
     border-right: 0;
   }
 
-  .qalendar-is-small & {
-    height: auto;
-    min-height: 7rem;
-    border-right: 0;
+  &.is-selected {
+     .qalendar-is-small & {
+       -webkit-box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
+       -moz-box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
+       box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
+       border-radius: 5px;
+     }
   }
 
-  .calendar-month__day-name,
+  .qalendar-is-small & {
+    height: 45px;
+    width: 45px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+  }
+
   .calendar-month__day-date {
     font-size: var(--qalendar-font-xs);
     color: var(--qalendar-gray-quite-dark);
@@ -226,16 +236,28 @@ export default defineComponent({
     }
   }
 
-  .calendar-month__event-wrapper {
-    width: 100%;
-  }
-
   .calendar-month__weekday-more {
     font-size: var(--qalendar-font-2xs);
     width: 100%;
     padding-left: 4px;
     color: var(--qalendar-gray-quite-dark);
     cursor: pointer;
+  }
+
+  .calendar-month_events {
+    width: 100%;
+
+    .qalendar-is-small & {
+      display: flex;
+      flex-flow: row;
+      justify-content: center;
+    }
+
+    .calendar-month__weekday-more {
+      .qalendar-is-small & {
+        display: none;
+      }
+    }
   }
 }
 
@@ -246,28 +268,6 @@ export default defineComponent({
 
   + .calendar-month__weekday:not(.trailing-or-leading) {
     border-left: var(--qalendar-border-gray-thin);
-  }
-}
-
-.space-reserver,
-.trailing-or-leading {
-  .qalendar-is-small & {
-    display: none;
-  }
-}
-
-.calendar-month__week:first-child {
-  .space-reserver,
-  .calendar-month__weekday {
-    border-top: var(--qalendar-border-gray-thin);
-
-    .qalendar-is-small & {
-      border-top: 0;
-
-      &:first-child {
-        border-top: var(--qalendar-border-gray-thin);
-      }
-    }
   }
 }
 </style>

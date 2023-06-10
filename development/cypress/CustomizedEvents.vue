@@ -21,7 +21,9 @@
         </template>
 
         <template #monthEvent="monthEventProps">
-          {{ monthEventProps.eventData.title }}
+          <div id="custom-month-event">
+            {{ monthEventProps.eventData.title }}
+          </div>
         </template>
 
         <template #eventDialog="props">

@@ -880,4 +880,20 @@ describe("Time.ts", () => {
     expect(updatedDate.getSeconds()).toEqual(expectedSeconds);
     expect(updatedDate.getMilliseconds()).toEqual(expectedMilliseconds);
   })
+
+  test('should get localized a time string for US-English', () => {
+    const actualTimeString = timeM.getLocalizedTime('2022-02-16 01:25');
+    expect(actualTimeString).toEqual('1:25 AM');
+  })
+
+  test('should get a localized time string for German', () => {
+    const underTest = new TimeBuilder().withLocale('de-DE').build();
+    const actualTimeString = underTest.getLocalizedTime('2022-02-16 01:25');
+    expect(actualTimeString).toEqual('01:25');
+  })
+
+  test('should get localized start and end time separated by a dash', () => {
+    const actualTimeString = timeM.getLocalizedTimeRange('2022-02-16 01:25', '2022-02-16 02:25');
+    expect(actualTimeString).toEqual('1:25 AM - 2:25 AM');
+  })
 });
