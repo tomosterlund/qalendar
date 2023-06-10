@@ -6,7 +6,7 @@
     :class="{
       'is-droppable': canBeDropped,
       'trailing-or-leading': day.isTrailingOrLeadingDate,
-      'selected': selected
+      'is-selected': isSelected
     }"
     @click="emitDayWasClicked"
     @dragleave="handleDragLeave"
@@ -91,7 +91,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    selected: {
+    isSelected: {
       type: Boolean,
       default: false,
     },
@@ -210,7 +210,7 @@ export default defineComponent({
     border-right: 0;
   }
 
-  &.selected {
+  &.is-selected {
      .qalendar-is-small & {
        -webkit-box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
        -moz-box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
@@ -248,15 +248,14 @@ export default defineComponent({
     width: 100%;
 
     .qalendar-is-small & {
-      display: flex ;
+      display: flex;
       flex-flow: row;
-      width: 100%;
       justify-content: center;
     }
 
     .calendar-month__weekday-more {
       .qalendar-is-small & {
-        display: none ;
+        display: none;
       }
     }
   }

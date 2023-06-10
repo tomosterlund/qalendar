@@ -29,6 +29,6 @@ export default defineComponent({
   font-size: 12px;
   font-weight: 500;
   color: var(--qalendar-gray-quite-dark);
-  margin-bottom: 5px;
+  margin-bottom: var(--qalendar-spacing-half);
 }
 </style>

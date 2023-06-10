@@ -62,7 +62,6 @@ export interface configInterface {
   defaultMode?: modeType;
   disableModes?: ('week'|'month'|string)[];
   isSilent?: boolean;
-  isSmall?: boolean;
   dayIntervals?: dayIntervalsType;
   eventDialog?: {
     isDisabled?: boolean;
@@ -79,4 +78,9 @@ export interface configInterface {
     showTrailingAndLeadingDates?: boolean,
     showEventsOnMobileView?: boolean,
   }
+
+  // The isSmall property is an internal API attached to the config object, and usage of this
+  // from an implementer is strongly discouraged
+  // TODO: create internal config interface and replace all usages in components with that
+  isSmall?: boolean;
 }

@@ -1,13 +1,14 @@
 <template>
   <div class="agenda__wrapper">
-    <div class="agenda__header">
+    <header class="agenda__header">
       <div class="agenda__header-day-name">
         {{ day.dayName }}
       </div>
       <div class="agenda__header-date">
+<!--        Here we want to display leading zero for days 1-9, in order to prevent layout shifts-->
         {{ day.dateTimeString.substring(8, 10) }}
       </div>
-    </div>
+    </header>
     <div class="agenda__content">
       <div
         v-if="day.events.length === 0"
@@ -21,7 +22,7 @@
       >
         <AgendaEventTile
           v-for="dayEvent of day.events"
-          :key="`agenda_event_`+dayEvent.id"
+          :key="`agenda_event_` + dayEvent.id"
           :day="day"
           :config="config"
           :calendar-event="dayEvent"
@@ -68,12 +69,6 @@ export default defineComponent({
   emits: [
     'event-was-clicked',
   ],
-
-  data() {
-    return {
-      scrollbar: null as null | PerfectScrollbar,
-    };
-  },
 });
 </script>
 
@@ -95,15 +90,15 @@ export default defineComponent({
     }
 
     .agenda__header-date {
-      border-radius: 4px;
-      background-color: var(--qalendar-theme-color);
-      padding: 5px;
+      height: fit-content;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 5px;
+      border-radius: 4px;
+      background-color: var(--qalendar-theme-color);
       color: white;
       font-weight: 600;
-      height: fit-content;
       font-size: var(--qalendar-font-m);
     }
   }
@@ -113,12 +108,6 @@ export default defineComponent({
     flex-flow: column;
     width: 100%;
     height: auto;
-
-    .agenda__content-events-list {
-      width: 100%;
-      height: auto;
-      overflow-y: auto;
-    }
 
     .is-empty {
       min-height: 70px;

@@ -27,6 +27,19 @@ describe('AgendaEventTile', () => {
     config,
   }}
 
+  const getComponentWithOnlyTimeAndTitle = () => {
+    const event = new EventBuilder({
+      start: '2024-01-01', end: '2024-01-01'
+    }).build()
+    return agendaEventTile({
+      props: {
+        calendarEvent: event,
+        time: timeInstance,
+        config,
+      }
+    });
+  }
+
   it('should display an event title', () => {
     const underTest = agendaEventTile(defaultOptions);
     const eventTitle = underTest.find('.agenda__event-title');
@@ -80,15 +93,20 @@ describe('AgendaEventTile', () => {
   });
 
   it('should not display a time if the event is a full-day event', () => {
-    const event = new EventBuilder({
-      start: '2024-01-01', end: '2024-01-01'
-    }).build()
-    const underTest = agendaEventTile({ props: {
-      calendarEvent: event,
-      time: timeInstance,
-      config,
-    }});
+    const underTest = getComponentWithOnlyTimeAndTitle();
     const eventTime = underTest.find('.agenda__event-time');
     expect(eventTime.exists()).toBe(false);
   });
+
+  it('should not display a "with" if the event has no "with" property', () => {
+    const underTest = getComponentWithOnlyTimeAndTitle();
+    const eventWith = underTest.find('.agenda__event-with');
+    expect(eventWith.exists()).toBe(false);
+  })
+
+  it('should not display a "location" if the event has no "location" property', () => {
+    const underTest = getComponentWithOnlyTimeAndTitle();
+    const eventLocation = underTest.find('.agenda__event-location');
+    expect(eventLocation.exists()).toBe(false);
+  })
 });

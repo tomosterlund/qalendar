@@ -347,7 +347,6 @@ export default defineComponent({
     display: flex;
     flex-flow: column;
 
-
     .top-bar-loader {
       position: absolute;
       top: 1px;

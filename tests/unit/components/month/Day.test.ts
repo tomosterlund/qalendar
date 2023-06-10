@@ -8,6 +8,7 @@ const day = mountComponent(mount, Day)
 
 describe("Day.vue", () => {
   const defaultProps = {
+    isSelected: true,
     config: { },
     time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
     day: {
@@ -78,4 +79,18 @@ describe("Day.vue", () => {
   //   await dayEvent.trigger("click");
   //   expect(wrapper.emitted("day-was-clicked")).toBeFalsy();
   // })
+
+  it('should have "is-selected" class if isSelected prop is true', () => {
+    const underTest = day({ props: defaultProps });
+    const dayBody = underTest.find(".calendar-month__weekday");
+    expect(dayBody.classes()).toContain("is-selected");
+  })
+
+  it('should not have "is-selected" class if isSelected prop is false', () => {
+    const props = defaultProps
+    props.isSelected = false
+    const underTest = day({ props });
+    const dayBody = underTest.find(".calendar-month__weekday");
+    expect(dayBody.classes()).not.toContain("is-selected");
+  })
 });

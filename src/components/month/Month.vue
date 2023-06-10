@@ -25,14 +25,14 @@
           :config="config"
           :day="day"
           :time="time"
-          :selected="selectedDay?.dateTimeString===day.dateTimeString"
+          :is-selected="selectedDay?.dateTimeString === day.dateTimeString"
           @event-was-clicked="handleClickOnEvent"
           @event-was-dragged="handleEventWasDragged"
           @day-was-clicked="onDayWasClicked"
           @day-was-selected="selectedDay = $event"
           @updated-period="$emit('updated-period', $event)"
         >
-          <template #monthEvent="{eventData}">
+          <template #monthEvent="{ eventData }">
             <slot
               :event-data="eventData"
               name="monthEvent"
@@ -260,7 +260,6 @@ export default defineComponent({
   overflow-y: auto;
 
   .qalendar-is-small & {
-    overflow-y: hidden;
     height: initial;
   }
 
@@ -289,10 +288,6 @@ export default defineComponent({
 
     &:first-child {
       border-top: var(--qalendar-border-gray-thin);
-    }
-
-    .qalendar-is-small & {
-      display: flex;
     }
   }
 

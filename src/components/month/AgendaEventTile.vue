@@ -157,20 +157,5 @@ export default defineComponent({
   cursor: pointer;
   user-select: none;
   color: white;
-
-
-  &.is-draggable {
-    cursor: grab;
-  }
-
-  &:active {
-    z-index: 100;
-  }
-
-  &:not(.is-draggable) {
-    &:active {
-      cursor: not-allowed;
-    }
-  }
 }
 </style>
