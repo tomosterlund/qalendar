@@ -4,7 +4,7 @@ export default {
   themeConfig: {
     nav: [
       { text: "Guide", link: "/guide" },
-      { text: "v1 to v2", link: "/migration" },
+      { text: "Migration guides", link: "/migration" },
       { text: "Roadmap", link: "https://github.com/tomosterlund/qalendar/projects/1" },
       { text: "Github", link: "https://github.com/tomosterlund/qalendar" },
     ],

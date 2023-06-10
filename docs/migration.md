@@ -21,3 +21,13 @@ in: https://github.com/tomosterlund/qalendar/blob/master/development/cypress/Cus
 For being able to support older applications and browsers as well, the build output was now changed
 from ESNext to ES2019. This should, however, not affect any applications already using the library,
 merely extending its domain of usage.
+
+## v2 to v3
+
+### Breaking change:
+
+The view for month mode on small devices has been rebuilt. Instead of displaying days in a column,
+the month now has an "agenda" type layout, where each day can be clicked to display a list of
+events. Nothing has to be configured for this. Nevertheless, if any of your business
+logic or tests are tied to the type of elements that is displayed in the calendar, you might want to
+test your implementation on a small screen before rolling out an update.
