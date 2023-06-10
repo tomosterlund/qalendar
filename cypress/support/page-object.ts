@@ -226,7 +226,7 @@ export default class PageObject {
   }
 
   static getSelectedDayInAgenda() {
-    return cy.get('.calendar-month__weekday.selected')
+    return cy.get('.calendar-month__weekday.is-selected')
   }
 
   static getAgendaEvent() {
