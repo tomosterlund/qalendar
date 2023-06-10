@@ -181,14 +181,12 @@ export default defineComponent({
     getEventTime() {
       if (!this.calendarEvent || !this.calendarEvent.time) return null;
 
-
       const eventType = Helpers.getEventType(this.calendarEvent, this.time);
 
       if ([EVENT_TYPE.MULTI_DAY_TIMED].includes(eventType)) {
         const startLocalizedString = this.getDateFromDateString(
           this.calendarEvent.time.start
         ) + ' ' + this.time.getLocalizedTime(this.calendarEvent.time.start)
-
         const endLocalizedString = this.getDateFromDateString(
           this.calendarEvent.time.end
         ) + ' ' + this.time.getLocalizedTime(this.calendarEvent.time.end)
@@ -205,13 +203,11 @@ export default defineComponent({
         return `${startDate} - ${endDate}`;
       }
 
-      const dateString = this.getDateFromDateString(
-        this.calendarEvent.time.start
+      const dateString = this.getDateFromDateString(this.calendarEvent.time.start);
+      const timeString = this.time.getLocalizedTimeRange(
+        this.calendarEvent.time.start,
+        this.calendarEvent.time.end
       );
-      const timeString =
-        this.time.getLocalizedTime(this.calendarEvent.time.start) +
-        ' - ' +
-        this.time.getLocalizedTime(this.calendarEvent.time.end);
 
       return `${dateString} ⋅ ${timeString}`;
     },

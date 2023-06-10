@@ -119,13 +119,6 @@ export default defineComponent({
     hideLeadingAndTrailingDate() {
       return this.day.isTrailingOrLeadingDate === true && this.config.month?.showTrailingAndLeadingDates === false
     },
-
-    selectedDayColor() {
-      if (this.config?.month?.selectedDayColor != null) {
-        return this.config.month.selectedDayColor
-      }
-      return 'var(--qalendar-light-gray)'
-    }
   },
 
   methods: {
@@ -219,7 +212,10 @@ export default defineComponent({
 
   &.selected {
      .qalendar-is-small & {
-       background-color: v-bind(selectedDayColor);
+       -webkit-box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
+       -moz-box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
+       box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
+       border-radius: 5px;
      }
   }
 

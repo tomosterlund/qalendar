@@ -9,11 +9,12 @@ describe('AgendaEventTile', () => {
   const timeInstance = new TimeBuilder().build();
   const config = {}
   const EXPECTED_EVENT_START = '2024-01-01 10:00';
+  const EXPECTED_EVENT_END = '2024-01-01 11:00';
   const EXPECTED_EVENT_TITLE = 'Test Event';
   const EXPECTED_EVENT_WITH = 'Test person';
   const EXPECTED_EVENT_LOCATION = 'Test location';
   const event = new EventBuilder({
-    start: EXPECTED_EVENT_START, end: '2024-01-01 11:00'
+    start: EXPECTED_EVENT_START, end: EXPECTED_EVENT_END
   })
   .withTitle(EXPECTED_EVENT_TITLE)
   .withWith(EXPECTED_EVENT_WITH)
@@ -37,6 +38,26 @@ describe('AgendaEventTile', () => {
     const eventTime = underTest.find('.agenda__event-time');
     const expectedTime = timeInstance.timeStringFrom(EXPECTED_EVENT_START);
     expect(eventTime.text()).toContain(expectedTime);
+  });
+
+  it('should display the event end time', () => {
+    const underTest = agendaEventTile(defaultOptions);
+    const eventTime = underTest.find('.agenda__event-time');
+    const expectedTime = timeInstance.timeStringFrom(EXPECTED_EVENT_END);
+    expect(eventTime.text()).toContain(expectedTime);
+  });
+
+  it('should display no time if the event is a full-day event', () => {
+    const fullDayEvent = new EventBuilder({
+      start: '2024-01-01', end: '2024-01-01'
+    }).build();
+    const underTest = agendaEventTile({ props: {
+      calendarEvent: fullDayEvent,
+      time: timeInstance,
+      config,
+    }});
+    const eventTime = underTest.find('.agenda__event-time');
+    expect(eventTime.exists()).toBe(false);
   });
 
   it('should display the value of the event\'s "with" property', () => {

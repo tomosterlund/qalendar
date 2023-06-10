@@ -266,6 +266,10 @@ export default class Time {
     return date.toLocaleTimeString(this.CALENDAR_LOCALE, { hour: "2-digit" });
   }
 
+  getLocalizedTimeRange(start: string, end: string) {
+    return `${this.getLocalizedTime(start)} - ${this.getLocalizedTime(end)}`;
+  }
+
   /**
    * Returns numeric values for year, month, date, hour and minutes, given a dateTimeString
    * All variables are Date-Object compatible, meaning "month" is zero-indexed
@@ -525,6 +529,12 @@ export class TimeBuilder {
 
   withDayBoundaries(dayBoundaries: { start: DAY_TIME_POINT, end: DAY_TIME_POINT }) {
     this.dayBoundaries = dayBoundaries;
+
+    return this;
+  }
+
+  withLocale(locale: string) {
+    this.locale = locale;
 
     return this;
   }

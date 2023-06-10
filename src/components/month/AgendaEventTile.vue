@@ -1,14 +1,15 @@
 <template>
   <div
+    :id="elementId"
     class="agenda__event is-event"
     @click.prevent="handleClickOnEvent"
   >
     <span
-      v-if="eventTimeStart && !calendarEvent.originalEvent"
+      v-if="eventTime && !calendarEvent.originalEvent"
       class="agenda__event-time"
     >
       <FontAwesomeIcon :icon="icons.clock" />
-      {{ eventTimeStart }}
+      {{ eventTime }}
     </span>
 
     <span class="agenda__event-title">
@@ -90,9 +91,12 @@ export default defineComponent({
   },
 
   computed: {
-    eventTimeStart() {
+    eventTime() {
       return DATE_TIME_STRING_PATTERN.test(this.calendarEvent.time.start)
-        ? this.time.getLocalizedTime(this.calendarEvent.time.start)
+        ? this.time.getLocalizedTimeRange(
+            this.calendarEvent.time.start,
+            this.calendarEvent.time.end
+        )
         : null;
     },
 
@@ -142,8 +146,6 @@ export default defineComponent({
 @use '../../styles/mixins' as mixins;
 
 .agenda__event {
-  --event-inline-padding: 4px;
-
   background-color: v-bind(eventBackgroundColor);
   display: flex;
   flex-flow: column;
@@ -151,7 +153,7 @@ export default defineComponent({
   border-radius: 4px;
   font-size: var(--qalendar-font-2xs);
   margin-bottom: 4px;
-  padding: 2px;
+  padding: var(--qalendar-spacing);
   cursor: pointer;
   user-select: none;
   color: white;

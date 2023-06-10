@@ -158,7 +158,6 @@ export default defineComponent({
         month: {
           // showTrailingAndLeadingDates: false,
           showEventsOnMobileView: true,
-          selectedDayColor: 'rgb(180 180 180)'
         }
       } as configInterface,
       events: [] as eventInterface[],
