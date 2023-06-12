@@ -1,4 +1,4 @@
-import { eventInterface } from "../typings/interfaces/event.interface";
+import { type eventInterface } from "../typings/interfaces/event.interface";
 
 export default class EventConcurrency {
   protected sortEventsAccordingToStartOfTime(events: eventInterface[]) {

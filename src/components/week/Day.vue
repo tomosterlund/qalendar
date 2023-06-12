@@ -1,11 +1,12 @@
 <template>
   <div
     class="calendar-week__day"
-    @click.self="$emit('day-was-clicked', day.dateTimeString.substring(0, 10))"
+    @click.self="$emit('day-was-clicked', time.dateStringFrom(day.dateTimeString))"
   >
     <DayEvent
       v-for="(event, eventIndex) in events"
       :key="eventIndex"
+      data-test="day-event"
       :event-prop="event"
       :day="day"
       :time="time"
@@ -28,7 +29,8 @@
 
     <template v-if="dayIntervals && dayIntervals.displayClickableInterval">
       <div
-        v-for="interval in intervals"
+        v-for="(interval, intervalIndex) in intervals"
+        :id="'interval-' + intervalIndex"
         :key="interval.intervalStart"
         class="calendar-week__day-interval"
         :class="{ 'has-border': interval.hasBorder }"
@@ -42,18 +44,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { dayInterface } from '../../typings/interfaces/day.interface';
+import { defineComponent, type PropType } from 'vue';
+import { type dayInterface } from '../../typings/interfaces/day.interface';
 import DayEvent from './DayEvent.vue';
 import EventConcurrency from '../../helpers/EventConcurrency';
-import { eventInterface } from '../../typings/interfaces/event.interface';
+import { type eventInterface } from '../../typings/interfaces/event.interface';
 import Time from '../../helpers/Time';
 import {
-  configInterface,
-  dayIntervalsType,
+  type configInterface,
+  type dayIntervalsType,
 } from '../../typings/config.interface';
-import { modeType } from '../../typings/types';
-import DayIntervals, { interval } from '../../helpers/DayIntervals';
+import {type DayInfo, type modeType} from '../../typings/types';
+import DayIntervals, { type interval } from '../../helpers/DayIntervals';
 const eventConcurrencyHelper = new EventConcurrency();
 
 export default defineComponent({
@@ -75,7 +77,7 @@ export default defineComponent({
       required: true,
     },
     dayInfo: {
-      type: Object as PropType<{ daysTotalN: number; thisDayIndex: number }>,
+      type: Object as PropType<DayInfo>,
       required: true,
     },
     mode: {

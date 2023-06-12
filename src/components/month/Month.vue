@@ -1,5 +1,17 @@
 <template>
   <div class="calendar-month">
+    <div
+      class="calendar-month__week-day-names"
+    >
+      <WeekDay
+        v-for="(day, dayIndex) in month[0]"
+        :key="dayIndex"
+        class="calendar-month__week-day-name"
+        :config="config"
+        :day="day"
+        :time="time"
+      />
+    </div>
     <div class="calendar-month__weeks">
       <div
         v-for="(week, weekIndex) in month"
@@ -13,14 +25,16 @@
           :config="config"
           :day="day"
           :time="time"
+          :is-selected="selectedDay?.dateTimeString === day.dateTimeString"
           @event-was-clicked="handleClickOnEvent"
           @event-was-dragged="handleEventWasDragged"
-          @day-was-clicked="$emit('day-was-clicked', $event)"
+          @day-was-clicked="onDayWasClicked"
+          @day-was-selected="selectedDay = $event"
           @updated-period="$emit('updated-period', $event)"
         >
-          <template #monthEvent="p">
+          <template #monthEvent="{ eventData }">
             <slot
-              :event-data="p.eventData"
+              :event-data="eventData"
               name="monthEvent"
             />
           </template>
@@ -33,6 +47,19 @@
           </template>
         </Day>
       </div>
+    </div>
+
+    <div
+      v-if="!(config.month?.showEventsOnMobileView === false)"
+      class="calendar-month__day_events"
+    >
+      <AgendaEvents
+        v-if="selectedDay"
+        :config="config"
+        :time="time"
+        :day="selectedDay"
+        @event-was-clicked="handleClickOnEvent"
+      />
     </div>
 
     <EventFlyout
@@ -57,30 +84,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import {defineComponent, type PropType} from 'vue';
 import Day from './Day.vue';
 import Time from '../../helpers/Time';
-import { periodInterface } from '../../typings/interfaces/period.interface';
-import { configInterface } from '../../typings/config.interface';
-import { eventInterface } from '../../typings/interfaces/event.interface';
+import {type periodInterface} from '../../typings/interfaces/period.interface';
+import {type configInterface} from '../../typings/config.interface';
+import {EVENT_TYPE, type eventInterface} from '../../typings/interfaces/event.interface';
 import EDate from '../../helpers/EDate';
-import { dayInterface } from '../../typings/interfaces/day.interface';
+import {type dayInterface} from '../../typings/interfaces/day.interface';
 import EventFlyout from '../partials/EventFlyout.vue';
-import {
-  DATE_TIME_STRING_FULL_DAY_PATTERN,
-  DATE_TIME_STRING_PATTERN,
-} from '../../constants';
 import EventPosition from '../../helpers/EventPosition';
-const EventPositionHelper = new EventPosition();
 import PerfectScrollbar from 'perfect-scrollbar';
+import WeekDay from './WeekDay.vue';
+import Helpers from "../../helpers/Helpers";
+import AgendaEvents from "./AgendaEvents.vue";
+
+const EventPositionHelper = new EventPosition();
 
 export default defineComponent({
   name: 'Month',
 
   components: {
+    AgendaEvents,
     Day,
     EventFlyout,
-  },
+    WeekDay,
+},
 
   props: {
     config: {
@@ -117,7 +146,8 @@ export default defineComponent({
       selectedEventElement: null as any | null,
       events: this.eventsProp,
       fullDayEvents: [] as eventInterface[],
-      scrollbar: null as any,
+      scrollbar: null as null | PerfectScrollbar,
+      selectedDay: null as dayInterface | null,
     };
   },
 
@@ -127,6 +157,10 @@ export default defineComponent({
   },
 
   methods: {
+    onDayWasClicked(day: dayInterface) {
+      this.$emit('day-was-clicked', day)
+    },
+
     initScrollbar(elapsedMs = 0) {
       const el = document.querySelector('.calendar-month');
       if (elapsedMs > 3000) return;
@@ -139,9 +173,9 @@ export default defineComponent({
 
     initMonth() {
       this.month = [];
-
       this.sortOutFullDayEvents();
       this.setMonth();
+      if (this.config.isSmall) this.setInitialSelectedDay();
     },
 
     setMonth() {
@@ -155,12 +189,11 @@ export default defineComponent({
         return week.map((day) => {
           const dateTimeString = this.time.getDateTimeStringFromDate(day);
           const events = this.events.filter((event) => {
-            return (
-              event.time.start.substring(0, 11) ===
-              dateTimeString.substring(0, 11)
-            );
+            return this.time.dateStringsHaveEqualDates(event.time.start, dateTimeString)
           });
 
+          // IMPORTANT: we explicitly do NOT separate fullDayEvents from other events here,
+          // since all events are positioned in a similar manner in the month view
           return {
             isTrailingOrLeadingDate: this.time.isTrailingOrLeadingDate(day, month),
             dayName: this.time.getLocalizedNameOfWeekday(day),
@@ -181,12 +214,11 @@ export default defineComponent({
       const fullDayEvents = [];
 
       for (const calendarEvent of this.events) {
-        if (DATE_TIME_STRING_PATTERN.test(calendarEvent.time.start))
+        if (Helpers.getEventType(calendarEvent, this.time) === EVENT_TYPE.SINGLE_DAY_TIMED)
           timedEvents.push(calendarEvent);
-        else if (
-          DATE_TIME_STRING_FULL_DAY_PATTERN.test(calendarEvent.time.start)
-        )
+        else {
           fullDayEvents.push(calendarEvent);
+        }
       }
 
       this.events = timedEvents;
@@ -214,6 +246,13 @@ export default defineComponent({
       this.events = newEvents;
       this.initMonth();
     },
+
+    setInitialSelectedDay() {
+      const selectedDayDateString = this.time.getDateStringFromDate(this.period.selectedDate);
+      this.selectedDay = this.month.flat().find(day => {
+        return this.time.dateStringFrom(day.dateTimeString) === selectedDayDateString;
+      }) || null;
+    },
   },
 });
 </script>
@@ -221,20 +260,47 @@ export default defineComponent({
 <style lang="scss" scoped>
 .calendar-month {
   position: relative;
-  flex: 1;
+  display: flex;
+  flex-flow: column;
   width: 100%;
+  height: 100%;
   overflow-y: auto;
+
+  .qalendar-is-small & {
+    height: initial;
+  }
+
+  .calendar-month__week-day-names {
+    display: flex;
+    justify-content: space-between;
+
+    .calendar-month__week-day-name {
+      flex: 1;
+      text-align: center;
+    }
+  }
 
   .calendar-month__weeks {
     height: 100%;
+    flex-grow: 1;
     display: flex;
     flex-flow: column;
     justify-content: space-between;
   }
 
+
   .calendar-month__week {
     display: flex;
     flex: 1;
+
+    &:first-child {
+      border-top: var(--qalendar-border-gray-thin);
+    }
+  }
+
+  .calendar-month__day_events {
+    height: 100%;
+    display: none;
 
     .qalendar-is-small & {
       display: block;

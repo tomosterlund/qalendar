@@ -1,10 +1,11 @@
-import { describe, expect, it } from "vitest";
-import Time from "../../../src/helpers/Time";
+import {describe, expect, it, test} from "vitest";
+import Time, {TimeBuilder, WEEK_START_DAY} from "../../../src/helpers/Time";
 import unidecode from "unidecode";
+import {DAY_TIME_POINT} from "../../../src/typings/config.interface";
 // Functionality which is sensitive to the class property FIRST_DAY_OF_WEEK
 // needs to be tested with both "timeM" and "timeS"
-const timeM = new Time("monday");
-const timeS = new Time("sunday");
+const timeM = new Time(WEEK_START_DAY.MONDAY);
+const timeS = new Time(WEEK_START_DAY.SUNDAY);
 
 describe("Time.ts", () => {
   it("Gets a calendar week, based on date 2022-05-14", () => {
@@ -219,7 +220,7 @@ describe("Time.ts", () => {
   });
 
   it("should get a localized string, for each hour of the day", () => {
-    const timeEnglish = new Time("sunday", "en-US");
+    const timeEnglish = new Time(WEEK_START_DAY.SUNDAY, "en-US");
     const hours = timeM.ALL_HOURS;
 
     let iterator = 0;
@@ -231,7 +232,7 @@ describe("Time.ts", () => {
       iterator++;
     }
 
-    while (iterator <= 24) {
+    while (iterator <= 23) {
       let expectedValue;
 
       if (iterator === 12) expectedValue = "12 PM";
@@ -248,7 +249,7 @@ describe("Time.ts", () => {
 
   it("returns a localized name of the day, given a specified date", () => {
     // Long day names
-    const timeEnglish = new Time("sunday", "en-US");
+    const timeEnglish = new Time(WEEK_START_DAY.SUNDAY, "en-US");
 
     const saturday = timeEnglish.getLocalizedNameOfWeekday(
       new Date(2022, 5 - 1, 14),
@@ -263,7 +264,7 @@ describe("Time.ts", () => {
     expect(thursday).toEqual("Thursday");
 
     // Short day names
-    const timeSwedish = new Time("monday", "sv-SE");
+    const timeSwedish = new Time(WEEK_START_DAY.MONDAY, "sv-SE");
 
     const loerdag = timeSwedish.getLocalizedNameOfWeekday(
       new Date(2022, 5 - 1, 14),
@@ -279,7 +280,7 @@ describe("Time.ts", () => {
   });
 
   it("returns a localized name of the month, given a specified date", () => {
-    const timeEnglish = new Time("monday", "en-UK");
+    const timeEnglish = new Time(WEEK_START_DAY.MONDAY, "en-UK");
 
     // Try short month names
     const january = timeEnglish.getLocalizedNameOfMonth(
@@ -295,7 +296,7 @@ describe("Time.ts", () => {
     expect(december).toEqual("Dec");
 
     // And long ones
-    const timeGerman = new Time("monday", "de-DE");
+    const timeGerman = new Time(WEEK_START_DAY.MONDAY, "de-DE");
 
     const maerz = timeGerman.getLocalizedNameOfMonth(
       new Date(2025, 3 - 1, 31),
@@ -311,14 +312,14 @@ describe("Time.ts", () => {
   });
 
   it("returns a localized date string for US English", () => {
-    const timeEnglish = new Time("sunday", "en-US");
+    const timeEnglish = new Time(WEEK_START_DAY.SUNDAY, "en-US");
     const d = new Date(2022, 5 - 1, 15);
     const dateString = timeEnglish.getLocalizedDateString(d);
     expect(dateString).toEqual("5/15/2022");
   });
 
   it("returns a localized date string for German", () => {
-    const timeGerman = new Time("monday", "de-DE");
+    const timeGerman = new Time(WEEK_START_DAY.MONDAY, "de-DE");
     const d = new Date(2022, 1 - 1, 1);
     const dateString = timeGerman.getLocalizedDateString(d);
     expect(dateString).toEqual("1.1.2022");
@@ -342,7 +343,7 @@ describe("Time.ts", () => {
   });
 
   it("tests getHourAndMinutesFromTimePoints", () => {
-    let { hour: h1, minutes: m1 } = timeM.getHourAndMinutesFromTimePoints(0);
+    const { hour: h1, minutes: m1 } = timeM.getHourAndMinutesFromTimePoints(0);
     expect(h1).toBe(0);
     expect(m1).toBe(0);
 
@@ -358,13 +359,13 @@ describe("Time.ts", () => {
   });
 
   it("tests getLocalizedHours", () => {
-    const englishTime = new Time("sunday", "en-US");
+    const englishTime = new Time(WEEK_START_DAY.SUNDAY, "en-US");
     const fourAM = new Date(2022, 0, 1, 4);
     expect(
       unidecode(englishTime.getLocalizedHour(fourAM))
     ).toBe("04 AM");
 
-    const swedishTime = new Time("monday", "sv-SE");
+    const swedishTime = new Time(WEEK_START_DAY.MONDAY, "sv-SE");
     const elevenPM = new Date(0, 0, 1, 23);
     expect(
       unidecode(swedishTime.getLocalizedHour(elevenPM))
@@ -430,6 +431,15 @@ describe("Time.ts", () => {
     expect(newDateTime).toBe('2023-01-01 04:42')
   });
 
+  it('adds 15 minutes to 23:44', () => {
+    const minutesToAdd = 15
+    const oldDateTime = '2023-03-17 23:44'
+
+    const newDateTime = timeM.addMinutesToDateTimeString(minutesToAdd, oldDateTime)
+
+    expect(newDateTime).toBe('2023-03-17 23:59')
+  });
+
   it('adds 5 days to dateTimeString', () => {
     const daysToAdd = 5
     const oldDateTime = '2022-12-31 23:59'
@@ -488,4 +498,402 @@ describe("Time.ts", () => {
 
     expect(timeM.isTrailingOrLeadingDate(date, 5)).toBe(false);
   });
+
+  it('Gets time points from a day boundary', () => {
+    const midnight = 0;
+    const noon = 12;
+    const sixPM = 18;
+
+    expect(Time.getTimePointsFromHour(midnight)).toBe(0);
+    expect(Time.getTimePointsFromHour(noon)).toBe(1200);
+    expect(Time.getTimePointsFromHour(sixPM)).toBe(1800);
+  })
+
+  it('Throws an error, when trying to get time points from a day boundary that is not an integer', () => {
+    expect(() => Time.getTimePointsFromHour(12.5)).toThrow()
+  })
+
+  it('Throws an error, when trying to get time points from a day boundary that is not between 0 and 24', () => {
+    expect(() => Time.getTimePointsFromHour(25)).toThrow()
+    expect(() => Time.getTimePointsFromHour(-1)).toThrow()
+  })
+
+  it('Gets day boundaries from time points', () => {
+    const midnight = 0;
+    const noon = 1200;
+    const sixPM = 1800;
+
+    expect(Time.getHourFromTimePoints(midnight)).toBe(0);
+    expect(Time.getHourFromTimePoints(noon)).toBe(12);
+    expect(Time.getHourFromTimePoints(sixPM)).toBe(18);
+  });
+
+  it('Throws an error, when trying to get day boundaries from time points that are not integers', () => {
+    expect(() => Time.getHourFromTimePoints(1200.5)).toThrow()
+  });
+
+  it('Throws an error, when trying to get day boundaries from time points that are not between 0 and 2400', () => {
+    expect(() => Time.getHourFromTimePoints(2500)).toThrow()
+    expect(() => Time.getHourFromTimePoints(-1)).toThrow()
+  });
+
+  it('Throws an error when trying to get day boundaries from time points that are not multiples of 100', () => {
+    expect(() => Time.getHourFromTimePoints(123)).toThrow()
+  });
+
+  it('Gets the correct timeline hours for a full day', () => {
+    const fullDayTimelineHours = timeM.getTimelineHours();
+    expect(fullDayTimelineHours).toHaveLength(24);
+
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.MIDNIGHT)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.ONE_AM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.TWO_AM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.THREE_AM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.FOUR_AM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.FIVE_AM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.SIX_AM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.SEVEN_AM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.EIGHT_AM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.NINE_AM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.TEN_AM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.ELEVEN_AM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.TWELVE_PM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.ONE_PM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.TWO_PM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.THREE_PM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.FOUR_PM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.FIVE_PM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.SIX_PM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.SEVEN_PM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.EIGHT_PM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.NINE_PM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.TEN_PM)).toBe(true);
+    expect(fullDayTimelineHours.includes(DAY_TIME_POINT.ELEVEN_PM)).toBe(true);
+  });
+
+  it('Gets the correct timeline hours for a half day', () => {
+    const timeInstance = new Time(
+      WEEK_START_DAY.SUNDAY,
+      'en',
+      { start: DAY_TIME_POINT.TWELVE_PM, end: DAY_TIME_POINT.TWELVE_AM }
+    );
+    const halfDayTimelineHours = timeInstance.getTimelineHours();
+    expect(halfDayTimelineHours).toHaveLength(12);
+
+    expect(halfDayTimelineHours.includes(0)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.MIDNIGHT)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.ONE_AM)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.TWO_AM)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.THREE_AM)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.FOUR_AM)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.FIVE_AM)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.SIX_AM)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.SEVEN_AM)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.EIGHT_AM)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.NINE_AM)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.TEN_AM)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.ELEVEN_AM)).toBe(false);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.TWELVE_PM)).toBe(true);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.ONE_PM)).toBe(true);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.TWO_PM)).toBe(true);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.THREE_PM)).toBe(true);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.FOUR_PM)).toBe(true);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.FIVE_PM)).toBe(true);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.SIX_PM)).toBe(true);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.SEVEN_PM)).toBe(true);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.EIGHT_PM)).toBe(true);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.NINE_PM)).toBe(true);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.TEN_PM)).toBe(true);
+    expect(halfDayTimelineHours.includes(DAY_TIME_POINT.ELEVEN_PM)).toBe(true);
+  });
+
+  it('Gets the correct timeline hours for a "day" stretched across two days', () => {
+    const timeInstance = new Time(
+      WEEK_START_DAY.SUNDAY,
+      'en',
+      { start: DAY_TIME_POINT.FOUR_AM, end: DAY_TIME_POINT.TWO_AM }
+    );
+
+    const stretchedDayTimelineHours = timeInstance.getTimelineHours();
+
+    expect(stretchedDayTimelineHours).toHaveLength(22);
+
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.FOUR_AM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.FIVE_AM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.SIX_AM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.SEVEN_AM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.EIGHT_AM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.NINE_AM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.TEN_AM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.ELEVEN_AM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.TWELVE_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.ONE_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.TWO_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.THREE_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.FOUR_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.FIVE_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.SIX_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.SEVEN_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.EIGHT_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.NINE_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.TEN_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.ELEVEN_PM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.MIDNIGHT)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.ONE_AM)).toBe(true);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.TWO_AM)).toBe(false);
+    expect(stretchedDayTimelineHours.includes(DAY_TIME_POINT.THREE_AM)).toBe(false);
+  });
+
+  /**
+   * (2022-02-16T08:00:00.000Z, 800, ????) should yield 0
+   *
+   * */
+  test("Getting beginning of the day", () => {
+    const startOfDay = timeM.getPercentageOfDayFromDateTimeString(
+      "2022-02-16 08:00",
+      800,
+      1000
+    );
+
+    expect(startOfDay).toEqual(0);
+  });
+
+  test("Getting half hour into 4 hour day", () => {
+    const halfHourIntoDay =
+      timeM.getPercentageOfDayFromDateTimeString(
+        "2022-02-16 08:30",
+        800,
+        1200
+      );
+
+    expect(halfHourIntoDay).toEqual(12.5);
+  });
+
+  test("Getting 4 hours into 8 hour day", () => {
+    const midDay = timeM.getPercentageOfDayFromDateTimeString(
+      "2022-02-16 14:00",
+      1000,
+      1800
+    );
+
+    expect(midDay).toEqual(50);
+  });
+
+  /**
+   * 2 hours and 15 minutes = 225 points
+   * (225 / 800) * 100 = 28.125
+   * */
+  test("Getting 2 hours and 15 minutes into 9 hour day", () => {
+    const time = timeM.getPercentageOfDayFromDateTimeString(
+      "2022-02-16 12:15",
+      1000,
+      1800
+    );
+
+    expect(time).toEqual(28.125);
+  });
+
+  test("Getting start of day for calendar day spanning two real days", () => {
+    const percentageIntoDay = timeM.getPercentageOfDayFromDateTimeString(
+      "2022-02-16 22:00",
+      2200,
+      100
+    );
+
+    expect(percentageIntoDay).toEqual(0);
+  })
+
+  test("Getting middle of day for calendar day spanning two real days", () => {
+    const percentageIntoDay = timeM.getPercentageOfDayFromDateTimeString(
+      "2022-02-16 00:00",
+      2200,
+      200,
+    )
+
+    expect(percentageIntoDay).toEqual(50);
+
+    const anotherPercentageIntoDay = timeM.getPercentageOfDayFromDateTimeString(
+      "2022-02-16 02:00",
+      1700,
+      300
+    );
+
+    expect(anotherPercentageIntoDay).toEqual(90);
+  })
+
+  test("Getting non full-hour event at end of 2-day-spanning day", () => {
+    const percentageIntoDay = timeM.getPercentageOfDayFromDateTimeString(
+      "2022-02-16 01:25",
+      400,
+      200
+    );
+
+    expect(+percentageIntoDay.toFixed(2)).toEqual(97.35);
+  })
+
+  test("Getting date string from date time string", () => {
+    const dateString1 = timeM.dateStringFrom("2022-02-16 01:25");
+    expect(dateString1).toEqual("2022-02-16");
+
+    const dateString2 = timeM.dateStringFrom("2030-01-01 00:00");
+    expect(dateString2).toEqual("2030-01-01");
+  })
+
+  test("Getting time string from date time string", () => {
+    const timeString1 = timeM.timeStringFrom("2022-02-16 01:25");
+    expect(timeString1).toEqual("01:25");
+
+    const timeString2 = timeM.timeStringFrom("2030-01-01 00:00");
+    expect(timeString2).toEqual("00:00");
+  });
+
+  test("Getting hour from date time string", () => {
+    const hour1 = timeM.hourFrom("2022-02-16 01:25");
+    expect(hour1).toEqual(1);
+
+    const hour2 = timeM.hourFrom("2030-01-01 00:00");
+    expect(hour2).toEqual(0);
+  })
+
+  test("Getting minutes from date time string", () => {
+    const minutes1 = timeM.minutesFrom("2022-02-16 01:25");
+    expect(minutes1).toEqual(25);
+
+    const minutes2 = timeM.minutesFrom("2030-01-01 00:00");
+    expect(minutes2).toEqual(0);
+  })
+
+  test("If two days are consecutive", () => {
+    const consecutive = timeM.areDaysConsecutive(
+      "2022-02-16 01:25",
+      "2022-02-17 01:25"
+    );
+
+    expect(consecutive).toBe(true);
+  });
+
+  test("If two days are not consecutive", () => {
+    const consecutive = timeM.areDaysConsecutive(
+      "2022-02-16 01:25",
+      "2022-02-18 01:25"
+    );
+
+    expect(consecutive).toBe(false);
+  });
+
+  test("If two equal days are consecutive", () => {
+    const consecutive = timeM.areDaysConsecutive(
+      "2022-02-16 01:25",
+      "2022-02-16 01:25"
+    );
+
+    expect(consecutive).toBe(false);
+  });
+
+  test("Setting hour in date time string", () => {
+    const newDateTimeString = timeM.setHourInDateTimeString(
+      "2022-02-16 01:25",
+      2
+    );
+    expect(newDateTimeString).toEqual("2022-02-16 02:25");
+
+    const newDateTimeString2 = timeM.setHourInDateTimeString(
+      "2022-12-31 23:00",
+      0
+    )
+    expect(newDateTimeString2).toEqual("2022-12-31 00:00");
+  });
+
+  test("Setting minutes in date time string", () => {
+    const newDateTimeString = timeM.setMinutesInDateTimeString(
+      "2022-02-16 01:25",
+      2
+    );
+    expect(newDateTimeString).toEqual("2022-02-16 01:02");
+
+    const newDateTimeString2 = timeM.setMinutesInDateTimeString(
+      "2022-12-31 23:59",
+      0
+    )
+    expect(newDateTimeString2).toEqual("2022-12-31 23:00");
+  });
+
+  test("setting date time strings for day boundaries 6AM - 2AM", () => {
+    const dateString = "2022-02-16 00:00";
+
+    const timeInstance = new TimeBuilder()
+      .withDayBoundaries({ start: 600, end: 200 })
+      .build();
+
+    const actualDateStringDayBoundaries = timeInstance.getDateTimeStringDayBoundariesFrom(dateString);
+
+    expect(actualDateStringDayBoundaries.start).toEqual("2022-02-16 06:00");
+    expect(actualDateStringDayBoundaries.end).toEqual("2022-02-17 02:00");
+  });
+
+  test("Setting date time strings for day boundaries 12AM - 12AM", () => {
+    const dateString = "2022-02-16 00:00";
+
+    const timeInstance = new TimeBuilder()
+      .withDayBoundaries({ start: 0, end: 2400 })
+      .build();
+
+    const actualDateStringDayBoundaries = timeInstance.getDateTimeStringDayBoundariesFrom(dateString);
+
+    expect(actualDateStringDayBoundaries.start).toEqual("2022-02-16 00:00");
+    expect(actualDateStringDayBoundaries.end).toEqual("2022-02-16 23:59");
+  })
+
+  test("Setting date time strings for day boundaries 6PM - 5AM, end date being in next year", () => {
+    const dateString = "2022-12-31 00:00";
+
+    const timeInstance = new TimeBuilder()
+      .withDayBoundaries({ start: 1800, end: 500 })
+      .build();
+
+    const actualDateStringDayBoundaries = timeInstance.getDateTimeStringDayBoundariesFrom(dateString);
+    expect(actualDateStringDayBoundaries.start).toEqual("2022-12-31 18:00");
+    expect(actualDateStringDayBoundaries.end).toEqual("2023-01-01 05:00");
+  })
+
+  test("Setting date time strings for day boundaries 3AM to 10PM", () => {
+    const dateString = "2022-12-31 00:00";
+
+    const timeInstance = new TimeBuilder()
+      .withDayBoundaries({ start: 300, end: 2200 })
+      .build();
+
+    const actualDateStringDayBoundaries = timeInstance.getDateTimeStringDayBoundariesFrom(dateString);
+    expect(actualDateStringDayBoundaries.start).toEqual("2022-12-31 03:00");
+    expect(actualDateStringDayBoundaries.end).toEqual("2022-12-31 22:00");
+  })
+
+  test('setting a date to end of day', () => {
+    const date = new Date(2022, 1, 1, 12, 30, 22, 976);
+    const expectedHour = 23;
+    const expectedMinutes = 59;
+    const expectedSeconds = 59;
+    const expectedMilliseconds = 999;
+    const updatedDate = timeM.setDateToEndOfDay(date);
+    expect(updatedDate.getHours()).toEqual(expectedHour);
+    expect(updatedDate.getMinutes()).toEqual(expectedMinutes);
+    expect(updatedDate.getSeconds()).toEqual(expectedSeconds);
+    expect(updatedDate.getMilliseconds()).toEqual(expectedMilliseconds);
+  })
+
+  test('should get localized a time string for US-English', () => {
+    const actualTimeString = timeM.getLocalizedTime('2022-02-16 01:25');
+    expect(actualTimeString).toEqual('1:25 AM');
+  })
+
+  test('should get a localized time string for German', () => {
+    const underTest = new TimeBuilder().withLocale('de-DE').build();
+    const actualTimeString = underTest.getLocalizedTime('2022-02-16 01:25');
+    expect(actualTimeString).toEqual('01:25');
+  })
+
+  test('should get localized start and end time separated by a dash', () => {
+    const actualTimeString = timeM.getLocalizedTimeRange('2022-02-16 01:25', '2022-02-16 02:25');
+    expect(actualTimeString).toEqual('1:25 AM - 2:25 AM');
+  })
 });

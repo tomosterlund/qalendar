@@ -47,18 +47,18 @@
           @mouseleave="showModePicker = false"
         >
           <template
-            v-for="mode in modeOptions"
-            :key="mode"
+            v-for="calendarMode in modeOptions"
+            :key="calendarMode"
           >
             <div
               v-if="
-                !config.disableModes || !config.disableModes.includes(mode)
+                !config.disableModes || !config.disableModes.includes(calendarMode)
               "
               class="calendar-header__mode-option"
-              :class="'is-' + mode + '-mode'"
-              @click="$emit('change-mode', mode)"
+              :class="'is-' + calendarMode + '-mode'"
+              @click="$emit('change-mode', calendarMode)"
             >
-              {{ getLanguage(languageKeys[mode], time.CALENDAR_LOCALE) }}
+              {{ getLanguage(languageKeys[calendarMode], time.CALENDAR_LOCALE) }}
             </div>
           </template>
         </div>
@@ -68,18 +68,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import DatePicker from './DatePicker.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
-import { configInterface } from '../../typings/config.interface';
+import { type configInterface } from '../../typings/config.interface';
 import Time from '../../helpers/Time';
-import { periodInterface } from '../../typings/interfaces/period.interface';
+import { type periodInterface } from '../../typings/interfaces/period.interface';
 import getLanguage from '../../language';
-import { modeType } from '../../typings/types';
+import { type modeType } from '../../typings/types';
 
 export default defineComponent({
   name: 'AppHeader',
@@ -157,7 +157,6 @@ export default defineComponent({
     },
 
     modeName() {
-      // @ts-ignore
       return this.getLanguage(
         this.languageKeys[this.mode],
         this.time?.CALENDAR_LOCALE

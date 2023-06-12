@@ -1,4 +1,4 @@
-import {eventInterface} from './event.interface';
+import type { eventInterface } from './event.interface';
 
 export interface dayWithFullDayEvents {
   date: Date;

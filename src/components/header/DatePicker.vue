@@ -111,7 +111,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faCalendarDay,
@@ -119,12 +119,13 @@ import {
   faChevronCircleRight,
 } from '@fortawesome/free-solid-svg-icons';
 import Time, {
-  calendarMonthType,
-  calendarWeekType,
-  calendarYearMonths,
+  type calendarMonthType,
+  type calendarWeekType,
+  type calendarYearMonths,
+  WEEK_START_DAY,
 } from '../../helpers/Time';
-import { periodInterface } from '../../typings/interfaces/period.interface';
-import { modeType } from '../../typings/types';
+import { type periodInterface } from '../../typings/interfaces/period.interface';
+import { type modeType } from '../../typings/types';
 
 interface disableDates {
   before: Date;
@@ -150,7 +151,7 @@ export default defineComponent({
       default: null,
     },
     firstDayOfWeek: {
-      type: String as PropType<'sunday' | 'monday'>,
+      type: String as PropType<WEEK_START_DAY>,
       default: '',
     },
     defaultDate: {
@@ -193,8 +194,7 @@ export default defineComponent({
        * This should not change as the user browses in the date picker, only when the user
        * PICKS a date in the date picker
        * */
-      datePickerCurrentDate:
-        this.periodProp?.selectedDate || this.defaultDate || new Date(),
+      datePickerCurrentDate: this.periodProp?.selectedDate || this.defaultDate || new Date(),
       selectedDate: this.periodProp?.selectedDate || new Date(),
       datePickerMode: 'month' as 'month' | 'year',
       weekDays: [] as calendarWeekType, // Used only for printing week day names,
@@ -551,6 +551,30 @@ export default defineComponent({
     }
   }
 
+  .months {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--qalendar-spacing-half);
+    max-width: 20rem;
+
+    span {
+      padding: 4px;
+      border: var(--qalendar-border-gray-thin);
+      border-radius: 2px;
+      flex: 1 0 33%;
+      text-align: center;
+      cursor: pointer;
+      font-size: var(--qalendar-font-xs);
+      transition: all 0.2s ease;
+
+      @include mixins.hover {
+        background-color: var(--qalendar-theme-color);
+        color: #fff;
+        border: var(--qalendar-border-blue-thin);
+      }
+    }
+  }
+
   .week {
     width: 100%;
     display: flex;
@@ -598,7 +622,7 @@ export default defineComponent({
         cursor: not-allowed;
       }
 
-      [data-lang="ar"] & {
+      [data-lang='ar'] & {
         font-size: 0.65rem;
       }
     }
@@ -608,30 +632,6 @@ export default defineComponent({
     text-transform: uppercase;
     font-weight: 700;
     font-size: var(--qalendar-font-s);
-  }
-
-  .months {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--qalendar-spacing-half);
-    max-width: 20rem;
-
-    span {
-      padding: 4px;
-      border: var(--qalendar-border-gray-thin);
-      border-radius: 2px;
-      flex: 1 0 33%;
-      text-align: center;
-      cursor: pointer;
-      font-size: var(--qalendar-font-xs);
-      transition: all 0.2s ease;
-
-      @include mixins.hover {
-        background-color: var(--qalendar-theme-color);
-        color: #fff;
-        border: var(--qalendar-border-blue-thin);
-      }
-    }
   }
 }
 </style>

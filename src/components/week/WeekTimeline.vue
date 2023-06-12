@@ -8,7 +8,7 @@
         'is-today':
           time.getDateTimeStringFromDate(now, 'start') === day.dateTimeString,
       }"
-      @click="$emit('day-was-clicked', day.dateTimeString.substring(0, 10))"
+      @click="$emit('day-was-clicked', time.dateStringFrom(day.dateTimeString))"
     >
       <div class="week-timeline__day-name">
         {{ day.dayName.substring(0, 2).toUpperCase() }}
@@ -37,13 +37,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { dayInterface } from '../../typings/interfaces/day.interface';
+import { defineComponent, type PropType } from 'vue';
+import { type dayInterface } from '../../typings/interfaces/day.interface';
 import Time from '../../helpers/Time';
-import { dayWithFullDayEvents } from '../../typings/interfaces/full-day-events-week.type';
+import { type dayWithFullDayEvents } from '../../typings/interfaces/full-day-events-week.type';
 import FullDayEvent from './FullDayEvent.vue';
-import { configInterface } from '../../typings/config.interface';
-import { modeType } from '../../typings/types';
+import { type configInterface } from '../../typings/config.interface';
+import { type modeType } from '../../typings/types';
 
 export default defineComponent({
   name: 'WeekTimeline',

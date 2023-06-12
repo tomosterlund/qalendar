@@ -12,6 +12,7 @@
       color: eventColor,
       backgroundColor: eventBackgroundColor,
     }"
+    :data-ref="'event-' + event.id"
     @click="handleClickOnEvent"
     @mouseenter="showResizeElements = isEditable && !hasDisabledResize"
     @mouseleave="showResizeElements = false"
@@ -126,23 +127,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { eventInterface } from '../../typings/interfaces/event.interface';
-import EventPosition from '../../helpers/EventPosition';
+import {defineComponent, type PropType} from 'vue';
+import {type eventInterface} from '../../typings/interfaces/event.interface';
 import {
   faClock,
   faComment,
-  faUser,
   faMapMarkerAlt,
   faQuestionCircle,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import Time from '../../helpers/Time';
-import { configInterface } from '../../typings/config.interface';
-import { EVENT_COLORS } from '../../constants';
-const eventPositionHelper = new EventPosition();
-import DragAndDrop from '../../helpers/DragAndDrop';
-import { modeType } from '../../typings/types';
+import {type configInterface} from '../../typings/config.interface';
+import {EVENT_COLORS} from '../../constants';
+import {type DayInfo, DRAG_N_RESIZE_DIRECTION, type modeType} from '../../typings/types';
+import { EventChange } from '../../helpers/EventChange';
 import Helpers from "../../helpers/Helpers";
 
 export default defineComponent({
@@ -166,7 +165,7 @@ export default defineComponent({
       required: true,
     },
     dayInfo: {
-      type: Object as PropType<{ daysTotalN: number; thisDayIndex: number }>,
+      type: Object as PropType<DayInfo>,
       required: true,
     },
     mode: {
@@ -191,9 +190,10 @@ export default defineComponent({
       eventTransformValue: 'initial',
       eventZIndexValue: 'initial' as 'initial' | number,
       dayElement: document.querySelector('.calendar-week__day'),
+      dayBoundariesDateTimeStrings: this.time.getDateTimeStringDayBoundariesFrom(this.dayInfo.dateTimeString),
 
       // Resizing events
-      resizingStartingPoint: undefined,
+      resizingStartingPoint: undefined as undefined | number,
       resizingStartingPointEndOfTime: this.eventProp.time.end,
       resizingStartingPointStartOfTime: this.eventProp.time.start,
       resizingDirection: '',
@@ -211,6 +211,7 @@ export default defineComponent({
       clientXDragStart: null as null | number,
       changeInQuartersOnDrag: 0,
       changeInDaysOnDrag: 0,
+      isDragging: false,
       timeStartDragStart: this.eventProp.time.start,
       timeEndDragStart: this.eventProp.time.end,
 
@@ -224,6 +225,12 @@ export default defineComponent({
   },
 
   computed: {
+    eventChangeHelper() {
+      const eventCurrentDay = this.time.addDaysToDateTimeString(this.changeInDaysOnDrag, this.dayInfo.dateTimeString)
+
+      return new EventChange(this.time, this.time.dateStringFrom(eventCurrentDay))
+    },
+
     isCustomEvent(): boolean {
       if (Array.isArray(this.eventProp.isCustom)) {
         return this.eventProp.isCustom.includes(this.mode);
@@ -241,7 +248,7 @@ export default defineComponent({
     },
 
     timePointsInDay() {
-      return this.time.DAY_END;
+      return this.time.HOURS_PER_DAY * 100;
     },
 
     timePointsInOneMinute() {
@@ -313,130 +320,64 @@ export default defineComponent({
   },
 
   watch: {
-    changeInQuarterHoursEventStart(newValue) {
-      const { hour: dayStartHour, minutes: dayStartMinutes } =
-        this.time.getHourAndMinutesFromTimePoints(this.time.DAY_START);
-      const { year, month, date } = this.time.getAllVariablesFromDateTimeString(
-        this.event.time.start
+    changeInQuarterHoursEventStart(newValue, oldValue) {
+      const newStartOfTimeDateTimeString = this.time.addMinutesToDateTimeString(
+        15 * newValue,
+        this.resizingStartingPointStartOfTime
       );
-      const startOfDayDateTimeString = this.time.getDateTimeStringFromDate(
-        new Date(year, month, date, dayStartHour, dayStartMinutes)
-      );
-      const { hour: oldHour, minutes: oldMinutes } =
-        this.time.getAllVariablesFromDateTimeString(
-          this.resizingStartingPointStartOfTime
-        );
-
-      const oldStartOfTimeDate = new Date(
-        year,
-        month,
-        date,
-        oldHour,
-        oldMinutes
-      );
-      const newStartOfTimeDate = new Date(
-        oldStartOfTimeDate.getTime() + newValue * 15 * 60000
-      );
-
-      const newStartOfTimeDateTimeString =
-        this.time.getDateTimeStringFromDate(newStartOfTimeDate);
+      const direction = newValue > oldValue ? DRAG_N_RESIZE_DIRECTION.FORWARDS : DRAG_N_RESIZE_DIRECTION.BACKWARDS;
+      const eventCanBeResizedFurther = this.eventChangeHelper.canEventBeMoved(
+        this.event,
+        direction
+      )
 
       // Only set the new start time, if it's earlier than the end time of the event
-      // and later than start of day
-      if (
-        newStartOfTimeDateTimeString < this.event.time.end &&
-        newStartOfTimeDateTimeString >= startOfDayDateTimeString
-      )
+      if (newStartOfTimeDateTimeString < this.event.time.end && eventCanBeResizedFurther) {
         this.event.time.start = newStartOfTimeDateTimeString;
+      }
     },
 
-    changeInQuarterHoursEventEnd(newValue) {
-      const { hour: dayEndHour, minutes: dayEndMinutes } =
-        this.time.getHourAndMinutesFromTimePoints(this.time.DAY_END);
-      const { year, month, date } = this.time.getAllVariablesFromDateTimeString(
-        this.event.time.start
-      );
-      const endOfDayDateTimeString = this.time.getDateTimeStringFromDate(
-        new Date(year, month, date, dayEndHour, dayEndMinutes)
-      );
-      const { hour: oldHour, minutes: oldMinutes } =
-        this.time.getAllVariablesFromDateTimeString(
-          this.resizingStartingPointEndOfTime
-        );
-
-      const oldEndOfTimeDate = new Date(year, month, date, oldHour, oldMinutes);
-      const newEndOfTimeDate = new Date(
-        oldEndOfTimeDate.getTime() + newValue * 15 * 60000
-      );
-
-      const newEndOfTimeDateTimeString =
-        this.time.getDateTimeStringFromDate(newEndOfTimeDate);
+    changeInQuarterHoursEventEnd(newValue, oldValue) {
+      const newEndOfTimeDateTimeString = this.time.addMinutesToDateTimeString(
+        15 * newValue,
+        this.resizingStartingPointEndOfTime
+      )
+      const direction = newValue > oldValue ? DRAG_N_RESIZE_DIRECTION.FORWARDS : DRAG_N_RESIZE_DIRECTION.BACKWARDS;
+      const eventCanBeResizedFurther = this.eventChangeHelper.canEventBeMoved(
+        this.event,
+        direction
+      )
 
       // Only set the new end time, if it's later than the start time of the event
-      // and earlier than end of day
-      if (
-        newEndOfTimeDateTimeString > this.event.time.start &&
-        newEndOfTimeDateTimeString <= endOfDayDateTimeString
-      )
+      if (newEndOfTimeDateTimeString > this.event.time.start && eventCanBeResizedFurther) {
         this.event.time.end = newEndOfTimeDateTimeString;
+      }
     },
 
-    changeInQuartersOnDrag(newValue) {
-      const eventCanBeDraggedFurther = DragAndDrop.eventCanBeDraggedFurther(
+    changeInQuartersOnDrag(newValue, oldValue) {
+      const direction = newValue > oldValue ? DRAG_N_RESIZE_DIRECTION.FORWARDS : DRAG_N_RESIZE_DIRECTION.BACKWARDS;
+
+      const eventCanBeDraggedFurther = this.eventChangeHelper.canEventBeMoved(
         this.event,
-        newValue <= -1 ? 'backwards' : 'forwards',
-        this.time.DAY_START,
-        this.time.DAY_END,
-      );
+        direction
+      )
+
       if (!eventCanBeDraggedFurther) return;
 
-      const newStart = this.time.addMinutesToDateTimeString(
-        newValue * 15,
-        this.timeStartDragStart
-      );
-      const newEnd = this.time.addMinutesToDateTimeString(
-        newValue * 15,
-        this.timeEndDragStart
-      );
-      // Only change the portion of a string that affects time
-      this.event.time.start = this.event.time.start.replace(
-        /\d{2}:\d{2}/,
-        newStart.substring(11, 16)
-      );
-      this.event.time.end = this.event.time.end.replace(
-        /\d{2}:\d{2}/,
-        newEnd.substring(11, 16)
-      );
+      this.updatePositionOnDrag();
     },
 
     changeInDaysOnDrag(newValue) {
       if (!this.dayElement) return;
       // +1 to account for the zero indexing vs length
-      const upcomingDaysInWeek =
-        this.dayInfo.daysTotalN - (this.dayInfo.thisDayIndex + 1);
+      const upcomingDaysInWeek = this.dayInfo.daysTotalN - (this.dayInfo.thisDayIndex + 1);
       const previousDaysInWeek = 0 - this.dayInfo.thisDayIndex;
       if (newValue > upcomingDaysInWeek || newValue < previousDaysInWeek)
         return;
 
       const pixelsToTransform = newValue * this.dayElement.clientWidth;
       this.eventTransformValue = `translateX(${pixelsToTransform}px)`;
-      // Only change the portion of the string that affects date
-      const newStart = this.time.addDaysToDateTimeString(
-        newValue,
-        this.timeStartDragStart
-      );
-      const newEnd = this.time.addDaysToDateTimeString(
-        newValue,
-        this.timeEndDragStart
-      );
-      this.event.time.start = this.event.time.start.replace(
-        /\d{4}-\d{2}-\d{2}/,
-        newStart.substring(0, 10)
-      );
-      this.event.time.end = this.event.time.end.replace(
-        /\d{4}-\d{2}-\d{2}/,
-        newEnd.substring(0, 10)
-      );
+      this.updatePositionOnDrag();
     },
   },
 
@@ -447,11 +388,11 @@ export default defineComponent({
   methods: {
     getPositionInDay(dateTimeString: string) {
       return (
-        eventPositionHelper
+        this.time
           .getPercentageOfDayFromDateTimeString(
             dateTimeString,
             this.time.DAY_START,
-            this.time.DAY_END
+            this.time.DAY_END,
           )
           .toString() + '%'
       );
@@ -459,18 +400,18 @@ export default defineComponent({
 
     getLengthOfEvent(start: string, end: string) {
       const startOfEvent =
-        eventPositionHelper.getPercentageOfDayFromDateTimeString(
+        this.time.getPercentageOfDayFromDateTimeString(
           start,
           this.time.DAY_START,
           this.time.DAY_END
         );
       const endOfEvent =
-        eventPositionHelper.getPercentageOfDayFromDateTimeString(
+        this.time.getPercentageOfDayFromDateTimeString(
           end,
           this.time.DAY_START,
           this.time.DAY_END
         );
-      const length = endOfEvent - startOfEvent;
+      const length = Math.abs(endOfEvent - startOfEvent);
 
       return length + '%';
     },
@@ -503,23 +444,20 @@ export default defineComponent({
     /**
      * Handle mousemove-events, while the event is being resized
      * */
-    onMouseMove(event: any) {
+    onMouseMoveResize(event: MouseEvent) {
       const eventsContainer = document.querySelector('.calendar-week__events');
 
       if (!eventsContainer) return;
-      if (typeof this.resizingStartingPoint === 'undefined')
+
+      if (typeof this.resizingStartingPoint === 'undefined') {
         this.resizingStartingPoint = event.clientY;
+      }
 
       const cursorPositionY = event.clientY;
-
-      if (!this.resizingStartingPoint) return;
-
       const nOfPixelsDistance = cursorPositionY - this.resizingStartingPoint;
       const eventsContainerHeight = eventsContainer.clientHeight;
-      const percentageOfDayChanged =
-        (nOfPixelsDistance / eventsContainerHeight) * 100;
-      const changeInTimePoints =
-        (this.timePointsInDay / 100) * percentageOfDayChanged;
+      const percentageOfDayChanged = (nOfPixelsDistance / eventsContainerHeight) * 100;
+      const changeInTimePoints = (this.timePointsInDay / 100) * percentageOfDayChanged;
       const changeInMinutes = this.getMinutesFromTimePoints(changeInTimePoints);
 
       // Count how many quarters have changed, since the event will only be updated
@@ -541,12 +479,12 @@ export default defineComponent({
     resizeEvent(direction: 'down' | 'up') {
       this.isResizing = true;
       this.resizingDirection = direction;
-      document.addEventListener('mousemove', this.onMouseMove);
+      document.addEventListener('mousemove', this.onMouseMoveResize);
       document.addEventListener('mouseup', this.onMouseUpWhenResizing);
     },
 
     stopResizing() {
-      document.removeEventListener('mousemove', this.onMouseMove);
+      document.removeEventListener('mousemove', this.onMouseMoveResize);
       document.removeEventListener('mouseup', this.onMouseUpWhenResizing);
       this.resetResizingValues();
       this.$emit('event-was-resized', this.event);
@@ -587,10 +525,12 @@ export default defineComponent({
 
       if (this.event?.color) {
         this.eventColor = '#fff';
-        return (this.eventBackgroundColor = this.colors[this.event.color]);
+        this.eventBackgroundColor = this.colors[this.event.color];
+
+        return;
       }
 
-      return (this.eventBackgroundColor = this.colors.blue);
+      this.eventBackgroundColor = this.colors.blue;
     },
 
     initDrag(domEvent: UIEvent) {
@@ -599,26 +539,27 @@ export default defineComponent({
 
       this.$emit('drag-start');
 
+      this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
+        document.addEventListener(name, callback);
+      });
+
       if (Helpers.isUIEventTouchEvent(domEvent)) {
-        this.handleDragMove(
-          (domEvent as TouchEvent).touches[0].clientX,
-          (domEvent as TouchEvent).touches[0].clientY
+        this.setInitialDragValues(
+          (domEvent as TouchEvent).touches[0]?.clientX,
+          (domEvent as TouchEvent).touches[0]?.clientY
         );
       } else {
-        this.handleDragMove((domEvent as MouseEvent).clientX, (domEvent as MouseEvent).clientY);
+        this.setInitialDragValues((domEvent as MouseEvent).clientX, (domEvent as MouseEvent).clientY);
       }
     },
 
-    handleDragMove(clientX: number, clientY: number) {
+    setInitialDragValues(clientX: number, clientY: number) {
       this.canDrag = true;
       this.eventZIndexValue = 10;
       this.clientYDragStart = clientY;
       this.clientXDragStart = clientX;
       this.timeStartDragStart = this.event.time.start;
       this.timeEndDragStart = this.event.time.end;
-      this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
-        document.addEventListener(name, callback, { passive: false });
-      });
     },
 
     onMouseUpWhenDragging() {
@@ -632,16 +573,13 @@ export default defineComponent({
       this.dragMoveListenerNameAndCallbacks.forEach(([name, callback]) => {
         document.removeEventListener(name, callback);
       });
-      const dayChanged =
-        this.changeInDaysOnDrag <= -1 || this.changeInDaysOnDrag > 0;
-      const timeChanged =
-        this.changeInQuartersOnDrag <= -1 || this.changeInQuartersOnDrag > 0;
-
+      const dayChanged = this.changeInDaysOnDrag <= -1 || this.changeInDaysOnDrag > 0;
+      const timeChanged = this.changeInQuartersOnDrag <= -1 || this.changeInQuartersOnDrag > 0;
       if (dayChanged || timeChanged) this.$emit('event-was-dragged', this.event);
     },
 
     handleDrag(mouseEvent: UIEvent) {
-      // Do not run the drag & drop algorithms, when element is being resized
+      // Do not run the drag & drop algorithms, under the following conditions:
       if (this.isResizing || !this.canDrag || !this.clientYDragStart) return;
 
       if (Helpers.isUIEventTouchEvent(mouseEvent)) {
@@ -685,6 +623,21 @@ export default defineComponent({
         changeInPixelsX < 0
           ? Math.ceil(changeInPixelsX / dayWidth)
           : Math.floor(changeInPixelsX / dayWidth);
+    },
+
+    updatePositionOnDrag() {
+      const minutesChangedVertically = this.changeInQuartersOnDrag * 15;
+      const minutesChangedHorizontally = this.changeInDaysOnDrag * 1440;
+
+      this.event.time.start = this.time.addMinutesToDateTimeString(
+        minutesChangedVertically + minutesChangedHorizontally,
+        this.timeStartDragStart
+      );
+
+      this.event.time.end = this.time.addMinutesToDateTimeString(
+        minutesChangedVertically + minutesChangedHorizontally,
+        this.timeEndDragStart
+      );
     },
   },
 });

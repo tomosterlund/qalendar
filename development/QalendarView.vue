@@ -24,6 +24,9 @@
         @event-was-dragged="handleEventWasDragged"
         @interval-was-clicked="handleIntervalWasClicked"
       >
+        <template #monthEvent="{eventData}">
+          {{ eventData.title }}
+        </template>
         <template #customCurrentTime>
           <div
             :style="{
@@ -45,19 +48,23 @@
             />
           </div>
         </template>
-<!--        <template v-slot:weekDayEvent="eventProps" #weekDayEvent>-->
-<!--          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">-->
-<!--                    {{ eventProps.eventData.title }}-->
 
-<!--            <div>-->
-<!--              <input type="checkbox" />-->
+        <template #weekDayEvent="eventProps">
+          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
+            {{ eventProps.eventData.title }}
 
-<!--              <label for="checkbox">-->
-<!--                Select time slot-->
-<!--              </label>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </template>-->
+            <div>
+              <input
+                id="checkox-select-time"
+                type="checkbox"
+              >
+
+              <label for="checkox-select-time">
+                Select time slot
+              </label>
+            </div>
+          </div>
+        </template>
 
         <template #eventDialog="props">
           <div
@@ -80,19 +87,19 @@
           </div>
         </template>
 
-        <template #dayCell="{dayData}">
-          <div>
-            <div> {{ dayData.dateTimeString.substring(8, 10) }}</div>
-            <div> {{ dayData.events.length }} events</div>
-          </div>
-        </template>
+<!--        <template #dayCell="{dayData}">-->
+<!--          <div>-->
+<!--            <div> {{ dayData.dateTimeString.substring(8, 10) }}</div>-->
+<!--            <div> {{ dayData.events.length }} events</div>-->
+<!--          </div>-->
+<!--        </template>-->
       </Qalendar>
     </main>
 
     <DevToolbar
       @selected-locale="config.locale = $event"
       @selected-layout="layout = $event"
-      @selected-n-days="config.week.nDays = $event"
+      @selected-n-days="config.week!.nDays = $event"
     />
   </div>
 </template>
@@ -106,6 +113,7 @@ import { seededEvents } from './data/seeded-events';
 import DevToolbar from './components/DevToolbar.vue';
 import DevSidebar from './components/DevSidebar.vue';
 import DevHeader from './components/DevHeader.vue';
+import { WEEK_START_DAY } from "../src/helpers/Time";
 
 export default defineComponent({
   name: 'QalendarView',
@@ -121,11 +129,11 @@ export default defineComponent({
     return {
       config: {
         week: {
-          startsOn: 'monday',
+          startsOn: WEEK_START_DAY.MONDAY,
           nDays: 7,
           scrollToHour: 8,
         },
-        locale: 'de-DE',
+        locale: 'en-US',
         style: {
           fontFamily: `'Nunito', 'sans-serif', 'Verdana`,
           colorSchemes: {
@@ -139,19 +147,24 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: 'week',
+        defaultMode: 'month',
         showCurrentTime: true,
         isSilent: true,
         dayIntervals: {
           height: 50,
           length: 30,
         },
+        dayBoundaries: {
+          start: 4,
+          end: 4,
+        },
         eventDialog: {
           isDisabled: false,
           // isCustom: true,
         },
         month: {
-          showTrailingAndLeadingDates: false,
+          // showTrailingAndLeadingDates: false,
+          showEventsOnMobileView: true,
         }
       } as configInterface,
       events: [] as eventInterface[],
@@ -170,8 +183,8 @@ export default defineComponent({
     setTimeout(() => {
       this.events = seededEvents.map((e) => {
         // @ts-ignore
-        // e.isCustom = true;
-        // e.isEditable = false;
+        e.isCustom = false;
+        e.isEditable = true;
 
         return e;
       });
@@ -224,7 +237,7 @@ export default defineComponent({
   main {
     width: 1400px;
     max-width: 100%;
-    height: 900px;
+    height: 800px;
     max-height: calc(100vh - 20px);
   }
 }
@@ -238,6 +251,7 @@ body {
 
   main {
     width: 100%;
+    height: 600px;
   }
 }
 
