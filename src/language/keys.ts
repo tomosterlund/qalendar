@@ -70,5 +70,6 @@ export const languageKeys = {
     'nl-NL': 'Geen evenementen',
     'ru-RU': 'Нет событий',
     'ar-YE': 'لا أحداث',
+    'es-ES': 'No hay eventos',
   },
 };
