@@ -14,42 +14,47 @@
     @drop="handleDrop"
     @dragend="handleDragEnd"
   >
-    <span
-      class="calendar-month__day-date"
+    <slot
+      name="dayCell"
+      :day-data="day"
     >
-      {{ day.dateTimeString.substring(8, 10).startsWith('0') ? day.dateTimeString.substring(9, 10) : day.dateTimeString.substring(8, 10) }}
-    </span>
+      <span
+        class="calendar-month__day-date"
+      >
+        {{ day.dateTimeString.substring(8, 10).startsWith('0') ? day.dateTimeString.substring(9, 10) : day.dateTimeString.substring(8, 10) }}
+      </span>
 
-    <div class="calendar-month_events">
-      <template
-        v-for="(calendarEvent, index) in day.events"
-        :key="index"
-      >
-        <Event
-          v-if="index < 3"
-          :key="calendarEvent.id"
-          :calendar-event="calendarEvent"
-          :config="config"
-          :time="time"
-          :day="day"
-          @event-was-clicked="$emit('event-was-clicked', $event)"
+      <div class="calendar-month_events">
+        <template
+          v-for="(calendarEvent, index) in day.events"
+          :key="index"
         >
-          <template #monthEvent="p">
-            <slot
-              :event-data="p.eventData"
-              name="monthEvent"
-            />
-          </template>
-        </Event>
-      </template>
-      <div
-        v-if="day.events.length >= 4"
-        class="calendar-month__weekday-more"
-        @click="getMoreEvents"
-      >
-        {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
+          <Event
+            v-if="index < 3"
+            :key="calendarEvent.id"
+            :calendar-event="calendarEvent"
+            :config="config"
+            :time="time"
+            :day="day"
+            @event-was-clicked="$emit('event-was-clicked', $event)"
+          >
+            <template #monthEvent="p">
+              <slot
+                :event-data="p.eventData"
+                name="monthEvent"
+              />
+            </template>
+          </Event>
+        </template>
+        <div
+          v-if="day.events.length >= 4"
+          class="calendar-month__weekday-more"
+          @click="getMoreEvents"
+        >
+          {{ getLanguage(languageKeys.moreEvents, time.CALENDAR_LOCALE) }}
+        </div>
       </div>
-    </div>
+    </slot>
   </div>
 
   <div

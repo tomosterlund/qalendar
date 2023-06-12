@@ -87,12 +87,12 @@
           </div>
         </template>
 
-        <template #dayCell="{dayData}">
-          <div>
-            <div> {{ dayData.dateTimeString.substring(8, 10) }}</div>
-            <div> {{ dayData.events.length }} events</div>
-          </div>
-        </template>
+<!--        <template #dayCell="{dayData}">-->
+<!--          <div>-->
+<!--            <div> {{ dayData.dateTimeString.substring(8, 10) }}</div>-->
+<!--            <div> {{ dayData.events.length }} events</div>-->
+<!--          </div>-->
+<!--        </template>-->
       </Qalendar>
     </main>
 
