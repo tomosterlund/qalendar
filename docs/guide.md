@@ -16,7 +16,10 @@ All examples below are written in options API, but you can also use composition 
 
 ``` vue
 <template>
-    <Qalendar :events="events" />
+    <Qalendar 
+      :events="events"
+      :config="config"
+    />
 </template>
 
 <script>
@@ -50,6 +53,9 @@ export default {
                 }
                 // ...
             ],
+            config: {
+              // see configuration section
+            }
         }
     },
 }
@@ -458,6 +464,50 @@ data() {
 ```
 
 The `dayBoundaries.start` and `dayBoundaries.end` options take any integer between 0 and 24.
+
+Also, the day boundaries are not bound to a regular calendar day. If you want a day to start at 6AM
+and end at 3AM the next day, you can do that as well:
+
+```vue
+
+<template>
+  <Qalendar
+    :selected-date="new Date(2022, 0, 8)"
+    :events="events"
+    :config="config"
+  />
+</template>
+
+<script>
+import { Qalendar } from "qalendar";
+
+export default {
+  components: {
+    Qalendar,
+  },
+
+  data() {
+    return {
+      events: [
+        // some events
+      ],
+
+      config: {
+        dayBoundaries: {
+          start: 6,
+          end: 3,
+        },
+      },
+    };
+  },
+};
+</script>
+```
+
+<div style="height: 800px" class="calendar-container">
+    <Qalendar :selected-date="new Date(2022, 4, 16)" :events="seededEventsDemoWeek" :config="{ dayBoundaries: { start: 6, end: 3} }" />
+</div>
+
 
 ::: tip
 If you only display a few hours of a day, you might want to consider using the `dayIntervals`
