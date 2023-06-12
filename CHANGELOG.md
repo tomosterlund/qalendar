@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/tomosterlund/qalendar/compare/v2.5.0...v3.0.0) (2023-06-12)
+
+
+### Features
+
+* v3 ([#177](https://github.com/tomosterlund/qalendar/issues/177)) ([b9ff016](https://github.com/tomosterlund/qalendar/commit/b9ff0161b0293373a1ccef3ad9896a4e358f4305)), closes [#174](https://github.com/tomosterlund/qalendar/issues/174) [#146](https://github.com/tomosterlund/qalendar/issues/146) [#163](https://github.com/tomosterlund/qalendar/issues/163)
+
+
+### BREAKING CHANGES
+
+* month mode on small screens has a new layout, and monthEvent slot now only works on larger screens
+
 # [2.5.0](https://github.com/tomosterlund/qalendar/compare/v2.4.0...v2.5.0) (2023-04-06)
 
 
