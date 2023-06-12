@@ -1,7 +1,7 @@
 {
   "name": "qalendar",
   "description": "Event calendar and date picker for Vue 3",
-  "version": "2.3.3",
+  "version": "2.5.0",
   "homepage": "https://tomosterlund.github.io/qalendar/",
   "repository": {
     "type": "git",
@@ -91,7 +91,7 @@
     "postcss-scss": "4.0.6",
     "prettier": "2.8.4",
     "sass": "1.58.3",
-    "semantic-release": "20.1.1",
+    "semantic-release": "21.0.2",
     "start-server-and-test": "2.0.0",
     "stylelint": "15.2.0",
     "stylelint-config-recommended-vue": "1.4.0",

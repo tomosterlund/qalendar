@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/tomosterlund/qalendar/compare/v2.4.0...v2.5.0) (2023-04-06)
+
+
+### Features
+
+* add Spanish translations ([e86a20c](https://github.com/tomosterlund/qalendar/commit/e86a20c79e03aeaea245cb3b397787f3ad7c5c9e))
+
+# [2.4.0](https://github.com/tomosterlund/qalendar/compare/v2.3.3...v2.4.0) (2023-04-02)
+
+
+### Features
+
+* custom day slot ([#130](https://github.com/tomosterlund/qalendar/issues/130)) ([0fcad1b](https://github.com/tomosterlund/qalendar/commit/0fcad1b058d2761de953d7bbbf94552c486a7ecc))
+
 ## [2.3.3](https://github.com/tomosterlund/qalendar/compare/v2.3.2...v2.3.3) (2023-04-01)
 
 

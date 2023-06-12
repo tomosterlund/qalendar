@@ -14,6 +14,7 @@ import CustomizedDayBoundaries from './cypress/CustomizedDayBoundaries.vue'
 import EmittedEvents from './cypress/EmittedEvents.vue'
 import SmallQalendar from './cypress/SmallQalendar.vue'
 import MultipleDayEvents from './cypress/MultipleDayEvents.vue'
+import DayCell from './cypress/DayCell.vue'
 import EventRenderingRegularDay from './cypress/EventRenderingRegularDay.vue'
 import EventRenderingFlexibleDay from './cypress/EventRenderingFlexibleDay.vue'
 
@@ -35,6 +36,7 @@ const routes = [
   { path: "/cypress/multiple-day-events", component: MultipleDayEvents },
   { path: "/cypress/events-regular-day", component: EventRenderingRegularDay },
   { path: "/cypress/events-flexible-day", component: EventRenderingFlexibleDay },
+  { path: "/cypress/day-cell", component: DayCell },
 ];
 
 const router = createRouter({

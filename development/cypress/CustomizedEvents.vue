@@ -11,7 +11,7 @@
             <span class="is-title">{{ eventProps.eventData.title }}</span>
 
             <div>
-              <input type="checkbox" />
+              <input type="checkbox">
 
               <label for="checkbox">
                 Select time slot
@@ -28,14 +28,23 @@
 
         <template #eventDialog="props">
           <div
-              v-if="props.eventDialogData && props.eventDialogData.title"
-              :style="{ padding: '16px' }"
+            v-if="props.eventDialogData && props.eventDialogData.title"
+            :style="{ padding: '16px' }"
           >
-            <div :style="{marginBottom: '8px'}">Edit event</div>
+            <div :style="{marginBottom: '8px'}">
+              Edit event
+            </div>
 
-            <input class="flyout-input" type="text" :style="{ width: '90%', padding: '8px', marginBottom: '8px' }" >
+            <input
+              class="flyout-input"
+              type="text"
+              :style="{ width: '90%', padding: '8px', marginBottom: '8px' }"
+            >
 
-            <button class="close-flyout" @click="props.closeEventDialog">
+            <button
+              class="close-flyout"
+              @click="props.closeEventDialog"
+            >
               Finished!
             </button>
           </div>
