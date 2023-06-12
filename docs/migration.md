@@ -31,3 +31,6 @@ the month now has an "agenda" type layout, where each day can be clicked to disp
 events. Nothing has to be configured for this. Nevertheless, if any of your business
 logic or tests are tied to the type of elements that is displayed in the calendar, you might want to
 test your implementation on a small screen before rolling out an update.
+
+Please note, that in case you are using the `monthEvent` slot, this will now only work for larger
+screens. The custom month event slot for mobile view will be released with a later minor version.
