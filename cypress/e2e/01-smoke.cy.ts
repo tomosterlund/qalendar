@@ -32,12 +32,15 @@ describe('Rendering the component', () => {
 
   it('Selects the different modes', () => {
     assertIsWeekMode()
+    cy.compareSnapshot('01-smoke__week-mode')
 
     setMonthMode()
     assertIsMonthMode()
+    cy.compareSnapshot('01-smoke__month-mode')
 
     setDayMode()
     assertIsDayMode()
+    cy.compareSnapshot('01-smoke__day-mode')
 
     setWeekMode()
     assertIsWeekMode()

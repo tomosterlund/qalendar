@@ -16,3 +16,5 @@ jobs:
         with:
           browser: chrome
           start: npm run dev
+          env: type=actual # for screenshot testing
+          config: screenshotsFolder=cypress/snapshots/actual
