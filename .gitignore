@@ -12,6 +12,7 @@ lerna-debug.log*
 /cypress/videos/
 /cypress/screenshots/
 /cypress/snapshots/diff
+/cypress/snapshots/actual
 
 node_modules
 .DS_Store
