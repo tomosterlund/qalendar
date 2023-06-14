@@ -36,14 +36,17 @@
         class="calendar-header__mode-picker"
       >
         <template
-          v-for="mode in modeOptions"
-          :key="mode"
+          v-for="mode_ in modeOptions"
+          :key="mode_"
         >
           <div
             class="calendar-header__mode-value"
-            @click="$emit('change-mode', mode)"
+            @click="$emit('change-mode', mode_)"
+            :class="{
+              'calendar-header__mode-active': mode_ === mode,
+            }"
           >
-            {{ getLanguage(languageKeys[mode], time.CALENDAR_LOCALE) }}
+            {{ getLanguage(languageKeys[mode_], time.CALENDAR_LOCALE) }}
           </div>
         </template>
       </div>
@@ -275,6 +278,10 @@ export default defineComponent({
         color: var(--qalendar-gray-quite-dark);
       }
     }
+  }
+
+  &__mode-active {
+      background-color:  var(--qalendar-light-gray);
   }
 
   &__mode-picker {
