@@ -18,8 +18,8 @@ jobs:
           start: npm run dev
           env: type=actual # for screenshot testing
           config: screenshotsFolder=cypress/snapshots/actual
-      - name: Archive code coverage results
+      - name: Upload diff from visual regression tests as artifacts 📦
         uses: actions/upload-artifact@v3
         with:
           name: code-coverage-report
-          path: cypress/snapshots/diff
+          path: cypress/snapshots
