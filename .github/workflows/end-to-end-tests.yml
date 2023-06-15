@@ -17,6 +17,7 @@ jobs:
           env: type=actual # for screenshot testing
           config: screenshotsFolder=cypress/snapshots/actual
       - uses: actions/upload-artifact@v3
+        if: failure()
         with:
           name: visual-regression-diff
           path: cypress/snapshots
