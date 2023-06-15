@@ -15,7 +15,14 @@ jobs:
           browser: chrome
           start: npm run dev
           env: type=actual # for screenshot testing
-          config: screenshotsFolder=cypress/snapshots/actual
+          config: screenshotsFolder=cypress/snapshots/ubuntu/actual
+      - uses: cypress-io/github-action@v4
+        with:
+          if: failure()
+          browser: chrome
+          start: npm run dev
+          env: type=base # for recording screenshots
+          config: screenshotsFolder=cypress/snapshots/ubuntu/base
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
