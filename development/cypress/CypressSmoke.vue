@@ -1,7 +1,10 @@
 <template>
   <div class="page">
     <div class="wrapper">
-      <Qalendar :config="config" />
+      <Qalendar
+        :config="config"
+        :selected-date="new Date(2023, 6 - 1, 15)"
+      />
     </div>
   </div>
 </template>
