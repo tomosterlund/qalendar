@@ -9,17 +9,15 @@ jobs:
   chrome:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout ✅
-        uses: actions/checkout@v3
-      - name: E2E on Chrome 🧪
-        uses: cypress-io/github-action@v4
+      - uses: actions/checkout@v3
+      - uses: cypress-io/github-action@v4
         with:
           browser: chrome
           start: npm run dev
           env: type=actual # for screenshot testing
           config: screenshotsFolder=cypress/snapshots/actual
-      - name: Upload diff from visual regression tests as artifacts 📦
-        uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v3
         with:
-          name: code-coverage-report
+          name: visual-regression-diff
           path: cypress/snapshots
+          retention-days: 14
