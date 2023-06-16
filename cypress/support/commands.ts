@@ -7,6 +7,7 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
+import compareSnapshotCommand from "cypress-visual-regression/dist/command";
 
 // @ts-ignore
 Cypress.Commands.add('changeMode', mode => {
@@ -16,3 +17,5 @@ Cypress.Commands.add('changeMode', mode => {
     .get('.is-' + mode + '-mode')
     .click()
 })
+
+compareSnapshotCommand();

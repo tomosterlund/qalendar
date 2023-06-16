@@ -1,7 +1,9 @@
 <template>
   <div class="page">
     <div class="wrapper">
-      <Qalendar :config="config" />
+      <Qalendar
+        :config="config"
+      />
     </div>
   </div>
 </template>

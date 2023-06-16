@@ -17,6 +17,7 @@ describe('CustomizedEvents.vue', () => {
 
   it('Gets the title from a custom event', () => {
     getFirstEventInWeek().contains('Meeting: John w. parents')
+    cy.compareSnapshot('06-customized-events')
   });
 
   it('Opens a customized flyout from a custom event and closes it again', () => {
@@ -32,6 +33,7 @@ describe('CustomizedEvents.vue', () => {
     assertMonthEventExistsWithId('#calendar-month__event-98485e08441e2022-06-07')
     // Then check that a custom event is displayed
     assertMonthEventExistsWithId('#calendar-month__event-930ad71ff7e22022-06-07', true)
+    cy.compareSnapshot('06-customized-events-month')
   })
 
   it('Should open the event flyout on clicking a custom monthEvent', () => {
@@ -39,5 +41,6 @@ describe('CustomizedEvents.vue', () => {
     getEventFlyout().should('not.be.visible')
     clickFirstCustomEventInMonth()
     getEventFlyout().should('be.visible')
+    cy.compareSnapshot('06-customized-events-month-flyout')
   })
 })
