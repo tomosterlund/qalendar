@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/tomosterlund/qalendar/compare/v3.0.0...v3.1.0) (2023-06-16)
+
+
+### Features
+
+* **month:** add highlight to current day ([#180](https://github.com/tomosterlund/qalendar/issues/180)) ([0f08cef](https://github.com/tomosterlund/qalendar/commit/0f08cef62a5b02d5a6f26d897b7963480b2eb828))
+
 # [3.0.0](https://github.com/tomosterlund/qalendar/compare/v2.5.0...v3.0.0) (2023-06-12)
 
 
