@@ -334,6 +334,7 @@ export default defineComponent({
 
 <style lang="scss">
 @import './styles/variables.scss';
+@import './styles/mixins.scss';
 @import '../node_modules/perfect-scrollbar/css/perfect-scrollbar.css';
 
 .calendar-root-wrapper {
@@ -353,6 +354,11 @@ export default defineComponent({
     margin: 0 auto;
     display: flex;
     flex-flow: column;
+
+    @include dark-mode {
+      background: #121212;
+      color: #fff;
+    }
 
     .top-bar-loader {
       position: absolute;
@@ -381,6 +387,10 @@ export default defineComponent({
       );
       animation: load 1.8s infinite;
       border-radius: 16px;
+
+      @include dark-mode {
+        background: rgb(229, 224, 245);
+      }
     }
 
     @keyframes load {

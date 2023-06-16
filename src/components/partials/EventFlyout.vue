@@ -366,6 +366,11 @@ export default defineComponent({
   opacity: 0;
   pointer-events: none;
 
+  @include mixins.dark-mode {
+    background-color: var(--qalendar-dark-mode-elevated-surface);
+    border-color: transparent;
+  }
+
   &.is-visible {
     opacity: 1;
     transform: translateY(0);

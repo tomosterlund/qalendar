@@ -211,6 +211,10 @@ export default defineComponent({
     grid-gap: var(--qalendar-spacing);
   }
 
+  @include mixins.dark-mode {
+    color: var(--qalendar-dark-mode-text-hint);
+  }
+
   &__period {
     display: flex;
     flex-wrap: wrap;
@@ -264,6 +268,10 @@ export default defineComponent({
     cursor: pointer;
     border: var(--qalendar-border-gray-thin);
 
+    @include mixins.dark-mode {
+      border-color: transparent;
+    }
+
     .calendar-header__mode-value {
       padding: 0 var(--qalendar-spacing);
       width: 100%;
@@ -271,6 +279,11 @@ export default defineComponent({
       display: flex;
       align-items: center;
       user-select: none;
+      border-radius: 4px;
+
+      @include mixins.dark-mode {
+        background-color: var(--qalendar-dark-mode-lightly-elevated-surface);
+      }
     }
 
     .calendar-header__mode-options {
@@ -281,6 +294,11 @@ export default defineComponent({
       transform: translateX(-50%);
       border: var(--qalendar-border-gray-thin);
       background-color: #fff;
+
+      @include mixins.dark-mode {
+        border-color: transparent;
+        background-color: var(--qalendar-dark-mode-elevated-surface);
+      }
 
       .calendar-header__mode-option {
         padding: var(--qalendar-spacing-half) var(--qalendar-spacing);

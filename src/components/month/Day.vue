@@ -198,6 +198,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@use '../../styles/_mixins.scss' as mixins;
+
 @mixin day-base {
   height: 100%;
   flex: 1;
@@ -206,6 +208,10 @@ export default defineComponent({
   align-items: center;
   border-right: var(--qalendar-border-gray-thin);
   border-bottom: var(--qalendar-border-gray-thin);
+
+  @include mixins.dark-mode {
+    border-color: var(--qalendar-dark-mode-line-color);
+  }
 }
 
 .calendar-month__weekday {
