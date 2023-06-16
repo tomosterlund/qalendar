@@ -52,8 +52,12 @@ export default class PageObject {
     cy.get('.mode-is-day')
   }
 
-  static getToday() {
+  static getTodayInWeekMode() {
     return cy.get('div.week-timeline__day.is-today')
+  }
+
+  static getTodayInMonthMode() {
+    return cy.get('.calendar-month__weekday.is-today')
   }
 
   static getPeriodName() {
@@ -72,7 +76,7 @@ export default class PageObject {
     cy.get('.has-day').first().click()
   }
 
-  static getQalendarRoowWrapper() {
+  static getQalendarRootWrapper() {
     return cy.get('.calendar-root-wrapper')
   }
 

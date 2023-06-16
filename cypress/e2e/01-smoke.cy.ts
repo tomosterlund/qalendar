@@ -1,8 +1,9 @@
 import PageObject from "../support/page-object";
 
 const {
-  getQalendarRoowWrapper,
-  getToday,
+  getQalendarRootWrapper,
+  getTodayInWeekMode,
+  getTodayInMonthMode,
   assertIsDayMode,
   assertIsMonthMode,
   assertIsWeekMode,
@@ -21,13 +22,18 @@ describe('Rendering the component', () => {
   });
 
   it('Renders Qalendar', () => {
-    getQalendarRoowWrapper().should('exist')
+    getQalendarRootWrapper().should('exist')
   });
 
-  it('Highlights the current date, using the "is-today" class', () => {
+  it('Highlights the current date in week mode', () => {
     const today = new Date()
+    getTodayInWeekMode().contains(today.getDate().toString())
+  });
 
-    getToday().contains(today.getDate().toString())
+  it('Highlights the current date in month mode', () => {
+    const today = new Date()
+    setMonthMode()
+    getTodayInMonthMode().contains(today.getDate().toString())
   });
 
   it('Selects the different modes', () => {

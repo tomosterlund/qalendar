@@ -93,4 +93,44 @@ describe("Day.vue", () => {
     const dayBody = underTest.find(".calendar-month__weekday");
     expect(dayBody.classes()).not.toContain("is-selected");
   })
+
+  it('should not contain an element with class "is-today" if the given day.dateTimeString is not today', () => {
+    const underTest = day({ props: defaultProps });
+    const dayBody = underTest.find(".calendar-month__weekday");
+    expect(dayBody.classes()).not.toContain("is-today");
+  });
+
+  it('should contain an element with class "is-today" if the given day.dateTimeString is today', () => {
+    const dateTimeString = new Time().getDateTimeStringFromDate(new Date());
+    const props = {
+      ...defaultProps,
+      day: {
+        ...defaultProps.day,
+        dateTimeString,
+      },
+    }
+
+    const underTest = day({ props });
+    const dayBody = underTest.find(".calendar-month__weekday");
+    expect(dayBody.classes()).toContain("is-today");
+  });
+
+  it('should not display day element if day.isTrailingOrLeadingDate is true and ', () => {
+    const props = {
+      ...defaultProps,
+      config: {
+        month: {
+          showTrailingAndLeadingDates: false,
+        }
+      },
+      day: {
+        ...defaultProps.day,
+        isTrailingOrLeadingDate: true,
+      },
+    }
+
+    const underTest = day({ props });
+    const dayBody = underTest.find(".calendar-month__weekday");
+    expect(dayBody.exists()).toBeFalsy();
+  });
 });
