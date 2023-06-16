@@ -19,7 +19,7 @@ export default defineConfig({
   env: {
     SNAPSHOT_BASE_DIRECTORY: `./cypress/snapshots/${platformForCypressSnapshots}/base`,
     SNAPSHOT_DIFF_DIRECTORY: `./cypress/snapshots/${platformForCypressSnapshots}/diff`,
-    ALWAYS_GENERATE_DIFF: 'true',
+    ALWAYS_GENERATE_DIFF: true,
     screenshotsFolder: `./cypress/snapshots/${platformForCypressSnapshots}/actual`,
     trashAssetsBeforeRuns: true,
   },
