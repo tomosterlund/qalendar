@@ -21,7 +21,6 @@
         <Day
           v-for="(day, dayIndex) in week"
           :key="dayIndex"
-          :is-first-week="weekIndex === 0"
           :config="config"
           :day="day"
           :time="time"

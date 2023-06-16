@@ -6,7 +6,8 @@
     :class="{
       'is-droppable': canBeDropped,
       'trailing-or-leading': day.isTrailingOrLeadingDate,
-      'is-selected': isSelected
+      'is-selected': isSelected,
+      'is-today': isToday,
     }"
     @click="emitDayWasClicked"
     @dragleave="handleDragLeave"
@@ -92,10 +93,6 @@ export default defineComponent({
       type: Object as PropType<dayInterface>,
       required: true,
     },
-    isFirstWeek: {
-      type: Boolean,
-      default: false,
-    },
     isSelected: {
       type: Boolean,
       default: false,
@@ -123,6 +120,16 @@ export default defineComponent({
 
     hideLeadingAndTrailingDate() {
       return this.day.isTrailingOrLeadingDate === true && this.config.month?.showTrailingAndLeadingDates === false
+    },
+
+    isToday() {
+      const {
+        year,
+        month,
+        date
+      } = this.time.getAllVariablesFromDateTimeString(this.day.dateTimeString);
+
+      return this.time.dateIsToday(new Date(year, month, date));
     },
   },
 
@@ -261,6 +268,19 @@ export default defineComponent({
     .calendar-month__weekday-more {
       .qalendar-is-small & {
         display: none;
+      }
+    }
+  }
+
+  &.is-today {
+    .calendar-month__day-date {
+      background-color: var(--qalendar-theme-color);
+      color: #fff;
+      border-radius: 50%;
+      padding: 4px 6px;
+
+      .qalendar-is-small & {
+        padding: 2px 4px;
       }
     }
   }
