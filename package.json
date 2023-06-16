@@ -81,7 +81,7 @@
     "@vue/eslint-config-prettier": "7.1.0",
     "@vue/eslint-config-typescript": "11.0.3",
     "@vue/test-utils": "2.3.2",
-    "@vue/tsconfig": "0.4.0",
+    "@vue/tsconfig": "0.1.0",
     "cypress": "12.11.0",
     "cypress-visual-regression": "^3.0.0",
     "eslint": "8.42.0",
