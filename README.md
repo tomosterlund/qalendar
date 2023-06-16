@@ -26,7 +26,7 @@ Discord: https://discord.gg/Z6sTaTNADN
 If you are benefiting from this library, and want to see it developed & maintained in the long
 run, please consider sponsoring.
 
-[![Sponsor me](https://github.com/sponsors/tomosterlund)
+[Sponsor me today](https://github.com/sponsors/tomosterlund)
 
 ## License
 
