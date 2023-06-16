@@ -17,8 +17,12 @@ describe('FiveDayWeek.vue', () => {
   });
 
   it('Gets a multiple day event, and opens it in EventFlyout', () => {
+    cy.wait(500)
+    cy.compareSnapshot('02-five-day-week')
     getFirstEventInWeekTimeline().click()
     getEventFlyoutTitle().contains('Advanced algebra')
+    cy.wait(500)
+    cy.compareSnapshot('02-five-day-week__event-dialog')
   });
 
   it('Gets a timed event, and opens it in EventFlyout', () => {

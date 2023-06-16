@@ -3,7 +3,6 @@
     <div class="wrapper">
       <Qalendar
         :config="config"
-        :selected-date="new Date(2023, 6 - 1, 15)"
       />
     </div>
   </div>
