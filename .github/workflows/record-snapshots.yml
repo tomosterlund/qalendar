@@ -6,7 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: cypress-io/github-action@v4
-        if: failure()
         with:
           browser: chrome
           start: npm run dev
