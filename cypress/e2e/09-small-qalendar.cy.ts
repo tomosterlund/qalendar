@@ -21,6 +21,7 @@ describe('SmallQalendar', () => {
   })
 
   it('should only display mode options for day and month', () => {
+    cy.compareSnapshot('small-qalendar')
     getModePicker().click()
     getModePickerMonthOption().should('exist')
     getModePickerDayOption().should('exist')
@@ -30,6 +31,7 @@ describe('SmallQalendar', () => {
   it('should display leading and trailing days by default in month mode', () => {
     setMonthMode()
     getTrailingOrLeadingDays().should('be.visible')
+    cy.compareSnapshot('small-qalendar-month')
   })
 
   it('should set selected date by default in month mode and display active style for it', () => {

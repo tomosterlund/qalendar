@@ -16,5 +16,6 @@ describe('CustomizedDayBoundaries.vue', () => {
 
   it('Finds 12 hours in the day timeline', () => {
     getAllTimelineHours().should('have.length', 12)
+    cy.compareSnapshot('customized-day-boundaries')
   })
 })
