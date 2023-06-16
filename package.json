@@ -25,7 +25,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build && tsc --emitDeclarationOnly",
+    "build": "vue-tsc --noEmit && vite build && tsc --emitDeclarationOnly && rm -rf dist/cypress",
     "preview": "vite preview --port 5050",
     "prepare": "npm run build",
     "test:unit": "vitest --environment jsdom",
