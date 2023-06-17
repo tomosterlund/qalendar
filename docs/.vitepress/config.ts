@@ -12,7 +12,10 @@ export default {
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2022-present Tom Österlund'
     },
-    logo: 'https://discover-test-files.s3.eu-central-1.amazonaws.com/Q+MAIN.png',
+    logo: {
+      light: 'https://discover-test-files.s3.eu-central-1.amazonaws.com/Q+MAIN.png',
+      dark: 'https://discover-test-files.s3.eu-central-1.amazonaws.com/qalendar-dark-mode.svg'
+    },
   },
   // appearance: false,
 };
