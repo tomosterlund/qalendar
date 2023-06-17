@@ -100,6 +100,8 @@ prevent this by wrapping it in an element with the inline style `style="color-sc
 Qalendar takes a `config` prop, which contains all the most crucial options for configuring its
 behavior. `config` is passed as an object, which could look like this:
 
+## Basic configuration
+
 ```js
 data()
 {
