@@ -26,6 +26,10 @@ features:
     title: Drag & Drop
     details: Drag and drop events to change their date and time. Available on both desktop and mobile.
   - icon:
+      src: /dark-mode.svg
+    title: Dark mode
+    details: Native support for dark mode
+  - icon:
       src: /language.svg
     title: Multi-language support
     details: Qalendar uses the browser native APIs for displaying localized dates and times. Other texts also exist in multiple languages.

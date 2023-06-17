@@ -34,3 +34,7 @@
 .dark .VPButton.medium.brand {
   border-color: transparent;
 }
+
+.dark .VPHome .VPFeature img {
+  filter: invert(1);
+}
