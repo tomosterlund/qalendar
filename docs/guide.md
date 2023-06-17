@@ -74,10 +74,20 @@ export default {
 
 ## Style
 
-As in the code example above, you need to import the styles for the component. Since Qalendar is
-aiming to be a responsive multi-purpose component, it avoids use of fixed height and width where
+As in the code example above, you need to import the styles for the component.
+
+### Height & width
+
+Since Qalendar is aiming to be a responsive multi-purpose component, it avoids use of fixed height
+and width where
 possible. Therefore, for most use-cases you would probably want to place it in a wrapper with a
 fixed `height`, and possibly a `max-width`.
+
+### Dark Mode
+
+Dark mode is enabled in one out of two ways:
+1. User system preferences
+2. Set programmatically, by adding the inline style `style="color-scheme: dark"` to a parent element.
 
 ## Basic configuration
 

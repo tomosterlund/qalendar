@@ -30,3 +30,7 @@
     max-height: initial;
   }
 }
+
+.dark .VPButton.medium.brand {
+  border-color: transparent;
+}
