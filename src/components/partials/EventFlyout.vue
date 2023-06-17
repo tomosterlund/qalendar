@@ -407,6 +407,10 @@ export default defineComponent({
     font-size: var(--qalendar-font-l);
     color: gray;
 
+    @include mixins.dark-mode {
+      color: var(--qalendar-dark-mode-text-hint);
+    }
+
     &:hover {
       color: var(--qalendar-theme-color);
       cursor: pointer;
@@ -438,6 +442,10 @@ export default defineComponent({
       margin-top: 0.1rem;
       color: #5f6368;
       width: 14px;
+
+      @include mixins.dark-mode {
+        color: var(--qalendar-dark-mode-text-hint);
+      }
     }
   }
 

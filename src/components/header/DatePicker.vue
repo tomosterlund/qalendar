@@ -547,6 +547,10 @@ export default defineComponent({
       transition: var(--qalendar-text-transition);
       color: #131313;
 
+      @include mixins.dark-mode {
+        color: var(--qalendar-dark-mode-text-hint);
+      }
+
       @include mixins.hover {
         color: var(--qalendar-blue);
         cursor: pointer;
@@ -616,7 +620,7 @@ export default defineComponent({
 
       &.has-day {
         @include mixins.hover {
-          background-color: var(--qalendar-light-gray);
+          background-color: var(--qalendar-option-hover);
         }
       }
 

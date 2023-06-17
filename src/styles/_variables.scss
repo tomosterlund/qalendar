@@ -10,6 +10,7 @@
 	--qalendar-green: rgb(51 182 121);
 	--qalendar-theme-color: var(--qalendar-blue);
 	--qalendar-light-gray: rgba(240 236 236 / 76%);
+  --qalendar-option-hover: var(--qalendar-light-gray);
 
   --qalendar-dark-mode-elevated-surface: #383838;
   --qalendar-dark-mode-lightly-elevated-surface: #2e2e2e;
@@ -20,6 +21,7 @@
 
   @include dark-mode {
     --qalendar-gray-quite-dark: rgb(221, 221, 221);
+    --qalendar-option-hover: #575757; // TODO: implement in Datepicker and for month events
   }
 
 	/** Borders */

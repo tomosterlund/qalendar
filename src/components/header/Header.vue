@@ -304,7 +304,7 @@ export default defineComponent({
         padding: var(--qalendar-spacing-half) var(--qalendar-spacing);
 
         @include mixins.hover {
-          background-color: var(--qalendar-light-gray);
+          background-color: var(--qalendar-option-hover);
         }
       }
     }

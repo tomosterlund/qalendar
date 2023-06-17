@@ -14,5 +14,5 @@ export default {
     },
     logo: 'https://discover-test-files.s3.eu-central-1.amazonaws.com/Q+MAIN.png',
   },
-  appearance: false,
+  // appearance: false,
 };

@@ -358,6 +358,7 @@ export default defineComponent({
     @include dark-mode {
       background: #121212;
       color: #fff;
+      border-color: transparent;
     }
 
     .top-bar-loader {
