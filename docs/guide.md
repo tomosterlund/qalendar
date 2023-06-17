@@ -79,10 +79,10 @@ aiming to be a responsive multi-purpose component, it avoids use of fixed height
 possible. Therefore, for most use-cases you would probably want to place it in a wrapper with a
 fixed `height`, and possibly a `max-width`.
 
+## Basic configuration
+
 Qalendar takes a `config` prop, which contains all the most crucial options for configuring its
 behavior. `config` is passed as an object, which could look like this:
-
-## Basic configuration
 
 ```js
 data()
