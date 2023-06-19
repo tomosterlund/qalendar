@@ -407,6 +407,35 @@ export default class Time {
     return (pointsIntoDay / pointsInDay) * 100;
   }
 
+  getTimeFromClick(
+    clickOffsetY: number,
+    weekHeight: number,
+  ): string {
+    if (weekHeight <= 0) throw new Error('weekHeight cannot be a negative number');
+    if (clickOffsetY < 0) throw new Error('clickOffsetY cannot be a negative number');
+
+    const dayStartHour = this.DAY_START / 100;
+    const hourHeight = weekHeight / this.HOURS_PER_DAY;
+    const minutes = Math.floor((clickOffsetY % hourHeight) / (hourHeight / 60));
+
+    if (this.DAY_END < this.DAY_START) {
+      const dayEndHour = this.DAY_END / 100;
+      const nightHeight = (dayEndHour) * hourHeight;
+      const nightOffset = weekHeight - nightHeight;
+
+      if (clickOffsetY > nightOffset) {
+        const hour = Math.floor((clickOffsetY - nightOffset) / hourHeight);
+        return `${this.doubleDigit(hour)}:${this.doubleDigit(minutes)}`;
+      }
+    }
+
+    console.log('makes it here')
+
+    const hour = Math.floor(clickOffsetY / hourHeight) + dayStartHour;
+
+    return `${this.doubleDigit(hour)}:${this.doubleDigit(minutes)}`;
+  }
+
   setSegmentOfDateTimeString(dateTimeString: string, segments: { hour: number }) {
     if (segments.hour < 0 || segments.hour > 23) throw new Error('Invalid hour')
     const newHour = String(segments.hour < 10 ? "0" + segments.hour : segments.hour)
@@ -515,6 +544,12 @@ export default class Time {
     }
 
     return { start: startOfDay, end: endOfDay }
+  }
+
+  doubleDigit(number: number) {
+    if (number < 0 || number > 60) throw new Error('Invalid number')
+
+    return number < 10 ? '0' + number : String(number);
   }
 }
 

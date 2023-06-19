@@ -147,7 +147,7 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: 'month',
+        // defaultMode: 'week',
         showCurrentTime: true,
         isSilent: true,
         dayIntervals: {
@@ -155,7 +155,7 @@ export default defineComponent({
           length: 30,
         },
         dayBoundaries: {
-          start: 4,
+          start: 5,
           end: 4,
         },
         eventDialog: {

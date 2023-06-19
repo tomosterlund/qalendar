@@ -63,6 +63,7 @@
           :day-info="{ daysTotalN: days.length, thisDayIndex: dayIndex, dateTimeString: day.dateTimeString }"
           :mode="mode"
           :day-intervals="dayIntervals"
+          :week-height="+weekHeight.replace('px', '')"
           @event-was-clicked="handleClickOnEvent"
           @event-was-resized="$emit('event-was-resized', $event)"
           @event-was-dragged="handleEventWasDragged"

@@ -1,7 +1,7 @@
 <template>
   <div
     class="calendar-week__day"
-    @click.self="$emit('day-was-clicked', time.dateStringFrom(day.dateTimeString))"
+    @click.self="handleClickOnDay"
   >
     <DayEvent
       v-for="(event, eventIndex) in events"
@@ -88,6 +88,10 @@ export default defineComponent({
       type: Object as PropType<dayIntervalsType>,
       required: true,
     },
+    weekHeight: {
+      type: Number,
+      required: true,
+    },
   },
 
   emits: [
@@ -149,6 +153,13 @@ export default defineComponent({
         dayStartTimeString,
         this.time.HOURS_PER_DAY,
       ).getIntervals()
+    },
+
+    handleClickOnDay(event) {
+      const timeClicked = this.time.getTimeFromClick(event.offsetY, 2400);
+      console.log(timeClicked);
+
+      this.$emit('day-was-clicked', this.time.dateStringFrom(this.day.dateTimeString));
     },
   },
 });

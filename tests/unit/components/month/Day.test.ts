@@ -11,6 +11,7 @@ describe("Day.vue", () => {
     isSelected: true,
     config: { },
     time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
+    weekHeight: 2400,
     day: {
       events: [
         {
