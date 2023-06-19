@@ -998,6 +998,40 @@ describe('Time/getTimeFromClick day when DAY_END < DAY_START', () => {
   })
 });
 
+describe('Time/getTimeFromClick day when DAY_END & DAY_START === 5', () => {
+  const underTest = new TimeBuilder()
+  .withDayBoundaries({ start: 500, end: 500 })
+  .build();
+
+  it('should return 05:00 if clickOffsetY is 0 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 0;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('05:00');
+  });
+
+  it('should return 04:00 if clickOffsetY is 1150 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 1150;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('04:00');
+  })
+
+  it('should return 04:30 if clickOffsetY is 1175 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 1175;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('04:30');
+  })
+
+  it('should return 17:00 if clickOffsetY is 600 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 600;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('17:00');
+  })
+});
+
 describe('Time/doubleDigit', () => {
   const underTest = new TimeBuilder().build();
 

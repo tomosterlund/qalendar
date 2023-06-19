@@ -156,7 +156,7 @@ export default defineComponent({
         },
         dayBoundaries: {
           start: 5,
-          end: 4,
+          end: 5,
         },
         eventDialog: {
           isDisabled: false,

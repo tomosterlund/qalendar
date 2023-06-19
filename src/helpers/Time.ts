@@ -418,7 +418,7 @@ export default class Time {
     const hourHeight = weekHeight / this.HOURS_PER_DAY;
     const minutes = Math.floor((clickOffsetY % hourHeight) / (hourHeight / 60));
 
-    if (this.DAY_END < this.DAY_START) {
+    if (this.DAY_END <= this.DAY_START) {
       const dayEndHour = this.DAY_END / 100;
       const nightHeight = (dayEndHour) * hourHeight;
       const nightOffset = weekHeight - nightHeight;
@@ -428,8 +428,6 @@ export default class Time {
         return `${this.doubleDigit(hour)}:${this.doubleDigit(minutes)}`;
       }
     }
-
-    console.log('makes it here')
 
     const hour = Math.floor(clickOffsetY / hourHeight) + dayStartHour;
 

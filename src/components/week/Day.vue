@@ -156,7 +156,7 @@ export default defineComponent({
     },
 
     handleClickOnDay(event) {
-      const timeClicked = this.time.getTimeFromClick(event.offsetY, 2400);
+      const timeClicked = this.time.getTimeFromClick(event.offsetY, this.weekHeight);
       console.log(timeClicked);
 
       this.$emit('day-was-clicked', this.time.dateStringFrom(this.day.dateTimeString));
