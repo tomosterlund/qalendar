@@ -119,4 +119,37 @@ describe('Qalendar.vue', () => {
     monthComponent.vm.$emit('delete-event')
     expect(wrapper.emitted('delete-event')).toBeTruthy()
   })
+
+  it('should have class "mode-is-day" when defaultMode is "day"', () => {
+    const wrapper = mount(Qalendar, {
+      props: {
+        config: {
+          defaultMode: 'day',
+        }
+      }
+    })
+    expect(wrapper.get('.mode-is-day'))
+  })
+
+  it('should have class "mode-is-week" when defaultMode is "week"', () => {
+    const wrapper = mount(Qalendar, {
+      props: {
+        config: {
+          defaultMode: 'week',
+        }
+      }
+    })
+    expect(wrapper.get('.mode-is-week'))
+  });
+
+  it('should have class "mode-is-month" when defaultMode is "month"', () => {
+    const wrapper = mount(Qalendar, {
+      props: {
+        config: {
+          defaultMode: 'month',
+        }
+      }
+    })
+    expect(wrapper.get('.mode-is-month'))
+  })
 })

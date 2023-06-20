@@ -147,7 +147,7 @@ export default defineComponent({
             },
           },
         },
-        // defaultMode: 'week',
+        defaultMode: 'day',
         showCurrentTime: true,
         isSilent: true,
         dayIntervals: {
