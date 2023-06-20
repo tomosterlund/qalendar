@@ -100,6 +100,7 @@ export default defineComponent({
     'event-was-dragged',
     'interval-was-clicked',
     'day-was-clicked',
+    'datetime-was-clicked',
     'drag-start',
     'drag-end',
   ],
@@ -156,10 +157,14 @@ export default defineComponent({
     },
 
     handleClickOnDay(event) {
+      // TODO: fix for flexible day boundaries
       const timeClicked = this.time.getTimeFromClick(event.offsetY, this.weekHeight);
       console.log(timeClicked);
+      const dateString = this.time.dateStringFrom(this.day.dateTimeString);
+      const dateTimeString = `${dateString} ${timeClicked}`;
 
-      this.$emit('day-was-clicked', this.time.dateStringFrom(this.day.dateTimeString));
+      this.$emit('day-was-clicked', dateString);
+      this.$emit('datetime-was-clicked', dateTimeString);
     },
   },
 });

@@ -71,6 +71,7 @@
           @day-was-clicked="$emit('day-was-clicked', $event)"
           @drag-start="destroyScrollbarAndHideOverflow"
           @drag-end="initScrollbar"
+          @datetime-was-clicked="$emit('datetime-was-clicked', $event)"
         >
           <template #weekDayEvent="p">
             <slot
@@ -147,6 +148,7 @@ export default defineComponent({
     'delete-event',
     'interval-was-clicked',
     'day-was-clicked',
+    'datetime-was-clicked',
   ],
 
   data() {

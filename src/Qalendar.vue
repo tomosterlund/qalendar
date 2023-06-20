@@ -43,6 +43,7 @@
         @delete-event="$emit('delete-event', $event)"
         @interval-was-clicked="$emit('interval-was-clicked', $event)"
         @day-was-clicked="$emit('day-was-clicked', $event)"
+        @datetime-was-clicked="$emit('datetime-was-clicked', $event)"
       >
         <template #weekDayEvent="p">
           <slot
@@ -153,6 +154,7 @@ export default defineComponent({
     'delete-event',
     'interval-was-clicked',
     'day-was-clicked',
+    'datetime-was-clicked',
   ],
 
   data() {

@@ -174,4 +174,10 @@ describe('Week.vue', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.get('.week-timeline__event'))
   });
+
+  it('should pass event "datetime-was-clicked" from Day.vue to parent', async () => {
+    const day = wrapper.findComponent('.calendar-week__day')
+    await day.vm.$emit('datetime-was-clicked')
+    expect(wrapper.emitted()).toHaveProperty('datetime-was-clicked')
+  })
 })
