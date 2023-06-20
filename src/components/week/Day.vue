@@ -156,16 +156,30 @@ export default defineComponent({
       ).getIntervals()
     },
 
-    handleClickOnDay(event) {
-      // TODO: fix for flexible day boundaries
+    handleClickOnDay(event: MouseEvent) {
       const timeClicked = this.time.getTimeFromClick(event.offsetY, this.weekHeight);
-      console.log(timeClicked);
-      const dateString = this.time.dateStringFrom(this.day.dateTimeString);
+      let dateString = this.time.dateStringFrom(this.day.dateTimeString);
+      const isFlexibleDay = this.time.DAY_END <= this.time.DAY_START;
+      if (isFlexibleDay) dateString = this.getDateStringForFlexibleDayBoundaries(dateString, timeClicked);
       const dateTimeString = `${dateString} ${timeClicked}`;
 
       this.$emit('day-was-clicked', dateString);
       this.$emit('datetime-was-clicked', dateTimeString);
     },
+
+    getDateStringForFlexibleDayBoundaries(dateString: string, timeClickedHHMM: string) {
+      const hourTwoDigits = this.time.doubleDigit(this.time.DAY_START / 100);
+      const dayStartTimeHHMM = `${hourTwoDigits}:00`
+      const isClickOnNextDay = timeClickedHHMM < dayStartTimeHHMM;
+
+      if (isClickOnNextDay) {
+        dateString = this.time.dateStringFrom(
+          this.time.addDaysToDateTimeString(1, dateString)
+        )
+      }
+
+      return dateString;
+    }
   },
 });
 </script>
