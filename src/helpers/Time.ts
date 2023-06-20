@@ -365,7 +365,6 @@ export default class Time {
 
   protected turnMinutesIntoPercentageOfHour(minutes: number): string {
     const oneMinutePercentage = 100 / 60;
-
     const minutePoints = oneMinutePercentage * minutes;
 
     if (minutePoints < 10) return "0" + minutePoints;
@@ -436,7 +435,7 @@ export default class Time {
 
   setSegmentOfDateTimeString(dateTimeString: string, segments: { hour: number }) {
     if (segments.hour < 0 || segments.hour > 23) throw new Error('Invalid hour')
-    const newHour = String(segments.hour < 10 ? "0" + segments.hour : segments.hour)
+    const newHour = this.doubleDigit(segments.hour)
     dateTimeString = dateTimeString.replace(/\d{2}:/, newHour + ":")
 
     return dateTimeString
@@ -504,20 +503,14 @@ export default class Time {
   }
 
   setHourInDateTimeString(dateTimeString: string, hour: number) {
-    let hourString = hour.toString()
-
-    if (hour < 10) hourString = "0" + hour
-
+    const hourString = this.doubleDigit(hour)
     dateTimeString = dateTimeString.replace(/\d{2}:/, hourString + ":")
 
     return dateTimeString
   }
 
   setMinutesInDateTimeString(dateTimeString: string, minutes: number) {
-    let minutesString = minutes.toString()
-
-    if (minutes < 10) minutesString = "0" + minutes
-
+    const minutesString = this.doubleDigit(minutes)
     dateTimeString = dateTimeString.replace(/:\d{2}/, ":" + minutesString)
 
     return dateTimeString
@@ -545,7 +538,7 @@ export default class Time {
   }
 
   doubleDigit(number: number) {
-    if (number < 0 || number > 60) throw new Error('Invalid number')
+    if (number < 0 || number > 60) throw new Error('Invalid number. This is not a valid hour or minute')
 
     return number < 10 ? '0' + number : String(number);
   }
