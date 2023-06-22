@@ -73,7 +73,7 @@
         :config="enhancedConfig"
         :period="period"
         @event-was-clicked="$emit('event-was-clicked', $event)"
-        @day-was-clicked="$emit('day-was-clicked', $event)"
+        @date-was-clicked="handleDateWasClicked"
         @event-was-dragged="handleEventWasUpdated($event, 'dragged')"
         @updated-period="handleUpdatedPeriod($event, true)"
         @edit-event="$emit('edit-event', $event)"
@@ -153,7 +153,8 @@ export default defineComponent({
     'edit-event',
     'delete-event',
     'interval-was-clicked',
-    'day-was-clicked',
+    'day-was-clicked', // TODO: remove with v4. day-was-clicked is deprecated
+    'date-was-clicked',
     'datetime-was-clicked',
   ],
 
@@ -330,6 +331,11 @@ export default defineComponent({
     setTimePointsFromDayBoundary(boundary: number) {
       return Time.getTimePointsFromHour(boundary);
     },
+
+    handleDateWasClicked(payload) {
+      this.$emit('day-was-clicked', payload); // TODO: remove with v4. day-was-clicked is deprecated
+      this.$emit('date-was-clicked', payload);
+    }
   },
 });
 </script>

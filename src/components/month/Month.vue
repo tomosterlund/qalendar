@@ -27,7 +27,7 @@
           :is-selected="selectedDay?.dateTimeString === day.dateTimeString"
           @event-was-clicked="handleClickOnEvent"
           @event-was-dragged="handleEventWasDragged"
-          @day-was-clicked="onDayWasClicked"
+          @date-was-clicked="$emit('date-was-clicked', $event)"
           @day-was-selected="selectedDay = $event"
           @updated-period="$emit('updated-period', $event)"
         >
@@ -135,7 +135,7 @@ export default defineComponent({
     'updated-period',
     'event-was-clicked',
     'event-was-dragged',
-    'day-was-clicked',
+    'date-was-clicked',
   ],
 
   data() {
@@ -156,10 +156,6 @@ export default defineComponent({
   },
 
   methods: {
-    onDayWasClicked(day: dayInterface) {
-      this.$emit('day-was-clicked', day)
-    },
-
     initScrollbar(elapsedMs = 0) {
       const el = document.querySelector('.calendar-month');
       if (elapsedMs > 3000) return;

@@ -47,11 +47,13 @@ describe("Day.vue", () => {
     expect(dateDisplay.text()).toBe("23");
   });
 
-  it('should emit "day-was-clicked" when the body of a day is clicked', async () => {
+  it('should emit "date-was-clicked" when the body of a day is clicked', async () => {
     const underTest = day({ props: defaultProps });
     const dayBody = underTest.find(".calendar-month__weekday");
     await dayBody.trigger("click");
-    expect(underTest.emitted("day-was-clicked")).toBeTruthy();
+    expect(underTest.emitted("date-was-clicked")).toBeTruthy();
+    // expect payload to be a dateString of format YYYY-MM-DD
+    expect(underTest.emitted("date-was-clicked")[0][0]).toBe("2022-05-23");
   });
 
   it('should not emit custom event "day-was-selected" when qalendar !isSmall and a day is clicked', async () => {

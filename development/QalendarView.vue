@@ -21,6 +21,8 @@
         @edit-event="editEvent"
         @delete-event="deleteEvent"
         @day-was-clicked="reactToEvent"
+        @date-was-clicked="reactToEvent"
+        @datetime-was-clicked="reactToEvent"
         @event-was-dragged="handleEventWasDragged"
         @interval-was-clicked="handleIntervalWasClicked"
       >
@@ -147,7 +149,7 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: 'day',
+        // defaultMode: 'day',
         showCurrentTime: true,
         isSilent: true,
         dayIntervals: {

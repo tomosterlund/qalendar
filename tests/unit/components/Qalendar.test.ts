@@ -92,10 +92,11 @@ describe('Qalendar.vue', () => {
     expect(wrapper.emitted('event-was-clicked')).toBeTruthy()
   })
 
+  // TODO: remove with v4. day-was-clicked is deprecated
   it('should emit event "day-was-clicked" when receiving this from Month.vue', async () => {
     const wrapper = await whenInMonthMode();
     const monthComponent = wrapper.findComponent({ name: 'Month' })
-    monthComponent.vm.$emit('day-was-clicked')
+    monthComponent.vm.$emit('date-was-clicked')
     expect(wrapper.emitted('day-was-clicked')).toBeTruthy()
   });
 
