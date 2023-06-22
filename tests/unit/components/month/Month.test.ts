@@ -146,5 +146,48 @@ describe("Month.vue", () => {
     const day = wrapper.findComponent({ name: "Day" });
     day.vm.$emit("event-was-dragged", dayMonday.events[0]);
     expect(initMonthSpy).toHaveBeenCalled();
+  });
+
+  it('should display component EventFlyout', () => {
+    const eventFlyout = wrapper.findComponent({ name: "EventFlyout" });
+    expect(eventFlyout.exists()).toBe(true);
+  })
+
+  it('should reset selected event when receving event "hide" from EventFlyout', () => {
+    wrapper.vm.selectedEvent = dayMonday.events[0];
+    const eventFlyout = wrapper.findComponent({ name: "EventFlyout" });
+    eventFlyout.vm.$emit("hide");
+    expect(wrapper.vm.selectedEvent).toEqual(null);
+  })
+
+  it.each([
+    ["edit-event"],
+    ["delete-event"]
+  ])('should propagate %s from EventFlyout', eventName => {
+    const eventFlyout = wrapper.findComponent({ name: "EventFlyout" });
+    eventFlyout.vm.$emit(eventName, dayMonday.events[0]);
+    expect(wrapper.emitted(eventName)).toBeTruthy();
+  })
+
+  it('should not display component EventFlyout when disabled via prop', () => {
+    wrapper = mount(Month, {
+      props: {
+        eventsProp: [],
+        time: new Time(WEEK_START_DAY.MONDAY, "de-DE"),
+        config: {
+          eventDialog: {
+            isDisabled: true,
+          }
+        },
+        period: {
+          start: new Date(2023, 3 - 1, 1),
+          end: new Date(2023, 3 - 1, 31),
+          selectedDate: new Date(2023, 3 - 1, 23),
+        },
+      },
+    });
+
+    const eventFlyout = wrapper.findComponent({ name: "EventFlyout" });
+    expect(eventFlyout.exists()).toBe(false);
   })
 });
