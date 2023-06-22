@@ -1,8 +1,9 @@
 import { mount } from "@vue/test-utils";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import Month from "../../../../src/components/month/Month.vue";
 import Time, { WEEK_START_DAY } from "../../../../src/helpers/Time";
 import { nextTick } from "vue";
+import { dayMonday } from "../../../utils/entities/days";
 
 describe("Month.vue", () => {
   let wrapper = mount(Month, {
@@ -98,10 +99,52 @@ describe("Month.vue", () => {
   });
 
   it('should propagate event "date-was-clicked" from child to parent', () => {
-    const agendaEvents = wrapper.findComponent({ name: "Day" });
-    agendaEvents.vm.$emit("date-was-clicked", new Date());
+    const day = wrapper.findComponent({ name: "Day" });
+    day.vm.$emit("date-was-clicked", new Date());
     expect(wrapper.emitted("date-was-clicked")).toBeTruthy();
   })
 
-  it.todo('should propagate events from Day.vue to parent');
+  it('should propagate event "updated-period" from Day.vue to parent', () => {
+    const day = wrapper.findComponent({ name: "Day" });
+    day.vm.$emit("updated-period", new Date());
+    expect(wrapper.emitted("updated-period")).toBeTruthy();
+  });
+
+  it('should set selectedDay when receiving event "day-was-selected" from Day.vue', () => {
+    const day = wrapper.findComponent({ name: "Day" });
+    day.vm.$emit("day-was-selected", dayMonday);
+    expect(wrapper.vm.selectedDay).toEqual(dayMonday);
+  });
+
+  it('should set the selected event element when receiving "event-was-clicked" from child component', () => {
+    const day = wrapper.findComponent({ name: 'Day' });
+    const clickedElement = document.createElement("div")
+    day.vm.$emit("event-was-clicked", { eventElement: clickedElement });
+    expect(wrapper.vm.selectedEventElement).toEqual(clickedElement);
+  });
+
+  it('should set the selected event when receiving "event-was-clicked" from Day.vue', () => {
+    const day = wrapper.findComponent({ name: "Day" });
+    day.vm.$emit("event-was-clicked", { clickedEvent: dayMonday.events[0] });
+    expect(wrapper.vm.selectedEvent).toEqual(dayMonday.events[0]);
+  });
+
+  it('should propagate event "event-was-clicked" from Day.vue to parent', () => {
+    const day = wrapper.findComponent({ name: "Day" });
+    day.vm.$emit("event-was-clicked", { clickedEvent: dayMonday.events[0] });
+    expect(wrapper.emitted("event-was-clicked")).toBeTruthy();
+  });
+
+  it('should propagate event "event-was-dragged" from Day.vue to parent', () => {
+    const day = wrapper.findComponent({ name: "Day" });
+    day.vm.$emit("event-was-dragged", dayMonday.events[0]);
+    expect(wrapper.emitted("event-was-dragged")).toBeTruthy();
+  });
+
+  it('should initialize month anew when receiving event-was-dragged', () => {
+    const initMonthSpy = vi.spyOn(wrapper.vm, 'initMonth');
+    const day = wrapper.findComponent({ name: "Day" });
+    day.vm.$emit("event-was-dragged", dayMonday.events[0]);
+    expect(initMonthSpy).toHaveBeenCalled();
+  })
 });
