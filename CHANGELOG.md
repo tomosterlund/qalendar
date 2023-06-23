@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/tomosterlund/qalendar/compare/v3.1.0...v3.2.0) (2023-06-23)
+
+
+### Features
+
+* dark mode ([#182](https://github.com/tomosterlund/qalendar/issues/182)) ([7d42539](https://github.com/tomosterlund/qalendar/commit/7d42539264bbea80fa6f68325970b0e859b99d4e))
+
 # [3.1.0](https://github.com/tomosterlund/qalendar/compare/v3.0.0...v3.1.0) (2023-06-16)
 
 
