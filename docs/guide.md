@@ -89,6 +89,12 @@ Dark mode is enabled in one out of two ways:
 1. User system preferences
 2. Set programmatically, by adding the inline style `style="color-scheme: dark"` to a parent element.
 
+::: tip
+If the rest of your application does not have a dark mode, you might want to instruct
+Qalendar never switch to its own dark mode, even when user system settings tell it so. You can
+prevent this by wrapping it in an element with the inline style `style="color-scheme: light"`.
+:::
+
 ## Basic configuration
 
 Qalendar takes a `config` prop, which contains all the most crucial options for configuring its
