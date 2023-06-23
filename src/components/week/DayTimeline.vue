@@ -56,6 +56,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '../../styles/_mixins.scss' as mixins;
+
 .day-timeline {
   position: absolute;
   top: 0;
@@ -89,6 +91,10 @@ export default defineComponent({
 
     &:not(:last-child) {
       border-bottom: var(--qalendar-border-gray-thin);
+
+      @include mixins.dark-mode {
+        border-color: var(--qalendar-dark-mode-line-color);
+      }
     }
   }
 }

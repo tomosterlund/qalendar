@@ -366,6 +366,11 @@ export default defineComponent({
   opacity: 0;
   pointer-events: none;
 
+  @include mixins.dark-mode {
+    background-color: var(--qalendar-dark-mode-elevated-surface);
+    border-color: transparent;
+  }
+
   &.is-visible {
     opacity: 1;
     transform: translateY(0);
@@ -402,6 +407,10 @@ export default defineComponent({
     font-size: var(--qalendar-font-l);
     color: gray;
 
+    @include mixins.dark-mode {
+      color: var(--qalendar-dark-mode-text-hint);
+    }
+
     &:hover {
       color: var(--qalendar-theme-color);
       cursor: pointer;
@@ -433,6 +442,10 @@ export default defineComponent({
       margin-top: 0.1rem;
       color: #5f6368;
       width: 14px;
+
+      @include mixins.dark-mode {
+        color: var(--qalendar-dark-mode-text-hint);
+      }
     }
   }
 

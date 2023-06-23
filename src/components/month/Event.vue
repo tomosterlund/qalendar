@@ -247,6 +247,10 @@ export default defineComponent({
 
   @include mixins.hover {
     background-color: var(--qalendar-light-gray);
+
+    @include mixins.hover {
+      background-color: var(--qalendar-option-hover);
+    }
   }
 
   .calendar-month__event-color {

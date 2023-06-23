@@ -155,6 +155,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '../../styles/_mixins.scss' as mixins;
+
 .calendar-week__day {
   position: relative;
   width: 100%;
@@ -175,10 +177,18 @@ export default defineComponent({
 
   &:first-child {
     border-left: 1px dashed rgb(224 224 224);
+
+    @include mixins.dark-mode {
+      border-color: var(--qalendar-dark-mode-line-color);
+    }
   }
 
   &:not(:last-child) {
     border-right: 1px dashed rgb(224 224 224);
+
+    @include mixins.dark-mode {
+      border-color: var(--qalendar-dark-mode-line-color);
+    }
   }
 }
 </style>

@@ -257,6 +257,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@use '../../styles/_mixins.scss' as mixins;
+
 .calendar-month {
   position: relative;
   display: flex;
@@ -294,6 +296,10 @@ export default defineComponent({
 
     &:first-child {
       border-top: var(--qalendar-border-gray-thin);
+
+      @include mixins.dark-mode {
+        border-color: var(--qalendar-dark-mode-line-color);
+      }
     }
   }
 

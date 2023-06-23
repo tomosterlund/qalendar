@@ -472,6 +472,12 @@ export default defineComponent({
     user-select: none;
     border: var(--qalendar-border-gray-thin);
 
+    @include mixins.dark-mode {
+      color: var(--qalendar-dark-mode-text-hint);
+      background-color: var(--qalendar-dark-mode-lightly-elevated-surface);
+      border-color: transparent;
+    }
+
     .qalendar-is-small & {
       border: 0;
     }
@@ -501,6 +507,12 @@ export default defineComponent({
     border-radius: 4px;
     min-width: 250px;
     box-shadow: 0 2px 4px rgb(240 236 236 / 76%);
+
+    @include mixins.dark-mode {
+      background-color: var(--qalendar-dark-mode-elevated-surface);
+      border-color: transparent;
+      box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+    }
 
     &.is-in-qalendar {
       top: calc(100% - 1px);
@@ -534,6 +546,10 @@ export default defineComponent({
     .is-icon {
       transition: var(--qalendar-text-transition);
       color: #131313;
+
+      @include mixins.dark-mode {
+        color: var(--qalendar-dark-mode-text-hint);
+      }
 
       @include mixins.hover {
         color: var(--qalendar-blue);
@@ -604,7 +620,7 @@ export default defineComponent({
 
       &.has-day {
         @include mixins.hover {
-          background-color: var(--qalendar-light-gray);
+          background-color: var(--qalendar-option-hover);
         }
       }
 

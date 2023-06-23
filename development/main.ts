@@ -17,6 +17,7 @@ import MultipleDayEvents from './cypress/MultipleDayEvents.vue'
 import DayCell from './cypress/DayCell.vue'
 import EventRenderingRegularDay from './cypress/EventRenderingRegularDay.vue'
 import EventRenderingFlexibleDay from './cypress/EventRenderingFlexibleDay.vue'
+import DarkMode from './cypress/DarkMode.vue'
 
 const routes = [
   { path: "/", component: QalendarView },
@@ -37,6 +38,7 @@ const routes = [
   { path: "/cypress/events-regular-day", component: EventRenderingRegularDay },
   { path: "/cypress/events-flexible-day", component: EventRenderingFlexibleDay },
   { path: "/cypress/day-cell", component: DayCell },
+  { path: "/cypress/dark-mode", component: DarkMode },
 ];
 
 const router = createRouter({

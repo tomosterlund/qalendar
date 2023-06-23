@@ -130,6 +130,7 @@ export default defineComponent({
   text-align: left;
   cursor: pointer;
   user-select: none;
+  overflow: hidden;
 
   &:active {
     cursor: not-allowed;
