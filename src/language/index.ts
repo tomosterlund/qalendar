@@ -28,12 +28,12 @@ export default {
 
       return languageKeys[locale]
         ? languageKeys[locale]
-        : languageKeys['en-US'] || '';
+        : languageKeys['en-US'];
     },
 
     overrideShortLocaleWithLongLocale(locale: string): string {
       if (localeMap.has(locale)) {
-        locale = localeMap.get(locale) || '';
+        locale = localeMap.get(locale) as string;
       }
 
       return locale;
