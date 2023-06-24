@@ -213,6 +213,80 @@ describe("EventFlyoutPositionHelper.ts", () => {
     expect(position.left).toBe(643);
   });
 
+  test('Positioning the flyout where spaceLeft && spaceBottom is enough, but spaceTop is negative', () => {
+    const eventDOMRect = {
+      "x": 1026.59375,
+      "y": -299.0625,
+      "width": 190.71875,
+      "height": 500,
+      "top": -299.0625,
+      "right": 1217.3125,
+      "bottom": 200.9375,
+      "left": 1026.59375
+    }
+
+    const flyoutDimensions = {
+      "height": 194,
+      "width": 400
+    };
+
+    const calendarDomRect = {
+      "x": 10,
+      "y": 10,
+      "width": 1400,
+      "height": 800,
+      "top": 10,
+      "right": 1410,
+      "bottom": 810,
+      "left": 10
+    }
+
+    const position = eventFlyoutPosition.calculateFlyoutPosition(eventDOMRect, flyoutDimensions, calendarDomRect);
+
+    if (!position) throw new Error('No position');
+
+    expect(position.top).toBe(calendarDomRect.top + 10);
+    expect(position.left).toBe(Math.round(
+      eventDOMRect.left - (flyoutDimensions.width + 10)));
+  });
+
+  test("Position flyout left of event facing upwards", () => {
+    const calendarDomRect = {
+      "x": 10,
+      "y": 10,
+      "width": 1400,
+      "height": 800,
+      "top": 10,
+      "right": 1410,
+      "bottom": 810,
+      "left": 10
+    }
+
+    const flyoutDimensions = {
+      "height": 238,
+      "width": 400
+    }
+
+    const eventDOMRect = {
+      "x": 1218.3125,
+      "y": 745.609375,
+      "width": 190.71875,
+      "height": 200,
+      "top": 745.609375,
+      "right": 1409.03125,
+      "bottom": 945.609375,
+      "left": 1218.3125
+    }
+
+    const position = eventFlyoutPosition.calculateFlyoutPosition(eventDOMRect, flyoutDimensions, calendarDomRect);
+
+    if (!position) throw new Error('No position');
+
+    expect(position.top).toBe(calendarDomRect.bottom - flyoutDimensions.height - 10);
+    expect(position.left).toBe(Math.round(
+      eventDOMRect.left - (flyoutDimensions.width + 10)));
+  })
+
   test("Positioning the flyout where spaceRight && spaceTop is enough, but spaceBottom is negative", () => {
     const eventDOMRect = {
       x: 443.15625,
