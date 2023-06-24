@@ -6,6 +6,8 @@ import { mountComponent } from "../../../vitest-setup";
 
 const day = mountComponent(mount, Day)
 
+const MORE_EVENTS_ACTION = ".calendar-month__weekday-more";
+
 describe("Day.vue", () => {
   const defaultProps = {
     isSelected: true,
@@ -33,6 +35,29 @@ describe("Day.vue", () => {
       dayName: "Monday",
       dateTimeString: "2022-05-23 16:38",
     },
+  }
+
+  const propsWith4Events = {
+    ...defaultProps,
+    day: {
+      ...defaultProps.day,
+      events: [
+        ...defaultProps.day.events,
+        {
+          title: "Foo",
+          time: { start: "2022-05-22 00:00", end: "2022-05-22 01:00" },
+          id: "4",
+        },
+      ],
+    },
+  }
+
+  const whenIsDroppable = async () => {
+    const wrapper = day({ props: defaultProps });
+    const dayBody = wrapper.find(".calendar-month__weekday");
+    await dayBody.trigger("dragover");
+
+    return wrapper;
   }
 
   it('should display all events passed as props', () => {
@@ -136,4 +161,52 @@ describe("Day.vue", () => {
     const dayBody = underTest.find(".calendar-month__weekday");
     expect(dayBody.exists()).toBeFalsy();
   });
+
+  it('should not show "more events" button if day.events.length is less than 4', () => {
+    const underTest = day({ props: defaultProps });
+    const moreEventsButton = underTest.find(MORE_EVENTS_ACTION);
+    expect(moreEventsButton.exists()).toBeFalsy();
+  });
+
+  it('should show "more events" button if day.events.length is greater than 3', () => {
+
+
+    const underTest = day({ props: propsWith4Events });
+    const moreEventsButton = underTest.find(MORE_EVENTS_ACTION);
+    expect(moreEventsButton.exists()).toBeTruthy();
+  });
+
+  it('should emit custom event "updated-period" when clicking "more events" button', () => {
+    const underTest = day({ props: propsWith4Events });
+    const moreEventsButton = underTest.find(MORE_EVENTS_ACTION);
+    moreEventsButton.trigger("click");
+    expect(underTest.emitted("updated-period")).toBeTruthy();
+  });
+
+  it('should not contain class "is-droppable" when @dragover is not triggered', () => {
+    const underTest = day({ props: defaultProps });
+    const dayBody = underTest.find(".calendar-month__weekday");
+    expect(dayBody.classes()).not.toContain("is-droppable");
+  })
+
+  it('should contain class "is-droppable" when @dragover is triggered', async () => {
+    const underTest = day({ props: defaultProps });
+    const dayBody = underTest.find(".calendar-month__weekday");
+    await dayBody.trigger("dragover");
+    expect(dayBody.classes()).toContain("is-droppable");
+  })
+
+  it.each([
+    ['dragleave'],
+    ['dragend'],
+    ['drop']
+  ])('should remove class "is-droppable" when @%s is triggered', async customEvent => {
+    const underTest = await whenIsDroppable();
+    const dayBody = underTest.find(".calendar-month__weekday");
+    expect(dayBody.classes()).toContain("is-droppable");
+
+    await dayBody.trigger(customEvent);
+
+    expect(dayBody.classes()).not.toContain("is-droppable");
+  })
 });
