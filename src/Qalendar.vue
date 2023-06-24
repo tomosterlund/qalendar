@@ -332,7 +332,7 @@ export default defineComponent({
       return Time.getTimePointsFromHour(boundary);
     },
 
-    handleDateWasClicked(payload) {
+    handleDateWasClicked(payload: string) {
       this.$emit('day-was-clicked', payload); // TODO: remove with v4. day-was-clicked is deprecated
       this.$emit('date-was-clicked', payload);
     }
