@@ -9,6 +9,31 @@ const datePicker = mountComponent(mount, DatePicker)
 const MODE_TOGGLE_ACTION = '.date-picker__toggle-mode';
 
 const DEFAULT_SELECTED_DATE = new Date(2022, 1 - 1, 4);
+
+function whenInWeekMode(defaultProps) {
+  const wrapper = datePicker({
+    props: {
+      ...defaultProps,
+      mode: 'week',
+    },
+  })
+  const setWeekSpy = vi.spyOn(wrapper.vm, 'setWeek')
+  wrapper.vm.setWeek = setWeekSpy;
+  return { wrapper, setWeekSpy };
+}
+
+function whenInMonthMode(defaultProps) {
+  const wrapper = datePicker({
+    props: {
+      ...defaultProps,
+      mode: 'month',
+    },
+  })
+  const setWeekSpy = vi.spyOn(wrapper.vm, 'setWeek')
+  wrapper.vm.setMonth = setWeekSpy;
+  return { wrapper, setWeekSpy };
+}
+
 describe("DatePicker.vue", () => {
   let wrapper: any;
 
@@ -168,18 +193,24 @@ describe("DatePicker.vue", () => {
   })
 
   it('should move to next week when calling goToPeriod in week mode', () => {
-    wrapper = datePicker({
-      props: defaultProps,
-    })
-    const setWeekSpy = vi.spyOn(wrapper.vm, 'setWeek')
-    wrapper.vm.setWeek = setWeekSpy;
-    wrapper.setProps({ mode: 'week' })
+    const { wrapper, setWeekSpy } = whenInWeekMode(defaultProps);
+
     wrapper.vm.goToPeriod('next')
+
     expect(setWeekSpy).toHaveBeenCalled()
     const weekSpyFirstArg = setWeekSpy.mock.calls[0][0]
-    console.log(weekSpyFirstArg)
-    const previousDate = DEFAULT_SELECTED_DATE.getDate();
-    const nextDate = new Date(DEFAULT_SELECTED_DATE.setDate(previousDate + 7))
-    expect((weekSpyFirstArg as Date).getDate()).toEqual(nextDate.getDate())
+    const mondayOfNextWeek = 10;
+    expect((weekSpyFirstArg as Date).getDate()).toEqual(mondayOfNextWeek)
+  })
+
+  it('should move to previous week when calling goToPeriod in week mode', () => {
+    const { wrapper, setWeekSpy } = whenInWeekMode(defaultProps);
+
+    wrapper.vm.goToPeriod('previous')
+
+    expect(setWeekSpy).toHaveBeenCalled()
+    const weekSpyFirstArg = setWeekSpy.mock.calls[0][0]
+    const mondayOfPreviousWeek = 27;
+    expect((weekSpyFirstArg as Date).getDate()).toEqual(mondayOfPreviousWeek)
   })
 });
