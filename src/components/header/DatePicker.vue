@@ -219,18 +219,6 @@ export default defineComponent({
     },
   },
 
-  watch: {
-    period: {
-      deep: true,
-      handler() {
-        if (this.selectedDate.getTime() === this.period.selectedDate.getTime())
-          return;
-
-        this.hydrateDatePicker();
-      },
-    },
-  },
-
   mounted() {
     this.hydrateDatePicker(true);
   },

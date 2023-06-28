@@ -34,10 +34,20 @@ function whenInMonthMode(defaultProps) {
   return { wrapper, setWeekSpy };
 }
 
-describe("DatePicker.vue", () => {
-  let wrapper: any;
+function whenInDayMode(defaultProps) {
+  const wrapper = datePicker({
+    props: {
+      ...defaultProps,
+      mode: 'day',
+    },
+  })
+  const setWeekSpy = vi.spyOn(wrapper.vm, 'setWeek')
+  wrapper.vm.setDay = setWeekSpy;
+  return { wrapper, setWeekSpy };
+}
 
-  const openDatePicker = async () => {
+describe("DatePicker.vue", () => {
+  const openDatePicker = async wrapper => {
     const datePicker = wrapper.find(".date-picker__value-display");
     await datePicker.trigger("click");
   };
@@ -52,7 +62,7 @@ describe("DatePicker.vue", () => {
   };
 
   it("should open the date picker", async () => {
-    wrapper = datePicker({
+    const wrapper = datePicker({
       props: {
         timeProp: new Time(WEEK_START_DAY.MONDAY, "en-US"),
         periodProp: {
@@ -62,23 +72,23 @@ describe("DatePicker.vue", () => {
         },
       },
     });
-    await openDatePicker();
+    await openDatePicker(wrapper);
     const period = wrapper.find(MODE_TOGGLE_ACTION);
     expect(period.text()).toBe("May 2022");
   });
 
   it("should navigate a month back: January => December", async () => {
-    wrapper = datePicker({
+    const wrapper = datePicker({
       props: defaultProps,
     });
-    await openDatePicker();
+    await openDatePicker(wrapper);
     await wrapper.find(".is-chevron-left").trigger("click");
     const period = wrapper.find(MODE_TOGGLE_ACTION);
     expect(period.text()).toBe("December 2021");
   });
 
   it("should navigate a month forward: December => January", async () => {
-    wrapper = datePicker({
+    const wrapper = datePicker({
       props: {
         timeProp: new Time(WEEK_START_DAY.MONDAY, "en-US"),
         periodProp: {
@@ -88,14 +98,14 @@ describe("DatePicker.vue", () => {
         },
       },
     });
-    await openDatePicker();
+    await openDatePicker(wrapper);
     await wrapper.find(".is-chevron-right").trigger("click");
     const period = wrapper.find(MODE_TOGGLE_ACTION);
     expect(period.text()).toBe("January 2024");
   });
 
   it("should navigate between months via the month picker", async () => {
-    wrapper = datePicker({
+    const wrapper = datePicker({
       props: {
         timeProp: new Time(WEEK_START_DAY.MONDAY, "de-DE"),
         periodProp: {
@@ -105,7 +115,7 @@ describe("DatePicker.vue", () => {
         },
       },
     });
-    await openDatePicker();
+    await openDatePicker(wrapper);
     await wrapper.find(MODE_TOGGLE_ACTION).trigger("click");
     const months = wrapper.findAll(".has-month");
     await months[5].trigger("click");
@@ -114,7 +124,7 @@ describe("DatePicker.vue", () => {
   });
 
   it("should navigate between years via the month picker", async () => {
-    wrapper = datePicker({
+    const wrapper = datePicker({
       props: {
         timeProp: new Time(WEEK_START_DAY.MONDAY, "de-DE"),
         periodProp: {
@@ -124,7 +134,7 @@ describe("DatePicker.vue", () => {
         },
       },
     });
-    await openDatePicker();
+    await openDatePicker(wrapper);
 
     await wrapper.find(MODE_TOGGLE_ACTION).trigger("click");
 
@@ -145,7 +155,7 @@ describe("DatePicker.vue", () => {
   });
 
   it("should emit the correct event, when used as a stand-alone component", async () => {
-    wrapper = datePicker({
+    const wrapper = datePicker({
       props: {
         locale: "sv-SE",
         firstDayOfWeek: "monday",
@@ -163,10 +173,10 @@ describe("DatePicker.vue", () => {
   });
 
   it('should toggle back to month mode', async () => {
-    wrapper = datePicker({
+    const wrapper = datePicker({
       props: defaultProps,
     });
-    await openDatePicker();
+    await openDatePicker(wrapper);
     const getCalendarMonthSpy =
       vi.spyOn(wrapper.vm.time, 'getCalendarMonthSplitInWeeks')
     wrapper.setData({ datePickerMode: 'year' })
@@ -178,10 +188,10 @@ describe("DatePicker.vue", () => {
   })
 
   it('should toggle to year mode', async () => {
-    wrapper = datePicker({
+    const wrapper = datePicker({
       props: defaultProps,
     });
-    await openDatePicker();
+    await openDatePicker(wrapper);
     const getCalendarYearSpy =
       vi.spyOn(wrapper.vm.time, 'getCalendarYearMonths')
     wrapper.setData({ datePickerMode: 'month' })
@@ -212,5 +222,50 @@ describe("DatePicker.vue", () => {
     const weekSpyFirstArg = setWeekSpy.mock.calls[0][0]
     const mondayOfPreviousWeek = 27;
     expect((weekSpyFirstArg as Date).getDate()).toEqual(mondayOfPreviousWeek)
+  })
+
+  it('should move to next month when calling goToPeriod in month mode', () => {
+    const { wrapper, setWeekSpy } = whenInMonthMode(defaultProps);
+
+    wrapper.vm.goToPeriod('next')
+
+    expect(setWeekSpy).toHaveBeenCalled()
+    const monthSpyFirstArg = setWeekSpy.mock.calls[0][0] as Date
+    const nextMonth = DEFAULT_SELECTED_DATE.getMonth() + 1;
+    expect(monthSpyFirstArg.getDate()).toEqual(1)
+    expect(monthSpyFirstArg.getMonth()).toEqual(nextMonth)
+  })
+
+  it('should move to previous month when calling goToPeriod in month mode', () => {
+    const { wrapper, setWeekSpy } = whenInMonthMode(defaultProps);
+
+    wrapper.vm.goToPeriod('previous')
+
+    expect(setWeekSpy).toHaveBeenCalled()
+    const monthSpyFirstArg = setWeekSpy.mock.calls[0][0] as Date
+    expect(monthSpyFirstArg.getDate()).toEqual(1)
+    expect(monthSpyFirstArg.getMonth()).toEqual(12 - 1) // December
+  })
+
+  it('should move to next day when calling goToPeriod in day mode', () => {
+    const { wrapper, setWeekSpy } = whenInDayMode(defaultProps);
+
+    wrapper.vm.goToPeriod('next')
+
+    expect(setWeekSpy).toHaveBeenCalled()
+    const daySpyFirstArg = setWeekSpy.mock.calls[0][0] as Date
+    const nextDay = DEFAULT_SELECTED_DATE.getDate() + 1;
+    expect(daySpyFirstArg.getDate()).toEqual(nextDay)
+  })
+
+  it('should move to previous day when calling goToPeriod in day mode', () => {
+    const { wrapper, setWeekSpy } = whenInDayMode(defaultProps);
+
+    wrapper.vm.goToPeriod('previous')
+
+    expect(setWeekSpy).toHaveBeenCalled()
+    const daySpyFirstArg = setWeekSpy.mock.calls[0][0] as Date
+    const previousDay = DEFAULT_SELECTED_DATE.getDate() - 1;
+    expect(daySpyFirstArg.getDate()).toEqual(previousDay)
   })
 });
