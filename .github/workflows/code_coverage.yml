@@ -1,0 +1,24 @@
+name: Unit test code coverage
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  code_coverage:
+    name: Upload to Coveralls
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ✅
+        uses: actions/checkout@v3
+      - name: Setup Node.js 🔧
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+      - name: Install dependencies 🛠️
+        run: npm i
+      - name: Run Vitest 🧪
+        run: npx vitest run --coverage
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2

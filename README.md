@@ -1,9 +1,9 @@
 ![qalendar](https://discover-test-files.s3.eu-central-1.amazonaws.com/Logo+MAIN.png)
 
 [![Build](https://github.com/tomosterlund/qalendar/actions/workflows/build.yml/badge.svg)](https://github.com/tomosterlund/qalendar/actions/workflows/build.yml)
-[![Release](https://github.com/tomosterlund/qalendar/actions/workflows/release.yml/badge.svg)](https://github.com/tomosterlund/qalendar/actions/workflows/release.yml)
-[![End-to-end tests](https://github.com/tomosterlund/qalendar/actions/workflows/end-to-end-tests.yml/badge.svg)](https://github.com/tomosterlund/qalendar/actions/workflows/end-to-end-tests.yml)
+[![Coverage Status](https://coveralls.io/repos/github/tomosterlund/qalendar/badge.svg?branch=master)](https://coveralls.io/github/tomosterlund/qalendar?branch=master)
 [![Unit tests](https://github.com/tomosterlund/qalendar/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/tomosterlund/qalendar/actions/workflows/unit-tests.yml)
+[![End-to-end tests](https://github.com/tomosterlund/qalendar/actions/workflows/end-to-end-tests.yml/badge.svg)](https://github.com/tomosterlund/qalendar/actions/workflows/end-to-end-tests.yml)
 [![npm](https://img.shields.io/npm/v/qalendar)](https://www.npmjs.com/package/qalendar)
 ![npm](https://img.shields.io/npm/dm/qalendar)
 

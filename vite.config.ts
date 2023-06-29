@@ -28,7 +28,8 @@ export default defineConfig({
     include: ["**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     environment: "jsdom",
     coverage: {
-      provider: 'c8'
+      provider: 'c8',
+      reporter: ['lcov', 'text-summary'],
     },
   },
 });
