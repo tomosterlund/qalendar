@@ -24,6 +24,17 @@
     --qalendar-option-hover: #575757; // TODO: implement in Datepicker and for month events
   }
 
+  --qalendar-dark-mode-elevated-surface: #383838;
+  --qalendar-dark-mode-lightly-elevated-surface: #2e2e2e;
+  --qalendar-dark-mode-text-primary: rgba(255 255 255 1);
+  --qalendar-dark-mode-text-secondary: rgba(255 255 255 0.7);
+  --qalendar-dark-mode-text-hint: rgba(255 255 255 0.5);
+  --qalendar-dark-mode-line-color: var(--qalendar-gray);
+
+  @include dark-mode {
+    --qalendar-gray-quite-dark: rgb(221, 221, 221);
+  }
+
 	/** Borders */
 	--qalendar-border-gray-thin: 1px solid rgb(224 224 224);
 	--qalendar-border-dashed-gray-thin: 1px dashed rgb(224 224 224);

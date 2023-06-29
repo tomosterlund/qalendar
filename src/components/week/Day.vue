@@ -1,7 +1,7 @@
 <template>
   <div
     class="calendar-week__day"
-    @click.self="$emit('day-was-clicked', time.dateStringFrom(day.dateTimeString))"
+    @click.self="handleClickOnDay"
   >
     <DayEvent
       v-for="(event, eventIndex) in events"
@@ -88,6 +88,10 @@ export default defineComponent({
       type: Object as PropType<dayIntervalsType>,
       required: true,
     },
+    weekHeight: {
+      type: Number,
+      required: true,
+    },
   },
 
   emits: [
@@ -96,6 +100,7 @@ export default defineComponent({
     'event-was-dragged',
     'interval-was-clicked',
     'day-was-clicked',
+    'datetime-was-clicked',
     'drag-start',
     'drag-end',
   ],
@@ -150,6 +155,31 @@ export default defineComponent({
         this.time.HOURS_PER_DAY,
       ).getIntervals()
     },
+
+    handleClickOnDay(event: MouseEvent) {
+      const timeClicked = this.time.getTimeFromClick(event.offsetY, this.weekHeight);
+      let dateString = this.time.dateStringFrom(this.day.dateTimeString);
+      const isFlexibleDay = this.time.DAY_END <= this.time.DAY_START;
+      if (isFlexibleDay) dateString = this.getDateStringForFlexibleDayBoundaries(dateString, timeClicked);
+      const dateTimeString = `${dateString} ${timeClicked}`;
+
+      this.$emit('day-was-clicked', dateString);
+      this.$emit('datetime-was-clicked', dateTimeString);
+    },
+
+    getDateStringForFlexibleDayBoundaries(dateString: string, timeClickedHHMM: string) {
+      const hourTwoDigits = this.time.doubleDigit(this.time.DAY_START / 100);
+      const dayStartTimeHHMM = `${hourTwoDigits}:00`
+      const isClickOnNextDay = timeClickedHHMM < dayStartTimeHHMM;
+
+      if (isClickOnNextDay) {
+        dateString = this.time.dateStringFrom(
+          this.time.addDaysToDateTimeString(1, dateString)
+        )
+      }
+
+      return dateString;
+    }
   },
 });
 </script>

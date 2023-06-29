@@ -897,3 +897,181 @@ describe("Time.ts", () => {
     expect(actualTimeString).toEqual('1:25 AM - 2:25 AM');
   })
 });
+
+describe('Time/getTimeFromClick regular day', () => {
+  const underTest = new TimeBuilder().build();
+
+  it('should throw an error if weekHeight is 0', () => {
+    const weekHeight = 0;
+    expect(() => underTest.getTimeFromClick(0, weekHeight)).toThrow();
+  });
+
+  it('should throw an error if clickOffsetY is a negative number', () => {
+    const clickOffsetY = -1;
+    expect(() => underTest.getTimeFromClick(clickOffsetY, 100)).toThrow();
+  });
+
+  it('should return "00:00" if clickOffsetY is 0', () => {
+    const clickOffsetY = 0;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, 100);
+    expect(actualTime).toBe('00:00');
+  });
+
+  it('should return "12:00 if clickOffsetY is half of weekHeight and a day is from 0 - 24', () => {
+    const clickOffsetY = 500;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, 1000);
+    expect(actualTime).toBe('12:00');
+  });
+
+  it('should return 18:00 if clickOffsetY is 3/4 of weekHeight and a day is from 0 - 24', () => {
+    const clickOffsetY = 750;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, 1000);
+    expect(actualTime).toBe('18:00');
+  });
+
+  it('should return 18:45', () => {
+    const weekHeight = 960;
+    const clickOffsetY = weekHeight - 210; // height - 5 hours and 1 quarter of an hour
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('18:45');
+  })
+});
+
+describe('Time/getTimeFromClick day with custom day boundaries', () => {
+  const underTest = new TimeBuilder()
+  .withDayBoundaries({ start: 600, end: 1800 })
+  .build();
+
+  it('should return 08:00 if clickOffsetY is 200 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 200;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('08:00');
+  });
+
+  it('should return 12:00 if clickOffsetY is 600 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 600;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('12:00');
+  });
+
+  it('should return 16:15', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 1025;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('16:15');
+  });
+
+  it('should return 17:50', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 1184;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('17:50');
+  });
+});
+
+describe('Time/getTimeFromClick day when DAY_END < DAY_START', () => {
+  const underTest = new TimeBuilder()
+  .withDayBoundaries({ start: 1800, end: 600 })
+  .build();
+
+  it('should return 21:00 if clickOffsetY is 300 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 300;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('21:00');
+  });
+
+  it('should return 03:00 if clickOffsetY is 900 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 900;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('03:00');
+  });
+
+  it('should return 05:15', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 1125;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('05:15');
+  })
+});
+
+describe('Time/getTimeFromClick day when DAY_END & DAY_START === 5', () => {
+  const underTest = new TimeBuilder()
+  .withDayBoundaries({ start: 500, end: 500 })
+  .build();
+
+  it('should return 05:00 if clickOffsetY is 0 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 0;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('05:00');
+  });
+
+  it('should return 04:00 if clickOffsetY is 1150 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 1150;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('04:00');
+  })
+
+  it('should return 04:30 if clickOffsetY is 1175 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 1175;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('04:30');
+  })
+
+  it('should return 17:00 if clickOffsetY is 600 and weekHeight is 1200', () => {
+    const weekHeight = 1200;
+    const clickOffsetY = 600;
+    const actualTime = underTest.getTimeFromClick(clickOffsetY, weekHeight);
+    expect(actualTime).toBe('17:00');
+  })
+});
+
+describe('Time/doubleDigit', () => {
+  const underTest = new TimeBuilder().build();
+
+  it('should throw an error if number is negative', () => {
+    const number = -1;
+    expect(() => underTest.doubleDigit(number)).toThrow();
+  });
+
+  it('should throw an error if number is greater than 61', () => {
+    const number = 61;
+    expect(() => underTest.doubleDigit(number)).toThrow();
+  });
+
+  it('should return "00" if number is 0', () => {
+    const number = 0;
+    const actual = underTest.doubleDigit(number);
+    expect(actual).toBe('00');
+  });
+
+  it('should return "01" if number is 1', () => {
+    const number = 1;
+    const actual = underTest.doubleDigit(number);
+    expect(actual).toBe('01');
+  });
+
+  it('should return "09" if number is 9', () => {
+    const number = 9;
+    const actual = underTest.doubleDigit(number);
+    expect(actual).toBe('09');
+  })
+
+  it('should return "10" if number is 10', () => {
+    const number = 10;
+    const actual = underTest.doubleDigit(number);
+    expect(actual).toBe('10');
+  });
+
+  it('should return "23" if number is 23', () => {
+    const number = 23;
+    const actual = underTest.doubleDigit(number);
+    expect(actual).toBe('23');
+  });
+});

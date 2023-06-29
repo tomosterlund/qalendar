@@ -63,6 +63,7 @@
           :day-info="{ daysTotalN: days.length, thisDayIndex: dayIndex, dateTimeString: day.dateTimeString }"
           :mode="mode"
           :day-intervals="dayIntervals"
+          :week-height="+weekHeight.replace('px', '')"
           @event-was-clicked="handleClickOnEvent"
           @event-was-resized="$emit('event-was-resized', $event)"
           @event-was-dragged="handleEventWasDragged"
@@ -70,6 +71,7 @@
           @day-was-clicked="$emit('day-was-clicked', $event)"
           @drag-start="destroyScrollbarAndHideOverflow"
           @drag-end="initScrollbar"
+          @datetime-was-clicked="$emit('datetime-was-clicked', $event)"
         >
           <template #weekDayEvent="p">
             <slot
@@ -146,6 +148,7 @@ export default defineComponent({
     'delete-event',
     'interval-was-clicked',
     'day-was-clicked',
+    'datetime-was-clicked',
   ],
 
   data() {

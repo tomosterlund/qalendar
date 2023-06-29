@@ -219,18 +219,6 @@ export default defineComponent({
     },
   },
 
-  watch: {
-    period: {
-      deep: true,
-      handler() {
-        if (this.selectedDate.getTime() === this.period.selectedDate.getTime())
-          return;
-
-        this.hydrateDatePicker();
-      },
-    },
-  },
-
   mounted() {
     this.hydrateDatePicker(true);
   },
@@ -355,6 +343,7 @@ export default defineComponent({
     },
 
     toggleDatePickerMode() {
+      // toggle to year
       if (this.datePickerMode === 'month') {
         this.monthPickerDates = this.time.getCalendarYearMonths(
           this.datePickerCurrentDate.getFullYear()
@@ -363,14 +352,13 @@ export default defineComponent({
         return (this.datePickerMode = 'year');
       }
 
-      if (this.datePickerMode === 'year') {
-        this.weekPickerDates = this.time.getCalendarMonthSplitInWeeks(
-          this.datePickerCurrentDate.getFullYear(),
-          this.datePickerCurrentDate.getMonth()
-        );
+      // toggle to month
+      this.weekPickerDates = this.time.getCalendarMonthSplitInWeeks(
+        this.datePickerCurrentDate.getFullYear(),
+        this.datePickerCurrentDate.getMonth()
+      );
 
-        return (this.datePickerMode = 'month');
-      }
+      this.datePickerMode = 'month';
     },
 
     getLocale() {

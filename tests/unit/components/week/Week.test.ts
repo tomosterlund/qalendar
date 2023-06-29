@@ -3,6 +3,7 @@ import Week from '../../../../src/components/week/Week.vue'
 import {mount} from "@vue/test-utils";
 import Time, {WEEK_START_DAY} from '../../../../src/helpers/Time'
 import {mountComponent} from '../../../vitest-setup'
+import { EventBuilder } from "../../../../src/models/Event";
 
 const week = mountComponent(mount, Week)
 
@@ -174,4 +175,35 @@ describe('Week.vue', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.get('.week-timeline__event'))
   });
+
+  it('should pass event "datetime-was-clicked" from Day.vue to parent', async () => {
+    const day = wrapper.findComponent('.calendar-week__day')
+    await day.vm.$emit('datetime-was-clicked')
+    expect(wrapper.emitted()).toHaveProperty('datetime-was-clicked')
+  })
+
+  it('should init scrollbar on receiving event-was-dragged event', async () => {
+    const day = wrapper.findComponent('.calendar-week__day')
+    const initScrollbarSpy = vi.spyOn(wrapper.vm, 'initScrollbar')
+    const eventToBeDragged = new EventBuilder({
+      start: '2022-06-06 17:20',
+      end: '2022-06-06 18:20',
+    }).build()
+
+    await day.vm.$emit('event-was-dragged', eventToBeDragged)
+
+    expect(initScrollbarSpy).toHaveBeenCalled()
+  })
+
+  it('should emit event "event-was-dragged" on receiving event-was-dragged event', async () => {
+    const day = wrapper.findComponent('.calendar-week__day')
+    const eventToBeDragged = new EventBuilder({
+      start: '2022-06-06 17:20',
+      end: '2022-06-06 18:20',
+    }).build()
+
+    await day.vm.$emit('event-was-dragged', eventToBeDragged)
+
+    expect(wrapper.emitted()).toHaveProperty('event-was-dragged')
+  })
 })

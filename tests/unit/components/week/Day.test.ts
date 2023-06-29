@@ -1,44 +1,50 @@
 import {mount, shallowMount, VueWrapper} from "@vue/test-utils";
 import Day from "../../../../src/components/week/Day.vue";
-import {describe, expect, it, vi} from "vitest";
+import {describe, expect, it, vi, beforeEach} from "vitest";
 import Time, {WEEK_START_DAY} from "../../../../src/helpers/Time";
 
 const INTERVALS_SELECTOR = ".calendar-week__day-interval";
 describe("Day.vue", () => {
-  const wrapper = mount(Day, {
-    props: {
-      time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
-      day: {
-        dayName: "Sunday",
-        dateTimeString: "2022-05-22 00:00",
-        events: [
-          {
-            title: "Foo",
-            time: { start: "2022-05-22 00:00", end: "2022-05-22 01:00" },
-            id: "1",
-          },
-          {
-            title: "Bar",
-            time: { start: "2022-05-22 00:00", end: "2022-05-22 01:00" },
-            id: "2",
-          },
-          {
-            title: "Baz",
-            time: { start: "2022-05-22 01:00", end: "2022-05-22 02:00" },
-            id: "3",
-          },
-        ],
+  let wrapper: VueWrapper<any>;
+
+  beforeEach(() => {
+    wrapper = mount(Day, {
+      props: {
+        weekHeight: 2400,
+        time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
+        day: {
+          dayName: "Sunday",
+          dateTimeString: "2022-05-22 00:00",
+          events: [
+            {
+              title: "Foo",
+              time: { start: "2022-05-22 00:00", end: "2022-05-22 01:00" },
+              id: "1",
+            },
+            {
+              title: "Bar",
+              time: { start: "2022-05-22 00:00", end: "2022-05-22 01:00" },
+              id: "2",
+            },
+            {
+              title: "Baz",
+              time: { start: "2022-05-22 01:00", end: "2022-05-22 02:00" },
+              id: "3",
+            },
+          ],
+        },
+        config: {},
+        dayIntervals: {
+          length: 15,
+          height: 15,
+          displayClickableInterval: true,
+        },
+        mode: 'week',
+        dayInfo: { daysTotalN: 7, thisDayIndex: 1, dateTimeString: "2022-05-22 00:00" },
       },
-      config: {},
-      dayIntervals: {
-        length: 15,
-        height: 15,
-        displayClickableInterval: true,
-      },
-      mode: 'week',
-      dayInfo: { daysTotalN: 7, thisDayIndex: 1, dateTimeString: "2022-05-22 00:00" },
-    },
-  });
+    });
+  })
+
 
   it("Renders three events", () => {
     const events = wrapper.findAll("[data-test='day-event']");
@@ -54,6 +60,7 @@ describe("Day.vue", () => {
   it('does not render clickable intervals', () => {
     const wrapperWithoutIntervals = shallowMount(Day, {
       props: {
+        weekHeight: 2400,
         time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
         day: {
           dayName: "Sunday",
@@ -74,6 +81,15 @@ describe("Day.vue", () => {
     const intervals = wrapperWithoutIntervals.findAll(INTERVALS_SELECTOR);
     expect(intervals).toHaveLength(0);
   })
+
+  it('emits event datetime-was-clicked when clicking anywhere on a day', async () => {
+    expect(wrapper.emitted()).not.toHaveProperty('datetime-was-clicked');
+    const day = wrapper.find(".calendar-week__day");
+    await day.trigger("click");
+    expect(wrapper.emitted()).toHaveProperty('datetime-was-clicked');
+    expect(wrapper.emitted('datetime-was-clicked'));
+    expect(wrapper.emitted('datetime-was-clicked')[0][0]).toHaveLength(16);
+  });
 
   it('renders the clickable events', async () => {
     expect(wrapper.emitted()).not.toHaveProperty('interval-was-clicked');

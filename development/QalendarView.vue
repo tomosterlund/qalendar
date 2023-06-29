@@ -21,6 +21,8 @@
         @edit-event="editEvent"
         @delete-event="deleteEvent"
         @day-was-clicked="reactToEvent"
+        @date-was-clicked="reactToEvent"
+        @datetime-was-clicked="reactToEvent"
         @event-was-dragged="handleEventWasDragged"
         @interval-was-clicked="handleIntervalWasClicked"
       >
@@ -147,7 +149,7 @@ export default defineComponent({
             },
           },
         },
-        defaultMode: 'month',
+        // defaultMode: 'day',
         showCurrentTime: true,
         isSilent: true,
         dayIntervals: {
@@ -155,8 +157,8 @@ export default defineComponent({
           length: 30,
         },
         dayBoundaries: {
-          start: 4,
-          end: 4,
+          start: 5,
+          end: 5,
         },
         eventDialog: {
           isDisabled: false,

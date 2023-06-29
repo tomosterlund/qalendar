@@ -79,14 +79,10 @@ export class EventChange {
     const startHour = this.timeInstance.getHourAndMinutesFromTimePoints(this.timeInstance.DAY_START).hour;
     const endHour = this.timeInstance.getHourAndMinutesFromTimePoints(this.timeInstance.DAY_END).hour;
 
-    const startHourString = startHour < 10
-      ? `0${startHour}`
-      : startHour;
+    const startHourString = this.timeInstance.doubleDigit(startHour);
     this.dayStart = `${startHourString}:00`;
 
-    const endHourString = endHour < 10
-      ? `0${endHour}`
-      : endHour;
+    const endHourString = this.timeInstance.doubleDigit(endHour);
     this.dayEnd = `${endHourString}:00`;
   }
 }

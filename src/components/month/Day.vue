@@ -103,7 +103,7 @@ export default defineComponent({
     'event-was-clicked',
     'event-was-dragged',
     'updated-period',
-    'day-was-clicked',
+    'date-was-clicked',
     'day-was-selected',
   ],
 
@@ -190,7 +190,7 @@ export default defineComponent({
     },
 
     emitDayWasClicked() {
-      this.$emit('day-was-clicked', this.time.dateStringFrom(this.day.dateTimeString));
+      this.$emit('date-was-clicked', this.time.dateStringFrom(this.day.dateTimeString));
       if (this.config.isSmall) this.$emit('day-was-selected', this.day);
     },
   },

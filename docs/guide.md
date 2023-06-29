@@ -100,6 +100,8 @@ prevent this by wrapping it in an element with the inline style `style="color-sc
 Qalendar takes a `config` prop, which contains all the most crucial options for configuring its
 behavior. `config` is passed as an object, which could look like this:
 
+## Basic configuration
+
 ```js
 data()
 {
@@ -186,17 +188,19 @@ Please note, however, that you cannot mix these two types of time formats for an
 
 Qalendar emits the following events that can be listened to:
 
-|       Event name       |                                  Purpose                                   |
-|:----------------------:|:--------------------------------------------------------------------------:|
-|  `event-was-clicked`   |                                                                            |
-|  `event-was-dragged`   |            emits the updated event, after an event was dragged             |
-|  `event-was-resized`   |            emits the updated event, after an event was resized             |
-| `interval-was-clicked` |                   [see section on intervals](#intervals)                   |
-|   `day-was-clicked`    |          Emits a the date that a user clicked, e.g. `2022-11-16`           |
-|    `updated-period`    |      emits the value with the new period selected in the date picker       |
-|     `updated-mode`     | emits the new selected mode and the period, when the user changes the mode |
-|      `edit-event`      |         is triggered, when a user clicks the edit-icon of an event         |
-|     `delete-event`     |        is triggered, when a user clicks the delete-icon of an event        |
+|       Event name       |                                                                           Purpose                                                                           |
+|:----------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|  `event-was-clicked`   |                                                                                                                                                             |
+|  `event-was-dragged`   |                                                     emits the updated event, after an event was dragged                                                     |
+|  `event-was-resized`   |                                                     emits the updated event, after an event was resized                                                     |
+| `interval-was-clicked` |                                                           [see section on intervals](#intervals)                                                            |
+|    `updated-period`    |                                               emits the value with the new period selected in the date picker                                               |
+|     `updated-mode`     |                                         emits the new selected mode and the period, when the user changes the mode                                          |
+|      `edit-event`      |                                                 is triggered, when a user clicks the edit-icon of an event                                                  |
+|     `delete-event`     |                                                is triggered, when a user clicks the delete-icon of an event                                                 |
+| `datetime-was-clicked` |                               Emits a the datetime string from where the clicks in week & day modes, e.g. `2022-11-16 00:10`                                |
+|   `date-was-clicked`   |                                        In month mode, this emits a the date that the user clicked, e.g. `2022-11-16`                                        |
+|  ~~day-was-clicked~~   | Emits a the date that a user clicked, e.g. `2022-11-16`. **Deprecated**. Will be removed with v4. Use `datetime-was-clicked` and `date-was-clicked` instead |
 
 ## Drag and drop
 

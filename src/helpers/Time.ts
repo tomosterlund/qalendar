@@ -365,7 +365,6 @@ export default class Time {
 
   protected turnMinutesIntoPercentageOfHour(minutes: number): string {
     const oneMinutePercentage = 100 / 60;
-
     const minutePoints = oneMinutePercentage * minutes;
 
     if (minutePoints < 10) return "0" + minutePoints;
@@ -407,9 +406,36 @@ export default class Time {
     return (pointsIntoDay / pointsInDay) * 100;
   }
 
+  getTimeFromClick(
+    clickOffsetY: number,
+    weekHeight: number,
+  ): string {
+    if (weekHeight <= 0) throw new Error('weekHeight cannot be a negative number');
+    if (clickOffsetY < 0) throw new Error('clickOffsetY cannot be a negative number');
+
+    const dayStartHour = this.DAY_START / 100;
+    const hourHeight = weekHeight / this.HOURS_PER_DAY;
+    const minutes = Math.floor((clickOffsetY % hourHeight) / (hourHeight / 60));
+
+    if (this.DAY_END <= this.DAY_START) {
+      const dayEndHour = this.DAY_END / 100;
+      const nightHeight = (dayEndHour) * hourHeight;
+      const nightOffset = weekHeight - nightHeight;
+
+      if (clickOffsetY > nightOffset) {
+        const hour = Math.floor((clickOffsetY - nightOffset) / hourHeight);
+        return `${this.doubleDigit(hour)}:${this.doubleDigit(minutes)}`;
+      }
+    }
+
+    const hour = Math.floor(clickOffsetY / hourHeight) + dayStartHour;
+
+    return `${this.doubleDigit(hour)}:${this.doubleDigit(minutes)}`;
+  }
+
   setSegmentOfDateTimeString(dateTimeString: string, segments: { hour: number }) {
     if (segments.hour < 0 || segments.hour > 23) throw new Error('Invalid hour')
-    const newHour = String(segments.hour < 10 ? "0" + segments.hour : segments.hour)
+    const newHour = this.doubleDigit(segments.hour)
     dateTimeString = dateTimeString.replace(/\d{2}:/, newHour + ":")
 
     return dateTimeString
@@ -477,20 +503,14 @@ export default class Time {
   }
 
   setHourInDateTimeString(dateTimeString: string, hour: number) {
-    let hourString = hour.toString()
-
-    if (hour < 10) hourString = "0" + hour
-
+    const hourString = this.doubleDigit(hour)
     dateTimeString = dateTimeString.replace(/\d{2}:/, hourString + ":")
 
     return dateTimeString
   }
 
   setMinutesInDateTimeString(dateTimeString: string, minutes: number) {
-    let minutesString = minutes.toString()
-
-    if (minutes < 10) minutesString = "0" + minutes
-
+    const minutesString = this.doubleDigit(minutes)
     dateTimeString = dateTimeString.replace(/:\d{2}/, ":" + minutesString)
 
     return dateTimeString
@@ -515,6 +535,12 @@ export default class Time {
     }
 
     return { start: startOfDay, end: endOfDay }
+  }
+
+  doubleDigit(number: number) {
+    if (number < 0 || number > 60) throw new Error('Invalid number. This is not a valid hour or minute')
+
+    return number < 10 ? '0' + number : String(number);
   }
 }
 

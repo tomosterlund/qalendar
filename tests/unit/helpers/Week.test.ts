@@ -3,7 +3,7 @@ import {WeekHelper} from "../../../src/helpers/Week";
 import {TimeBuilder} from "../../../src/helpers/Time";
 import {EventBuilder} from "../../../src/models/Event";
 
-describe("WeekHelper", () => {
+describe("WeekHelper/getNHoursIntoDayFromHour", () => {
 
   it('Gets nHoursIntoDayFromHour for dayBoundaries 0 - 24 and hour 8', () => {
     const expectedHoursIntoDay = 8;
