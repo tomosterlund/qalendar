@@ -7,7 +7,7 @@ on:
 
 jobs:
   code_coverage:
-    name: Upload unit test code coverage to Coveralls
+    name: Upload to Coveralls
     runs-on: ubuntu-latest
     steps:
       - name: Checkout ✅
