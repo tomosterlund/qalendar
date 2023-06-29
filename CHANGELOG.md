@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/tomosterlund/qalendar/compare/v3.2.0...v3.3.0) (2023-06-29)
+
+
+### Features
+
+* add new event datetime was clicked ([#184](https://github.com/tomosterlund/qalendar/issues/184)) ([125fe3d](https://github.com/tomosterlund/qalendar/commit/125fe3dd6318de1531e0d8b9b84c04ad62eb8aa8))
+
 # [3.2.0](https://github.com/tomosterlund/qalendar/compare/v3.1.0...v3.2.0) (2023-06-23)
 
 
