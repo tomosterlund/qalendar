@@ -29,7 +29,7 @@ export default defineConfig({
     environment: "jsdom",
     coverage: {
       provider: 'c8',
-      reporter: ['lcov', 'text-summary'],
+      reporter: ['lcov', 'text', 'text-summary'],
     },
   },
 });

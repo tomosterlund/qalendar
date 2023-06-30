@@ -164,7 +164,7 @@ export default defineComponent({
       period: {
         start: new Date(),
         end: new Date(),
-        selectedDate: this.selectedDate ? this.selectedDate : new Date(),
+        selectedDate: this.selectedDate,
       },
       mode: this.config?.defaultMode || ('week' as modeType),
       time: new Time(this.config?.week?.startsOn, this.config?.locale || null, {
@@ -178,7 +178,7 @@ export default defineComponent({
       fontFamily:
         this.config?.style?.fontFamily || "'Verdana', 'Open Sans', serif",
       eventRenderingKey: 0, // Works only as a dummy value, for re-rendering Month- and Week components, when events-watcher triggers
-      eventsDataProperty: this.events || [],
+      eventsDataProperty: this.events,
       isSmall: false,
     };
   },
@@ -242,6 +242,7 @@ export default defineComponent({
       this.$emit('updated-period', { start: value.start, end: value.end });
       this.period = value;
 
+      // TODO: remove with v4. Switching from month mode does not make sense anymore since it exists on mobile
       if (leaveMonthMode) this.mode = this.isSmall ? 'day' : 'week';
     },
 
