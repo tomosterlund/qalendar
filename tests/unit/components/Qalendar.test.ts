@@ -3,6 +3,7 @@ import Qalendar from '../../../src/Qalendar.vue'
 import { describe, expect, it, vi } from "vitest";
 import { periodInterface } from "../../../src/typings/interfaces/period.interface";
 import { WEEK_START_DAY } from "../../../src/helpers/Time";
+import { EventBuilder } from "../../../src/models/Event";
 
 async function whenInMonthMode() {
   const wrapper = mount(Qalendar);
@@ -447,5 +448,36 @@ describe('Qalendar.vue', () => {
     const wrapper = mount(Qalendar)
     const actualFontFamily = wrapper.vm.fontFamily;
     expect(actualFontFamily).toBe(expectedFontFamily);
+  })
+
+  it('should check structure of events given as prop', async () => {
+    const wrapper = mount(Qalendar)
+    const checkEventPropertiesSpy = vi.spyOn(wrapper.vm.ErrorsHelper, 'checkEventProperties')
+    await wrapper.setProps({
+      events: [new EventBuilder({ start: '2023-07-01', end: '2024-07-01' }).build()],
+    })
+    expect(checkEventPropertiesSpy).toHaveBeenCalled();
+  })
+
+  it('should not check structure of events when config is set to silent', () => {
+    const wrapper = mount(Qalendar, {
+      props: {
+        config: {
+          isSilent: true,
+        }
+      }
+    })
+    const checkEventPropertiesSpy = vi.spyOn(wrapper.vm.ErrorsHelper, 'checkEventProperties')
+    wrapper.setProps({
+      events: [new EventBuilder({ start: '2023-07-01', end: '2024-07-01' }).build()],
+    })
+    expect(checkEventPropertiesSpy).not.toHaveBeenCalled();
+  })
+
+  it('should set mode to day, when receiving event "updated-period" from Month', async () => {
+    const wrapper = await whenInMonthMode()
+    const month = wrapper.findComponent({ name: 'Month' })
+    month.vm.$emit('updated-period', { start: new Date(), end: new Date(), selectedDate: new Date() })
+    expect(wrapper.vm.mode).toBe('day')
   })
 })
