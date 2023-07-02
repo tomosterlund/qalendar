@@ -13,6 +13,7 @@ export const localeMap = new Map<string, string>([
   ['ru', 'ru-RU'],
   ['ar', 'ar-YE'],
   ['es', 'es-ES'],
+  ['ja', 'ja-JP'],
 ]);
 
 export default {
