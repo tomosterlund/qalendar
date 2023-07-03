@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/tomosterlund/qalendar/compare/v3.3.0...v3.4.0) (2023-07-03)
+
+
+### Features
+
+* add japanese language ([#190](https://github.com/tomosterlund/qalendar/issues/190)) ([b0c945d](https://github.com/tomosterlund/qalendar/commit/b0c945da81335ba69927ed59a087994295f1795a))
+
 # [3.3.0](https://github.com/tomosterlund/qalendar/compare/v3.2.0...v3.3.0) (2023-06-29)
 
 
