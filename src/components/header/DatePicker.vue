@@ -220,7 +220,7 @@ export default defineComponent({
   },
 
   mounted() {
-    this.hydrateDatePicker(true);
+    this.hydrateDatePicker();
   },
 
   methods: {
@@ -400,12 +400,10 @@ export default defineComponent({
         setTimeout(() => (this.showDatePicker = false), 100);
     },
 
-    hydrateDatePicker(isOnMountHook = false) {
-      const date = isOnMountHook
-        ? this.datePickerCurrentDate
-        : this.selectedDate;
+    hydrateDatePicker() {
+      const date = this.datePickerCurrentDate;
       this.setMonthDaysInWeekPicker(date.getMonth(), date.getFullYear());
-      this.setWeek(date, isOnMountHook);
+      this.setWeek(date, true);
     },
 
     checkIfDateIsDisabled(date: Date) {
