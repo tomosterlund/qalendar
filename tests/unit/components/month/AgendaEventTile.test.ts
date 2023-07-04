@@ -4,6 +4,7 @@ import { mount } from "@vue/test-utils";
 import { TimeBuilder } from "../../../../src/helpers/Time";
 import { EventBuilder } from "../../../../src/models/Event";
 import { mountComponent } from "../../../vitest-setup";
+import { EVENT_COLORS } from "../../../../src/constants";
 
 describe('AgendaEventTile', () => {
   const timeInstance = new TimeBuilder().build();
@@ -108,5 +109,46 @@ describe('AgendaEventTile', () => {
     const underTest = getComponentWithOnlyTimeAndTitle();
     const eventLocation = underTest.find('.agenda__event-location');
     expect(eventLocation.exists()).toBe(false);
+  })
+
+  it('should set color to white and background to blue per default', () => {
+    const underTest = agendaEventTile(defaultOptions);
+    expect(underTest.vm.eventBackgroundColor).toBe(EVENT_COLORS.blue);
+    expect(underTest.vm.eventColor).toBe('#fff');
+  })
+
+  it('should set background color to purple', () => {
+    const options = { ...defaultOptions }
+    options.props.calendarEvent = new EventBuilder({
+      start: '2024-01-01', end: '2024-01-01'
+    })
+    .withColor('purple')
+    .build()
+    const underTest = agendaEventTile(options);
+    expect(underTest.vm.eventBackgroundColor).toBe(EVENT_COLORS.purple);
+  })
+
+  it('should use a color scheme for setting background color', () => {
+    const options = { ...defaultOptions }
+    options.props.calendarEvent = new EventBuilder({
+      start: '2024-01-01', end: '2024-01-01'
+    })
+    .withColorScheme('men')
+    .build();
+    const expectedColor = 'white';
+    const expectedBackgroundColor = '#123';
+    options.props.config = {
+      style: {
+        colorSchemes: {
+          men: {
+            backgroundColor: expectedBackgroundColor,
+            color: expectedColor,
+          }
+        }
+      }
+    }
+    const underTest = agendaEventTile(options);
+    expect(underTest.vm.eventBackgroundColor).toBe(expectedBackgroundColor);
+    expect(underTest.vm.eventColor).toBe(expectedColor);
   })
 });

@@ -10,7 +10,7 @@ export enum EVENT_TYPE {
   MULTI_DAY_FULL_DAY = 'MULTI_DAY_FULL_DAY',
 }
 
-export type EventColor = "blue" | "yellow" | "green" | "red";
+export type EventColor = "blue" | "yellow" | "green" | "red" | "purple";
 
 export interface eventInterface {
   id: eventId;
