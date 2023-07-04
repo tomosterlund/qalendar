@@ -108,6 +108,36 @@ describe("DatePicker.vue", () => {
     expect(wrapper.findAll('.is-disabled').length).toBe(0)
   })
 
+  it('should not set the week of a clicked date, if the date is disabled', async () => {
+    const wrapper = datePicker({
+      props: {
+        defaultDate: new Date(2020, 0, 1),
+        disableDates: {
+          before: new Date(2020, 0, 1),
+          after: new Date(2020, 1, 1),
+        },
+      },
+    });
+    const setWeekSpy = vi.spyOn(wrapper.vm, 'setWeek')
+    await openDatePicker(wrapper);
+    const firstDay = wrapper.find(".has-day");
+    await firstDay.trigger("click");
+    expect(setWeekSpy).not.toHaveBeenCalled()
+  })
+
+  it('should set the week of a clicked date, if the date is not disabled', async () => {
+    const wrapper = datePicker({
+      props: {
+        defaultDate: new Date(2020, 0, 1),
+      },
+    });
+    const setWeekSpy = vi.spyOn(wrapper.vm, 'setWeek')
+    await openDatePicker(wrapper);
+    const secondDay = wrapper.findAll(".has-day")[1];
+    await secondDay.trigger("click");
+    expect(setWeekSpy).toHaveBeenCalled()
+  })
+
   it("should open the date picker", async () => {
     const wrapper = datePicker({
       props: {
@@ -327,5 +357,29 @@ describe("DatePicker.vue", () => {
     await wrapper.vm.$nextTick()
 
     expect(wrapper.find('.date-picker__week-picker').exists()).toBe(false)
+  })
+
+  it('should set current date as default datePickerCurrentDate, if no defaultDate is provided', async () => {
+    const wrapper = datePicker({
+      props: {
+        defaultDate: undefined,
+      },
+    });
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.datePickerCurrentDate.getDate()).toEqual(new Date().getDate())
+    expect(wrapper.vm.datePickerCurrentDate.getMonth()).toEqual(new Date().getMonth())
+    expect(wrapper.vm.datePickerCurrentDate.getFullYear()).toEqual(new Date().getFullYear())
+  })
+
+  it('should set defaultDate as default datePickerCurrentDate, if defaultDate is provided', async () => {
+    const wrapper = datePicker({
+      props: {
+        defaultDate: new Date(2020, 0, 1),
+      },
+    });
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.datePickerCurrentDate.getDate()).toEqual(new Date(2020, 0, 1).getDate())
+    expect(wrapper.vm.datePickerCurrentDate.getMonth()).toEqual(new Date(2020, 0, 1).getMonth())
+    expect(wrapper.vm.datePickerCurrentDate.getFullYear()).toEqual(new Date(2020, 0, 1).getFullYear())
   })
 });
