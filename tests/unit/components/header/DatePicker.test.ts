@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { mount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import Time, { WEEK_START_DAY } from "../../../../src/helpers/Time";
 import DatePicker from "../../../../src/components/header/DatePicker.vue";
 import { mountComponent } from "../../../vitest-setup";
 
-const datePicker = mountComponent(mount, DatePicker)
+const datePicker = mountComponent(shallowMount, DatePicker)
 
 const MODE_TOGGLE_ACTION = '.date-picker__toggle-mode';
 
@@ -46,11 +46,14 @@ function whenInDayMode(defaultProps) {
   return { wrapper, setWeekSpy };
 }
 
+const openDatePicker = async wrapper => {
+  const datePicker = wrapper.find(".date-picker__value-display");
+  await datePicker.trigger("click");
+  await wrapper.vm.$nextTick();
+};
+
+const DATE_PICKER_ELEMENT = '.date-picker';
 describe("DatePicker.vue", () => {
-  const openDatePicker = async wrapper => {
-    const datePicker = wrapper.find(".date-picker__value-display");
-    await datePicker.trigger("click");
-  };
 
   const defaultProps = {
     timeProp: new Time(WEEK_START_DAY.MONDAY, "en-US"),
@@ -60,6 +63,80 @@ describe("DatePicker.vue", () => {
       end: new Date(),
     },
   };
+
+  it('should disable dates only after a certain date', async () => {
+    const selectedDate = new Date(2020, 0, 1)
+    const wrapper = shallowMount(DatePicker, {
+      props: {
+        disableDates: {
+          before: new Date(2019, 0, 9),
+          after: new Date(2020, 0, 10),
+        },
+        defaultDate: selectedDate,
+        periodProp: null,
+      }
+    })
+    await openDatePicker(wrapper)
+    expect(wrapper.findAll('.is-disabled').length).toBe(23)
+  })
+
+  it('should disable dates only before a certain date', async () => {
+    const selectedDate = new Date(2020, 0, 1)
+    const wrapper = shallowMount(DatePicker, {
+      props: {
+        disableDates: {
+          before: new Date(2020, 0, 10),
+          after: new Date(2030, 0, 20),
+        },
+        defaultDate: selectedDate,
+        periodProp: null,
+      }
+    })
+    await openDatePicker(wrapper)
+    expect(wrapper.findAll('.is-disabled').length).toBe(11)
+  })
+
+  it('should not disable any dates when no disableDates prop is passed', async () => {
+    const wrapper = datePicker({
+      props: {
+        ...defaultProps,
+        timeProp: null,
+        periodProp: null,
+      }
+    })
+    await openDatePicker(wrapper)
+    expect(wrapper.findAll('.is-disabled').length).toBe(0)
+  })
+
+  it('should not set the week of a clicked date, if the date is disabled', async () => {
+    const wrapper = datePicker({
+      props: {
+        defaultDate: new Date(2020, 0, 1),
+        disableDates: {
+          before: new Date(2020, 0, 1),
+          after: new Date(2020, 1, 1),
+        },
+      },
+    });
+    const setWeekSpy = vi.spyOn(wrapper.vm, 'setWeek')
+    await openDatePicker(wrapper);
+    const firstDay = wrapper.find(".has-day");
+    await firstDay.trigger("click");
+    expect(setWeekSpy).not.toHaveBeenCalled()
+  })
+
+  it('should set the week of a clicked date, if the date is not disabled', async () => {
+    const wrapper = datePicker({
+      props: {
+        defaultDate: new Date(2020, 0, 1),
+      },
+    });
+    const setWeekSpy = vi.spyOn(wrapper.vm, 'setWeek')
+    await openDatePicker(wrapper);
+    const secondDay = wrapper.findAll(".has-day")[1];
+    await secondDay.trigger("click");
+    expect(setWeekSpy).toHaveBeenCalled()
+  })
 
   it("should open the date picker", async () => {
     const wrapper = datePicker({
@@ -267,5 +344,42 @@ describe("DatePicker.vue", () => {
     const daySpyFirstArg = setWeekSpy.mock.calls[0][0] as Date
     const previousDay = DEFAULT_SELECTED_DATE.getDate() - 1;
     expect(daySpyFirstArg.getDate()).toEqual(previousDay)
+  })
+
+  it('should hide date picker on mouseleave event when open', async () => {
+    const wrapper = datePicker({ props: defaultProps });
+    await openDatePicker(wrapper);
+    expect(wrapper.find('.date-picker__week-picker').exists()).toBe(true);
+
+    vi.useFakeTimers()
+    await wrapper.find(DATE_PICKER_ELEMENT).trigger('mouseleave')
+    vi.runAllTimers()
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.find('.date-picker__week-picker').exists()).toBe(false)
+  })
+
+  it('should set current date as default datePickerCurrentDate, if no defaultDate is provided', async () => {
+    const wrapper = datePicker({
+      props: {
+        defaultDate: undefined,
+      },
+    });
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.datePickerCurrentDate.getDate()).toEqual(new Date().getDate())
+    expect(wrapper.vm.datePickerCurrentDate.getMonth()).toEqual(new Date().getMonth())
+    expect(wrapper.vm.datePickerCurrentDate.getFullYear()).toEqual(new Date().getFullYear())
+  })
+
+  it('should set defaultDate as default datePickerCurrentDate, if defaultDate is provided', async () => {
+    const wrapper = datePicker({
+      props: {
+        defaultDate: new Date(2020, 0, 1),
+      },
+    });
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.datePickerCurrentDate.getDate()).toEqual(new Date(2020, 0, 1).getDate())
+    expect(wrapper.vm.datePickerCurrentDate.getMonth()).toEqual(new Date(2020, 0, 1).getMonth())
+    expect(wrapper.vm.datePickerCurrentDate.getFullYear()).toEqual(new Date(2020, 0, 1).getFullYear())
   })
 });

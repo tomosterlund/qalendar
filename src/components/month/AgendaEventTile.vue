@@ -86,6 +86,7 @@ export default defineComponent({
       },
       colors: EVENT_COLORS as { [key: string]: string },
       eventBackgroundColor: '',
+      eventColor: '#fff',
       eventIdPrefix: 'agenda__event-',
     };
   },
@@ -116,6 +117,10 @@ export default defineComponent({
         this.config.style?.colorSchemes &&
         this.config.style.colorSchemes[this.calendarEvent.colorScheme]
       ) {
+        this.eventColor =
+          this.config.style.colorSchemes[this.calendarEvent.colorScheme]
+            .color;
+
         return (this.eventBackgroundColor =
           this.config.style.colorSchemes[
             this.calendarEvent.colorScheme
@@ -147,6 +152,7 @@ export default defineComponent({
 
 .agenda__event {
   background-color: v-bind(eventBackgroundColor);
+  color: v-bind(eventColor);
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
@@ -156,6 +162,5 @@ export default defineComponent({
   padding: var(--qalendar-spacing);
   cursor: pointer;
   user-select: none;
-  color: white;
 }
 </style>

@@ -164,7 +164,7 @@ export default defineComponent({
       period: {
         start: new Date(),
         end: new Date(),
-        selectedDate: this.selectedDate ? this.selectedDate : new Date(),
+        selectedDate: this.selectedDate,
       },
       mode: this.config?.defaultMode || ('week' as modeType),
       time: new Time(this.config?.week?.startsOn, this.config?.locale || null, {
@@ -178,8 +178,9 @@ export default defineComponent({
       fontFamily:
         this.config?.style?.fontFamily || "'Verdana', 'Open Sans', serif",
       eventRenderingKey: 0, // Works only as a dummy value, for re-rendering Month- and Week components, when events-watcher triggers
-      eventsDataProperty: this.events || [],
+      eventsDataProperty: this.events,
       isSmall: false,
+      ErrorsHelper: Errors,
     };
   },
   computed:{
@@ -199,10 +200,9 @@ export default defineComponent({
           this.eventRenderingKey = this.eventRenderingKey + 1;
         }
 
-        // Disable console warnings, if config.isSilent === true
         if (this.config.isSilent) return;
 
-        this.events.forEach((e) => Errors.checkEventProperties(e));
+        this.events.forEach((e) => this.ErrorsHelper.checkEventProperties(e));
       },
       immediate: true,
     },
@@ -210,7 +210,7 @@ export default defineComponent({
     config: {
       deep: true,
       handler(value: configInterface) {
-        Errors.checkConfig(value);
+        this.ErrorsHelper.checkConfig(value);
       },
       immediate: true,
     },
@@ -242,7 +242,7 @@ export default defineComponent({
       this.$emit('updated-period', { start: value.start, end: value.end });
       this.period = value;
 
-      if (leaveMonthMode) this.mode = this.isSmall ? 'day' : 'week';
+      if (leaveMonthMode) this.mode = 'day';
     },
 
     /**

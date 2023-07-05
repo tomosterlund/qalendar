@@ -9,6 +9,7 @@
       v-if="isCustomEvent"
       :id="elementId"
       class="is-event"
+      data-ref="custom-event"
       :class="{ 'is-draggable': elementDraggableAttribute }"
       :draggable="elementDraggableAttribute"
       @dragstart="handleDragStart"
@@ -23,6 +24,7 @@
     <div
       v-else
       :id="elementId"
+      data-ref="default-event"
       class="calendar-month__event is-event"
       :class="{ 'is-draggable': elementDraggableAttribute }"
       :draggable="elementDraggableAttribute"
@@ -146,7 +148,6 @@ export default defineComponent({
 
   methods: {
     setColors() {
-      // First, if the event has a customColorScheme, and the name of that
       if (
         this.calendarEvent?.colorScheme &&
         this.config.style?.colorSchemes &&

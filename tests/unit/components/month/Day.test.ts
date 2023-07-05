@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import Day from "../../../../src/components/month/Day.vue";
 import Time, { WEEK_START_DAY } from "../../../../src/helpers/Time";
 import { mountComponent } from "../../../vitest-setup";
+import {EventBuilder} from "../../../../src/models/Event";
 
 const day = mountComponent(mount, Day)
 
@@ -208,5 +209,46 @@ describe("Day.vue", () => {
     await dayBody.trigger(customEvent);
 
     expect(dayBody.classes()).not.toContain("is-droppable");
+  })
+
+  it('should not emit @event-was-dragged, if there is no dataTransfer on drop-event', async () => {
+    const wrapper = await whenIsDroppable()
+
+    await wrapper.find('.is-droppable').trigger('drop', {
+      dataTransfer: null
+    })
+
+    expect(wrapper.emitted('event-was-dragged')).toBeFalsy()
+  })
+
+  it('should emit @event-was-dragged, if there is dataTransfer on drop-event', async () => {
+    const wrapper = await whenIsDroppable()
+    const expectedNewDate = '2022-05-23'
+
+    await wrapper.find('.is-droppable').trigger('drop', {
+      dataTransfer: {
+        getData: () => JSON.stringify(new EventBuilder({
+          start: '2022-05-01', end: '2022-05-01'
+        }).build())
+      }
+    })
+
+    expect(wrapper.emitted('event-was-dragged')).toBeTruthy()
+    expect(wrapper.emitted('event-was-dragged')[0][0].time.start).toContain(expectedNewDate)
+    expect(wrapper.emitted('event-was-dragged')[0][0].time.end).toContain(expectedNewDate)
+  })
+
+  it('should not emit @event-was-dragged, if event is dropped on its current day', async () => {
+    const wrapper = await whenIsDroppable()
+
+    await wrapper.find('.is-droppable').trigger('drop', {
+      dataTransfer: {
+        getData: () => JSON.stringify(new EventBuilder({
+          start: '2022-05-23', end: '2022-05-23'
+        }).build())
+      }
+    })
+
+    expect(wrapper.emitted('event-was-dragged')).toBeFalsy()
   })
 });
