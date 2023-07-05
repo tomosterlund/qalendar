@@ -144,7 +144,7 @@ export default defineComponent({
               backgroundColor: '#131313',
             },
             ladies: {
-              color: '#fff',
+              color: '#333',
               backgroundColor: '#ff4081',
             },
           },
