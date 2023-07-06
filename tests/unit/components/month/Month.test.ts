@@ -4,6 +4,7 @@ import Month from "../../../../src/components/month/Month.vue";
 import Time, { WEEK_START_DAY } from "../../../../src/helpers/Time";
 import { nextTick } from "vue";
 import { dayMonday } from "../../../utils/entities/days";
+import { EventBuilder } from "../../../../src/models/Event";
 
 describe("Month.vue", () => {
   let wrapper = mount(Month, {
@@ -189,5 +190,33 @@ describe("Month.vue", () => {
 
     const eventFlyout = wrapper.findComponent({ name: "EventFlyout" });
     expect(eventFlyout.exists()).toBe(false);
+  })
+
+  it('should separate timed events from full day events', () => {
+    const timedEvent = new EventBuilder({
+      start: '2023-03-27 10:00',
+      end: '2023-03-27 11:00',
+    }).build()
+
+    const fullDayEvent = new EventBuilder({
+      start: '2023-03-27',
+      end: '2023-03-27',
+    }).build()
+
+    wrapper = mount(Month, {
+      props: {
+        eventsProp: [timedEvent, fullDayEvent],
+        time: new Time(WEEK_START_DAY.MONDAY, "de-DE"),
+        config: {},
+        period: {
+          start: new Date(2023, 3 - 1, 1),
+          end: new Date(2023, 3 - 1, 31),
+          selectedDate: new Date(2023, 3 - 1, 23),
+        }
+      }
+    })
+
+    expect(wrapper.vm.events).toHaveLength(1)
+    expect(wrapper.vm.fullDayEvents).toHaveLength(1)
   })
 });
