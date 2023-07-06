@@ -11,7 +11,7 @@
       @click="$emit('day-was-clicked', time.dateStringFrom(day.dateTimeString))"
     >
       <div class="week-timeline__day-name">
-        {{ day.dayName.substring(0, 2).toUpperCase() }}
+        {{ getWeekTimeStr(day) }}
       </div>
 
       <div class="week-timeline__date">
@@ -89,6 +89,10 @@ export default defineComponent({
 
       return date;
     },
+    getWeekTimeStr(day: dayInterface) {
+      const isCN = this.config?.locale?.toLowerCase() === 'zh-cn';
+      return isCN ? day.dayName : day.dayName.substring(0, 2).toUpperCase();
+    }
   },
 });
 </script>
