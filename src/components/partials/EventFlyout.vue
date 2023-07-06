@@ -67,7 +67,7 @@
 
         <div
           v-if="calendarEvent.with"
-          class="event-flyout__row"
+          class="event-flyout__row is-with"
         >
           <font-awesome-icon :icon="icons.user" />
           {{ calendarEvent.with }}
@@ -75,7 +75,7 @@
 
         <div
           v-if="calendarEvent.topic"
-          class="event-flyout__row"
+          class="event-flyout__row is-topic"
         >
           <font-awesome-icon
             :icon="icons.topic"
@@ -86,7 +86,7 @@
 
         <div
           v-if="calendarEvent.description"
-          class="event-flyout__row"
+          class="event-flyout__row is-description"
         >
           <font-awesome-icon
             :icon="icons.description"
