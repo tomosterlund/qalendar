@@ -537,6 +537,31 @@ describe("DayEvent.vue", () => {
     expect(wrapper.emitted('event-was-resized')).toBeDefined()
   })
 
+  it('should not allow resize when disabled via event prop', async () => {
+    const event = new EventBuilder({
+      start: "2022-05-20 09:00",
+      end: "2022-05-20 10:00",
+    })
+      .withIsEditable(true)
+      .withDisableResize(['week'])
+      .build()
+
+    const wrapper = dayEvent({
+      props: {
+        ...propsForAllTests,
+        eventProp: event,
+      }
+    })
+
+    const eventElement = getEventElement(wrapper);
+    await eventElement.trigger('mouseenter')
+
+    const resizeUpElement = wrapper.find(RESIZE_UP_SELECTOR)
+    const resizeDownElement = wrapper.find(RESIZE_DOWN_SELECTOR)
+    expect(resizeUpElement.exists()).toBe(false)
+    expect(resizeDownElement.exists()).toBe(false)
+  })
+
   it('Emits event-was-dragged when drag action ends', () => {
     const wrapper = getWrapperWithRandomEvent();
     expect(wrapper.emitted('event-was-dragged')).toBeUndefined()

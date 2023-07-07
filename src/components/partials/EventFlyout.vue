@@ -67,7 +67,7 @@
 
         <div
           v-if="calendarEvent.with"
-          class="event-flyout__row"
+          class="event-flyout__row is-with"
         >
           <font-awesome-icon :icon="icons.user" />
           {{ calendarEvent.with }}
@@ -75,7 +75,7 @@
 
         <div
           v-if="calendarEvent.topic"
-          class="event-flyout__row"
+          class="event-flyout__row is-topic"
         >
           <font-awesome-icon
             :icon="icons.topic"
@@ -86,7 +86,7 @@
 
         <div
           v-if="calendarEvent.description"
-          class="event-flyout__row"
+          class="event-flyout__row is-description"
         >
           <font-awesome-icon
             :icon="icons.description"
@@ -329,17 +329,14 @@ export default defineComponent({
     },
 
     closeFlyoutOnClickOutside(e: any) {
-      try {
-        const flyout = document.querySelector('.event-flyout');
-        if (!flyout || !this.isVisible) return;
+      const flyout = document.querySelector('.event-flyout');
+      if (!flyout || !this.isVisible) return;
 
-        const isClickOutside = !flyout.contains(e.target);
-        const isClickOnEvent = !!e.target.closest('.is-event');
+      const isClickOutside = !flyout.contains(e.target);
+      const isClickOnEvent = !!e.target.closest('.is-event');
 
-        if (this.isVisible && isClickOutside && !isClickOnEvent)
-          this.closeFlyout();
-      } catch (err) {
-        console.log(err);
+      if (this.isVisible && isClickOutside && !isClickOnEvent) {
+        this.closeFlyout();
       }
     },
   },

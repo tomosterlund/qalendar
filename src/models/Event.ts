@@ -103,4 +103,10 @@ export class EventBuilder {
 
     return this;
   }
+
+  withDisableResize(disableResize: modeType[]) {
+    this.eventImpl.disableResize = disableResize;
+
+    return this;
+  }
 }

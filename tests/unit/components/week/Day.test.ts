@@ -1,57 +1,19 @@
 import {mount, shallowMount, VueWrapper} from "@vue/test-utils";
 import Day from "../../../../src/components/week/Day.vue";
-import {describe, expect, it, vi, beforeEach} from "vitest";
+import {describe, expect, it, vi} from "vitest";
 import Time, {WEEK_START_DAY} from "../../../../src/helpers/Time";
+import { defaultOptions, optionsWithIntervalStyles, intervalColor, intervalBackgroundColor } from "./Day.test-utils";
 
 const INTERVALS_SELECTOR = ".calendar-week__day-interval";
 describe("Day.vue", () => {
-  let wrapper: VueWrapper<any>;
-
-  beforeEach(() => {
-    wrapper = mount(Day, {
-      props: {
-        weekHeight: 2400,
-        time: new Time(WEEK_START_DAY.SUNDAY, "en-US"),
-        day: {
-          dayName: "Sunday",
-          dateTimeString: "2022-05-22 00:00",
-          events: [
-            {
-              title: "Foo",
-              time: { start: "2022-05-22 00:00", end: "2022-05-22 01:00" },
-              id: "1",
-            },
-            {
-              title: "Bar",
-              time: { start: "2022-05-22 00:00", end: "2022-05-22 01:00" },
-              id: "2",
-            },
-            {
-              title: "Baz",
-              time: { start: "2022-05-22 01:00", end: "2022-05-22 02:00" },
-              id: "3",
-            },
-          ],
-        },
-        config: {},
-        dayIntervals: {
-          length: 15,
-          height: 15,
-          displayClickableInterval: true,
-        },
-        mode: 'week',
-        dayInfo: { daysTotalN: 7, thisDayIndex: 1, dateTimeString: "2022-05-22 00:00" },
-      },
-    });
-  })
-
-
-  it("Renders three events", () => {
+  it("Renders three events", async () => {
+    const wrapper = await shallowMount(Day, defaultOptions);
     const events = wrapper.findAll("[data-test='day-event']");
     expect(events).toHaveLength(3);
   });
 
-  it('renders the clickable intervals', () => {
+  it('renders the clickable intervals', async () => {
+    const wrapper = await shallowMount(Day, defaultOptions);
     const intervals = wrapper.findAll(INTERVALS_SELECTOR);
     // 98 = (15 minute intervals * 4 for an hour) * 24 hours for a day
     expect(intervals).toHaveLength(96);
@@ -83,6 +45,7 @@ describe("Day.vue", () => {
   })
 
   it('emits event datetime-was-clicked when clicking anywhere on a day', async () => {
+    const wrapper = shallowMount(Day, defaultOptions);
     expect(wrapper.emitted()).not.toHaveProperty('datetime-was-clicked');
     const day = wrapper.find(".calendar-week__day");
     await day.trigger("click");
@@ -92,6 +55,7 @@ describe("Day.vue", () => {
   });
 
   it('renders the clickable events', async () => {
+    const wrapper = await shallowMount(Day, defaultOptions);
     expect(wrapper.emitted()).not.toHaveProperty('interval-was-clicked');
     const firstInterval = wrapper.find(INTERVALS_SELECTOR);
     await firstInterval.trigger("click");
@@ -101,6 +65,7 @@ describe("Day.vue", () => {
   })
 
   it('Emits event day-was-clicked', async () => {
+    const wrapper = shallowMount(Day, defaultOptions);
     expect(wrapper.emitted()).not.toHaveProperty('day-was-clicked');
     const day = wrapper.find(".calendar-week__day");
     await day.trigger("click");
@@ -108,15 +73,8 @@ describe("Day.vue", () => {
     expect(wrapper.emitted('day-was-clicked'));
   })
 
-  it('Emits event-was-resized on receiving the same event', async () => {
-    expect(wrapper.emitted()).not.toHaveProperty('event-was-resized');
-    const dayEventComponent = await wrapper.findComponent('.calendar-week__event');
-    if (!dayEventComponent) throw new Error('dayEventComponent not found');
-    (dayEventComponent as VueWrapper).vm.$emit('event-was-resized');
-    expect(wrapper.emitted()).toHaveProperty('event-was-resized');
-  })
-
   it('triggers calculating new event concurrency when events are resized', async () => {
+    const wrapper = await mount(Day, defaultOptions);
     const dayEventComponent = await wrapper.findComponent('.calendar-week__event');
     if (!dayEventComponent) throw new Error('dayEventComponent not found');
     const calculateEventConcurrencySpy = vi.spyOn(wrapper.vm, 'calculateEventConcurrency');
@@ -125,34 +83,32 @@ describe("Day.vue", () => {
     expect(calculateEventConcurrencySpy).toHaveBeenCalled();
   })
 
-  it('passes on event-was-clicked to parent component', () => {
-    expect(wrapper.emitted()).not.toHaveProperty('event-was-clicked');
+  it.each([
+    ['event-was-clicked'],
+    ['event-was-dragged'],
+    ['drag-start'],
+    ['drag-end'],
+    ['event-was-resized'],
+  ])('passes on %s to parent component', async eventName => {
+    const wrapper = await mount(Day, defaultOptions);
+    expect(wrapper.emitted()).not.toHaveProperty(eventName);
     const dayEventComponent = wrapper.findComponent('.calendar-week__event');
-    if (!dayEventComponent) throw new Error('dayEventComponent not found');
-    (dayEventComponent as VueWrapper).vm.$emit('event-was-clicked');
-    expect(wrapper.emitted()).toHaveProperty('event-was-clicked');
+    (dayEventComponent as VueWrapper).vm.$emit(eventName);
+    expect(wrapper.emitted()).toHaveProperty(eventName);
   })
 
-  it('passes on event-was-dragged to parent component', () => {
-    expect(wrapper.emitted()).not.toHaveProperty('event-was-dragged');
-    const dayEventComponent = wrapper.findComponent('.calendar-week__event');
-    if (!dayEventComponent) throw new Error('dayEventComponent not found');
-    (dayEventComponent as VueWrapper).vm.$emit('event-was-dragged');
-    expect(wrapper.emitted()).toHaveProperty('event-was-dragged');
+  it('should display an interval with custom styles', async () => {
+    const wrapper = await shallowMount(Day, optionsWithIntervalStyles);
+    const firstInterval = await wrapper.find('.calendar-week__day-interval')
+    expect(firstInterval.attributes('style')).toContain(`color: ${intervalColor};`)
+    expect(firstInterval.attributes('style')).toContain(`background-color: ${intervalBackgroundColor};`)
   })
 
-  it('passes on drag-start to parent component', () => {
-    expect(wrapper.emitted()).not.toHaveProperty('drag-start');
-    const dayEventComponent = wrapper.findComponent('.calendar-week__event');
-    if (!dayEventComponent) throw new Error('dayEventComponent not found');
-    (dayEventComponent as VueWrapper).vm.$emit('drag-start');
-    expect(wrapper.emitted()).toHaveProperty('drag-start');
-  })
-
-  it('passing "drag-end" to parent component upon receiving it from DayEvent', async () => {
-    expect(wrapper.emitted()).not.toHaveProperty('drag-end');
-    const dayEvent = wrapper.findComponent(".calendar-week__event");
-    await (dayEvent as VueWrapper).vm.$emit('drag-end');
-    expect(wrapper.emitted()).toHaveProperty('drag-end');
+  it('should not display any custom interval styles', async () => {
+    const options = optionsWithIntervalStyles;
+    options.props.config.dayIntervals.intervalStyles = null;
+    const wrapper = await shallowMount(Day, options);
+    const firstInterval = wrapper.find('.calendar-week__day-interval')
+    expect(firstInterval.attributes('style')).toBeUndefined()
   })
 });
