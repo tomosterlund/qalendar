@@ -2,7 +2,6 @@ import EventFlyout from '../../../src/components/partials/EventFlyout.vue'
 import { describe, expect, it } from 'vitest';
 import { mountComponent } from '../../vitest-setup';
 import { mount } from '@vue/test-utils';
-import Time, { WEEK_START_DAY } from '../../../src/helpers/Time';
 import unidecode from 'unidecode';
 import {
   eventWithLocation,
@@ -13,7 +12,10 @@ import {
   eventWithTopic,
   eventWithoutDescription,
   eventWithDescription,
-  eventWithColor, eventWithColorScheme,
+  eventWithColor,
+  eventWithColorScheme,
+  propsForAllTests,
+  whenIsVisible
 } from "./EventFlyout.test-utils";
 import { EventBuilder } from "../../../src/models/Event";
 import { EVENT_COLORS } from "../../../src/constants";
@@ -21,10 +23,7 @@ import { EVENT_COLORS } from "../../../src/constants";
 const eventFlyout = mountComponent(mount, EventFlyout)
 
 describe('EventFlyout.vue', () => {
-  const propsForAllTests = {
-    config: {},
-    time: new Time(WEEK_START_DAY.SUNDAY, 'en-US'),
-  }
+
 
   it('should display a span of 2 dates, for full day events spanning over a period', () => {
     const wrapper = eventFlyout({
@@ -284,5 +283,17 @@ describe('EventFlyout.vue', () => {
 
     const event = wrapper.find('.event-flyout__color-icon')
     expect(event.attributes('style')).toContain(`background-color: ${expectedBackgroundColor}`)
+  })
+
+  it('should close flyout on clicking outside', () => {
+    const {
+      wrapper,
+      closeFlyoutSpy,
+      elementOutsideFlyout
+    } = whenIsVisible()
+
+    wrapper.vm.closeFlyoutOnClickOutside({ target: elementOutsideFlyout })
+
+    expect(closeFlyoutSpy).toHaveBeenCalled()
   })
 })

@@ -329,17 +329,14 @@ export default defineComponent({
     },
 
     closeFlyoutOnClickOutside(e: any) {
-      try {
-        const flyout = document.querySelector('.event-flyout');
-        if (!flyout || !this.isVisible) return;
+      const flyout = document.querySelector('.event-flyout');
+      if (!flyout || !this.isVisible) return;
 
-        const isClickOutside = !flyout.contains(e.target);
-        const isClickOnEvent = !!e.target.closest('.is-event');
+      const isClickOutside = !flyout.contains(e.target);
+      const isClickOnEvent = !!e.target.closest('.is-event');
 
-        if (this.isVisible && isClickOutside && !isClickOnEvent)
-          this.closeFlyout();
-      } catch (err) {
-        console.log(err);
+      if (this.isVisible && isClickOutside && !isClickOnEvent) {
+        this.closeFlyout();
       }
     },
   },

@@ -161,7 +161,7 @@ export default defineComponent({
           end: 5,
         },
         eventDialog: {
-          isDisabled: false,
+          // isDisabled: true,
           // isCustom: true,
         },
         month: {
