@@ -35,3 +35,23 @@ export const defaultOptions = {
     dayInfo: { daysTotalN: 7, thisDayIndex: 1, dateTimeString: "2022-05-22 00:00" },
   },
 }
+
+export const intervalBackgroundColor = "red";
+export const intervalColor = "white";
+
+export const optionsWithIntervalStyles = {
+  props: {
+    ...defaultOptions.props,
+    config: {
+      dayIntervals: {
+        length: 15,
+        height: 15,
+        displayClickableInterval: true,
+        intervalStyles: {
+          backgroundColor: intervalBackgroundColor,
+          color: intervalColor,
+        }
+      }
+    }
+  }
+}

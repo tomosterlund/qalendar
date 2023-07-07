@@ -1,8 +1,8 @@
 import {mount, shallowMount, VueWrapper} from "@vue/test-utils";
 import Day from "../../../../src/components/week/Day.vue";
-import {describe, expect, it, vi, beforeEach} from "vitest";
+import {describe, expect, it, vi} from "vitest";
 import Time, {WEEK_START_DAY} from "../../../../src/helpers/Time";
-import { defaultOptions } from "./Day.test-utils";
+import { defaultOptions, optionsWithIntervalStyles, intervalColor, intervalBackgroundColor } from "./Day.test-utils";
 
 const INTERVALS_SELECTOR = ".calendar-week__day-interval";
 describe("Day.vue", () => {
@@ -95,5 +95,20 @@ describe("Day.vue", () => {
     const dayEventComponent = wrapper.findComponent('.calendar-week__event');
     (dayEventComponent as VueWrapper).vm.$emit(eventName);
     expect(wrapper.emitted()).toHaveProperty(eventName);
+  })
+
+  it('should display an interval with custom styles', async () => {
+    const wrapper = await shallowMount(Day, optionsWithIntervalStyles);
+    const firstInterval = await wrapper.find('.calendar-week__day-interval')
+    expect(firstInterval.attributes('style')).toContain(`color: ${intervalColor};`)
+    expect(firstInterval.attributes('style')).toContain(`background-color: ${intervalBackgroundColor};`)
+  })
+
+  it('should not display any custom interval styles', async () => {
+    const options = optionsWithIntervalStyles;
+    options.props.config.dayIntervals.intervalStyles = null;
+    const wrapper = await shallowMount(Day, options);
+    const firstInterval = wrapper.find('.calendar-week__day-interval')
+    expect(firstInterval.attributes('style')).toBeUndefined()
   })
 });
