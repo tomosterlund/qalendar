@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/tomosterlund/qalendar/compare/v3.4.0...v3.5.0) (2023-07-12)
+
+
+### Features
+
+* add config option to disable flyout closing when clicking outside ([#195](https://github.com/tomosterlund/qalendar/issues/195)) ([5a2891e](https://github.com/tomosterlund/qalendar/commit/5a2891e761d30ec6d2852da0b3d0abb424597f9a))
+
 # [3.4.0](https://github.com/tomosterlund/qalendar/compare/v3.3.0...v3.4.0) (2023-07-03)
 
 
