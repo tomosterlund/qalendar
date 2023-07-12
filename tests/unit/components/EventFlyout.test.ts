@@ -296,4 +296,16 @@ describe('EventFlyout.vue', () => {
 
     expect(closeFlyoutSpy).toHaveBeenCalled()
   })
+
+  it("should not close flyout on clicking, when disabled through config",  () => {
+    const {
+      wrapper,
+      closeFlyoutSpy,
+      elementOutsideFlyout
+    } = whenIsVisible(false)
+
+    wrapper.vm.closeFlyoutOnClickOutside({ target: elementOutsideFlyout })
+
+    expect(closeFlyoutSpy).not.toHaveBeenCalled()
+  })
 })

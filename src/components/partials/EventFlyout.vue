@@ -334,8 +334,9 @@ export default defineComponent({
 
       const isClickOutside = !flyout.contains(e.target);
       const isClickOnEvent = !!e.target.closest('.is-event');
+      const closeOnClickOutside = this.config.eventDialog?.closeOnClickOutside ?? true;
 
-      if (this.isVisible && isClickOutside && !isClickOnEvent) {
+      if (this.isVisible && isClickOutside && !isClickOnEvent && closeOnClickOutside) {
         this.closeFlyout();
       }
     },

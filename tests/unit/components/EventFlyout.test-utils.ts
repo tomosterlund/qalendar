@@ -4,6 +4,7 @@ import { EventColor } from "../../../src/typings/interfaces/event.interface";
 import { shallowMount } from "@vue/test-utils";
 import Time, { WEEK_START_DAY } from "../../../src/helpers/Time";
 import { expect, vi } from "vitest";
+import { configInterface } from "../../../src/typings/config.interface";
 
 export const eventWithTitle = (title: string) => {
   return new EventBuilder({
@@ -88,17 +89,24 @@ export const eventWithColorScheme = (colorScheme: string) => {
 }
 
 export const propsForAllTests = {
-  config: {},
+  config: {} satisfies configInterface as configInterface,
   time: new Time(WEEK_START_DAY.SUNDAY, 'en-US'),
 }
 
-export const whenIsVisible = () => {
-  const wrapper = shallowMount(EventFlyout,{
+export const whenIsVisible = (closeOnClickOutside = true) => {
+  const wrapper = shallowMount(EventFlyout, {
     props: {
       ...propsForAllTests,
-      calendarEventProp: eventWithTitle('Foo')
+      calendarEventProp: eventWithTitle('Foo'),
+      config: {
+        ...propsForAllTests.config,
+        eventDialog: {
+          ...propsForAllTests.config.eventDialog,
+          closeOnClickOutside,
+        },
+      },
     },
-    attachTo: document.body
+    attachTo: document.body,
   })
   const closeFlyoutSpy = vi.spyOn(wrapper.vm, 'closeFlyout')
   const eventFlyoutElement = document.createElement('div')

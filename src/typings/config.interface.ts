@@ -66,6 +66,7 @@ export interface configInterface {
   eventDialog?: {
     isDisabled?: boolean;
     isCustom?: boolean;
+    closeOnClickOutside?: boolean;
   }
   dayBoundaries?: {
     start: number; // integer between 0 and 24
