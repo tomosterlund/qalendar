@@ -7,7 +7,7 @@
 
     <DevHeader v-if="layout === 'header'" />
 
-    <main>
+    <main class="is-light-mode">
       <Qalendar
         :key="config.locale + config.week.nDays"
         :selected-date="new Date()"
