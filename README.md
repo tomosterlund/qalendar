@@ -21,13 +21,6 @@ please [open an issue](https://github.com/tomosterlund/qalendar/issues/new/choos
 For any other questions or comments, feel free to chat with us on
 Discord: https://discord.gg/Z6sTaTNADN
 
-## Sponsoring
-
-If you are benefiting from this library, and want to see it developed & maintained in the long
-run, please consider sponsoring.
-
-[Sponsor me today](https://github.com/sponsors/tomosterlund)
-
 ## License
 
 MIT
