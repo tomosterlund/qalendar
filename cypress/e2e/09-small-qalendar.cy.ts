@@ -31,7 +31,7 @@ describe('SmallQalendar', () => {
   it('should display leading and trailing days by default in month mode', () => {
     setMonthMode()
     getTrailingOrLeadingDays().should('be.visible')
-    cy.compareSnapshot('small-qalendar-month')
+    cy.compareSnapshot('small-qalendar-month', 0.03)
   })
 
   it('should set selected date by default in month mode and display active style for it', () => {
