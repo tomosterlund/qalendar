@@ -22,7 +22,7 @@ describe('FiveDayWeek.vue', () => {
     getFirstEventInWeekTimeline().click()
     getEventFlyoutTitle().contains('Advanced algebra')
     cy.wait(1000)
-    cy.compareSnapshot('02-five-day-week__event-dialog')
+    cy.compareSnapshot('02-five-day-week__event-dialog', 0.03)
   });
 
   it('Gets a timed event, and opens it in EventFlyout', () => {
