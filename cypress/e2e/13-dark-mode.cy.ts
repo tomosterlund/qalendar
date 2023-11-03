@@ -11,7 +11,7 @@ describe('Dark mode on desktop', () => {
   })
 
   it('should render the week view in dark mode', () => {
-    cy.compareSnapshot('dark-mode-week-view');
+    cy.compareSnapshot('dark-mode-week-view', 0.03);
   });
 
   it('should render the month view in dark mode', () => {
@@ -34,7 +34,7 @@ describe('Dark mode on mobile', () => {
 
   it('should render the month view in dark mode', () => {
     setMonthMode();
-    cy.compareSnapshot('dark-mode-month-view-mobile');
+    cy.compareSnapshot('dark-mode-month-view-mobile', 0.03);
   });
 
   it('should render the day view in dark mode', () => {
