@@ -23,7 +23,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .calendar-month__day-name {
   display: block;
   font-size: 12px;

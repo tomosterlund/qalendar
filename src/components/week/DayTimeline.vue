@@ -55,7 +55,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @use '../../styles/_mixins.scss' as mixins;
 
 .day-timeline {

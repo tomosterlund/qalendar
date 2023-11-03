@@ -195,7 +195,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @use '../../styles/mixins.scss' as mixins;
 
 .calendar-header {

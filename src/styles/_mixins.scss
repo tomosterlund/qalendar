@@ -13,8 +13,12 @@
 }
 
 @mixin dark-mode {
+
   @media (prefers-color-scheme: dark) {
-    @content;
+
+    &:not(.is-light-mode &) {
+      @content;
+    }
   }
 
   [style*="color-scheme: dark"] & {

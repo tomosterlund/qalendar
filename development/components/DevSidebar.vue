@@ -10,7 +10,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .dev-sidebar {
   display: none;
   margin: 0 24px;

@@ -252,7 +252,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '../../styles/_mixins.scss' as mixins;
 
 .calendar-month {

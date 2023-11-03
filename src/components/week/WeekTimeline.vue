@@ -93,7 +93,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .week-timeline {
   height: fit-content;
   display: flex;

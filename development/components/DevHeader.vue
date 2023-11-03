@@ -10,7 +10,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .dev-header {
   margin: 24px 0;
   background-color: rgba(241, 239, 239, 0.88);

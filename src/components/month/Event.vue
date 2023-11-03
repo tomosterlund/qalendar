@@ -189,7 +189,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '../../styles/mixins' as mixins;
 
 .calendar-month__event {

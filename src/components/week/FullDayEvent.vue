@@ -112,7 +112,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .week-timeline__event {
   position: relative;
 

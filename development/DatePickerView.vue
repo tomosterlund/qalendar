@@ -37,7 +37,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .date-picker-parent {
   font-family: Verdana, sans-serif;
 }

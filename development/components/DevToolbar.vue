@@ -90,7 +90,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .dev-toolbar {
   font-family: Courier, 'sans-serif';
   position: fixed;
