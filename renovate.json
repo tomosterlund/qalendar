@@ -25,7 +25,8 @@
     "@fortawesome/free-solid-svg-icons",
     "@fortawesome/vue-fontawesome",
     "vue",
-    "cypress"
+    "cypress",
+    "@vue/tsconfig"
   ],
   "ignorePaths": [
     "**/.circleci/**",
