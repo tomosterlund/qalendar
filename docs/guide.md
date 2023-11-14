@@ -89,6 +89,12 @@ Dark mode is enabled in one out of two ways:
 1. User system preferences
 2. Set programmatically, by adding the inline style `style="color-scheme: dark"` to a parent element.
 
+::: tip
+If you need to enforce light mode, even when a user's system settings are set to dark mode, you can
+add the class `is-light-mode` to any element wrapping the calendar. An example of this can be found here:
+https://github.com/tomosterlund/qalendar-light-mode-test/blob/main/src/views/Home.vue
+:::
+
 ## Basic configuration
 
 Qalendar takes a `config` prop, which contains all the most crucial options for configuring its

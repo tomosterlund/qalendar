@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div class="wrapper">
+    <div class="wrapper is-light-mode">
       <Qalendar
         :config="config"
       />
