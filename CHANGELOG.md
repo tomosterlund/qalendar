@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.1](https://github.com/tomosterlund/qalendar/compare/v3.5.0...v3.5.1) (2023-11-14)
+
+
+### Bug Fixes
+
+* enforced light mode ([#210](https://github.com/tomosterlund/qalendar/issues/210)) ([19edf5d](https://github.com/tomosterlund/qalendar/commit/19edf5d60c0aadafa1f7342f638ab88db486bb30))
+
 # [3.5.0](https://github.com/tomosterlund/qalendar/compare/v3.4.0...v3.5.0) (2023-07-12)
 
 
