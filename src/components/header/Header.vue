@@ -12,13 +12,13 @@
         <FontAwesomeIcon
           class="calendar-header__chevron-arrow calendar-header__chevron-arrow-left"
           :icon="icons.chevronLeft"
-          @click="goToPeriod($event, 'previous')"
+          @click="goToPeriod('previous')"
         />
 
         <FontAwesomeIcon
           class="calendar-header__chevron-arrow calendar-header__chevron-arrow-right"
           :icon="icons.chevronRight"
-          @click="goToPeriod($event, 'next')"
+          @click="goToPeriod('next')"
         />
       </div>
 
@@ -188,7 +188,7 @@ export default defineComponent({
       this.$emit('updated-period', value);
     },
 
-    goToPeriod(event: MouseEvent, direction: 'previous' | 'next') {
+    goToPeriod(direction: 'previous' | 'next') {
       (this.$refs.periodSelect as typeof DatePicker).goToPeriod(direction);
     },
   }

@@ -480,4 +480,15 @@ describe('Qalendar.vue', () => {
     month.vm.$emit('updated-period', { start: new Date(), end: new Date(), selectedDate: new Date() })
     expect(wrapper.vm.mode).toBe('day')
   })
+
+  it('should invoke the goToPeriod method in the header', () => {
+    const wrapper = mount(Qalendar)
+    const header = wrapper.findComponent({ name: 'AppHeader' })
+    const goToPeriodSpy = vi.spyOn(header.vm, 'goToPeriod')
+    const expectedDirection = 'forward'
+
+    wrapper.vm.goToPeriod(expectedDirection)
+
+    expect(goToPeriodSpy).toHaveBeenCalledWith(expectedDirection)
+  })
 })

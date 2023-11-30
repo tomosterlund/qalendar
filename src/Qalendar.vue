@@ -18,6 +18,7 @@
       </Transition>
 
       <AppHeader
+        ref="appHeader"
         :key="wasInitialized + mode"
         :config="config"
         :mode="mode"
@@ -335,7 +336,11 @@ export default defineComponent({
     handleDateWasClicked(payload: string) {
       this.$emit('day-was-clicked', payload); // TODO: remove with v4. day-was-clicked is deprecated
       this.$emit('date-was-clicked', payload);
-    }
+    },
+
+    goToPeriod(direction: 'previous' | 'next') {
+      (this.$refs.appHeader as typeof AppHeader).goToPeriod(direction);
+    },
   },
 });
 </script>
