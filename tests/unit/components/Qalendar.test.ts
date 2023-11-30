@@ -481,7 +481,7 @@ describe('Qalendar.vue', () => {
     expect(wrapper.vm.mode).toBe('day')
   })
 
-  it('should go to invoke the goToPeriod in the header and go forward in time', () => {
+  it('should invoke the goToPeriod method in the header', () => {
     const wrapper = mount(Qalendar)
     const header = wrapper.findComponent({ name: 'AppHeader' })
     const goToPeriodSpy = vi.spyOn(header.vm, 'goToPeriod')
