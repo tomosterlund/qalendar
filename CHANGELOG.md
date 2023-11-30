@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/tomosterlund/qalendar/compare/v3.5.1...v3.6.0) (2023-11-30)
+
+
+### Features
+
+* exposes gotoPeriod method to top level ([#212](https://github.com/tomosterlund/qalendar/issues/212)) ([18b091c](https://github.com/tomosterlund/qalendar/commit/18b091cc2001b473489f97e1b8dcda0ddb5f2229))
+
 ## [3.5.1](https://github.com/tomosterlund/qalendar/compare/v3.5.0...v3.5.1) (2023-11-14)
 
 
