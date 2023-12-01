@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.1](https://github.com/tomosterlund/qalendar/compare/v3.6.0...v3.6.1) (2023-12-01)
+
+
+### Bug Fixes
+
+* prevent faulty event bubbling when clicking on month day event ([#216](https://github.com/tomosterlund/qalendar/issues/216)) ([ca95519](https://github.com/tomosterlund/qalendar/commit/ca9551901bffde5170623fe978c145f75c93b775))
+
 # [3.6.0](https://github.com/tomosterlund/qalendar/compare/v3.5.1...v3.6.0) (2023-11-30)
 
 
