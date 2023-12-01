@@ -82,6 +82,15 @@ describe("Day.vue", () => {
     expect(underTest.emitted("date-was-clicked")[0][0]).toBe("2022-05-23");
   });
 
+  it('should not emit "date-was-clicked" when an event is clicked', () => {
+    const underTest = day({ props: defaultProps });
+    const dayEvent = underTest.find(".calendar-month__event");
+
+    dayEvent.trigger("click");
+
+    expect(underTest.emitted("date-was-clicked")).toBeFalsy();
+  })
+
   it('should not emit custom event "day-was-selected" when qalendar !isSmall and a day is clicked', async () => {
     const underTest = day({ props: {
       ...defaultProps,
