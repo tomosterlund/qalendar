@@ -9,7 +9,7 @@
       'is-selected': isSelected,
       'is-today': isToday,
     }"
-    @click="emitDayWasClicked"
+    @click.self="emitDayWasClicked"
     @dragleave="handleDragLeave"
     @dragover="handleDragOver"
     @drop="handleDrop"
