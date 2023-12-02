@@ -19,10 +19,9 @@
       name="dayCell"
       :day-data="day"
     >
-      <span
-        class="calendar-month__day-date"
-      >
-        {{ day.dateTimeString.substring(8, 10).startsWith('0') ? day.dateTimeString.substring(9, 10) : day.dateTimeString.substring(8, 10) }}
+      <span class="calendar-month__day-date">
+        {{ day.dateTimeString.substring(8, 10).startsWith('0') ? day.dateTimeString.substring(9, 10) :
+          day.dateTimeString.substring(8, 10) }}
       </span>
 
       <div class="calendar-month_events">
@@ -66,12 +65,12 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
-import { type configInterface } from '../../typings/config.interface';
 import Time from '../../helpers/Time';
-import Event from './Event.vue';
-import { type dayInterface } from '../../typings/interfaces/day.interface';
 import getLanguage from '../../language/index';
+import { type configInterface } from '../../typings/config.interface';
+import { type dayInterface } from '../../typings/interfaces/day.interface';
 import { type eventInterface } from '../../typings/interfaces/event.interface';
+import Event from './Event.vue';
 
 export default defineComponent({
   name: 'Day',
@@ -214,6 +213,13 @@ export default defineComponent({
   }
 }
 
+
+.calendar-month__week:last-of-type {
+  .calendar-month__weekday {
+    border-bottom: none;
+  }
+}
+
 .calendar-month__weekday {
   @include day-base;
 
@@ -229,12 +235,12 @@ export default defineComponent({
   }
 
   &.is-selected {
-     .qalendar-is-small & {
-       -webkit-box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
-       -moz-box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
-       box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
-       border-radius: 5px;
-     }
+    .qalendar-is-small & {
+      -webkit-box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
+      -moz-box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
+      box-shadow: inset 0 0 0 3px var(--qalendar-theme-color);
+      border-radius: 5px;
+    }
   }
 
   .qalendar-is-small & {
@@ -297,7 +303,7 @@ export default defineComponent({
 
   border-right-color: transparent;
 
-  + .calendar-month__weekday:not(.trailing-or-leading) {
+  +.calendar-month__weekday:not(.trailing-or-leading) {
     border-left: var(--qalendar-border-gray-thin);
   }
 }
