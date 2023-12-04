@@ -31,7 +31,7 @@
       />
 
       <div
-        v-if="!onlyDayModeIsEnabled"
+        v-if="!onlyDayModeIsEnabled && showModelSelector"
         class="calendar-header__mode-picker"
       >
         <div
@@ -51,9 +51,8 @@
             :key="calendarMode"
           >
             <div
-              v-if="
-                !config.disableModes || !config.disableModes.includes(calendarMode)
-              "
+              v-if="!config.disableModes || !config.disableModes.includes(calendarMode)
+                "
               class="calendar-header__mode-option"
               :class="'is-' + calendarMode + '-mode'"
               @click="$emit('change-mode', calendarMode)"
@@ -68,18 +67,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
-import DatePicker from './DatePicker.vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
-import { type configInterface } from '../../typings/config.interface';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { defineComponent, type PropType } from 'vue';
 import Time from '../../helpers/Time';
-import { type periodInterface } from '../../typings/interfaces/period.interface';
 import getLanguage from '../../language';
+import { type configInterface } from '../../typings/config.interface';
+import { type periodInterface } from '../../typings/interfaces/period.interface';
 import { type modeType } from '../../typings/types';
+import DatePicker from './DatePicker.vue';
 
 export default defineComponent({
   name: 'AppHeader',
@@ -129,6 +128,15 @@ export default defineComponent({
   },
 
   computed: {
+    showModelSelector() {
+      let count = this.modeOptions.length
+      this.modeOptions.forEach((mode: modeType) => {
+        if (this.config.disableModes && this.config.disableModes.includes(mode as string)) {
+          count--
+        }
+      })
+      return count > 1
+    },
     periodName() {
       if (this.mode === 'week') {
         const startMonth = this.time.getLocalizedNameOfMonth(

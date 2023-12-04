@@ -70,11 +70,10 @@
         v-show="datePickerMode === 'month'"
         :key="weekIndex"
         class="week"
-        :class="
-          time.dateIsInWeek(selectedDate, week) && !isStandAloneComponent
+        :class="time.dateIsInWeek(selectedDate, week) && !isStandAloneComponent
             ? 'is-active'
             : ''
-        "
+          "
       >
         <span
           v-for="(day, dayIndex) in week"
@@ -111,18 +110,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faCalendarDay,
   faChevronCircleLeft,
   faChevronCircleRight,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { defineComponent, type PropType } from 'vue';
 import Time, {
+  WEEK_START_DAY,
   type calendarMonthType,
   type calendarWeekType,
   type calendarYearMonths,
-  WEEK_START_DAY,
 } from '../../helpers/Time';
 import { type periodInterface } from '../../typings/interfaces/period.interface';
 import { type modeType } from '../../typings/types';
@@ -521,7 +520,7 @@ export default defineComponent({
   }
 
   &__week-picker-navigation {
-    font-weight: 900;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -632,7 +631,6 @@ export default defineComponent({
 
   &__day-names {
     text-transform: uppercase;
-    font-weight: 700;
     font-size: var(--qalendar-font-s);
   }
 }

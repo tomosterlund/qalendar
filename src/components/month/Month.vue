@@ -1,8 +1,6 @@
 <template>
   <div class="calendar-month">
-    <div
-      class="calendar-month__week-day-names"
-    >
+    <div class="calendar-month__week-day-names">
       <WeekDay
         v-for="(day, dayIndex) in month[0]"
         :key="dayIndex"
@@ -38,7 +36,7 @@
             />
           </template>
 
-          <template #dayCell="{dayData}">
+          <template #dayCell="{ dayData }">
             <slot
               :day-data="dayData"
               name="dayCell"
@@ -68,6 +66,7 @@
       :time="time"
       :config="config"
       @hide="selectedEvent = null"
+      @view-event="$emit('view-event', $event)"
       @edit-event="$emit('edit-event', $event)"
       @delete-event="$emit('delete-event', $event)"
     >
@@ -83,20 +82,20 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, type PropType} from 'vue';
-import Day from './Day.vue';
-import Time from '../../helpers/Time';
-import {type periodInterface} from '../../typings/interfaces/period.interface';
-import {type configInterface} from '../../typings/config.interface';
-import {EVENT_TYPE, type eventInterface} from '../../typings/interfaces/event.interface';
-import EDate from '../../helpers/EDate';
-import {type dayInterface} from '../../typings/interfaces/day.interface';
-import EventFlyout from '../partials/EventFlyout.vue';
-import EventPosition from '../../helpers/EventPosition';
 import PerfectScrollbar from 'perfect-scrollbar';
-import WeekDay from './WeekDay.vue';
+import { defineComponent, type PropType } from 'vue';
+import EDate from '../../helpers/EDate';
+import EventPosition from '../../helpers/EventPosition';
 import Helpers from "../../helpers/Helpers";
+import Time from '../../helpers/Time';
+import { type configInterface } from '../../typings/config.interface';
+import { type dayInterface } from '../../typings/interfaces/day.interface';
+import { EVENT_TYPE, type eventInterface } from '../../typings/interfaces/event.interface';
+import { type periodInterface } from '../../typings/interfaces/period.interface';
+import EventFlyout from '../partials/EventFlyout.vue';
 import AgendaEvents from "./AgendaEvents.vue";
+import Day from './Day.vue';
+import WeekDay from './WeekDay.vue';
 
 const EventPositionHelper = new EventPosition();
 
@@ -108,7 +107,7 @@ export default defineComponent({
     Day,
     EventFlyout,
     WeekDay,
-},
+  },
 
   props: {
     config: {
@@ -130,6 +129,7 @@ export default defineComponent({
   },
 
   emits: [
+    'view-event',
     'edit-event',
     'delete-event',
     'updated-period',
@@ -287,6 +287,7 @@ export default defineComponent({
 
 
   .calendar-month__week {
+    min-height: 80px;
     display: flex;
     flex: 1;
 
@@ -297,6 +298,11 @@ export default defineComponent({
         border-color: var(--qalendar-dark-mode-line-color);
       }
     }
+
+    .qalendar-is-small & {
+      min-height: fit-content !important;
+    }
+
   }
 
   .calendar-month__day_events {
@@ -304,6 +310,7 @@ export default defineComponent({
     display: none;
 
     .qalendar-is-small & {
+      border-top: var(--qalendar-border-gray-thin);
       display: block;
     }
   }

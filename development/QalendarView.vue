@@ -18,6 +18,7 @@
         @updated-period="updatedPeriod"
         @updated-mode="updatedPeriod"
         @event-was-resized="reactToEvent"
+        @view-event="viewEvent"
         @edit-event="editEvent"
         @delete-event="deleteEvent"
         @day-was-clicked="reactToEvent"
@@ -26,33 +27,31 @@
         @event-was-dragged="handleEventWasDragged"
         @interval-was-clicked="handleIntervalWasClicked"
       >
-        <template #monthEvent="{eventData}">
+        <template #monthEvent="{ eventData }">
           {{ eventData.title }}
         </template>
         <template #customCurrentTime>
-          <div
-            :style="{
-              height: '3px',
+          <div :style="{
+            height: '3px',
+            backgroundColor: 'cornflowerblue',
+            position: 'relative',
+          }">
+            <div :style="{
+              position: 'absolute',
+              left: '-7px',
+              top: '-6px',
+              height: '15px',
+              width: '15px',
               backgroundColor: 'cornflowerblue',
-              position: 'relative',
-            }"
-          >
-            <div
-              :style="{
-                position: 'absolute',
-                left: '-7px',
-                top: '-6px',
-                height: '15px',
-                width: '15px',
-                backgroundColor: 'cornflowerblue',
-                borderRadius: '50%',
-              }"
-            />
+              borderRadius: '50%',
+            }" />
           </div>
         </template>
 
         <template #weekDayEvent="eventProps">
-          <div :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
+          <div
+            :style="{ backgroundColor: 'cornflowerblue', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }"
+          >
             {{ eventProps.eventData.title }}
 
             <div>
@@ -89,12 +88,12 @@
           </div>
         </template>
 
-<!--        <template #dayCell="{dayData}">-->
-<!--          <div>-->
-<!--            <div> {{ dayData.dateTimeString.substring(8, 10) }}</div>-->
-<!--            <div> {{ dayData.events.length }} events</div>-->
-<!--          </div>-->
-<!--        </template>-->
+        <!--        <template #dayCell="{dayData}">-->
+        <!--          <div>-->
+        <!--            <div> {{ dayData.dateTimeString.substring(8, 10) }}</div>-->
+        <!--            <div> {{ dayData.events.length }} events</div>-->
+        <!--          </div>-->
+        <!--        </template>-->
       </Qalendar>
     </main>
 
@@ -107,15 +106,15 @@
 </template>
 
 <script lang="ts">
-import Qalendar from '../src/Qalendar.vue';
 import { defineComponent } from 'vue';
+import Qalendar from '../src/Qalendar.vue';
+import { WEEK_START_DAY } from "../src/helpers/Time";
 import { configInterface } from '../src/typings/config.interface';
 import { eventInterface } from '../src/typings/interfaces/event.interface';
-import { seededEvents } from './data/seeded-events';
-import DevToolbar from './components/DevToolbar.vue';
-import DevSidebar from './components/DevSidebar.vue';
 import DevHeader from './components/DevHeader.vue';
-import { WEEK_START_DAY } from "../src/helpers/Time";
+import DevSidebar from './components/DevSidebar.vue';
+import DevToolbar from './components/DevToolbar.vue';
+import { seededEvents } from './data/seeded-events';
 
 export default defineComponent({
   name: 'QalendarView',
@@ -207,6 +206,10 @@ export default defineComponent({
       this.isLoading = !this.isLoading;
 
       setTimeout(() => this.triggerLoadAnimations(), 5000);
+    },
+
+    viewEvent(payload: string) {
+      console.log('viewEvent%s: ', payload);
     },
 
     editEvent(payload: string) {

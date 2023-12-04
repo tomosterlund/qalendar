@@ -23,6 +23,7 @@ export interface eventInterface {
   colorScheme?: string;
   color?: EventColor; // Says 'color', but represents CSS-Property background-color
   isEditable?: boolean; // If true, the event has delete- and edit icons in Event-Flyout. Can also be dragged and dropped.
+  isViewable?: boolean; // If true, the view event detail button will show in Flyout
   disableDnD?: modeType[]; // Disable Drag and Drop for this event, in the modes specified
   disableResize?: modeType[]; // Disable Resize for this event, in the modes specified
   isCustom?: boolean | modeType[]; // If true, the event expects to be displayed using the event slot. It can also be specified as an array, of all modes, where the event should be displayed using the event slot.
@@ -32,7 +33,7 @@ export interface eventInterface {
   zIndex?: number;
   nOfPreviousConcurrentEvents?: number;
   totalConcurrentEvents?: number;
-  timeJS?: { start: Date, end: Date }
+  timeJS?: { start: Date, end: Date };
   originalEvent?: Omit<eventInterface, 'originalEvent'>;
   eventType?: EVENT_TYPE;
 }

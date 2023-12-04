@@ -40,6 +40,7 @@
         @event-was-clicked="$emit('event-was-clicked', $event)"
         @event-was-resized="handleEventWasUpdated($event, 'resized')"
         @event-was-dragged="handleEventWasUpdated($event, 'dragged')"
+        @view-event="$emit('view-event', $event)"
         @edit-event="$emit('edit-event', $event)"
         @delete-event="$emit('delete-event', $event)"
         @interval-was-clicked="$emit('interval-was-clicked', $event)"
@@ -77,6 +78,7 @@
         @date-was-clicked="handleDateWasClicked"
         @event-was-dragged="handleEventWasUpdated($event, 'dragged')"
         @updated-period="handleUpdatedPeriod($event, true)"
+        @view-event="$emit('view-event', $event)"
         @edit-event="$emit('edit-event', $event)"
         @delete-event="$emit('delete-event', $event)"
       >
@@ -95,7 +97,7 @@
           />
         </template>
 
-        <template #dayCell="{dayData}">
+        <template #dayCell="{ dayData }">
           <slot
             :day-data="dayData"
             name="dayCell"
@@ -107,15 +109,15 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, type PropType} from 'vue';
-import {type eventInterface} from './typings/interfaces/event.interface';
-import {type configInterface} from './typings/config.interface';
-import Time from './helpers/Time';
+import { defineComponent, type PropType } from 'vue';
 import AppHeader from './components/header/Header.vue';
-import Week from './components/week/Week.vue';
-import {type modeType} from './typings/types';
 import Month from './components/month/Month.vue';
+import Week from './components/week/Week.vue';
 import Errors from './helpers/Errors';
+import Time from './helpers/Time';
+import { type configInterface } from './typings/config.interface';
+import { type eventInterface } from './typings/interfaces/event.interface';
+import { type modeType } from './typings/types';
 
 export default defineComponent({
   name: 'Qalendar',
@@ -151,6 +153,7 @@ export default defineComponent({
     'event-was-dragged',
     'updated-period',
     'updated-mode',
+    'view-event',
     'edit-event',
     'delete-event',
     'interval-was-clicked',
@@ -167,7 +170,7 @@ export default defineComponent({
         end: new Date(),
         selectedDate: this.selectedDate,
       },
-      mode: this.config?.defaultMode || ('week' as modeType),
+      mode: this.config?.defaultMode || ('month' as modeType),
       time: new Time(this.config?.week?.startsOn, this.config?.locale || null, {
         start: this.setTimePointsFromDayBoundary(
           this.config?.dayBoundaries?.start || 0
@@ -184,7 +187,7 @@ export default defineComponent({
       ErrorsHelper: Errors,
     };
   },
-  computed:{
+  computed: {
     enhancedConfig(): configInterface {
       return { ...this.config, isSmall: this.isSmall }
     }
@@ -393,12 +396,10 @@ export default defineComponent({
       top: 1px;
       left: 2px;
       background: rgb(38, 132, 255);
-      background: linear-gradient(
-        90deg,
-        rgba(38, 132, 255, 1) 0%,
-        rgba(38, 132, 255, 0.5088410364145659) 48%,
-        rgba(38, 132, 255, 1) 100%
-      );
+      background: linear-gradient(90deg,
+          rgba(38, 132, 255, 1) 0%,
+          rgba(38, 132, 255, 0.5088410364145659) 48%,
+          rgba(38, 132, 255, 1) 100%);
       animation: load 1.8s infinite;
       border-radius: 16px;
 
@@ -412,10 +413,12 @@ export default defineComponent({
         width: 0;
         left: -100%;
       }
+
       50% {
         left: 0;
         width: 100%;
       }
+
       100% {
         width: 0;
         left: 100%;

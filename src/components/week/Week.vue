@@ -17,6 +17,7 @@
       :time="time"
       :config="config"
       @hide="selectedEvent = null"
+      @view-event="$emit('view-event', $event)"
       @edit-event="$emit('edit-event', $event)"
       @delete-event="$emit('delete-event', $event)"
     >
@@ -86,24 +87,24 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import type {PropType} from 'vue';
-import {type configInterface, type dayIntervalsType,} from '../../typings/config.interface';
-import DayTimeline from './DayTimeline.vue';
-import {type periodInterface} from '../../typings/interfaces/period.interface';
-import {type dayInterface} from '../../typings/interfaces/day.interface';
-import WeekTimeline from './WeekTimeline.vue';
-import Day from './Day.vue';
-import EventFlyout from '../partials/EventFlyout.vue';
-import { type eventInterface } from '../../typings/interfaces/event.interface';
-import Time, {WEEK_START_DAY} from '../../helpers/Time';
-import EventPosition from '../../helpers/EventPosition';
-import {type fullDayEventsWeek} from '../../typings/interfaces/full-day-events-week.type';
-import type{modeType} from '../../typings/types';
 import PerfectScrollbar from 'perfect-scrollbar';
+import type { PropType } from 'vue';
+import { defineComponent } from 'vue';
+import EventPosition from '../../helpers/EventPosition';
+import { EventsFilter } from "../../helpers/EventsFilter";
 import Helpers from '../../helpers/Helpers';
-import {EventsFilter} from "../../helpers/EventsFilter";
-import {WeekHelper} from "../../helpers/Week";
+import Time, { WEEK_START_DAY } from '../../helpers/Time';
+import { WeekHelper } from "../../helpers/Week";
+import { type configInterface, type dayIntervalsType, } from '../../typings/config.interface';
+import { type dayInterface } from '../../typings/interfaces/day.interface';
+import { type eventInterface } from '../../typings/interfaces/event.interface';
+import { type fullDayEventsWeek } from '../../typings/interfaces/full-day-events-week.type';
+import { type periodInterface } from '../../typings/interfaces/period.interface';
+import type { modeType } from '../../typings/types';
+import EventFlyout from '../partials/EventFlyout.vue';
+import Day from './Day.vue';
+import DayTimeline from './DayTimeline.vue';
+import WeekTimeline from './WeekTimeline.vue';
 
 const eventPosition = new EventPosition();
 
@@ -144,6 +145,7 @@ export default defineComponent({
     'event-was-clicked',
     'event-was-resized',
     'event-was-dragged',
+    'view-event',
     'edit-event',
     'delete-event',
     'interval-was-clicked',
@@ -373,7 +375,7 @@ export default defineComponent({
       this.$nextTick(() => {
         const weekHeight = +this.weekHeight.split('p')[0];
         const oneHourInPixel = weekHeight / this.time.HOURS_PER_DAY;
-        const hourToScrollTo =  WeekHelper.getNHoursIntoDayFromHour(this.config.week!.scrollToHour!, this.time);
+        const hourToScrollTo = WeekHelper.getNHoursIntoDayFromHour(this.config.week!.scrollToHour!, this.time);
         const desiredNumberOfPixelsToScroll = oneHourInPixel * hourToScrollTo;
         weekWrapper.scroll(0, desiredNumberOfPixelsToScroll - 10); // -10 to display the hour in DayTimeline
       })

@@ -43,10 +43,6 @@
           v-if="calendarEvent.title"
           class="event-flyout__row is-title"
         >
-          <div
-            class="event-flyout__color-icon"
-            :style="{ backgroundColor: eventBackgroundColor }"
-          />
           {{ calendarEvent.title }}
         </div>
 
@@ -96,6 +92,17 @@
           <p v-html="calendarEvent.description" />
           <!--eslint-enable-->
         </div>
+
+        <div
+          v-if="calendarEvent.isViewable"
+          class="event-flyout__row is-action"
+        >
+          <button
+            @click="viewEvent"
+            class="calendar-week__event-action"
+          >View Event Details</button>
+        </div>
+
       </div>
     </div>
 
@@ -108,10 +115,6 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, type PropType} from 'vue';
-import {EVENT_TYPE, type eventInterface} from '../../typings/interfaces/event.interface';
-import EventFlyoutPosition, {EVENT_FLYOUT_WIDTH,} from '../../helpers/EventFlyoutPosition';
-import {faMapMarkerAlt, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {
   faClock,
   faComment,
@@ -120,11 +123,15 @@ import {
   faTrashAlt,
   faUser,
 } from '@fortawesome/free-regular-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import type {configInterface} from '../../typings/config.interface';
-import Time from '../../helpers/Time';
-import {EVENT_COLORS,} from '../../constants';
+import { faMapMarkerAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { defineComponent, type PropType } from 'vue';
+import { EVENT_COLORS, } from '../../constants';
+import EventFlyoutPosition, { EVENT_FLYOUT_WIDTH, } from '../../helpers/EventFlyoutPosition';
 import Helpers from "../../helpers/Helpers";
+import Time from '../../helpers/Time';
+import type { configInterface } from '../../typings/config.interface';
+import { EVENT_TYPE, type eventInterface } from '../../typings/interfaces/event.interface';
 
 const eventFlyoutPositionHelper = new EventFlyoutPosition();
 
@@ -154,7 +161,7 @@ export default defineComponent({
     },
   },
 
-  emits: ['hide', 'edit-event', 'delete-event'],
+  emits: ['hide', 'view-event', 'edit-event', 'delete-event'],
 
   data() {
     return {
@@ -292,6 +299,11 @@ export default defineComponent({
       this.left = typeof flyoutPosition?.left === 'number' ? flyoutPosition.left : null;
     },
 
+    viewEvent() {
+      this.$emit('view-event', this.calendarEvent?.id);
+      this.closeFlyout();
+    },
+
     editEvent() {
       this.$emit('edit-event', this.calendarEvent?.id);
       this.closeFlyout();
@@ -349,7 +361,7 @@ export default defineComponent({
 
 .event-flyout {
   position: fixed;
-  z-index: 50;
+  z-index: 1000000;
   background-color: #fff;
   max-height: 100%;
   width: v-bind(flyoutWidth);
@@ -369,6 +381,14 @@ export default defineComponent({
     border-color: transparent;
   }
 
+  .calendar-week__event-action {
+    color: #fff;
+    background-color: var(--qalendar-blue);
+    width: 100%;
+    padding: 8px 16px;
+  }
+
+
   &.is-visible {
     opacity: 1;
     transform: translateY(0);
@@ -386,8 +406,7 @@ export default defineComponent({
 
     .event-flyout__menu-editable,
     .event-flyout__menu-close {
-      padding: var(--qalendar-spacing) var(--qalendar-spacing) 0
-        var(--qalendar-spacing);
+      padding: var(--qalendar-spacing) var(--qalendar-spacing) 0 var(--qalendar-spacing);
       display: flex;
       grid-gap: 20px;
     }
@@ -425,8 +444,19 @@ export default defineComponent({
     padding: var(--qalendar-spacing);
   }
 
+  .calendar-week__event-action {
+    border: none;
+    outline: none;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+
+
   &__row {
     display: flex;
+    align-items: center;
     grid-gap: var(--qalendar-spacing);
     margin-bottom: 0.25em;
     font-weight: 400;

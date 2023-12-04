@@ -9,7 +9,7 @@
       'is-selected': isSelected,
       'is-today': isToday,
     }"
-    @click.self="emitDayWasClicked"
+    @click="emitDayWasClicked"
     @dragleave="handleDragLeave"
     @dragover="handleDragOver"
     @drop="handleDrop"
@@ -212,7 +212,6 @@ export default defineComponent({
     border-color: var(--qalendar-dark-mode-line-color);
   }
 }
-
 
 .calendar-month__week:last-of-type {
   .calendar-month__weekday {
