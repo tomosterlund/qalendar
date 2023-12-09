@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="!isCustomEvent"
     class="calendar-week__event is-event"
     :class="{
       'is-editable': isEditable,
@@ -9,8 +8,6 @@
     :style="{
       ...requiredStyles,
       border: getBorderRule,
-      color: eventColor,
-      backgroundColor: eventBackgroundColor,
     }"
     :data-ref="'event-' + event.id"
     @click="handleClickOnEvent"
@@ -19,80 +16,117 @@
     @mousedown="initDrag"
     @touchstart="initDrag"
   >
-    <div class="calendar-week__event-info-wrapper">
+    <div
+      :style="{
+        width: '100%',
+        height: '100%'
+      }"
+      @click="handleClickOnEvent"
+      @mousedown="initDrag"
+      @touchstart="initDrag"
+    >
+      <div
+        v-if="!isCustomEvent"
+        class="calendar-week__event-info-wrapper"
+        :style="{
+          color: eventColor,
+          width: '100%',
+          height: '100%',
+          backgroundColor: eventBackgroundColor,
+        }"
+      >
+        <div class="calendar-week__event-row is-title">
+          {{ event.title }}
+        </div>
+
+        <div class="calendar-week__event-row is-time">
+          <font-awesome-icon
+            :icon="icons.clock"
+            class="calendar-week__event-icon"
+          />
+          <span>{{ getEventTime }}</span>
+        </div>
+
+        <div
+          v-if="event.location"
+          class="calendar-week__event-row is-location"
+        >
+          <font-awesome-icon
+            :icon="icons.location"
+            class="calendar-week__event-icon"
+          />
+          <span>{{ event.location }}</span>
+        </div>
+
+        <div
+          v-if="event.with"
+          class="calendar-week__event-row is-with"
+        >
+          <font-awesome-icon
+            :icon="icons.user"
+            class="calendar-week__event-icon"
+          />
+          <span>{{ event.with }}</span>
+        </div>
+
+        <div
+          v-if="event.topic"
+          class="calendar-week__event-row is-topic"
+        >
+          <font-awesome-icon
+            :icon="icons.topic"
+            class="calendar-week__event-icon"
+          />
+          <span>{{ event.topic }}</span>
+        </div>
+
+        <div
+          v-if="event.description"
+          class="calendar-week__event-row is-description"
+        >
+          <font-awesome-icon
+            :icon="icons.description"
+            class="calendar-week__event-icon"
+          />
+          <!-- eslint-disable vue/no-v-html -->
+          <p v-html="event.description" />
+          <!--eslint-enable-->
+        </div>
+
+        <div
+          v-if="eventIsLongerThan30Minutes"
+          class="calendar-week__event-blend-out"
+          :style="{
+            backgroundImage:
+              'linear-gradient(to bottom, transparent, ' +
+              eventBackgroundColor +
+              ')',
+          }"
+        />
+      </div>
+
+      <div
+        v-else
+        :style="{
+          width: '100%',
+          height: '100%',
+        }"
+        class="calendar-week__event is-event"
+        :class="{
+          'is-editable': isEditable,
+          'has-disabled-dnd': hasDisabledDragAndDrop,
+        }"
+      >
+        <slot
+          name="weekDayEvent"
+          :event-data="event"
+        />
+      </div>
+
       <div
         v-if="showResizeElements"
         class="calendar-week__event-resize calendar-week__event-resize-up"
         @mousedown="resizeEvent('up')"
-      />
-
-      <div class="calendar-week__event-row is-title">
-        {{ event.title }}
-      </div>
-
-      <div class="calendar-week__event-row is-time">
-        <font-awesome-icon
-          :icon="icons.clock"
-          class="calendar-week__event-icon"
-        />
-        <span>{{ getEventTime }}</span>
-      </div>
-
-      <div
-        v-if="event.location"
-        class="calendar-week__event-row is-location"
-      >
-        <font-awesome-icon
-          :icon="icons.location"
-          class="calendar-week__event-icon"
-        />
-        <span>{{ event.location }}</span>
-      </div>
-
-      <div
-        v-if="event.with"
-        class="calendar-week__event-row is-with"
-      >
-        <font-awesome-icon
-          :icon="icons.user"
-          class="calendar-week__event-icon"
-        />
-        <span>{{ event.with }}</span>
-      </div>
-
-      <div
-        v-if="event.topic"
-        class="calendar-week__event-row is-topic"
-      >
-        <font-awesome-icon
-          :icon="icons.topic"
-          class="calendar-week__event-icon"
-        />
-        <span>{{ event.topic }}</span>
-      </div>
-
-      <div
-        v-if="event.description"
-        class="calendar-week__event-row is-description"
-      >
-        <font-awesome-icon
-          :icon="icons.description"
-          class="calendar-week__event-icon"
-        />
-        <!-- eslint-disable vue/no-v-html -->
-        <p v-html="event.description" />
-        <!--eslint-enable-->
-      </div>
-
-      <div
-        v-if="eventIsLongerThan30Minutes"
-        class="calendar-week__event-blend-out"
-        :style="{
-          backgroundImage:
-            'linear-gradient(to bottom, transparent, ' +
-            eventBackgroundColor +
-            ')',
-        }"
       />
 
       <div
@@ -101,28 +135,6 @@
         @mousedown="resizeEvent('down')"
       />
     </div>
-  </div>
-
-  <div
-    v-else
-    :style="{
-      ...requiredStyles,
-      border: getBorderRule,
-      color: eventColor,
-    }"
-    class="calendar-week__event is-event"
-    :class="{
-      'is-editable': isEditable,
-      'has-disabled-dnd': hasDisabledDragAndDrop,
-    }"
-    @click="handleClickOnEvent"
-    @mousedown="initDrag"
-    @touchstart="initDrag"
-  >
-    <slot
-      name="weekDayEvent"
-      :event-data="event"
-    />
   </div>
 </template>
 
