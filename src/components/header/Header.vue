@@ -118,7 +118,7 @@ export default defineComponent({
 
   data() {
     return {
-      modeOptions: ['month', 'week', 'day'] as modeType[],
+      modeOptions: ['month', 'week', 'day', 'agenda'] as modeType[],
       icons: {
         chevronLeft: faChevronLeft,
         chevronRight: faChevronRight,

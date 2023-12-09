@@ -20,6 +20,20 @@
           </div>
         </template>
 
+        <template #agendaEvent="eventProps">
+          <div :style="{ backgroundColor: 'black', color: '#fff', width: '100%', height: '100%', overflow: 'hidden' }">
+            <span class="is-title">{{ eventProps.eventData.title }}</span>
+
+            <div>
+              <input type="checkbox">
+
+              <label for="checkbox">
+                Select time slot
+              </label>
+            </div>
+          </div>
+        </template>
+
         <template #monthEvent="monthEventProps">
           <div id="custom-month-event">
             {{ monthEventProps.eventData.title }}

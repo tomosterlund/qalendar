@@ -2,6 +2,7 @@ import { defineConfig } from 'cypress';
 import getCompareSnapshotsPlugin from "cypress-visual-regression/dist/plugin";
 import { platform } from 'os';
 
+
 const getPlatformForCypressSnapshots = () => {
   const isMac = platform() === 'darwin';
   const isLinux = platform() === 'linux';
@@ -11,6 +12,7 @@ const getPlatformForCypressSnapshots = () => {
 
   return isMac ? 'mac' : 'linux';
 }
+
 
 const platformForCypressSnapshots = getPlatformForCypressSnapshots();
 

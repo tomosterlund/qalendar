@@ -3,6 +3,18 @@
     :id="elementId"
     class="agenda__event is-event"
     @click.prevent="handleClickOnEvent"
+    v-if="isCustomAgendaEvent"
+  >
+    <slot
+        name="agendaEvent"
+        :event-data="calendarEvent"
+      />
+  </div>
+  <div
+    v-else
+    :id="elementId"
+    class="agenda__event is-event non-custom"
+    @click.prevent="handleClickOnEvent"
   >
     <span
       v-if="eventTime && !calendarEvent.originalEvent"
@@ -101,6 +113,14 @@ export default defineComponent({
         : null;
     },
 
+    isCustomAgendaEvent() {
+      // Logic to determine if this event should use a custom agenda event slot
+      if (Array.isArray(this.calendarEvent.isCustom)) {
+        return this.calendarEvent.isCustom.includes('agenda');
+      }
+      return this.calendarEvent.isCustom || false;
+    },
+
     elementId() {
       return this.eventIdPrefix + this.calendarEvent.id;
     },
@@ -151,8 +171,6 @@ export default defineComponent({
 @use '../../styles/mixins' as mixins;
 
 .agenda__event {
-  background-color: v-bind(eventBackgroundColor);
-  color: v-bind(eventColor);
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
@@ -163,4 +181,9 @@ export default defineComponent({
   cursor: pointer;
   user-select: none;
 }
+.agenda__event.non-custom {
+  background-color: v-bind(eventBackgroundColor);
+  color: v-bind(eventColor);
+}
+
 </style>
