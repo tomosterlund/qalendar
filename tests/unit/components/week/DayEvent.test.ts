@@ -1,4 +1,4 @@
-import {mount} from "@vue/test-utils";
+import {mount, VueWrapper} from "@vue/test-utils";
 import DayEvent from "../../../../src/components/week/DayEvent.vue";
 import {describe, expect, test, it, vi } from "vitest";
 import Time, {TimeBuilder, WEEK_START_DAY} from "../../../../src/helpers/Time";
@@ -36,6 +36,10 @@ const GRADIENT_SELECTOR = '.calendar-week__event-blend-out';
 
 function getEventElement(wrapper: any) {
   return wrapper.find(EVENT_ELEMENT_SELECTOR);
+}
+
+function getInfoElement(wrapper: VueWrapper) {
+  return wrapper.find(".calendar-week__event-info-wrapper");
 }
 
 describe("DayEvent.vue", () => {
@@ -163,14 +167,14 @@ describe("DayEvent.vue", () => {
       },
     });
 
-    const eventElement = getEventElement(wrapper);
+    const infoElement = getInfoElement(wrapper);
 
     wrapper.vm.setColors();
     await nextTick();
-    expect(eventElement.attributes().style).toContain(
+    expect(infoElement.attributes().style).toContain(
       "background-color: rgb(255, 64, 129)"
     ); // The pink BG
-    expect(eventElement.attributes().style).toContain(
+    expect(infoElement.attributes().style).toContain(
       "color: rgb(255, 255, 255)"
     ); // The white text
   });
@@ -191,14 +195,14 @@ describe("DayEvent.vue", () => {
       },
     });
 
-    const eventElement = getEventElement(wrapper)
+    const infoElement = getInfoElement(wrapper);
 
     wrapper.vm.setColors();
     await nextTick();
-    expect(eventElement.attributes().style).toContain(
+    expect(infoElement.attributes().style).toContain(
       `background-color: ${EVENT_COLORS[expectedColor]}`
     ); // The green BG
-    expect(eventElement.attributes().style).toContain(
+    expect(infoElement.attributes().style).toContain(
       "color: rgb(255, 255, 255)"
     ); // The white text
   })
@@ -216,10 +220,10 @@ describe("DayEvent.vue", () => {
       }
     });
 
-    const eventElement = getEventElement(wrapper)
+    const infoElement = getInfoElement(wrapper);
     wrapper.vm.setColors();
     await nextTick();
-    expect(eventElement.attributes().style).toContain(
+    expect(infoElement.attributes().style).toContain(
       `background-color: ${EVENT_COLORS.blue}`
     )
   })
