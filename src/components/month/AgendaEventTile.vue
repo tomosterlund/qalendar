@@ -3,6 +3,18 @@
     :id="elementId"
     class="agenda__event is-event"
     @click.prevent="handleClickOnEvent"
+    v-if="isCustomAgendaEvent"
+  >
+    <slot
+        name="agendaEvent"
+        :event-data="calendarEvent"
+      />
+  </div>
+  <div
+    v-else
+    :id="elementId"
+    class="agenda__event is-event"
+    @click.prevent="handleClickOnEvent"
   >
     <span
       v-if="eventTime && !calendarEvent.originalEvent"
@@ -99,6 +111,14 @@ export default defineComponent({
             this.calendarEvent.time.end
         )
         : null;
+    },
+
+    isCustomAgendaEvent() {
+      // Logic to determine if this event should use a custom agenda event slot
+      if (Array.isArray(this.calendarEvent.isCustom)) {
+        return this.calendarEvent.isCustom.includes('agenda');
+      }
+      return this.calendarEvent.isCustom || false;
     },
 
     elementId() {

@@ -29,6 +29,9 @@
         <template #monthEvent="{eventData}">
           {{ eventData.title }}
         </template>
+        <template #agendaEvent="{eventData}">
+          {{ eventData.title}}
+        </template>
         <template #customCurrentTime>
           <div
             :style="{

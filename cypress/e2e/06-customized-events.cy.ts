@@ -44,3 +44,22 @@ describe('CustomizedEvents.vue', () => {
     cy.compareSnapshot('06-customized-events-month-flyout')
   })
 })
+
+describe('CustomizedEvents.vue', () => {
+  beforeEach(() => {
+    PageObject.simulateMobileView(); // Ensure mobile view is simulated
+    cy.visit('#/cypress/customized-events');
+  });
+
+  it('Should display a custom agenda event in mobile view', () => {
+    PageObject.setMonthMode(); // This should automatically switch to agenda mode in mobile view
+    PageObject.assertAgendaEventExistsWithId('#agenda__event-custom-id'); // Replace with actual ID
+  });
+
+  it('Should open the event flyout on clicking a custom agenda event in mobile view', () => {
+    PageObject.setMonthMode(); // Ensure it's in month mode which switches to agenda in mobile view
+    PageObject.getFirstAgendaEvent().should('not.be.visible');
+    PageObject.clickFirstCustomEventInAgenda();
+    PageObject.getEventFlyout().should('be.visible');
+  });
+});
