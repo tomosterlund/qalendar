@@ -21,3 +21,11 @@ export type DayInfo = {
   thisDayIndex: number,
   dateTimeString: string
 }
+
+// Since the agenda doesn't need its own translations, we map it to the month mode
+export enum ModeTranslationMapping {
+  month = "month",
+  agenda = "month",
+  week = "week",
+  day = "day",
+}
