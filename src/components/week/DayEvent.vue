@@ -641,6 +641,7 @@ export default defineComponent({
   cursor: pointer;
   box-sizing: content-box;
   user-select: none;
+  overflow: hidden;
 
   &.is-editable {
     cursor: grab;
@@ -667,7 +668,6 @@ export default defineComponent({
     font-size: var(--qalendar-font-xs);
     height: 100%;
     box-sizing: border-box;
-    overflow: hidden;
     user-select: none;
   }
 
