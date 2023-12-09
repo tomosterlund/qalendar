@@ -31,7 +31,7 @@
       />
 
       <div
-        v-if="!onlyDayModeIsEnabled"
+        v-if="!onlyOneModeIsAvailable"
         class="calendar-header__mode-picker"
       >
         <div
@@ -163,11 +163,8 @@ export default defineComponent({
       );
     },
 
-    onlyDayModeIsEnabled() {
-      const weekIsDisabled = this.config.disableModes?.includes('week');
-      const monthIsDisabled = this.config.disableModes?.includes('month');
-
-      return this.config.disableModes && weekIsDisabled && monthIsDisabled;
+    onlyOneModeIsAvailable() {
+      return this.config.disableModes?.length === 2
     },
   },
 
