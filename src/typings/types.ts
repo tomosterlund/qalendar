@@ -9,7 +9,10 @@ export interface DOMRect {
   y: number;
 }
 
-export type modeType = "day" | "week" | "month" | "agenda";
+export type modeType = "day" | "week" | "month";
+
+// Includes the pseudo-mode "agenda", which is the alternative to the month mode on small screens
+export type extendedModeType = modeType | "agenda";
 
 export enum DRAG_N_RESIZE_DIRECTION {
   BACKWARDS = "backwards",
