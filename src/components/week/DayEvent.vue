@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="!isCustomEvent"
     class="calendar-week__event is-event"
     :class="{
       'is-editable': isEditable,
@@ -9,8 +8,6 @@
     :style="{
       ...requiredStyles,
       border: getBorderRule,
-      color: eventColor,
-      backgroundColor: eventBackgroundColor,
     }"
     :data-ref="'event-' + event.id"
     @click="handleClickOnEvent"
@@ -19,13 +16,16 @@
     @mousedown="initDrag"
     @touchstart="initDrag"
   >
-    <div class="calendar-week__event-info-wrapper">
-      <div
-        v-if="showResizeElements"
-        class="calendar-week__event-resize calendar-week__event-resize-up"
-        @mousedown="resizeEvent('up')"
-      />
-
+    <div
+      v-if="!isCustomEvent"
+      class="calendar-week__event-info-wrapper"
+      :style="{
+        color: eventColor,
+        width: '100%',
+        height: '100%',
+        backgroundColor: eventBackgroundColor,
+      }"
+    >
       <div class="calendar-week__event-row is-title">
         {{ event.title }}
       </div>
@@ -94,34 +94,24 @@
             ')',
         }"
       />
-
-      <div
-        v-if="showResizeElements"
-        class="calendar-week__event-resize calendar-week__event-resize-down"
-        @mousedown="resizeEvent('down')"
-      />
     </div>
-  </div>
 
-  <div
-    v-else
-    :style="{
-      ...requiredStyles,
-      border: getBorderRule,
-      color: eventColor,
-    }"
-    class="calendar-week__event is-event"
-    :class="{
-      'is-editable': isEditable,
-      'has-disabled-dnd': hasDisabledDragAndDrop,
-    }"
-    @click="handleClickOnEvent"
-    @mousedown="initDrag"
-    @touchstart="initDrag"
-  >
     <slot
+      v-else
       name="weekDayEvent"
       :event-data="event"
+    />
+
+    <div
+      v-if="showResizeElements"
+      class="calendar-week__event-resize calendar-week__event-resize-up"
+      @mousedown="resizeEvent('up')"
+    />
+
+    <div
+      v-if="showResizeElements"
+      class="calendar-week__event-resize calendar-week__event-resize-down"
+      @mousedown="resizeEvent('down')"
     />
   </div>
 </template>
@@ -651,6 +641,7 @@ export default defineComponent({
   cursor: pointer;
   box-sizing: content-box;
   user-select: none;
+  overflow: hidden;
 
   &.is-editable {
     cursor: grab;
@@ -677,7 +668,6 @@ export default defineComponent({
     font-size: var(--qalendar-font-xs);
     height: 100%;
     box-sizing: border-box;
-    overflow: hidden;
     user-select: none;
   }
 

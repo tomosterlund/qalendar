@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/tomosterlund/qalendar/compare/v3.6.1...v3.7.0) (2023-12-09)
+
+
+### Features
+
+* enable resize of weekday event slot ([#222](https://github.com/tomosterlund/qalendar/issues/222)) ([1b16e14](https://github.com/tomosterlund/qalendar/commit/1b16e14c4a42ee3e5e7e198098c94a1816bf7594))
+
 ## [3.6.1](https://github.com/tomosterlund/qalendar/compare/v3.6.0...v3.6.1) (2023-12-01)
 
 
