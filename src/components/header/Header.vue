@@ -79,7 +79,7 @@ import { type configInterface } from '../../typings/config.interface';
 import Time from '../../helpers/Time';
 import { type periodInterface } from '../../typings/interfaces/period.interface';
 import getLanguage from '../../language';
-import {ModeTranslationMapping, type modeType} from '../../typings/types';
+import {type modeType} from '../../typings/types';
 
 export default defineComponent({
   name: 'AppHeader',
@@ -118,7 +118,7 @@ export default defineComponent({
 
   data() {
     return {
-      modeOptions: ['month', 'week', 'day', 'agenda'] as modeType[],
+      modeOptions: ['month', 'week', 'day'] as modeType[],
       icons: {
         chevronLeft: faChevronLeft,
         chevronRight: faChevronRight,
@@ -190,9 +190,7 @@ export default defineComponent({
     },
 
     getTranslationForMode(mode: modeType) {
-      const modeTranslationKey = ModeTranslationMapping[mode as keyof typeof ModeTranslationMapping]
-
-      return this.getLanguage(this.languageKeys[modeTranslationKey], this.time?.CALENDAR_LOCALE)
+      return this.getLanguage(this.languageKeys[mode], this.time?.CALENDAR_LOCALE)
     }
   }
 });
