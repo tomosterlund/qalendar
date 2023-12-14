@@ -9,6 +9,12 @@
 
 Event calendar for Vue 3.
 
+> [!TIP]
+> **Author's Tip:** If you don't yet need to customize a lot, you might also want to consider a newer alternative: [Schedule-X](https://schedule-x.dev/).
+> 
+> Here a more thorough note on Qalendar vs. Schedule-X:  https://www.oesterlund.dev/blog/note-on-maintenance-of-qalendar
+
+
 ## Docs
 
 For documentation and demo, see: https://tomosterlund.github.io/qalendar/
