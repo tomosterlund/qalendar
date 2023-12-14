@@ -9,6 +9,11 @@
 
 Event calendar for Vue 3.
 
+> [!TIP]
+> An alternative to Qalendar is in development, more strictly based on Material Design 3: [Schedule-X](https://schedule-x.dev/). It does not yet offer all features that Qalendar does, but might already be enough for some use cases.
+>
+> Here a more thorough note on Qalendar vs. Schedule-X:  https://www.oesterlund.dev/blog/note-on-maintenance-of-qalendar
+
 ## Docs
 
 For documentation and demo, see: https://tomosterlund.github.io/qalendar/
