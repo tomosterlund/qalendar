@@ -14,6 +14,7 @@ export const localeMap = new Map<string, string>([
   ['ar', 'ar-YE'],
   ['es', 'es-ES'],
   ['ja', 'ja-JP'],
+  ['pl', 'pl-PL'],
 ]);
 
 export default {
