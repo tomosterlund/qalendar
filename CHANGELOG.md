@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/tomosterlund/qalendar/compare/v3.7.0...v3.8.0) (2024-02-23)
+
+
+### Features
+
+* polish translations  ([#236](https://github.com/tomosterlund/qalendar/issues/236)) ([be96d75](https://github.com/tomosterlund/qalendar/commit/be96d75564b62440acd5baf629242fe5fc7bf214))
+
 # [3.7.0](https://github.com/tomosterlund/qalendar/compare/v3.6.1...v3.7.0) (2023-12-09)
 
 
