@@ -14,6 +14,7 @@ export const languageKeys = {
     "ar-YE": "إسبوع",
     "es-ES": "Semana",
     "ja-JP": "週",
+    "pl-PL": "Tydzień", 
   },
   month: {
     "it-IT": "Mese",
@@ -29,6 +30,7 @@ export const languageKeys = {
     "ar-YE": "شهر",
     "es-ES": "Mes",
     "ja-JP": "月",
+    "pl-PL": "Miesiąc", 
   },
   day: {
     "it-IT": "Giorno",
@@ -44,6 +46,7 @@ export const languageKeys = {
     "ar-YE": "يوم",
     "es-ES": "Día",
     "ja-JP": "日",
+    "pl-PL": "Dzień",
   },
 
   /** Other keys */
@@ -61,6 +64,7 @@ export const languageKeys = {
     "ar-YE": "+ المزيد من الأحداث",
     "es-ES": "más eventos",
     "ja-JP": "その他イベント",
+    "pl-PL": "+ więcej wydarzeń",
   },
   noEvent: {
     'it-IT': 'Nessun evento',
@@ -76,5 +80,6 @@ export const languageKeys = {
     'ar-YE': 'لا أحداث',
     'es-ES': 'No hay eventos',
     "ja-JP": "イベントなし",
+    "pl-PL": "Brak wydarzeń",
   },
 };
