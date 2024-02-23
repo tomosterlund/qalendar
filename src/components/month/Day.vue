@@ -21,6 +21,7 @@
     >
       <span
         class="calendar-month__day-date"
+        @click="emitDayWasClicked"
       >
         {{ day.dateTimeString.substring(8, 10).startsWith('0') ? day.dateTimeString.substring(9, 10) : day.dateTimeString.substring(8, 10) }}
       </span>
