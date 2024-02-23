@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.1](https://github.com/tomosterlund/qalendar/compare/v3.8.0...v3.8.1) (2024-02-23)
+
+
+### Bug Fixes
+
+* selecting day on mobile agenda ([#237](https://github.com/tomosterlund/qalendar/issues/237)) ([0d4e332](https://github.com/tomosterlund/qalendar/commit/0d4e3327f61a994f28d697ff48c3250a391bfc9d))
+
 # [3.8.0](https://github.com/tomosterlund/qalendar/compare/v3.7.0...v3.8.0) (2024-02-23)
 
 
