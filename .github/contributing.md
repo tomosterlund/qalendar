@@ -21,11 +21,24 @@ clarity.
 
 ### Running tests
 
+#### Unit tests
+
 While developing, please run `vitest watch`, in order to monitor that all tests are passing.
 
 Since Qalendar is making heavy use of the native JavaScript Date-Object, which has the possibility
 to create difference output in different time zones, please also run `npm run test:docker` before
 pushing. This will spin up 3 docker containers, in 3 different time zones, and then run all tests.
+
+#### E2E tests
+
+If you're extending the E2E tests or writing new ones, and you're one a Mac, you're good to go.
+
+For all other platforms, you will probably need to comment out the screenshot statements of the tests you're running. They
+always begin with `cy.compareSnapshot`. Just don't forget to uncomment them before pushing.
+
+If something optically changes in the UI, causing a screenshot test to fail in the CI, you will need to record new
+screenshots with the "Record screenshots" workflow. Then replace the old base images in the
+`cypress/snapshots/linux` folder, with the new ones.
 
 ### Seeding
 
