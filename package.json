@@ -51,6 +51,7 @@
   "exports": {
     ".": {
       "import": "./dist/qalendar.es.js",
+      "types": "./dist/src/index.d.ts",
       "require": "./dist/qalendar.umd.js"
     },
     "./dist/style.css": {
