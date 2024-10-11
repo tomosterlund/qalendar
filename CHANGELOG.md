@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.9.0](https://github.com/tomosterlund/qalendar/compare/v3.8.1...v3.9.0) (2024-10-11)
+
+
+### Features
+
+* add hungarian locale ([#259](https://github.com/tomosterlund/qalendar/issues/259)) ([bd731fd](https://github.com/tomosterlund/qalendar/commit/bd731fdbc81968cc64e2f0bb334ad5040b495517))
+
 ## [3.8.1](https://github.com/tomosterlund/qalendar/compare/v3.8.0...v3.8.1) (2024-02-23)
 
 
