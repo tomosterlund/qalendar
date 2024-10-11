@@ -1,4 +1,6 @@
-export default {
+import { defineConfig } from 'vitepress'
+
+export default defineConfig({
   base: "/qalendar/",
   title: "Qalendar",
   themeConfig: {
@@ -17,5 +19,4 @@ export default {
       dark: 'https://discover-test-files.s3.eu-central-1.amazonaws.com/qalendar-dark-mode.svg'
     },
   },
-  // appearance: false,
-};
+});

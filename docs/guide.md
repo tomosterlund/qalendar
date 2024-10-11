@@ -4,6 +4,9 @@ description: Guide & API reference for Qalendar
 layout: doc
 ---
 
+> [!CAUTION]
+> This library is no longer maintained. It has a younger cooler sibling though: https://schedule-x.dev/
+
 ## Installing
 
 ```

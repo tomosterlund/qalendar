@@ -9,10 +9,8 @@
 
 Event calendar for Vue 3.
 
-> [!NOTE]
-> Qalendar now has a younger cooler sibling: [Schedule-X](https://github.com/schedule-x/schedule-x). It solves a lot of problems that Qalendar does not and won't solve. This also means there is currently no active development of this library apart from occasional bugfixes and dependency-updates.
->
-> Here a more thorough note on Qalendar vs. Schedule-X:  https://www.oesterlund.dev/blog/note-on-maintenance-of-qalendar
+> [!CAUTION]
+> This library is no longer maintained, but it has a younger, cooler sibling: [Schedule-X](https://github.com/schedule-x/schedule-x). It solves a lot of problems that Qalendar does not and won't solve..
 
 ## Docs
 
