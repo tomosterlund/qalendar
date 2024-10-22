@@ -1,5 +1,5 @@
 import {EventBuilder} from "../../../src/models/Event";
-import {eventInterface} from "../../../src/typings/interfaces/event.interface";
+import { type eventInterface} from "../../../src/typings/interfaces/event.interface";
 
 const eventsRegularDay: eventInterface[] = [];
 

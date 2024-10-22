@@ -14,7 +14,7 @@
     "declaration": true,
     "types": ["vite/client", "cypress"],
     "skipLibCheck": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": false
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "cypress/**/*.cy.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]

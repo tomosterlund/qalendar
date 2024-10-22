@@ -172,7 +172,8 @@ export default defineComponent({
         location: faMapMarkerAlt,
       },
       calendarEvent: this.calendarEventProp,
-      flyoutWidth: EVENT_FLYOUT_WIDTH + 'px',
+     // flyoutWidth: EVENT_FLYOUT_WIDTH + 'px',
+      flyoutWidth: this.config.eventDialog.width != undefined? this.config.eventDialog.width : EVENT_FLYOUT_WIDTH+ 'px',
       colors: EVENT_COLORS,
     };
   },

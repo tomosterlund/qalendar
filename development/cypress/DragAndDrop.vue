@@ -26,10 +26,14 @@ export default defineComponent({
     return {
       config: {
         locale: 'en-US',
+        eventDialog:{
+          width: "800px"
+        },
         week: {
           nDays: 5,
           startsOn: WEEK_START_DAY.MONDAY,
         },
+
       } as configInterface,
 
       events: dragAndDropEvents,

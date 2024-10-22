@@ -67,6 +67,7 @@ export interface configInterface {
     isDisabled?: boolean;
     isCustom?: boolean;
     closeOnClickOutside?: boolean;
+    width?: string; 
   }
   dayBoundaries?: {
     start: number; // integer between 0 and 24
@@ -84,4 +85,5 @@ export interface configInterface {
   // from an implementer is strongly discouraged
   // TODO: create internal config interface and replace all usages in components with that
   isSmall?: boolean;
+
 }
