@@ -75,7 +75,7 @@
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@types/jsdom": "21.1.1",
-    "@types/node": "18.16.19",
+    "@types/node": "20.17.0",
     "@types/unidecode": "^0.1.1",
     "@vitejs/plugin-vue": "5.1.4",
     "@vitest/coverage-c8": "^0.32.0",
