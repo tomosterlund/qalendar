@@ -28,7 +28,14 @@
           :calendar-event="dayEvent"
           :time="time"
           @event-was-clicked="$emit('event-was-clicked', $event)"
-        />
+          >
+          <template #agendaEvent="{ eventData }">
+            <slot
+              :event-data="eventData"
+              name="agendaEvent"
+            />
+          </template>
+        </AgendaEventTile>
       </div>
     </div>
   </div>

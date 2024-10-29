@@ -38,6 +38,7 @@
             />
           </template>
 
+
           <template #dayCell="{dayData}">
             <slot
               :day-data="dayData"
@@ -58,7 +59,14 @@
         :time="time"
         :day="selectedDay"
         @event-was-clicked="handleClickOnEvent"
-      />
+      >
+        <template #agendaEvent="{ eventData }">
+            <slot
+              :event-data="eventData"
+              name="agendaEvent"
+            />
+          </template>
+      </AgendaEvents>
     </div>
 
     <EventFlyout

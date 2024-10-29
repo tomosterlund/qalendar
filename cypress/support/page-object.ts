@@ -236,4 +236,21 @@ export default class PageObject {
   static getAgendaEvent() {
     return cy.get('.is-event')
   }
+
+  static simulateMobileView() {
+    cy.viewport('iphone-6');
+  }
+
+  static assertCustomAgendaEventExists() {
+      cy.get('.agenda__event:not(.non-custom)').should('be.visible');
+  }
+
+  static clickFirstCustomEventInAgenda() {
+      cy.get('.agenda__event:not(.non-custom)').first().click();
+  }
+
+  static getFirstCustomAgendaEvent() {
+      return cy.get('.agenda__event:not(.non-custom)').first();
+  }
+
 }

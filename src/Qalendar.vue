@@ -95,6 +95,13 @@
           />
         </template>
 
+        <template #agendaEvent="p">
+          <slot
+            :event-data="p.eventData"
+            name="agendaEvent"
+          />
+        </template>
+
         <template #dayCell="{dayData}">
           <slot
             :day-data="dayData"

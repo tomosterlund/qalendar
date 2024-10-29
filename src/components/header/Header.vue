@@ -58,7 +58,7 @@
               :class="'is-' + calendarMode + '-mode'"
               @click="$emit('change-mode', calendarMode)"
             >
-              {{ getLanguage(languageKeys[calendarMode], time.CALENDAR_LOCALE) }}
+              {{ getTranslationForMode(calendarMode) }}
             </div>
           </template>
         </div>
@@ -79,7 +79,7 @@ import { type configInterface } from '../../typings/config.interface';
 import Time from '../../helpers/Time';
 import { type periodInterface } from '../../typings/interfaces/period.interface';
 import getLanguage from '../../language';
-import { type modeType } from '../../typings/types';
+import {type modeType} from '../../typings/types';
 
 export default defineComponent({
   name: 'AppHeader',
@@ -157,10 +157,7 @@ export default defineComponent({
     },
 
     modeName() {
-      return this.getLanguage(
-        this.languageKeys[this.mode],
-        this.time?.CALENDAR_LOCALE
-      );
+      return this.getTranslationForMode(this.mode)
     },
 
     onlyDayModeIsEnabled() {
@@ -191,6 +188,10 @@ export default defineComponent({
     goToPeriod(direction: 'previous' | 'next') {
       (this.$refs.periodSelect as typeof DatePicker).goToPeriod(direction);
     },
+
+    getTranslationForMode(mode: modeType) {
+      return this.getLanguage(this.languageKeys[mode], this.time?.CALENDAR_LOCALE)
+    }
   }
 });
 </script>
