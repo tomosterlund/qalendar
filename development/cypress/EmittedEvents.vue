@@ -19,7 +19,7 @@ import {configInterface} from '../../src/typings/config.interface';
 import {WEEK_START_DAY} from "../../src/helpers/Time";
 
 export default defineComponent({
-  name: 'FiveDayWeek',
+  name: 'EmittedEvents',
 
   components: {Qalendar},
 
@@ -30,6 +30,7 @@ export default defineComponent({
         week: {
           startsOn: WEEK_START_DAY.SUNDAY,
         },
+        emitOnDoubleClick: true
       } as configInterface,
 
       events: [],

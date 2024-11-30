@@ -1,7 +1,8 @@
 <template>
   <div
     class="calendar-week__day"
-    @click.self="handleClickOnDay"
+    @click.self="deligateClickOnDay"
+    @dblclick.native="deligateClickOnDay"
   >
     <DayEvent
       v-for="(event, eventIndex) in events"
@@ -154,6 +155,14 @@ export default defineComponent({
         dayStartTimeString,
         this.time.HOURS_PER_DAY,
       ).getIntervals()
+    },
+
+    deligateClickOnDay(event: MouseEvent) {
+      if (this.config?.emitOnDoubleClick === true) {
+        event.type === 'dblclick' && this.handleClickOnDay(event)
+      } else {
+        this.handleClickOnDay(event)
+      }
     },
 
     handleClickOnDay(event: MouseEvent) {
